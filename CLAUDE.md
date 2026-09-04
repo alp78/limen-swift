@@ -87,6 +87,6 @@ Debug builds accept the launch arguments `LIMEN_RESET` (clears the store and the
 
 Tuist resolves source and resource globs at `make gen`: a new file compiles only after regenerating. Synthesized asset accessors are off, because they would generate a `LimenColors` type over the palette.
 
-Nothing is reported done until it builds in Release and runs on the owner's physical iPhone, with screenshots for anything visual. Git belongs to the owner: never commit or push; end each piece of work with paste-ready `cd`, `git add`, `git commit -m` commands, one-line message, no trailing period, no attribution.
+Nothing is reported done until it builds in Release and runs on the owner's physical iPhone, with screenshots for anything visual. Git belongs to the owner: never commit or push; end each piece of work with paste-ready `cd`, `git add`, `git commit -m` and `git push` commands as one line, one-line message, no trailing period, no attribution.
 
 The knowledge base entry for this port lives in the vault: `/Users/aperi/DEV/vault/apple/limen.md`.
