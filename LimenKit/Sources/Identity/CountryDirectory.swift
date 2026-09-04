@@ -1,0 +1,144 @@
+import Foundation
+
+/// A phone region shown in the form, complete with its recognised calling code and flag.
+public struct PhoneCountry: Hashable, Sendable, Identifiable {
+    public let regionCode: String
+    public let callingCode: Int
+
+    public var id: String { regionCode }
+    public var flag: String { CountryDirectory.flag(regionCode) }
+    public func label(locale: Locale = .current) -> String {
+        "\(flag) +\(callingCode) \(CountryDirectory.name(regionCode, locale: locale))"
+    }
+}
+
+/// An address country, kept independently from the telephone country.
+public struct AddressCountry: Hashable, Sendable, Identifiable {
+    public let regionCode: String
+
+    public init(_ regionCode: String) { self.regionCode = regionCode }
+
+    public var id: String { regionCode }
+    public var flag: String { CountryDirectory.flag(regionCode) }
+    public func label(locale: Locale = .current) -> String {
+        "\(flag) \(CountryDirectory.name(regionCode, locale: locale))"
+    }
+}
+
+/// ISO country lists for address and phone pickers.
+public enum CountryDirectory {
+    /// The two-letter ISO regions the platform knows, which is Java's `Locale.getISOCountries`
+    /// in the same spirit: the world's countries and territories, sorted by their English name.
+    public static let addressCountries: [AddressCountry] = {
+        Locale.Region.isoRegions
+            .map(\.identifier)
+            .filter { $0.count == 2 && $0.allSatisfy { ("A"..."Z").contains($0) } }
+            .map(AddressCountry.init)
+            .sorted { name($0.regionCode, locale: english) < name($1.regionCode, locale: english) }
+    }()
+
+    public static let addressRegions: Set<String> = Set(addressCountries.map(\.regionCode))
+
+    static let english = Locale(identifier: "en")
+
+    public static func name(_ regionCode: String, locale: Locale = .current) -> String {
+        let name = locale.localizedString(forRegionCode: regionCode) ?? ""
+        return name.isBlank ? regionCode : name
+    }
+
+    public static func flag(_ regionCode: String) -> String {
+        let region = regionCode.uppercased()
+        guard region.count == 2, region.allSatisfy({ ("A"..."Z").contains($0) }) else { return "🌐" }
+        return String(region.unicodeScalars.compactMap { UnicodeScalar(0x1F1E6 + ($0.value - 65)) }.map(Character.init))
+    }
+}
+
+public struct SwissAddressCandidate: Hashable, Sendable, Identifiable {
+    public let street: String
+    public let flatNumber: String
+    public let postalCode: String
+    public let city: String
+    public let canton: SwissCanton?
+
+    public init(street: String, flatNumber: String, postalCode: String, city: String, canton: SwissCanton? = nil) {
+        self.street = street
+        self.flatNumber = flatNumber
+        self.postalCode = postalCode
+        self.city = city
+        self.canton = canton
+    }
+
+    public var id: String { label }
+    public var label: String { "\(street) \(flatNumber), \(postalCode) \(city)" }
+}
+
+extension SessionIdentity {
+    public func hasRequiredFields() -> Bool {
+        let first = firstName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let last = lastName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard first.count >= 2, firstName.contains(where: \.isLetter), last.count >= 2, lastName.contains(where: \.isLetter) else { return false }
+        guard !street.isBlank, !flatNumber.isBlank, !postalCode.isBlank, !city.isBlank else { return false }
+        guard CountryDirectory.addressRegions.contains(addressCountry) else { return false }
+        if usesSwissAddress {
+            guard addressCountry == "CH", postalCode.count == 4, postalCode.allSatisfy(\.isASCIIDigit) else { return false }
+        } else {
+            guard addressCountry != "CH" else { return false }
+        }
+        return InternationalPhone.isValid(phone, regionCode: phoneRegion)
+    }
+}
+
+/// A small, cancellable client for swisstopo's official building-address search. The query is
+/// intentionally sent only after three characters and never written to disk outside the protocol.
+public enum SwissAddressLookup {
+    private static let endpoint = "https://api3.geo.admin.ch/rest/services/ech/SearchServer"
+    private static let addressLabel = try? NSRegularExpression(pattern: "^(.+?)\\s+(\\d+[\\p{L}\\-/]*)\\s+(\\d{4})\\s+(.+)$")
+
+    public static func search(_ query: String) async -> [SwissAddressCandidate] {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard trimmed.count >= 3 else { return [] }
+        guard let encoded = trimmed.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed),
+              let url = URL(string: "\(endpoint)?searchText=\(encoded)&type=locations&origins=address") else { return [] }
+        var request = URLRequest(url: url)
+        request.timeoutInterval = 4
+        guard let (data, response) = try? await URLSession.shared.data(for: request),
+              (response as? HTTPURLResponse).map({ (200..<300).contains($0.statusCode) }) ?? true,
+              let body = String(data: data, encoding: .utf8) else { return [] }
+        return parse(body)
+    }
+
+    public static func parse(_ body: String) -> [SwissAddressCandidate] {
+        guard let root = try? JSONSerialization.jsonObject(with: Data(body.utf8)) as? [String: Any],
+              let results = root["results"] as? [[String: Any]] else { return [] }
+        var candidates: [SwissAddressCandidate] = []
+        for result in results {
+            guard let attrs = result["attrs"] as? [String: Any], attrs["origin"] as? String == "address",
+                  let rawLabel = attrs["label"] as? String else { continue }
+            let label = rawLabel
+                .replacingOccurrences(of: "<[^>]*>", with: "", options: .regularExpression)
+                .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            guard let regex = addressLabel,
+                  let match = regex.firstMatch(in: label, range: NSRange(label.startIndex..., in: label)),
+                  match.numberOfRanges == 5 else { continue }
+            func group(_ index: Int) -> String {
+                Range(match.range(at: index), in: label).map { String(label[$0]) } ?? ""
+            }
+            let canton = (attrs["detail"] as? String)?
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .split(separator: " ").last.map(String.init)
+                .flatMap(SwissCanton.fromCode)
+            candidates.append(SwissAddressCandidate(street: group(1), flatNumber: group(2), postalCode: group(3), city: group(4), canton: canton))
+        }
+        return Array(candidates.distinct().prefix(6))
+    }
+}
+
+extension CharacterSet {
+    /// RFC 3986 unreserved characters, what Java's URLEncoder leaves alone plus the space as %20.
+    static let urlQueryValueAllowed: CharacterSet = {
+        var set = CharacterSet.alphanumerics
+        set.insert(charactersIn: "-._~")
+        return set
+    }()
+}

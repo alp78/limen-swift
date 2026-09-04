@@ -1,0 +1,78 @@
+included:
+  - LimenKit
+  - Limen
+  - LimenKitTests
+  - LimenTests
+  - LimenUITests
+
+excluded:
+  - DD
+  - Derived
+  - LimenKit/Sources/Strings/Str.swift
+
+opt_in_rules:
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+  - empty_count
+  - first_where
+  - last_where
+  - contains_over_filter_count
+  - reduce_into
+  - sorted_first_last
+  - toggle_bool
+  - redundant_nil_coalescing
+  - explicit_init
+  - modifier_order
+  - fatal_error_message
+
+disabled_rules:
+  - todo
+  - line_length
+  - trailing_comma
+  - identifier_name
+  - multiple_closures_with_trailing_closure
+  # Bytes out of a ZIP entry name or a file name are decoded with String(decoding:as:), which
+  # never fails and replaces what is not UTF-8, the way Java's zip reader did.
+  - optional_data_string_conversion
+
+force_cast: error
+force_try: error
+force_unwrapping:
+  severity: error
+
+cyclomatic_complexity:
+  warning: 30
+  error: 44
+
+# The record is one Kotlin data class with fifty fields; its JSON reader keeps that shape.
+function_parameter_count:
+  warning: 12
+  error: 16
+
+function_body_length:
+  warning: 200
+  error: 300
+
+type_body_length:
+  warning: 700
+  error: 1100
+
+file_length:
+  warning: 1000
+  error: 1600
+
+nesting:
+  type_level: 3
+
+custom_rules:
+  kotlin_leftover:
+    name: "Kotlin leftover"
+    regex: '\b(companion\s+object|lateinit|viewModelScope|MutableStateFlow|hiltViewModel|Dispatchers\.(IO|Main|Default)|withContext)\b|@Composable'
+    match_kinds: [identifier, keyword, typeidentifier, attribute.builtin]
+    message: "Kotlin syntax left in a Swift file. Finish the port"
+    severity: error
+  em_dash:
+    name: "Em-dash"
+    regex: '\x{2014}'
+    message: "House rule: no em-dashes in comments or strings"
+    severity: error

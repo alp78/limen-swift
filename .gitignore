@@ -1,0 +1,14 @@
+# Tuist generates these; Project.swift is the source of truth.
+*.xcodeproj
+*.xcworkspace
+.tuist/
+Derived/
+# Every derived-data folder, whatever path a build was pointed at: `make build` and `make test`
+# use ./DD, and a device build aimed elsewhere (./DD-device) is still build output.
+DD*/
+DD*.log
+.build/
+xcuserdata/
+.DS_Store
+# Pinned upstream file fetched by tools/phones.py; the generated JSON beside it is committed.
+tools/PhoneNumberMetadata.xml
