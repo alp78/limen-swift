@@ -2,7 +2,7 @@ SIM ?= iPhone 17 Pro
 # By UDID for install, launch and screenshots: two simulators can carry one name across runtimes.
 SIM_ID ?= 6F9172CC-DF86-4F05-9EB3-42E8E287668F
 DEVICE_ID ?= D5A6144A-6100-5A25-90E7-898D11325105
-BUNDLE_ID ?= dev.verso.limen
+BUNDLE_ID ?= dev.peringer.limen
 WORKSPACE := Limen.xcworkspace
 DEST := platform=iOS Simulator,id=$(SIM_ID)
 

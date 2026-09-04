@@ -19,11 +19,12 @@ let baseSettings: SettingsDictionary = [
     "ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME": "AccentColor",
     "MARKETING_VERSION": "1.1.0",
     "CURRENT_PROJECT_VERSION": "2",
-    // The developer is Verso Lab (versolab@proton.me). Pinning the team here, before the first
-    // build, is what keeps the other identity on this Mac (the owner's personal one) from ever
-    // signing a build: a bundle identifier registered once by the wrong team is closed to the
-    // right one for good, which is how Signet lost its own.
-    "DEVELOPMENT_TEAM": "WNW66Z72RY",
+    // The owner's own Apple Account (aperinger@proton.me), which is the one that will hold the
+    // paid membership: an Individual enrollment needs no company, and Apple publishes the
+    // enrolled legal name rather than any trade name. Pinning the team keeps a build from being
+    // signed by the other identity on this Mac, because a bundle identifier registered once by
+    // a team is closed to every other, which is how the previous namespace was lost.
+    "DEVELOPMENT_TEAM": "KDSZB7N44K",
 ]
 
 let project = Project(
@@ -42,7 +43,7 @@ let project = Project(
             name: "LimenKit",
             destinations: .iOS,
             product: .framework,
-            bundleId: "dev.verso.limen.kit",
+            bundleId: "dev.peringer.limen.kit",
             deploymentTargets: deployment,
             sources: ["LimenKit/Sources/**"],
             resources: ["LimenKit/Resources/**"],
@@ -53,7 +54,7 @@ let project = Project(
             name: "Limen",
             destinations: .iOS,
             product: .app,
-            bundleId: "dev.verso.limen",
+            bundleId: "dev.peringer.limen",
             deploymentTargets: deployment,
             infoPlist: .extendingDefault(with: [
                 "CFBundleDisplayName": "Limen",
@@ -87,7 +88,7 @@ let project = Project(
             name: "LimenKitTests",
             destinations: .iOS,
             product: .unitTests,
-            bundleId: "dev.verso.limen.kit.tests",
+            bundleId: "dev.peringer.limen.kit.tests",
             deploymentTargets: deployment,
             sources: ["LimenKitTests/Sources/**"],
             dependencies: [.target(name: "LimenKit")],
@@ -98,7 +99,7 @@ let project = Project(
             name: "LimenTests",
             destinations: .iOS,
             product: .unitTests,
-            bundleId: "dev.verso.limen.tests",
+            bundleId: "dev.peringer.limen.tests",
             deploymentTargets: deployment,
             sources: ["LimenTests/Sources/**"],
             dependencies: [.target(name: "Limen")],
@@ -109,7 +110,7 @@ let project = Project(
             name: "LimenUITests",
             destinations: .iOS,
             product: .uiTests,
-            bundleId: "dev.verso.limen.uitests",
+            bundleId: "dev.peringer.limen.uitests",
             deploymentTargets: deployment,
             sources: ["LimenUITests/Sources/**"],
             dependencies: [.target(name: "Limen")],

@@ -31,9 +31,9 @@ Native Swift/SwiftUI port of the Android original at `/Users/aperi/DEV/ANDROID/l
 | Haptics | Three weights through the system generators: light impact, success, error | The Android three-weight contract; the system honours the phone's own switch |
 | Theme | Day and Night palettes hex for hex from `theme/Theme.kt`, the app's own choice in UserDefaults; system controls follow through `preferredColorScheme` | The instrument's own faces |
 | Type | System face through `Font.custom(relativeTo:)` at Android's sizes; Menlo for the monospaced readouts | The one form SwiftUI scales live, which is the sp contract |
-| Icon | The seal (limen_logo_master.xml rewritten as SVG by `tools/marks.py`) inset 6dp on the day plate, the middle 72dp of the 108dp canvas, written by `AppIconTests` | The Android adaptive icon's own geometry |
+| Icon | The seal (`limen_logo_master.xml` rewritten as SVG by `tools/marks.py`) grown to span the day plate edge to edge, written by `AppIconTests` | Taking the Android canvas's middle 72dp cut the top and bottom off a seal drawn to reach its launcher mask; iOS masks only corners, so the seal fills the square and the rim wording survives |
 | Tests | The fifteen Android unit suites ported name for name into `LimenKitTests`, plus the ZIP, cipher, JSON and phone suites; `LimenTests` exports the Android instrumentation's records as real PDFs and walks the model; two XCUITest smokes with screenshots | The suite is the spec; the golden fingerprint is the cross-phone contract |
-| Signing | Verso Lab, team WNW66Z72RY, pinned in `Project.swift` before the first build; `dev.verso.limen` | Signet's identifier was taken hostage by one build under the personal team |
+| Signing | The owner's own account (aperinger@proton.me), team KDSZB7N44K, pinned in `Project.swift`; `dev.peringer.limen` | An Individual enrollment needs no company and publishes the enrolled legal name, so the account that will hold the paid membership signs from the start |
 
 ## House rules
 
@@ -41,7 +41,7 @@ Native Swift/SwiftUI port of the Android original at `/Users/aperi/DEV/ANDROID/l
 - Never a control that implies a capability the app lacks: the camera key says so when there is no camera, the export key is disabled on a draft, the exit key on an entry card says to finalize first.
 - No em-dashes, no period ending a title or heading, never "land" as a verb for data or files. In comments and UI strings alike.
 - Comments explain why: the constraint or the bug that forced the shape. Port the Android comments' reasons with the code they explain.
-- Signed only as Verso Lab (Apple Account versolab@proton.me, team WNW66Z72RY). The personal identity on this Mac (aperinger@proton.me, team KDSZB7N44K) must never sign a build.
+- Signed only as the owner's own account (aperinger@proton.me, team KDSZB7N44K), which is the one that will hold the paid membership. Never build for the device before the pin exists: an identifier registered once by a team is closed to every other, which is why the previous namespace had to be abandoned.
 - One network call, the swisstopo address suggestion, and only while the person asks. One permission, the camera. Records leave the phone only as the PDF or the password-protected archive the person exports.
 
 ## Glyph map, Material to SF Symbols
