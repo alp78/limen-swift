@@ -1,0 +1,52 @@
+Limen
+Copyright 2026 Alexis Peringer
+
+This product includes third-party data and third-party artwork, listed below with its licence.
+Nothing here is bundled without a licence that permits redistribution. The same list is reachable
+inside the app, under Data, backup and privacy, because Apache-2.0 section 4(d) asks for the notice
+to travel with the distribution and an app bundle has nowhere else to put it.
+
+The iOS build carries no third-party code. Everything above the two items below is Swift, SwiftUI
+and Apple's own frameworks, which is why the Android notice's entries for AndroidX, the Kotlin
+standard library, kotlinx.serialization and AndroidSVG have no counterpart here.
+
+--------------------------------------------------------------------------------
+libphonenumber, numbering metadata
+  LimenKit/Resources/PhoneMetadata.json, reduced by tools/phones.py from the metadata XML of
+  libphonenumber v9.0.34, the version the Android build pins
+  Copyright 2009-2026 The Libphonenumber Authors
+  Licence: Apache-2.0
+  https://github.com/google/libphonenumber
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use these files
+  except in compliance with the License. You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed under the
+  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+  either express or implied. See the License for the specific language governing permissions and
+  limitations under the License.
+
+  The metadata is used so a Swiss or foreign telephone number is validated against the real
+  numbering plan rather than a hand-written pattern. The library itself is not bundled: the
+  parsing, prefix stripping, per-type patterns and formats are written in InternationalPhone.
+
+--------------------------------------------------------------------------------
+Cantonal flags of Switzerland
+  Limen/Resources/Assets.xcassets/flag-*.imageset
+  Source: Wikimedia Commons
+  Licence: Public domain
+
+  Twenty-six cantonal flags, retrieved from Wikimedia Commons and bundled verbatim from the same
+  files the Android app ships. Each one is recorded in cantons-manifest.json with its Commons
+  title, original URL, source page, SHA-256 and credit line, so any one of them can be traced
+  back to what was downloaded.
+
+  Most derive from the Swiss Confederation's Reglement 51.340 d, "Der Umgang mit Fahnen,
+  Standarten und Fanions".
+
+  These flags identify cantons only and do not imply official endorsement. Rules on the use of
+  official symbols may apply independently of copyright: in Switzerland the Coat of Arms
+  Protection Act (WSchG, SR 232.21) governs cantonal arms, and public-domain status under
+  copyright is not permission to use a cantonal coat of arms as a badge of authority.

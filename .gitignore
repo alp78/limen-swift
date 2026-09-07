@@ -12,3 +12,4 @@ xcuserdata/
 .DS_Store
 # Pinned upstream file fetched by tools/phones.py; the generated JSON beside it is committed.
 tools/PhoneNumberMetadata.xml
+.vscode

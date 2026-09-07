@@ -103,6 +103,21 @@ import Testing
         #expect(try restored.importArchive(password: "unused", from: archive).imported == 1)
     }
 
+    @Test func emptyPasswordWritesAPlainArchiveThatRestoresWithoutOne() throws {
+        let root = try temporaryRoot()
+        let sourceRoot = root.appendingPathComponent("source-open")
+        let source = Store(root: sourceRoot)
+        try source.save(record("open", .exit, 7))
+        let archive = root.appendingPathComponent("open.limen")
+        try source.exportArchive(password: "", to: archive)
+
+        // Plain means plain: a zip signature, not the LIMENSAFE envelope.
+        let head = try Data(contentsOf: archive).prefix(2)
+        #expect(head == Data("PK".utf8))
+        let restored = Store(root: root.appendingPathComponent("restored-open"))
+        #expect(try restored.importArchive(password: "", from: archive).imported == 1)
+    }
+
     /// The streaming cipher against CryptoKit's own AES-GCM, both ways, so the tag it writes is
     /// the tag Java's AES/GCM/NoPadding checks.
     @Test func theStreamingCipherAgreesWithCryptoKit() throws {

@@ -81,6 +81,8 @@ final class LimenModel {
     var protocols: [HandoverProtocol]
     var archiveBusy = false
     var archiveExported: ExportedFile?
+    /// Whether the last export carried a password, so the screen can say when it did not.
+    var archiveProtected = true
     var archiveImported: ArchiveImportResult?
     var archiveFailed = false
 
@@ -207,8 +209,9 @@ final class LimenModel {
     // MARK: Archive
 
     func exportArchive(password: String) {
-        if archiveBusy || password.count < 12 { return }
+        if archiveBusy { return }
         flush()
+        archiveProtected = !password.isEmpty
         archiveBusy = true
         archiveExported = nil
         archiveImported = nil

@@ -115,6 +115,7 @@ struct LangMenu: View {
         Menu {
             ForEach(Lang.allCases, id: \.self) { lang in
                 Button {
+                    Haptics.play(.key)
                     onSelect(lang)
                 } label: {
                     if lang == current {
@@ -167,7 +168,9 @@ struct ThemeToggle: View {
 
     var body: some View {
         Button {
-            Haptics.play(.key)
+            // The switch is the one control on the screen that is not a KeySurface, so the weight
+            // comes from here. It names the state the press lands in, as every other switch does.
+            Haptics.play(dark ? .toggleOff : .toggleOn)
             onToggle()
         } label: {
             ZStack(alignment: dark ? .trailing : .leading) {

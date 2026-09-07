@@ -12,6 +12,7 @@ struct DataPrivacyScreen: View {
     @Environment(\.limen) private var colors
     @Environment(\.str) private var s
     let onBack: () -> Void
+    @State private var showLicences = false
     @State private var archiveAction: ArchiveAction?
     @State private var pendingRestore: URL?
     @State private var picking = false
@@ -21,8 +22,16 @@ struct DataPrivacyScreen: View {
     @State private var confirmation = ""
 
     var body: some View {
+        if showLicences {
+            LicencesView { showLicences = false }
+        } else {
+            page
+        }
+    }
+
+    private var page: some View {
         let controller = model.controllerIdentity
-        VStack(spacing: 0) {
+        return VStack(spacing: 0) {
             PageMast(title: s.dataAndPrivacy, controls: false, onBack: onBack)
             Spacer().frame(height: 14)
             ScrollView {
@@ -50,6 +59,12 @@ struct DataPrivacyScreen: View {
                             }
                         }
                     }
+                    Panel(label: s.licencesTitle) {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text(s.licencesBody).font(LimenType.bodyMedium).foregroundStyle(colors.ink)
+                            SmallKey(label: s.openLicences, stretch: true) { showLicences = true }
+                        }
+                    }
                     Panel(label: s.backupTitle) {
                         VStack(alignment: .leading, spacing: 10) {
                             Text(s.backupBody).font(LimenType.bodyMedium).foregroundStyle(colors.ink)
@@ -66,7 +81,9 @@ struct DataPrivacyScreen: View {
                             } else if model.archiveFailed {
                                 Text(s.archiveFailed).font(LimenType.bodySmall).foregroundStyle(colors.dangerOutline)
                             } else if let exported = model.archiveExported {
-                                Text(s.archiveSaved(exported.displayName)).font(LimenType.bodySmall).foregroundStyle(colors.seal)
+                                Text(model.archiveProtected ? s.archiveSaved(exported.displayName) : s.archiveSavedOpen(exported.displayName))
+                                    .font(LimenType.bodySmall)
+                                    .foregroundStyle(model.archiveProtected ? colors.seal : colors.warningOutline)
                             } else if let imported = model.archiveImported {
                                 Text(s.archiveRestored(imported)).font(LimenType.bodySmall).foregroundStyle(colors.seal)
                             }
@@ -94,7 +111,10 @@ struct DataPrivacyScreen: View {
             }
             Button(archiveAction == .export ? s.createBackup : s.restoreBackup) {
                 let isExport = archiveAction == .export
-                let valid = !password.isBlank && (!isExport || (password.count >= 12 && password == confirmation))
+                // A password is optional both ways: an export without one writes a plain archive,
+                // and a restore without one reads exactly that. The only thing that can be wrong
+                // here is a confirmation that does not match.
+                let valid = !isExport || password == confirmation
                 if valid {
                     if isExport {
                         model.exportArchive(password: password)
@@ -124,5 +144,41 @@ struct DataPrivacyScreen: View {
             change(&next, value)
             model.updateController(next)
         }
+    }
+}
+
+/// The third-party notice, read from the repo's NOTICE, which the app target carries as a bundle
+/// resource rather than a second copy under the sources: Apache-2.0 section 4(d) asks for it to
+/// travel with the distribution, and two hand-maintained copies of a licence notice drift apart.
+///
+/// Verbatim and unlocalized on purpose: a licence text that has been translated or reflowed is no
+/// longer the licence text. It scrolls both ways because the notice is written to a fixed column a
+/// phone is narrower than.
+///
+/// Its own screen rather than a panel: the notice is several thousand characters and the privacy
+/// page is already a scrolling column, which cannot hold a second one.
+private struct LicencesView: View {
+    @Environment(\.limen) private var colors
+    @Environment(\.str) private var s
+    let onBack: () -> Void
+
+    var body: some View {
+        let notice = Bundle.main.url(forResource: "NOTICE", withExtension: nil)
+            .flatMap { try? String(contentsOf: $0, encoding: .utf8) } ?? s.licencesMissing
+        VStack(spacing: 0) {
+            PageMast(title: s.licencesTitle, controls: false, onBack: onBack)
+            Spacer().frame(height: 14)
+            ScrollView([.vertical, .horizontal]) {
+                Text(notice)
+                    .font(LimenType.mono(11))
+                    .foregroundStyle(colors.ink)
+                    .textSelection(.enabled)
+                    .fixedSize()
+                    .padding(.bottom, 24)
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 8)
+        .background(colors.plate.ignoresSafeArea())
     }
 }

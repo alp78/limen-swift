@@ -84,7 +84,11 @@ struct ReviewStep: View {
                         ReviewLine(label: s.organisation, value: c.organisation)
                         ReviewLine(label: s.controllerContact, value: c.contactName)
                         ReviewLine(label: s.identityAddress, value: [c.street, [c.postalCode, c.city].filter { !$0.isBlank }.joined(separator: " ")].filter { !$0.isBlank }.joined(separator: ", "))
-                        ReviewLine(label: s.email, value: [c.email, c.phone].filter { !$0.isBlank }.joined(separator: " · "))
+                        // Two rows, not one joined row under the email label: a controller who gave
+                        // only a phone number was reading "Email: +41 79 ..." on the screen they
+                        // check before finalizing. ReviewLine already hides a blank value.
+                        ReviewLine(label: s.email, value: c.email)
+                        ReviewLine(label: s.phoneNumber, value: c.phone)
                     }
                 }
             }

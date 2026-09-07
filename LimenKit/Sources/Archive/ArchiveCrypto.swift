@@ -18,7 +18,13 @@ enum ArchiveCrypto {
     private static let maxPlaintextBytes: Int64 = 2 * 1024 * 1024 * 1024
 
     static func export(root: URL, password: String, to output: URL) throws {
-        guard !password.isEmpty else { throw ArchiveError.emptyPassword }
+        // No password writes the plain archive, byte for byte the form the legacy branch of
+        // `importArchive` has always read, so an unprotected backup needs no new reader and no new
+        // version. Whether to protect is the person's call; the screen says which they made.
+        if password.isEmpty {
+            try ArchiveIO.export(root: root, to: output)
+            return
+        }
         let salt = randomBytes(saltBytes)
         let iv = randomBytes(ivBytes)
         let header = magic + [version] + salt + iv

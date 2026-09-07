@@ -119,7 +119,11 @@ struct IconKey: View {
     var fillColor: Color?
     var outlineColor: Color?
     var tint: Color?
-    var tick: Tick = .key
+    // A destructive key rejects by default. Leaving this to each call site meant six of the twelve
+    // delete and clear keys felt like an ordinary press, which is the one thing .reject exists to
+    // prevent. Pass it explicitly to override, as the armed two-stage delete on the home screen
+    // does. Optional rather than defaulted, because a Swift default cannot read another property.
+    var tick: Tick?
     var stretch = false
     let onPress: () -> Void
 
@@ -127,7 +131,8 @@ struct IconKey: View {
         let resolvedFill = destructive ? colors.danger : fillColor
         let resolvedOutline = destructive ? colors.dangerOutline : outlineColor
         let resolvedTint = destructive ? colors.dangerOutline : tint
-        KeySurface(enabled: enabled, radius: 12, fillColor: resolvedFill, outlineColor: resolvedOutline, tick: tick, accessibilityLabel: label, onPress: onPress) {
+        let resolvedTick = tick ?? (destructive ? .reject : .key)
+        KeySurface(enabled: enabled, radius: 12, fillColor: resolvedFill, outlineColor: resolvedOutline, tick: resolvedTick, accessibilityLabel: label, onPress: onPress) {
             Image(systemName: glyph.symbol)
                 .font(.system(size: 20, weight: .medium))
                 .foregroundStyle(enabled ? (resolvedTint ?? colors.ink) : colors.disabledInk)
@@ -318,7 +323,8 @@ struct Toggle: View {
     let onPress: () -> Void
 
     var body: some View {
-        KeySurface(enabled: enabled, radius: 10, accessibilityLabel: label, onPress: onPress) {
+        // Pressing a switch that is on turns it off, so the weight names the state it lands in.
+        KeySurface(enabled: enabled, radius: 10, tick: on ? .toggleOff : .toggleOn, accessibilityLabel: label, onPress: onPress) {
             HStack {
                 Text(label)
                     .font(LimenType.chip)

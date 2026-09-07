@@ -18,7 +18,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent.parent
 ANDROID = Path(os.environ.get("LIMEN_ANDROID", HERE / ".." / ".." / "ANDROID" / "limen"))
-SOURCE = ANDROID / "app" / "src" / "main" / "java" / "dev" / "verso" / "limen" / "ui" / "Strings.kt"
+SOURCE = ANDROID / "app" / "src" / "main" / "java" / "dev" / "peringer" / "limen" / "ui" / "Strings.kt"
 OUT = HERE / "LimenKit" / "Sources" / "Strings" / "Str.swift"
 
 TYPE_NAMES = {"Int": "Int", "String": "String"}

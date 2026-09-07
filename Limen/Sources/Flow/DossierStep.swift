@@ -617,6 +617,7 @@ private struct CautionProviderPicker: View {
         Menu {
             ForEach(CautionProvider.allCases, id: \.self) { provider in
                 Button {
+                    Haptics.play(.key)
                     onSelect(provider)
                 } label: {
                     if provider == selected {

@@ -318,6 +318,7 @@ struct CountryDropDown<T: Identifiable>: View {
                     }
                     ForEach(visible) { option in
                         Button {
+                            Haptics.play(.key)
                             onSelect(option)
                             open = false
                         } label: {

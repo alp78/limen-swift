@@ -1,9 +1,9 @@
 import XCTest
 
 /// The walk the Android instrumentation takes: the landing, the new-session form with its three
-/// actors and two kinds, the data and privacy page with the backup dialog, then a seeded draft
-/// through inspection, objects, dossier, the canton grid, review and the signatures, with a
-/// screenshot of each written to the folder named in LIMEN_SHOTS.
+/// actors and two kinds, the data and privacy page with its licence notice and backup dialog, then
+/// a seeded draft through inspection, objects, dossier, the canton grid, review and the signatures,
+/// with a screenshot of each written to the folder named in LIMEN_SHOTS.
 ///
 /// Text inside a SwiftUI button is folded into the button's own label, so the keys and rows are
 /// found by the words their labels contain rather than as static texts.
@@ -57,11 +57,28 @@ final class SmokeTest: XCTestCase {
         XCTAssertTrue(element(app, "Responsible data controller").exists)
         shoot(app, "03-privacy")
         app.swipeUp()
+
+        // The notice reached the bundle: a build that dropped it shows the missing line instead.
+        XCTAssertTrue(app.buttons["LICENCES"].waitForExistence(timeout: 5))
+        app.buttons["LICENCES"].tap()
+        XCTAssertTrue(element(app, "Cantonal flags of Switzerland").waitForExistence(timeout: 10))
+        shoot(app, "04-licences")
+        app.buttons["BACK"].firstMatch.tap()
+        XCTAssertTrue(element(app, "Privacy information").waitForExistence(timeout: 10))
+        app.swipeUp()
+
         XCTAssertTrue(app.buttons["CREATE BACKUP"].waitForExistence(timeout: 5))
         app.buttons["CREATE BACKUP"].tap()
         XCTAssertTrue(app.alerts.firstMatch.waitForExistence(timeout: 5))
-        shoot(app, "04-backup-password")
-        app.alerts.buttons["CANCEL"].tap()
+        shoot(app, "05-backup-password")
+
+        // Both fields empty is a valid backup, and the screen has to say so: the whole point of
+        // making the password optional is that an unprotected archive announces itself.
+        app.alerts.buttons["CREATE BACKUP"].tap()
+        XCTAssertTrue(element(app, "without a password").waitForExistence(timeout: 30))
+        app.swipeUp()
+        shoot(app, "06-backup-unprotected")
+
         app.buttons["BACK"].firstMatch.tap()
         XCTAssertTrue(app.buttons["NEW SESSION"].waitForExistence(timeout: 10))
     }
@@ -69,14 +86,14 @@ final class SmokeTest: XCTestCase {
     func testTheSeededDraftWalksEveryStep() {
         let app = launch(["LIMEN_DEMO"])
         XCTAssertTrue(element(app, "INSPECTION").waitForExistence(timeout: 30))
-        shoot(app, "05-hub")
+        shoot(app, "07-hub")
 
         element(app, "INSPECTION").tap()
         XCTAssertTrue(app.buttons["Room"].waitForExistence(timeout: 10))
-        shoot(app, "06-inspection")
+        shoot(app, "08-inspection")
         app.buttons["OBJECTS"].tap()
         XCTAssertTrue(element(app, "Add something else").waitForExistence(timeout: 10))
-        shoot(app, "07-objects")
+        shoot(app, "09-objects")
         // Back retraces the route rather than jumping to the hub: one press returns to the rooms,
         // the hub is one press further out.
         app.buttons["BACK"].firstMatch.tap()
@@ -85,33 +102,33 @@ final class SmokeTest: XCTestCase {
         XCTAssertTrue(element(app, "DOSSIER").waitForExistence(timeout: 10))
         element(app, "DOSSIER").tap()
         XCTAssertTrue(element(app, "Parties").waitForExistence(timeout: 10))
-        shoot(app, "08-dossier")
+        shoot(app, "10-dossier")
         let cantonKey = app.buttons["SELECT CANTON"]
         XCTAssertTrue(cantonKey.waitForExistence(timeout: 5))
         cantonKey.tap()
         XCTAssertTrue(app.buttons["ZH · Zürich"].waitForExistence(timeout: 10))
-        shoot(app, "09-cantons")
+        shoot(app, "11-cantons")
         app.buttons["ZH · Zürich"].tap()
         XCTAssertTrue(element(app, "Required throughout the canton in the 2026 official snapshot").waitForExistence(timeout: 10))
-        shoot(app, "10-legal-overlay")
+        shoot(app, "12-legal-overlay")
         app.buttons["BACK"].firstMatch.tap()
         XCTAssertTrue(app.buttons["CLOSE THE RECORD"].waitForExistence(timeout: 10))
         app.buttons["CLOSE THE RECORD"].tap()
         XCTAssertTrue(element(app, "Object").waitForExistence(timeout: 10))
-        shoot(app, "11-review")
+        shoot(app, "13-review")
         app.swipeUp()
         XCTAssertTrue(app.buttons["SIGNATURES"].waitForExistence(timeout: 5))
         app.buttons["SIGNATURES"].tap()
         XCTAssertTrue(element(app, "Unilateral record").waitForExistence(timeout: 10))
-        shoot(app, "12-sign")
+        shoot(app, "14-sign")
         app.buttons["SIGN"].firstMatch.tap()
         XCTAssertTrue(element(app, "Signature drawing area").waitForExistence(timeout: 10))
         let pad = element(app, "Signature drawing area")
         pad.coordinate(withNormalizedOffset: CGVector(dx: 0.2, dy: 0.5)).press(forDuration: 0.1, thenDragTo: pad.coordinate(withNormalizedOffset: CGVector(dx: 0.8, dy: 0.4)))
-        shoot(app, "13-ink")
+        shoot(app, "15-ink")
         app.buttons["KEEP"].tap()
         XCTAssertTrue(element(app, "Signed").waitForExistence(timeout: 10))
-        shoot(app, "14-signed")
+        shoot(app, "16-signed")
         app.buttons["BACK"].firstMatch.tap()
         app.buttons["BACK"].firstMatch.tap()
         app.buttons["BACK"].firstMatch.tap()

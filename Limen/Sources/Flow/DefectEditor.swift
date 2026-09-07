@@ -156,6 +156,7 @@ struct WearAssessment: View {
                                 VStack(spacing: 0) {
                                     ForEach(Lifespans.table, id: \.key) { row in
                                         Button {
+                                            Haptics.play(.key)
                                             picked = row.key
                                             lifespan = String(Int(row.years))
                                             showTable = false

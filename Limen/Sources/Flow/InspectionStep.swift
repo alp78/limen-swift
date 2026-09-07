@@ -234,9 +234,15 @@ private struct ItemPicker: View {
         VStack(alignment: .leading, spacing: 8) {
             Menu {
                 ForEach(Templates.itemsFor(kind), id: \.self) { item in
-                    Button(s.item(item)) { onPick(item, "") }
+                    Button(s.item(item)) {
+                        Haptics.play(.key)
+                        onPick(item, "")
+                    }
                 }
-                Button(s.otherItem) { namingOther = true }
+                Button(s.otherItem) {
+                    Haptics.play(.key)
+                    namingOther = true
+                }
             } label: {
                 HStack(spacing: 8) {
                     Image(systemName: ButtonGlyph.add.symbol).font(.system(size: 18, weight: .medium))

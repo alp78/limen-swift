@@ -17,8 +17,11 @@ let baseSettings: SettingsDictionary = [
     // Android tinted the caret, the selection handles and every system widget from the
     // navy action colour; on iOS that is the accent colour, so it carries the same values.
     "ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME": "AccentColor",
-    "MARKETING_VERSION": "1.1.0",
-    "CURRENT_PROJECT_VERSION": "2",
+    // 1.1.1 is the version the published privacy page states its permission claims were checked
+    // against, so the app carries that number rather than contradicting a page that is already
+    // live. The Android build is on the same pair.
+    "MARKETING_VERSION": "1.1.1",
+    "CURRENT_PROJECT_VERSION": "3",
     // The owner's own Apple Account (aperinger@proton.me), which is the one that will hold the
     // paid membership: an Individual enrollment needs no company, and Apple publishes the
     // enrolled legal name rather than any trade name. Pinning the team keeps a build from being
@@ -79,7 +82,11 @@ let project = Project(
                 "ITSAppUsesNonExemptEncryption": false,
             ]),
             sources: ["Limen/Sources/**"],
-            resources: ["Limen/Resources/**"],
+            // The third-party notice ships INSIDE the app, referenced at the repository root
+            // rather than copied under Resources: Apache-2.0 section 4(d) asks for it to travel
+            // with the distribution, and two hand-maintained copies of a licence notice drift
+            // apart.
+            resources: ["Limen/Resources/**", "NOTICE"],
             dependencies: [.target(name: "LimenKit")],
             settings: .settings(base: baseSettings)
         ),
