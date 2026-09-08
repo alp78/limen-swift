@@ -14,12 +14,18 @@ private struct InkStroke {
     var points: [CGPoint]
 }
 
-private let inkWidth: CGFloat = 9
+/// In PIXELS, as Android's INK_WIDTH is: Compose's Canvas and its bitmap both count pixels, so a 9
+/// there is a pen line about 3.5 dp wide. Drawn in points here it was a marker three times as wide
+/// on a 3x screen, and rendered onto a 1x bitmap it reached the paper at a third of the resolution.
+/// The pad divides by the display scale on screen and renders the PNG at that scale, so both the
+/// line and the bitmap are Android's.
+private let inkWidthPixels: CGFloat = 9
 private let inkColor = Color(hex: 0x15181D)
 
 struct SignPadOverlay: View {
     @Environment(\.limen) private var colors
     @Environment(\.str) private var s
+    @Environment(\.displayScale) private var displayScale
     let title: String
     let meaning: String
     let onKeep: (Data) -> Void
@@ -46,8 +52,9 @@ struct SignPadOverlay: View {
                         guide.move(to: CGPoint(x: canvasSize.width * 0.07, y: canvasSize.height * 0.72))
                         guide.addLine(to: CGPoint(x: canvasSize.width * 0.93, y: canvasSize.height * 0.72))
                         context.stroke(guide, with: .color(Color(hex: 0xD9D9D9)), lineWidth: 2)
-                        for stroke in strokes { context.stroke(inkPath(stroke.points), with: .color(inkColor), style: StrokeStyle(lineWidth: inkWidth, lineCap: .round, lineJoin: .round)) }
-                        if !live.isEmpty { context.stroke(inkPath(live), with: .color(inkColor), style: StrokeStyle(lineWidth: inkWidth, lineCap: .round, lineJoin: .round)) }
+                        let ink = StrokeStyle(lineWidth: inkWidthPixels / displayScale, lineCap: .round, lineJoin: .round)
+                        for stroke in strokes { context.stroke(inkPath(stroke.points), with: .color(inkColor), style: ink) }
+                        if !live.isEmpty { context.stroke(inkPath(live), with: .color(inkColor), style: ink) }
                     }
                     .background(Color.white)
                     .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
@@ -55,7 +62,13 @@ struct SignPadOverlay: View {
                     .gesture(
                         DragGesture(minimumDistance: 0, coordinateSpace: .local)
                             .onChanged { value in
-                                if live.isEmpty { live = [value.startLocation] }
+                                // A drag the system cancels (a call, a banner, the cover moving)
+                                // never reaches onEnded, and SwiftUI has no onCancelled to clear
+                                // `live` the way Android's onDragCancel does. A new drag has a new
+                                // start point, so a start that is not the one `live` began with
+                                // means the last stroke was cut short: it is dropped, as Android
+                                // drops it, rather than joined to this one by a straight line.
+                                if live.isEmpty || live.first != value.startLocation { live = [value.startLocation] }
                                 live.append(value.location)
                             }
                             .onEnded { _ in
@@ -81,7 +94,7 @@ struct SignPadOverlay: View {
                 // Keeping the ink is one of the two moments that end something, so it is felt
                 // differently from the keys that only move you along.
                 IconKey(glyph: .confirm, label: s.saveInk, enabled: !strokes.isEmpty && padSize.width > 0, fillColor: colors.action, outlineColor: colors.action, tint: colors.onInk, tick: .confirm, stretch: true) {
-                    if let png = renderStrokes(strokes, size: padSize) { onKeep(png) }
+                    if let png = renderStrokes(strokes, size: padSize, scale: displayScale) { onKeep(png) }
                 }
             }
         }
@@ -112,15 +125,16 @@ private func inkPath(_ points: [CGPoint]) -> Path {
 }
 
 /// Replays the ink onto a transparent bitmap and trims it to what was actually written.
-private func renderStrokes(_ strokes: [InkStroke], size: CGSize) -> Data? {
+private func renderStrokes(_ strokes: [InkStroke], size: CGSize, scale: CGFloat) -> Data? {
     guard !strokes.isEmpty, size.width > 0, size.height > 0 else { return nil }
     let format = UIGraphicsImageRendererFormat()
-    format.scale = 1
+    // The pad's own pixel grid, as Android's createBitmap(size.width, size.height) is.
+    format.scale = scale
     format.opaque = false
     let image = UIGraphicsImageRenderer(size: size, format: format).image { context in
         let cg = context.cgContext
         cg.setStrokeColor(UIColor(red: 0x15 / 255, green: 0x18 / 255, blue: 0x1D / 255, alpha: 1).cgColor)
-        cg.setLineWidth(inkWidth)
+        cg.setLineWidth(inkWidthPixels / scale)
         cg.setLineCap(.round)
         cg.setLineJoin(.round)
         for stroke in strokes {
@@ -137,8 +151,15 @@ private func trim(_ image: CGImage) -> CGImage? {
     let width = image.width
     let height = image.height
     var pixels = [UInt8](repeating: 0, count: width * height)
-    guard let context = CGContext(data: &pixels, width: width, height: height, bitsPerComponent: 8, bytesPerRow: width, space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.alphaOnly.rawValue) else { return nil }
-    context.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))
+    // The context keeps the pointer and writes through it in draw(), so the array's storage has
+    // to be pinned for both calls. `&pixels` handed to the initialiser alone is only promised to
+    // hold for that one call; the draw that followed wrote into memory Swift no longer vouched for.
+    let drawn = pixels.withUnsafeMutableBytes { buffer -> Bool in
+        guard let context = CGContext(data: buffer.baseAddress, width: width, height: height, bitsPerComponent: 8, bytesPerRow: width, space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.alphaOnly.rawValue) else { return false }
+        context.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))
+        return true
+    }
+    guard drawn else { return nil }
     var minX = width, minY = height, maxX = -1, maxY = -1
     for y in 0..<height {
         for x in 0..<width where pixels[y * width + x] != 0 {

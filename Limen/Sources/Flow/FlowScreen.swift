@@ -9,10 +9,15 @@ struct FlowScreen: View {
     @Environment(LimenModel.self) private var model
     @Environment(\.limen) private var colors
     @Environment(\.str) private var s
+    @State private var previousStep: FlowStep = .hub
+    @State private var flowWidth: CGFloat = 0
 
     var body: some View {
         if let p = model.working {
             let locked = p.isFinalized()
+            let steps = FlowStep.allCases
+            let forward = (steps.firstIndex(of: model.flowStep) ?? 0) >= (steps.firstIndex(of: previousStep) ?? 0)
+            let direction: CGFloat = forward ? 1 : -1
             ZStack(alignment: .bottom) {
                 VStack(spacing: 0) {
                     FlowMast(p: p)
@@ -34,12 +39,23 @@ struct FlowScreen: View {
                         }
                     }
                     .id(model.flowStep)
-                    .transition(.opacity)
+                    // Android's AnimatedContent slides the arriving step a tenth of the width in from
+                    // the side it lies on while it fades in. The departing step only fades here: SwiftUI
+                    // takes a departing view's transition from the render before the change, so a slide
+                    // on it would run the wrong way on every reversal, and a custom modifier transition
+                    // that read the direction late never let the screen settle for the UI tests.
+                    .transition(.asymmetric(
+                        insertion: .offset(x: direction * flowWidth / 10).combined(with: .opacity),
+                        removal: .opacity))
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
+                .background(GeometryReader { geometry in
+                    Color.clear.onChange(of: geometry.size.width, initial: true) { _, width in flowWidth = width }
+                })
                 .padding(.horizontal, 20)
                 .padding(.vertical, 8)
-                .animation(.easeInOut(duration: 0.16), value: model.flowStep)
+                .animation(.easeInOut(duration: 0.18), value: model.flowStep)
+                .onChange(of: model.flowStep) { _, now in previousStep = now }
                 if let defectId = model.editingDefectId {
                     DefectEditor(p: p, defectId: defectId)
                         .transition(.opacity)
@@ -173,10 +189,12 @@ struct HubStep: View {
     @Environment(\.str) private var s
     @Environment(\.recordLocked) private var locked
     let p: HandoverProtocol
+    // Recomputed when the record changes, as Android's remember(p) does, not on every body pass:
+    // the check stats every photograph and every signature file on disk.
+    @State private var issues: [FinalizationIssue] = []
 
     var body: some View {
         let defects = p.defects.count
-        let issues = model.completionIssues(p)
         let objectIssues = issues.filter { [.address, .place, .canton, .handoverDate, .handoverTime, .legalOverlay].contains($0) }
         ScrollView {
             VStack(spacing: 10) {
@@ -214,6 +232,7 @@ struct HubStep: View {
                 Spacer().frame(height: 12)
             }
         }
+        .onChange(of: p, initial: true) { _, now in issues = model.completionIssues(now) }
     }
 }
 

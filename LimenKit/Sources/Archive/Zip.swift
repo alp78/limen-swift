@@ -25,6 +25,9 @@ enum Zip {
         case unsupported(String)
         case badCRC(String)
         case inflateFailed(String)
+        /// The classic ZIP fields are 32 bits for sizes and offsets and 16 for counts. java.util.zip
+        /// switches to ZIP64 past them; this writer does not, and refuses rather than truncating.
+        case zip64Required
     }
 
     // MARK: Writing
@@ -43,11 +46,16 @@ enum Zip {
         /// reader accepts either way. The entry's time is the DOS epoch, as Android's `time = 0`.
         func put(_ name: String, bytes: Data) throws {
             let crc = CRC32.checksum(bytes)
-            let deflated = Deflate.compress(bytes)
+            // A JPEG or a PNG is already deflated inside; running DEFLATE over it again gained
+            // nothing and was thrown away every time, and photographs are nearly all of a backup.
+            let alreadyCompressed = name.hasSuffix(".jpg") || name.hasSuffix(".jpeg") || name.hasSuffix(".png")
+            let deflated = alreadyCompressed ? bytes : Deflate.compress(bytes)
             let useDeflate = deflated.count < bytes.count
             let payload = useDeflate ? deflated : bytes
             let method: UInt16 = useDeflate ? 8 : 0
             let nameBytes = Data(name.utf8)
+            guard payload.count <= Int(UInt32.max), bytes.count <= Int(UInt32.max), nameBytes.count <= Int(UInt16.max),
+                  offset <= Int64(UInt32.max) else { throw ZipError.zip64Required }
             var header = Data()
             header.appendUInt32(0x0403_4B50)
             header.appendUInt16(20)
@@ -95,6 +103,7 @@ enum Zip {
                 central.appendUInt32(UInt32(entry.localHeaderOffset))
                 central.append(nameBytes)
             }
+            guard entries.count <= Int(UInt16.max), central.count <= Int(UInt32.max), start <= Int64(UInt32.max) else { throw ZipError.zip64Required }
             var end = Data()
             end.appendUInt32(0x0605_4B50)
             end.appendUInt16(0)
@@ -187,14 +196,17 @@ enum Zip {
 /// header, no trailer, exactly what `java.util.zip.Inflater(nowrap = true)` expects.
 enum Deflate {
     static func compress(_ input: Data) -> Data {
-        run(input, operation: COMPRESSION_STREAM_ENCODE, capacity: max(input.count + 1024, 4096)) ?? input
+        run(input, operation: COMPRESSION_STREAM_ENCODE, limit: nil) ?? input
     }
 
+    /// Stops at the size the entry declared. The reader rejects any other size afterwards anyway,
+    /// but by then a lying entry had already inflated in full: the import metered the declared
+    /// sizes where Android meters the bytes as they come out, so one small entry could fill memory.
     static func decompress(_ input: Data, expected: Int) -> Data? {
-        run(input, operation: COMPRESSION_STREAM_DECODE, capacity: max(expected, 4096))
+        run(input, operation: COMPRESSION_STREAM_DECODE, limit: expected)
     }
 
-    private static func run(_ input: Data, operation: compression_stream_operation, capacity: Int) -> Data? {
+    private static func run(_ input: Data, operation: compression_stream_operation, limit: Int?) -> Data? {
         var stream = compression_stream(dst_ptr: UnsafeMutablePointer<UInt8>.allocate(capacity: 1), dst_size: 0, src_ptr: UnsafePointer<UInt8>(bitPattern: 1) ?? UnsafePointer(UnsafeMutablePointer<UInt8>.allocate(capacity: 1)), src_size: 0, state: nil)
         guard compression_stream_init(&stream, operation, COMPRESSION_ZLIB) == COMPRESSION_STATUS_OK else { return nil }
         defer { compression_stream_destroy(&stream) }
@@ -214,6 +226,7 @@ enum Deflate {
                 stream.dst_size = chunk
                 let status = compression_stream_process(&stream, Int32(COMPRESSION_STREAM_FINALIZE.rawValue))
                 output.append(buffer, count: chunk - stream.dst_size)
+                if let limit, output.count > limit { return nil }
                 switch status {
                 case COMPRESSION_STATUS_OK: continue
                 case COMPRESSION_STATUS_END: return output

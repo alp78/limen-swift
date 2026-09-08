@@ -15,6 +15,23 @@ import Testing
         #expect(InternationalPhone.isValid("0041 76 264 31 24", regionCode: "CH"))
     }
 
+    /// libphonenumber's rule, which Android gets from the library itself: a number typed with its own
+    /// country code but no plus sign is the international form, not a national number too long to be one.
+    @Test func acceptsTheOwnCountryCodeWithoutAPlusSign() {
+        #expect(InternationalPhone.isValid("41 76 264 31 24", regionCode: "CH"))
+        #expect(InternationalPhone.format("41 76 264 31 24", regionCode: "CH") == "+41762643124")
+        #expect(InternationalPhone.format("076 264 31 24", regionCode: "CH") == "+41762643124")
+    }
+
+    /// The 38 regions that share a calling code keep no formats of their own in the metadata; the main
+    /// country's apply. Canada's example was coming back as bare digits.
+    @Test func aRegionSharingItsCallingCodeFormatsWithTheMainCountrysRules() {
+        let example = InternationalPhone.example("CA")
+        #expect(!example.isEmpty)
+        #expect(example.contains { !$0.isNumber }, "unformatted: \(example)")
+        #expect(InternationalPhone.example("US").contains { !$0.isNumber })
+    }
+
     @Test func rejectsAValidNumberWhenItDoesNotMatchTheSelectedCountry() {
         #expect(!InternationalPhone.isValid("020 7031 3000", regionCode: "CH"))
         #expect(!InternationalPhone.isValid("020 7031 300", regionCode: "GB"))

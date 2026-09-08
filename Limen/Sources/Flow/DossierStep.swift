@@ -16,6 +16,9 @@ struct DossierStep: View {
     let p: HandoverProtocol
     @State private var removing: DossierCard?
     @State private var confirmRemove = false
+    @State private var frames: [String: CGRect] = [:]
+    @State private var headerHeight: CGFloat = 0
+    @State private var viewport: CGFloat = 0
 
     private struct Section: Identifiable {
         let id: String
@@ -30,6 +33,9 @@ struct DossierStep: View {
             Section(id: "parties", label: s.parties, complete: partiesSectionComplete(p)),
         ] + cards.map { Section(id: "card-\($0.rawValue)", label: s.dossierCard($0), complete: dossierSectionComplete(p, $0)) }
         let absent = DossierCard.allCases.filter { !cards.contains($0) }
+        // Android's activeSection is firstVisibleItemIndex - 1: the first section with any part
+        // still inside the list. Lit in the rail, so the rail says which section is on screen.
+        let active = sections.firstIndex { (frames[$0.id]?.maxY ?? -1) > 0 } ?? 0
         ScrollViewReader { reader in
             ScrollView {
                 LazyVStack(spacing: 10, pinnedViews: .sectionHeaders) {
@@ -40,7 +46,8 @@ struct DossierStep: View {
                             HandoverDeadline(p: p)
                         }
                         .id("object")
-                        PartiesCard(p: p).id("parties")
+                        .reportFrame("object")
+                        PartiesCard(p: p).id("parties").reportFrame("parties")
                         ForEach(cards, id: \.self) { card in
                             Group {
                                 switch card {
@@ -52,6 +59,7 @@ struct DossierStep: View {
                                 }
                             }
                             .id("card-\(card.rawValue)")
+                            .reportFrame("card-\(card.rawValue)")
                         }
                         if !absent.isEmpty, !locked {
                             Panel(label: s.addComponent) {
@@ -67,18 +75,30 @@ struct DossierStep: View {
                     } header: {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 6) {
-                                ForEach(sections) { section in
-                                    Chip(label: "\(section.complete ? "✓" : "○") \(section.label)") {
-                                        withAnimation { reader.scrollTo(section.id, anchor: .top) }
+                                ForEach(Array(sections.enumerated()), id: \.element.id) { index, section in
+                                    Chip(label: "\(section.complete ? "✓" : "○") \(section.label)", active: index == active, selectionState: index == active) {
+                                        // Anchored below the pinned rail, not at the top: at .top
+                                        // the section arrived under the rail. Android scrolls to
+                                        // the item minus HEADER_OVERLAP_PX for the same reason.
+                                        let anchor = UnitPoint(x: 0, y: viewport > 0 ? min((headerHeight + 6) / viewport, 0.5) : 0)
+                                        withAnimation { reader.scrollTo(section.id, anchor: anchor) }
                                     }
                                 }
                             }
                             .padding(.vertical, 6)
                         }
                         .background(colors.plate)
+                        .background(GeometryReader { geometry in
+                            Color.clear.onChange(of: geometry.size.height, initial: true) { _, height in headerHeight = height }
+                        })
                     }
                 }
             }
+            .coordinateSpace(name: "dossier")
+            .onPreferenceChange(SectionFrames.self) { frames = $0 }
+            .background(GeometryReader { geometry in
+                Color.clear.onChange(of: geometry.size.height, initial: true) { _, height in viewport = height }
+            })
             .scrollDismissesKeyboard(.interactively)
         }
         .confirmDialog($confirmRemove, body: s.removeComponentBody) {
@@ -706,5 +726,21 @@ struct LegalOverlayPanel: View {
                 }
             }
         }
+    }
+}
+
+/// Where each dossier section sits inside the scroll view, so the rail can light the one on screen.
+private struct SectionFrames: PreferenceKey {
+    static var defaultValue: [String: CGRect] { [:] }
+    static func reduce(value: inout [String: CGRect], nextValue: () -> [String: CGRect]) {
+        value.merge(nextValue()) { _, new in new }
+    }
+}
+
+private extension View {
+    func reportFrame(_ id: String) -> some View {
+        background(GeometryReader { geometry in
+            Color.clear.preference(key: SectionFrames.self, value: [id: geometry.frame(in: .named("dossier"))])
+        })
     }
 }

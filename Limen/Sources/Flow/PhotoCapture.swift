@@ -1,7 +1,9 @@
+import ImageIO
 import LimenKit
 import PhotosUI
 import SwiftUI
 import UIKit
+import UniformTypeIdentifiers
 
 /// The two ways a photograph reaches a record, held together so a defect and a supplied object
 /// take one the same way: the system camera, and the system picker.
@@ -118,12 +120,30 @@ struct CameraCapture: UIViewControllerRepresentable {
             for old in (try? FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil)) ?? [] {
                 try? FileManager.default.removeItem(at: old)
             }
-            // length, not existence: a camera that reports success without a picture, or a full
-            // disk, would leave a zero-byte file that the evidence hash then refused outright.
-            guard let image = info[.originalImage] as? UIImage, let data = image.jpegData(compressionQuality: 0.92), !data.isEmpty else {
+            // Written through ImageIO with the capture's own tags rather than re-encoded from the
+            // UIImage: jpegData() emits a bare JPEG, and the EXIF the camera recorded, the moment of
+            // capture above all, was lost from an evidence photograph. Android keeps it because the
+            // camera app writes the EXTRA_OUTPUT file itself; here the picker hands the tags over
+            // beside the pixels, and the orientation tag among them describes this very bitmap.
+            guard let image = info[.originalImage] as? UIImage, let cgImage = image.cgImage else {
                 onResult(nil)
                 return
             }
+            var properties = (info[.mediaMetadata] as? [String: Any]) ?? [:]
+            properties[kCGImageDestinationLossyCompressionQuality as String] = 0.92
+            let encoded = NSMutableData()
+            guard let destination = CGImageDestinationCreateWithData(encoded, UTType.jpeg.identifier as CFString, 1, nil) else {
+                onResult(nil)
+                return
+            }
+            CGImageDestinationAddImage(destination, cgImage, properties as CFDictionary)
+            // length, not existence: a camera that reports success without a picture, or a full
+            // disk, would leave a zero-byte file that the evidence hash then refused outright.
+            guard CGImageDestinationFinalize(destination), encoded.length > 0 else {
+                onResult(nil)
+                return
+            }
+            let data = encoded as Data
             let slot = dir.appendingPathComponent("cap\(Int64(Date().timeIntervalSince1970 * 1000)).jpg")
             do {
                 try data.write(to: slot)

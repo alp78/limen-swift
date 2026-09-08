@@ -263,7 +263,11 @@ struct FlowRow: Layout {
         var rowHeight: CGFloat = 0
         var maxX: CGFloat = 0
         for subview in subviews {
-            let size = subview.sizeThatFits(.unspecified)
+            var size = subview.sizeThatFits(.unspecified)
+            if width != .infinity, size.width > width {
+                size = subview.sizeThatFits(ProposedViewSize(width: width, height: nil))
+                size.width = min(size.width, width)
+            }
             if x > 0, x + size.width > width {
                 x = 0
                 y += rowHeight + spacing
@@ -281,7 +285,14 @@ struct FlowRow: Layout {
         var y = bounds.minY
         var rowHeight: CGFloat = 0
         for subview in subviews {
-            let size = subview.sizeThatFits(.unspecified)
+            // Never wider than the row. Compose's FlowRow hands each child the row's width as its
+            // ceiling, so a long chip ellipsises inside it; placed at its ideal width here, the same
+            // chip ran past the panel's edge and its minimumScaleFactor never had a reason to act.
+            var size = subview.sizeThatFits(.unspecified)
+            if size.width > bounds.width {
+                size = subview.sizeThatFits(ProposedViewSize(width: bounds.width, height: nil))
+                size.width = min(size.width, bounds.width)
+            }
             if x > bounds.minX, x + size.width > bounds.maxX {
                 x = bounds.minX
                 y += rowHeight + spacing

@@ -190,9 +190,11 @@ struct SignStep: View {
     @Environment(\.recordLocked) private var locked
     let p: HandoverProtocol
     @State private var padTarget: Role?
+    // Recomputed when the record changes, as Android's remember(p) does, not on every body pass:
+    // the check stats every photograph and every signature file on disk.
+    @State private var issues: [FinalizationIssue] = []
 
     var body: some View {
-        let issues = model.completionIssues(p)
         let canExport = p.isFinalized() || (issues.isEmpty && !model.finalizing)
         ScrollView {
             VStack(spacing: 10) {
@@ -259,6 +261,7 @@ struct SignStep: View {
             }
         }
         .scrollDismissesKeyboard(.interactively)
+        .onChange(of: p, initial: true) { _, now in issues = model.completionIssues(now) }
         .fullScreenCover(item: $padTarget) { role in
             SignPadOverlay(title: "\(s.signRecordTitle) · \(s.role(role))", meaning: s.tipRecord().lead, onKeep: { png in
                 model.keepSignature(role, plane: .record, png: png)
@@ -375,8 +378,15 @@ struct ExportStep: View {
                                     Text(file.displayName).font(LimenType.titleMedium).foregroundStyle(colors.ink)
                                     Text("\(s.exportedTo) Limen · \(max(file.bytes / 1024, 1)) KB").font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
                                     HStack(spacing: 8) {
-                                        IconKey(glyph: .open, label: s.open, stretch: true) { previewing = file }
-                                        IconKey(glyph: .share, label: s.share, stretch: true) { sharing = file }
+                                        // Documents is in Files, so the PDF can be gone by the time
+                                        // these are pressed. Android's runCatching around the intent
+                                        // toasts the failure; a PDFKit view of a missing file is blank.
+                                        IconKey(glyph: .open, label: s.open, stretch: true) {
+                                            if FileManager.default.fileExists(atPath: file.url.path) { previewing = file } else { model.show(s.openFileFailed) }
+                                        }
+                                        IconKey(glyph: .share, label: s.share, stretch: true) {
+                                            if FileManager.default.fileExists(atPath: file.url.path) { sharing = file } else { model.show(s.shareFileFailed) }
+                                        }
                                     }
                                 }
                             }

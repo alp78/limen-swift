@@ -41,6 +41,9 @@ struct Field: View {
                     .lineLimit(singleLine ? 1...1 : 1...6)
                     .focused($focused)
                     .tint(colors.actionOutline)
+                    // The container carries the label, but VoiceOver steps into the field itself
+                    // and read only the placeholder: the name has to be on the element it lands on.
+                    .accessibilityLabel(label)
             }
         }
         .padding(.horizontal, 12)
@@ -77,6 +80,24 @@ struct DateField: View {
     @State private var focused = false
     @State private var picked = Date()
 
+    /// The instant that renders as this day in the picker.
+    ///
+    /// Android's Material picker both draws and returns UTC milliseconds, so the Kotlin seeds and
+    /// reads in UTC. SwiftUI's DatePicker draws in the DEVICE zone, so carrying that convention
+    /// across put the two ends in different calendars: seeding UTC midnight highlighted the day
+    /// before on any phone set west of UTC, and reading the choice back through a UTC calendar
+    /// then stored the day after the one the person tapped. Both ends use the device calendar now,
+    /// as TimeField already did, and midday rather than midnight because a few zones have no
+    /// midnight on the day they enter summer time.
+    private static func middayInDeviceZone(_ day: LocalDate) -> Date? {
+        var parts = DateComponents()
+        parts.year = day.year
+        parts.month = day.month
+        parts.day = day.day
+        parts.hour = 12
+        return Calendar.current.date(from: parts)
+    }
+
     var body: some View {
         let digits = text.filter(\.isNumber).count
         // A date is wrong when it is complete and impossible, and equally wrong when the field
@@ -96,7 +117,7 @@ struct DateField: View {
             }
             if !locked {
                 IconKey(glyph: .calendar, label: s.pickDate) {
-                    picked = SwissDate.parse(stored).map { Date(timeIntervalSince1970: TimeInterval($0.epochDay) * 86_400) } ?? Date()
+                    picked = SwissDate.parse(stored).flatMap(Self.middayInDeviceZone) ?? Date()
                     picking = true
                 }
             }
@@ -113,9 +134,7 @@ struct DateField: View {
                 HStack(spacing: 8) {
                     SmallKey(label: s.cancel, stretch: true) { picking = false }
                     SmallKey(label: s.done, stretch: true) {
-                        var utc = Calendar(identifier: .gregorian)
-                        utc.timeZone = TimeZone(identifier: "UTC") ?? .current
-                        let parts = utc.dateComponents([.year, .month, .day], from: picked)
+                        let parts = Calendar.current.dateComponents([.year, .month, .day], from: picked)
                         if let day = LocalDate.of(parts.year ?? 1970, parts.month ?? 1, parts.day ?? 1) { onChange(day.isoString) }
                         picking = false
                     }

@@ -772,7 +772,10 @@ final class LimenModel {
     }
 
     static func resetForTests(prefs: UserDefaults, root: URL) {
-        for key in [keyDark, keyLang, keyOpen, keyStep, keyRoom, keyDefect, keyRole, keyName, keyCompany] { prefs.removeObject(forKey: key) }
+        for key in [keyDark, keyLang, keyOpen, keyStep, keyRoom, keyDefect, keyRole, keyName, keyCompany,
+                    keyControllerOrganisation, keyControllerContact, keyControllerStreet, keyControllerPostal, keyControllerCity, keyControllerEmail, keyControllerPhone] {
+            prefs.removeObject(forKey: key)
+        }
         for item in (try? FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil)) ?? [] {
             try? FileManager.default.removeItem(at: item)
         }

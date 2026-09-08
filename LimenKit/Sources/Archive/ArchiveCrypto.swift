@@ -25,13 +25,19 @@ enum ArchiveCrypto {
             try ArchiveIO.export(root: root, to: output)
             return
         }
-        let salt = randomBytes(saltBytes)
-        let iv = randomBytes(ivBytes)
+        let salt = try randomBytes(saltBytes)
+        let iv = try randomBytes(ivBytes)
         let header = magic + [version] + salt + iv
         let key = try derive(password: password, salt: salt)
-        // The ZIP is built in a scratch file beside the output and encrypted from it in chunks:
-        // a whole backup never sits in memory, and the scratch file is removed whatever happens.
-        let plain = output.deletingLastPathComponent().appendingPathComponent(".limen-export-\(UUID().uuidString).zip")
+        // The ZIP is built in a scratch file and encrypted from it in chunks, so a whole backup
+        // never sits in memory, and the scratch file is removed whatever happens.
+        //
+        // In the CACHE, never beside the output. Android hands the ZIP writer a CipherOutputStream
+        // and no plaintext ever reaches disk; here it must, and `output` is in Documents, which
+        // `UIFileSharingEnabled` shows in Files. A plaintext archive of every record, photograph
+        // and signature staged there is readable for as long as the export runs, and a kill before
+        // the defer leaves it readable for good.
+        let plain = AppFiles.scratch.appendingPathComponent("limen-export-\(UUID().uuidString).zip")
         defer { try? FileManager.default.removeItem(at: plain) }
         try ArchiveIO.export(root: root, to: plain)
         FileManager.default.createFile(atPath: output.path, contents: nil)
@@ -113,9 +119,11 @@ enum ArchiveCrypto {
         return key
     }
 
-    private static func randomBytes(_ count: Int) -> Data {
+    private static func randomBytes(_ count: Int) throws -> Data {
         var bytes = [UInt8](repeating: 0, count: count)
-        _ = SecRandomCopyBytes(kSecRandomDefault, count, &bytes)
+        // Checked, not assumed. A generator that failed silently would have left the salt and the
+        // IV all zero, and an all-zero IV under a reused key is the one thing GCM cannot survive.
+        guard SecRandomCopyBytes(kSecRandomDefault, count, &bytes) == errSecSuccess else { throw ArchiveError.randomUnavailable }
         return Data(bytes)
     }
 }
@@ -128,7 +136,12 @@ enum ArchiveCrypto {
 /// here for the tag. `ArchiveCryptoTests` checks it against CryptoKit's own implementation.
 final class AESGCMStream {
     private var cryptor: CCCryptorRef?
-    private let hashKey: (UInt64, UInt64)
+    // Shoup's tables: the hash subkey multiplied by every byte value, and the reduction for every
+    // byte an 8 bit shift carries past x^127. Sixteen lookups per block where the textbook
+    // shift-and-add took 128 rounds, which at about a megabyte a second in a debug build made an
+    // encrypted backup of a phone's photographs a matter of hours.
+    private let multiples: [(UInt64, UInt64)]
+    private let reductions: [UInt64]
     private let encryptedJ0: [UInt8]
     private var ghash: (UInt64, UInt64) = (0, 0)
     private var aadLength: UInt64 = 0
@@ -138,7 +151,8 @@ final class AESGCMStream {
     init(key: Data, iv: Data, aad: Data) throws {
         precondition(iv.count == 12, "GCM here uses a 96 bit IV, the only length the archive writes")
         let keyBytes = [UInt8](key)
-        hashKey = Self.block(Self.aesBlock(keyBytes, [UInt8](repeating: 0, count: 16)))
+        let hashKey = Self.block(Self.aesBlock(keyBytes, [UInt8](repeating: 0, count: 16)))
+        (multiples, reductions) = Self.tables(for: hashKey)
         var j0 = [UInt8](iv)
         j0 += [0, 0, 0, 1]
         encryptedJ0 = Self.aesBlock(keyBytes, j0)
@@ -152,9 +166,13 @@ final class AESGCMStream {
         }
         guard status == kCCSuccess, let ref else { throw ArchiveError.wrongPassword }
         cryptor = ref
-        absorb([UInt8](aad))
+        absorb(aad)
         aadLength = UInt64(aad.count)
-        pending = []
+        // GCM pads the associated data to a block boundary and hashes that final block; it does
+        // not drop the remainder. Clearing `pending` here instead threw the header's last 6 bytes
+        // away, because the envelope's 38 byte header is two blocks and a remainder, and the tag
+        // stopped being the tag Java computes over the same header.
+        flushPending()
     }
 
     deinit {
@@ -163,7 +181,7 @@ final class AESGCMStream {
 
     func encrypt(_ plain: Data) throws -> Data {
         let cipher = try keystream(plain)
-        absorb([UInt8](cipher))
+        absorb(cipher)
         textLength += UInt64(cipher.count)
         return cipher
     }
@@ -173,7 +191,7 @@ final class AESGCMStream {
     }
 
     func decrypt(_ cipher: Data) throws -> Data {
-        absorb([UInt8](cipher))
+        absorb(cipher)
         textLength += UInt64(cipher.count)
         return try keystream(cipher)
     }
@@ -213,15 +231,32 @@ final class AESGCMStream {
     }
 
     // GHASH takes whole blocks; each of the associated data and the text is padded to a block
-    // boundary on its own, so the leftover of one is flushed before the other starts.
-    private func absorb(_ bytes: [UInt8]) {
-        pending += bytes
-        var index = 0
-        while pending.count - index >= 16 {
-            mix(Array(pending[index..<index + 16]))
-            index += 16
+    // boundary on its own, so the leftover of one is flushed before the other starts. Whole blocks
+    // are read straight out of the buffer: building a 16 byte array per block, and copying every
+    // chunk into `pending` first, cost more than the multiply once the multiply had its tables.
+    private func absorb(_ bytes: Data) {
+        bytes.withUnsafeBytes { raw in
+            var i = 0
+            if !pending.isEmpty {
+                let take = min(16 - pending.count, raw.count)
+                pending.append(contentsOf: raw[0..<take])
+                i = take
+                guard pending.count == 16 else { return }
+                mix(pending)
+                pending.removeAll(keepingCapacity: true)
+            }
+            while raw.count - i >= 16 {
+                var high: UInt64 = 0
+                var low: UInt64 = 0
+                for j in 0..<8 {
+                    high = (high << 8) | UInt64(raw[i + j])
+                    low = (low << 8) | UInt64(raw[i + 8 + j])
+                }
+                mix(high: high, low: low)
+                i += 16
+            }
+            if i < raw.count { pending.append(contentsOf: raw[i...]) }
         }
-        pending.removeFirst(index)
     }
 
     private func flushPending() {
@@ -232,27 +267,63 @@ final class AESGCMStream {
         pending = []
     }
 
-    /// The associated data is padded before the text begins.
-    func endAssociatedData() { flushPending() }
-
     private func mix(_ block: [UInt8]) {
         let x = Self.block(block)
-        ghash = Self.multiply((ghash.0 ^ x.0, ghash.1 ^ x.1), hashKey)
+        mix(high: x.0, low: x.1)
     }
 
-    /// Multiplication in GF(2^128) with the GCM bit order, the textbook shift-and-add.
-    private static func multiply(_ x: (UInt64, UInt64), _ y: (UInt64, UInt64)) -> (UInt64, UInt64) {
-        var z: (UInt64, UInt64) = (0, 0)
-        var v = y
-        for i in 0..<128 {
-            let bit = i < 64 ? (x.0 >> (63 - UInt64(i))) & 1 : (x.1 >> (127 - UInt64(i))) & 1
-            if bit == 1 { z = (z.0 ^ v.0, z.1 ^ v.1) }
-            let low = v.1 & 1
-            v.1 = (v.1 >> 1) | (v.0 << 63)
-            v.0 >>= 1
-            if low == 1 { v.0 ^= 0xE100_0000_0000_0000 }
+    /// One GHASH step: Y = (Y xor X) times H, the product taken a byte at a time from the tables.
+    private func mix(high: UInt64, low: UInt64) {
+        let xh = ghash.0 ^ high
+        let xl = ghash.1 ^ low
+        var rh: UInt64 = 0
+        var rl: UInt64 = 0
+        // Horner over the sixteen bytes from the last: r = r times x^8, plus the byte's multiple.
+        for k in stride(from: 15, through: 0, by: -1) {
+            let byte = k < 8 ? Int((xh >> (56 - 8 * UInt64(k))) & 0xFF) : Int((xl >> (56 - 8 * UInt64(k - 8))) & 0xFF)
+            let carried = Int(rl & 0xFF)
+            rl = (rl >> 8) | (rh << 56)
+            rh = (rh >> 8) ^ reductions[carried]
+            let m = multiples[byte]
+            rh ^= m.0
+            rl ^= m.1
         }
-        return z
+        ghash = (rh, rl)
+    }
+
+    /// `multiples[b]` is H times the polynomial whose coefficients are the byte b at x^0 to x^7,
+    /// so the top bit of b is x^0 and H itself. `reductions[b]` folds the byte an 8 bit shift
+    /// pushes past x^127 back under the field polynomial x^128 + x^7 + x^2 + x + 1, whose low
+    /// terms are 0xE1 at the top of the block in GCM's bit order.
+    private static func tables(for h: (UInt64, UInt64)) -> ([(UInt64, UInt64)], [UInt64]) {
+        var multiples = [(UInt64, UInt64)](repeating: (0, 0), count: 256)
+        var reductions = [UInt64](repeating: 0, count: 256)
+        multiples[128] = h
+        reductions[128] = 0xE100_0000_0000_0000
+        var bit = 64
+        while bit > 0 {
+            multiples[bit] = timesX(multiples[bit * 2])
+            reductions[bit] = reductions[bit * 2] >> 1
+            bit /= 2
+        }
+        var power = 2
+        while power <= 128 {
+            for j in 1..<power {
+                multiples[power + j] = (multiples[power].0 ^ multiples[j].0, multiples[power].1 ^ multiples[j].1)
+                reductions[power + j] = reductions[power] ^ reductions[j]
+            }
+            power *= 2
+        }
+        return (multiples, reductions)
+    }
+
+    /// Multiplication by x in GF(2^128) with the GCM bit order: a shift toward the high powers,
+    /// which is a shift right here, and the field polynomial folded in when a bit leaves.
+    private static func timesX(_ v: (UInt64, UInt64)) -> (UInt64, UInt64) {
+        let carried = v.1 & 1
+        var out = ((v.0 >> 1), (v.1 >> 1) | (v.0 << 63))
+        if carried == 1 { out.0 ^= 0xE100_0000_0000_0000 }
+        return out
     }
 
     private static func block(_ bytes: [UInt8]) -> (UInt64, UInt64) {

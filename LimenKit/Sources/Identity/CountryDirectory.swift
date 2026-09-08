@@ -29,10 +29,16 @@ public struct AddressCountry: Hashable, Sendable, Identifiable {
 public enum CountryDirectory {
     /// The two-letter ISO regions the platform knows, which is Java's `Locale.getISOCountries`
     /// in the same spirit: the world's countries and territories, sorted by their English name.
+    /// CLDR's exceptional reservations, which `Locale.Region.isoRegions` carries and Java's
+    /// `Locale.getISOCountries` does not: the European Union, the Eurozone, the United Nations,
+    /// Outlying Oceania, Sark, Kosovo, and six postal islands. Without this the picker offered
+    /// "Eurozone" as a country and ran to 261 where the Android list has 249.
+    static let cldrOnly: Set<String> = ["AC", "CP", "CQ", "DG", "EA", "EU", "EZ", "IC", "QO", "TA", "UN", "XK"]
+
     public static let addressCountries: [AddressCountry] = {
         Locale.Region.isoRegions
             .map(\.identifier)
-            .filter { $0.count == 2 && $0.allSatisfy { ("A"..."Z").contains($0) } }
+            .filter { $0.count == 2 && $0.allSatisfy { ("A"..."Z").contains($0) } && !cldrOnly.contains($0) }
             .map(AddressCountry.init)
             .sorted { name($0.regionCode, locale: english) < name($1.regionCode, locale: english) }
     }()
@@ -92,6 +98,10 @@ extension SessionIdentity {
 /// intentionally sent only after three characters and never written to disk outside the protocol.
 public enum SwissAddressLookup {
     private static let endpoint = "https://api3.geo.admin.ch/rest/services/ech/SearchServer"
+    /// Ephemeral, so nothing this call sends or receives reaches the shared URL cache on disk: the
+    /// text typed here is the address of the flat being inspected, and the shared session would
+    /// have kept it, and swisstopo's reply, in Library/Caches beside every other app's traffic.
+    private static let session = URLSession(configuration: .ephemeral)
     private static let addressLabel = try? NSRegularExpression(pattern: "^(.+?)\\s+(\\d+[\\p{L}\\-/]*)\\s+(\\d{4})\\s+(.+)$")
 
     public static func search(_ query: String) async -> [SwissAddressCandidate] {
@@ -101,7 +111,7 @@ public enum SwissAddressLookup {
               let url = URL(string: "\(endpoint)?searchText=\(encoded)&type=locations&origins=address") else { return [] }
         var request = URLRequest(url: url)
         request.timeoutInterval = 4
-        guard let (data, response) = try? await URLSession.shared.data(for: request),
+        guard let (data, response) = try? await session.data(for: request),
               (response as? HTTPURLResponse).map({ (200..<300).contains($0.statusCode) }) ?? true,
               let body = String(data: data, encoding: .utf8) else { return [] }
         return parse(body)

@@ -312,11 +312,14 @@ struct ConfirmDialog: ViewModifier {
 
     func body(content: Content) -> some View {
         content.alert(s.areYouSure, isPresented: $shown) {
+            // Both answers are RoomActionKeys on Android and press like any key: the destructive
+            // key that raised this question already played the refusal, and the question itself
+            // is only answered. A system alert's buttons carry no tick of their own.
             Button(s.yes) {
-                Haptics.play(.reject)
+                Haptics.play(.key)
                 onConfirm()
             }
-            Button(s.no, role: .cancel) {}
+            Button(s.no, role: .cancel) { Haptics.play(.key) }
         } message: {
             Text(body)
         }

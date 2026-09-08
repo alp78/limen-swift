@@ -118,6 +118,25 @@ import Testing
         #expect(try restored.importArchive(password: "", from: archive).imported == 1)
     }
 
+    /// The cipher against CryptoKit at the REAL envelope's associated data length. The header is
+    /// magic(9) + version(1) + salt(16) + iv(12) = 38 bytes, which is two whole GHASH blocks and a
+    /// 6 byte remainder. Every length that is not a multiple of 16 has to appear here: a test whose
+    /// associated data happens to be block-aligned cannot see a dropped remainder.
+    @Test func theStreamingCipherAgreesWithCryptoKitAtEveryAssociatedDataLength() throws {
+        let key = SymmetricKey(size: .bits256)
+        let keyData = key.withUnsafeBytes { Data($0) }
+        let iv = Data((0..<12).map { UInt8($0 * 7 + 1) })
+        let plain = Data((0..<5000).map { UInt8(($0 * 31) & 0xFF) })
+        for aadLength in [0, 1, 15, 16, 17, 31, 38, 64, 100] {
+            let aad = Data((0..<aadLength).map { UInt8(($0 * 13 + 5) & 0xFF) })
+            let sealed = try AES.GCM.seal(plain, using: key, nonce: try AES.GCM.Nonce(data: iv), authenticating: aad)
+            let stream = try AESGCMStream(key: keyData, iv: iv, aad: aad)
+            var cipher = Data()
+            for chunk in plain.chunked(by: 1000) { cipher.append(try stream.encrypt(chunk)) }
+            #expect(stream.finalizeEncryption() == sealed.tag, "tag at aad length \(aadLength)")
+        }
+    }
+
     /// The streaming cipher against CryptoKit's own AES-GCM, both ways, so the tag it writes is
     /// the tag Java's AES/GCM/NoPadding checks.
     @Test func theStreamingCipherAgreesWithCryptoKit() throws {

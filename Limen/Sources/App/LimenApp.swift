@@ -51,8 +51,13 @@ struct RootView: View {
         .animation(.easeInOut(duration: 0.18), value: model.working == nil)
         // The draft reaches the disk whenever this window stops: the camera suspends this app
         // routinely mid-handover, and the debounced write must never be what a handover loses.
+        //
+        // On .background, which is ON_STOP, and not on .inactive: a pulled-down Control Centre, a
+        // banner, the app switcher and an incoming call all pass through .inactive, and a flush
+        // there commits the six-second undo the moment the person glances away. Every path off the
+        // screen passes through .background before the process can be ended.
         .onChange(of: scenePhase) { _, phase in
-            if phase != .active { model.flush() }
+            if phase == .background { model.flush() }
         }
     }
 }

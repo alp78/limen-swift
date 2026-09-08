@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 /// Validates and formats contact numbers with Google's national numbering metadata, the same
 /// data the Android app reaches through libphonenumber. It is more accurate and more
@@ -110,6 +111,20 @@ public enum InternationalPhone {
                 guard let (code, rest) = extractCountryCode(stripped) else { return nil }
                 countryCode = code
                 digits = rest
+            } else {
+                // libphonenumber's rule for a number typed with its own country code but no plus
+                // and no IDD ("41 79 ..." in Switzerland): when the whole thing is not a valid
+                // national number and what follows the code is, the code was meant.
+                let own = String(territory.countryCode)
+                if digits.hasPrefix(own), digits.count > own.count {
+                    let rest = String(digits.dropFirst(own.count))
+                    let asTyped = stripNationalPrefix(digits, in: territory)
+                    let afterCode = stripNationalPrefix(rest, in: territory)
+                    if !matches(territory.generalPattern, asTyped), matches(territory.generalPattern, afterCode) {
+                        countryCode = territory.countryCode
+                        digits = rest
+                    }
+                }
             }
         }
         let code = countryCode ?? territory.countryCode
@@ -146,7 +161,7 @@ public enum InternationalPhone {
     }
 
     private static func strip(prefixPattern: String, from digits: String) -> String? {
-        guard let regex = try? NSRegularExpression(pattern: "^(?:\(prefixPattern))"),
+        guard let regex = regex("^(?:\(prefixPattern))"),
               let match = regex.firstMatch(in: digits, range: NSRange(digits.startIndex..., in: digits)),
               let range = Range(match.range, in: digits), !range.isEmpty else { return nil }
         return String(digits[range.upperBound...])
@@ -156,12 +171,16 @@ public enum InternationalPhone {
     /// stops being viable without it.
     private static func stripNationalPrefix(_ digits: String, in territory: Territory) -> String {
         guard let prefixPattern = territory.nationalPrefixForParsing ?? territory.nationalPrefix, !prefixPattern.isEmpty,
-              let regex = try? NSRegularExpression(pattern: "^(?:\(prefixPattern))"),
+              let regex = regex("^(?:\(prefixPattern))"),
               let match = regex.firstMatch(in: digits, range: NSRange(digits.startIndex..., in: digits)),
               let range = Range(match.range, in: digits) else { return digits }
         let viableBefore = matches(territory.generalPattern, digits)
         let stripped: String
-        if let rule = territory.nationalPrefixTransformRule, match.numberOfRanges > 1 {
+        // libphonenumber checks that the LAST group took part in the match, not merely that the
+        // pattern has one: several territories make the group optional, and a template applied
+        // to a group that matched nothing rewrites the number wrongly.
+        let lastGroupMatched = match.numberOfRanges > 1 && match.range(at: match.numberOfRanges - 1).location != NSNotFound
+        if let rule = territory.nationalPrefixTransformRule, lastGroupMatched {
             stripped = regex.stringByReplacingMatches(in: digits, range: NSRange(digits.startIndex..., in: digits), withTemplate: rule)
         } else {
             stripped = String(digits[range.upperBound...])
@@ -170,8 +189,20 @@ public enum InternationalPhone {
         return stripped
     }
 
+    /// Patterns compiled once. Validation runs on every keystroke of a phone field and walked every
+    /// pattern of the territory, compiling each afresh; the metadata is fixed, so the compiled form
+    /// is too. The lock is what lets the cache be a static in Swift 6.
+    private static let compiled = OSAllocatedUnfairLock<[String: NSRegularExpression]>(initialState: [:])
+
+    static func regex(_ pattern: String) -> NSRegularExpression? {
+        if let hit = compiled.withLock({ $0[pattern] }) { return hit }
+        guard let made = try? NSRegularExpression(pattern: pattern) else { return nil }
+        compiled.withLock { $0[pattern] = made }
+        return made
+    }
+
     private static func matches(_ pattern: String, _ text: String) -> Bool {
-        guard let regex = try? NSRegularExpression(pattern: "^(?:\(pattern))$") else { return false }
+        guard let regex = regex("^(?:\(pattern))$") else { return false }
         return regex.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)) != nil
     }
 
@@ -187,15 +218,21 @@ public enum InternationalPhone {
     // MARK: National format
 
     static func formatNational(_ national: String, in territory: Territory) -> String {
-        for format in territory.formats {
+        // libphonenumber keeps the formats of a shared calling code under its main country only;
+        // Canada, Guernsey and the other 36 regions that inherit a code have none of their own.
+        // Without this, their example number and their stored form came back as bare digits.
+        let source = territory.formats.isEmpty
+            ? (regionsByCode[territory.countryCode]?.first.flatMap { territories[$0] } ?? territory)
+            : territory
+        for format in source.formats {
             if let leading = format.leadingDigits {
-                guard let regex = try? NSRegularExpression(pattern: "^(?:\(leading))"),
+                guard let regex = regex("^(?:\(leading))"),
                       regex.firstMatch(in: national, range: NSRange(national.startIndex..., in: national)) != nil else { continue }
             }
-            guard let regex = try? NSRegularExpression(pattern: "^(?:\(format.pattern))$"),
+            guard let regex = regex("^(?:\(format.pattern))$"),
                   regex.firstMatch(in: national, range: NSRange(national.startIndex..., in: national)) != nil else { continue }
             var template = format.format
-            let rule = format.nationalPrefixFormattingRule ?? territory.nationalPrefixFormattingRule
+            let rule = format.nationalPrefixFormattingRule ?? territory.nationalPrefixFormattingRule ?? source.nationalPrefixFormattingRule
             if let rule, !rule.isEmpty, let prefix = territory.nationalPrefix {
                 let filled = rule.replacingOccurrences(of: "$NP", with: prefix).replacingOccurrences(of: "$FG", with: "$1")
                 template = template.replacingOccurrences(of: "$1", with: filled, options: [], range: template.range(of: "$1"))

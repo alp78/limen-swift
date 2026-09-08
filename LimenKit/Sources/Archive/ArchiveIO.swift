@@ -19,6 +19,7 @@ public enum ArchiveError: Error, Equatable {
     case tooLarge
     case manifestMissing
     case emptyPassword
+    case randomUnavailable
     case unsupportedVersion
     case truncated
     case wrongPassword

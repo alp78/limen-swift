@@ -23,6 +23,17 @@ public enum AppFiles {
         return base
     }
 
+    /// Where an export builds anything that is not yet encrypted. The cache is inside the app's
+    /// container and no other app or Files sharing can reach it, which Documents cannot say:
+    /// `UIFileSharingEnabled` puts everything under Documents in front of the person and anything
+    /// that can read it. A plaintext archive of every record must never sit there, not even for
+    /// the seconds an export takes, because a kill mid-export would leave it there for good.
+    public static var scratch: URL {
+        let base = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0].appendingPathComponent("scratch")
+        try? FileManager.default.createDirectory(at: base, withIntermediateDirectories: true)
+        return base
+    }
+
     /// The camera and the picker hand their bytes over here, in the cache, to be moved beside a
     /// record or deleted.
     public static var captures: URL {

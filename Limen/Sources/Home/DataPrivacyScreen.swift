@@ -105,28 +105,28 @@ struct DataPrivacyScreen: View {
             }
         }
         .alert(archiveAction == .export ? s.protectBackup : s.unlockBackup, isPresented: Binding(get: { archiveAction != nil }, set: { if !$0 { archiveAction = nil } })) {
+            // A password is optional both ways: an export without one writes a plain archive, and a
+            // restore without one reads exactly that. The only thing that can be wrong here is a
+            // confirmation that does not match, and that disables the key as it does on Android
+            // rather than letting a press dismiss the alert having made nothing.
+            let isExport = archiveAction == .export
+            let valid = !isExport || password == confirmation
             SecureField(s.backupPassword, text: $password)
-            if archiveAction == .export {
+            if isExport {
                 SecureField(s.confirmBackupPassword, text: $confirmation)
             }
-            Button(archiveAction == .export ? s.createBackup : s.restoreBackup) {
-                let isExport = archiveAction == .export
-                // A password is optional both ways: an export without one writes a plain archive,
-                // and a restore without one reads exactly that. The only thing that can be wrong
-                // here is a confirmation that does not match.
-                let valid = !isExport || password == confirmation
-                if valid {
-                    if isExport {
-                        model.exportArchive(password: password)
-                    } else if let url = pendingRestore {
-                        model.importArchive(url, password: password)
-                    }
+            Button(isExport ? s.createBackup : s.restoreBackup) {
+                if isExport {
+                    model.exportArchive(password: password)
+                } else if let url = pendingRestore {
+                    model.importArchive(url, password: password)
                 }
                 archiveAction = nil
                 pendingRestore = nil
                 password = ""
                 confirmation = ""
             }
+            .disabled(!valid)
             Button(s.cancel, role: .cancel) {
                 archiveAction = nil
                 pendingRestore = nil
