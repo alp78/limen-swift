@@ -109,6 +109,7 @@ struct DefectEditor: View {
                 }
                 .padding(.horizontal, 20)
                 .padding(.vertical, 8)
+                .readable()
             }
             .scrollDismissesKeyboard(.interactively)
             .frame(maxWidth: .infinity, maxHeight: .infinity)

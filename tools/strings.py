@@ -151,6 +151,8 @@ class Parser:
             return self.string()
         if self.peek("when"):
             return self.when()
+        if self.text.startswith(("if (", "if("), self.pos):
+            return self.if_else()
         name = self.dotted()
         if self.peek("("):
             args = self.arguments()
@@ -180,6 +182,25 @@ class Parser:
         if len(parts) >= 2 and parts[-2][0].isupper():
             return "." + swift_case(parts[-1])
         return self.renamed.get(name, name)
+
+    def if_else(self) -> str:
+        # The one shape Strings.kt uses besides `when`: `if (param == Enum.CASE) a else b`, which
+        # is a ternary over an enum case in Swift. Anything else here is a generator gap, and it
+        # stops rather than guessing.
+        self.expect("if")
+        self.expect("(")
+        subject = self.identifier()
+        self.skip_ws()
+        if not self.peek("=="):
+            raise SystemExit(f"if without == at {self.pos}: {self.text[self.pos:self.pos + 40]!r}")
+        self.pos += 2
+        case = self.reference(self.dotted())
+        self.expect(")")
+        then = self.expression()
+        self.skip_ws()
+        self.expect("else")
+        otherwise = self.expression()
+        return f"{subject} == {case} ? {then} : {otherwise}"
 
     def when(self) -> str:
         self.expect("when")

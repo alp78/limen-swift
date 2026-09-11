@@ -17,11 +17,12 @@ let baseSettings: SettingsDictionary = [
     // Android tinted the caret, the selection handles and every system widget from the
     // navy action colour; on iOS that is the accent colour, so it carries the same values.
     "ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME": "AccentColor",
-    // 1.1.1 is the version the published privacy page states its permission claims were checked
-    // against, so the app carries that number rather than contradicting a page that is already
-    // live. The Android build is on the same pair.
-    "MARKETING_VERSION": "1.1.1",
-    "CURRENT_PROJECT_VERSION": "3",
+    // The same pair as the Android build, whose code 3 was spent on the first closed test that
+    // cited the Vaud RULV in every canton. (An earlier comment here said 1.1.1 was pinned by the
+    // published privacy page naming the version its claims were checked against; none of the
+    // five notices names a version, so nothing holds the name back.)
+    "MARKETING_VERSION": "1.1.2",
+    "CURRENT_PROJECT_VERSION": "4",
     // The owner's own Apple Account (aperinger@proton.me), which is the one that will hold the
     // paid membership: an Individual enrollment needs no company, and Apple publishes the
     // enrolled legal name rather than any trade name. Pinning the team keeps a build from being

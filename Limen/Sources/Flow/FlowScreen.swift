@@ -54,6 +54,9 @@ struct FlowScreen: View {
                 })
                 .padding(.horizontal, 20)
                 .padding(.vertical, 8)
+                // The stack behind keeps the full width so the plate does too; only the column of
+                // content is capped. See View.readable.
+                .readable()
                 .animation(.easeInOut(duration: 0.18), value: model.flowStep)
                 .onChange(of: model.flowStep) { _, now in previousStep = now }
                 if let defectId = model.editingDefectId {
@@ -75,6 +78,7 @@ struct FlowScreen: View {
                     .background(colors.plateRaised, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                     .padding(.horizontal, 20)
                     .padding(.vertical, 10)
+                    .readable()
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
                 if let notice = model.notice {
@@ -326,6 +330,10 @@ struct DepositCompareOverlay: View {
             Spacer().frame(height: 16)
         }
         .padding(.horizontal, 20)
+        // The plate and the tap trap below stay on the full width; only the column is capped.
+        // Capping the whole thing would have reopened the bug the next comment describes, with
+        // the new side margins as the place taps fell through.
+        .frame(maxWidth: readableMax)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         // An opaque plate that also takes the touches, so a tap that misses a row never reaches
         // the masthead underneath.

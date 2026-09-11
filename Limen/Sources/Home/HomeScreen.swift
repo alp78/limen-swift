@@ -67,6 +67,7 @@ private struct LandingScreen: View {
                     Spacer().frame(height: 24)
                 }
                 .padding(.horizontal, 24)
+                .readable()
                 .frame(minHeight: compact ? nil : geometry.size.height)
             }
         }
@@ -146,6 +147,7 @@ private struct SessionsScreen: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 8)
+        .readable()
         .background(colors.plate.ignoresSafeArea())
         .onChange(of: model.protocols.isEmpty) { _, empty in if empty { onBack() } }
     }

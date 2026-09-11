@@ -285,7 +285,11 @@ private struct HandoverDeadline: View {
                 }
             } else {
                 Panel(label: s.clockExitTitle, info: s.tipExitNotice()) {
-                    HStack(alignment: .top, spacing: 16) {
+                    // Bottom-aligned because the two labels are not the same length and one wraps:
+                    // in English "3-working-day practice reference" takes two lines where the other
+                    // takes one, which hangs the two dates at different heights. Aligning the
+                    // bottoms puts the dates on one line, which is the pair a reader compares.
+                    HStack(alignment: .bottom, spacing: 16) {
                         Deadline(label: s.safeBy, date: Clocks.exitNoticeSafeBy(handover)).frame(maxWidth: .infinity, alignment: .leading)
                         Deadline(label: s.latestBy, date: Clocks.exitNoticeLatest(handover)).frame(maxWidth: .infinity, alignment: .leading)
                     }

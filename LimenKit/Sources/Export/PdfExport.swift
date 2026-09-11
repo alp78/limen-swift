@@ -365,7 +365,9 @@ public enum PdfExport {
             sheet.wrapped("\(s.legalOverlayNote): \(p.legalOverlay.note)", sheet.small)
         }
         let ruleSet = p.legalOverlay.ruleSetId.isBlank ? "" : " (\(p.legalOverlay.ruleSetId))"
-        sheet.wrapped("\(s.legalSnapshot)\(ruleSet)", sheet.small)
+        // Cited per canton: the BWO form is federal, the RULV are Vaud's, and naming them on a
+        // Bern or Ticino record stated something untrue about its legal basis.
+        sheet.wrapped("\(s.legalSnapshotFor(overlay.canton))\(ruleSet)", sheet.small)
     }
 
     private static func parties(_ sheet: Sheet, _ p: HandoverProtocol, _ s: Str) {

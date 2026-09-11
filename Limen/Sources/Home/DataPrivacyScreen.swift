@@ -96,6 +96,7 @@ struct DataPrivacyScreen: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 8)
+        .readable()
         .background(colors.plate.ignoresSafeArea())
         .fileImporter(isPresented: $picking, allowedContentTypes: [.zip, .data]) { result in
             if case .success(let url) = result {
@@ -157,6 +158,10 @@ struct DataPrivacyScreen: View {
 ///
 /// Its own screen rather than a panel: the notice is several thousand characters and the privacy
 /// page is already a scrolling column, which cannot hold a second one.
+///
+/// Not capped at the readable width, unlike every other screen. NOTICE is a preformatted
+/// monospace document that already needs a horizontal scroll on a phone, so narrowing it on a
+/// tablet would take away the one thing the extra width is good for here.
 private struct LicencesView: View {
     @Environment(\.limen) private var colors
     @Environment(\.str) private var s

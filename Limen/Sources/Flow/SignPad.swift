@@ -100,6 +100,9 @@ struct SignPadOverlay: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 16)
+        // Capped like every other screen: a signature pad as wide as a tablet is a strange target
+        // for a hand, and the keys under it would sit a forearm apart.
+        .frame(maxWidth: readableMax)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(colors.plate.ignoresSafeArea())
     }

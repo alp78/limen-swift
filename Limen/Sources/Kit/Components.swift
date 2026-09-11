@@ -103,6 +103,29 @@ struct Panel<Content: View>: View {
     }
 }
 
+/// The widest a single column of this app's text and fields is allowed to get.
+///
+/// Past this a form stops being readable: a label and the value it belongs to drift apart, and a
+/// row of two fields sharing the width ends up with a hand's width of nothing between them. The
+/// app was written for a phone and every screen is one full-bleed column, so on an iPad, or an
+/// iPhone on its side, it stretched rather than adapted.
+///
+/// The value sits above every iPhone's portrait width, so a phone held upright never reaches it
+/// and renders exactly as it did, and below every iPad's, so a tablet always does. Android's
+/// ReadableMax, 560 dp, chosen for the same two devices there.
+let readableMax: CGFloat = 560
+
+extension View {
+    /// Caps a content column at `readableMax` and centres it in whatever is wider.
+    ///
+    /// Apply it to the content, never to the thing painting the background: every screen paints
+    /// its own ground and the margins have to keep that colour, or a capped column sits in a band
+    /// of the wrong one. The outer frame is what centres the capped one.
+    func readable() -> some View {
+        frame(maxWidth: readableMax).frame(maxWidth: .infinity)
+    }
+}
+
 /// The language menu: one compact key showing the current language, the five spelled out behind
 /// it. Each name is written in its own language, so it never needs translating and is findable by
 /// someone lost in the wrong one.

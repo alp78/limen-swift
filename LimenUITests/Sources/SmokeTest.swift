@@ -12,8 +12,10 @@ final class SmokeTest: XCTestCase {
         continueAfterFailure = false
     }
 
-    private func shoot(_ app: XCUIApplication, _ name: String) {
-        let screenshot = app.screenshot()
+    private func shoot(_ app: XCUIApplication, _ name: String, wholeScreen: Bool = false) {
+        // The screen, not the app, for a shot taken after a rotation: the app's buffer can still be
+        // the portrait one for a moment, sideways with a black half, while the screen's is upright.
+        let screenshot = wholeScreen ? XCUIScreen.main.screenshot() : app.screenshot()
         let attachment = XCTAttachment(screenshot: screenshot)
         attachment.name = name
         attachment.lifetime = .keepAlways
@@ -129,6 +131,18 @@ final class SmokeTest: XCTestCase {
         app.buttons["KEEP"].tap()
         XCTAssertTrue(element(app, "Signed").waitForExistence(timeout: 10))
         shoot(app, "16-signed")
+
+        // On its side the phone is wider than the readable column, so this is where the cap shows:
+        // the plate spans the window and the content sits centred in 560 points of it.
+        XCUIDevice.shared.orientation = .landscapeLeft
+        let window = app.windows.firstMatch
+        let turned = NSPredicate { _, _ in window.frame.width > window.frame.height }
+        wait(for: [expectation(for: turned, evaluatedWith: nil)], timeout: 10)
+        XCTAssertTrue(element(app, "Signed").waitForExistence(timeout: 10))
+        shoot(app, "17-signed-landscape", wholeScreen: true)
+        XCUIDevice.shared.orientation = .portrait
+        let upright = NSPredicate { _, _ in window.frame.height > window.frame.width }
+        wait(for: [expectation(for: upright, evaluatedWith: nil)], timeout: 10)
         app.buttons["BACK"].firstMatch.tap()
         app.buttons["BACK"].firstMatch.tap()
         app.buttons["BACK"].firstMatch.tap()

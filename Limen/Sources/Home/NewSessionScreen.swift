@@ -175,6 +175,7 @@ struct NewSessionScreen: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 8)
+        .readable()
         .background(colors.plate.ignoresSafeArea())
         .onAppear {
             guard !loaded else { return }
