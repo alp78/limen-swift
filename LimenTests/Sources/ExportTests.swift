@@ -167,6 +167,24 @@ import UIKit
                 var draft = HandoverProtocol(id: id, kind: kind, createdEpochMs: 20)
                 draft.sessionRole = actor == "tenant" ? .tenant : .landlord
                 draft.sessionName = "\(actor) operator"
+                // The two identities the Android matrix carries. Without them the three actors
+                // collapsed to two record shapes, because the agency differs from the private
+                // landlord only in the company on its session identity and the organisation on
+                // its controller identity, and neither reached the exported document.
+                var operatorIdentity = SessionIdentity()
+                operatorIdentity.firstName = actor.prefix(1).uppercased() + actor.dropFirst()
+                operatorIdentity.lastName = "Operator"
+                operatorIdentity.company = actor == "agency" ? "Matrix Agency SA" : ""
+                operatorIdentity.street = "Testweg 8"
+                operatorIdentity.postalCode = "5000"
+                operatorIdentity.city = "Aarau"
+                operatorIdentity.phone = "+41625550101"
+                draft.sessionIdentity = operatorIdentity
+                var controller = ControllerIdentity()
+                controller.organisation = actor == "agency" ? "Matrix Agency SA" : "Matrix operator"
+                controller.contactName = "\(actor) operator"
+                controller.email = "\(actor)@example.invalid"
+                draft.controllerIdentity = controller
                 draft.address = "Testweg 10"
                 draft.place = "5000 Aarau"
                 draft.objectCanton = .ag
@@ -196,6 +214,12 @@ import UIKit
                 frozen.evidenceFingerprint = try ProtocolIntegrity.fingerprint(frozen, photoDir: store.photoDir(id), signatureDir: store.signatureDir(id))
                 let exported = try PdfExport.export(frozen, Str(.en), photoDir: store.photoDir(id), signatureDir: store.signatureDir(id), folder: root)
                 #expect(exported.bytes > 1_000, "PDF too small for \(actor) \(kind)")
+                // A byte count says the document rendered, not that it says who compiled it: the
+                // line naming the party is the one thing that differs between the three actors.
+                let text = try #require(PDFDocument(url: exported.url)?.string)
+                #expect(text.contains(Str(.en).compiledBy), "no compiled-by line for \(actor) \(kind)")
+                #expect(text.contains("Matrix Tenant"), "the tenant is not named for \(actor) \(kind)")
+                #expect(text.contains(actor == "agency" ? "Matrix Agency SA" : "Matrix Landlord"), "the landlord side is not named for \(actor) \(kind)")
             }
         }
     }

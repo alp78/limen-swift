@@ -8,8 +8,11 @@ public struct LocalDate: Hashable, Comparable, Sendable, CustomStringConvertible
     public let month: Int
     public let day: Int
 
+    // ISO 8601 rather than Foundation's `.gregorian`, which switches to the Julian calendar before
+    // October 1582 and would answer for a date in 1500 with a day the record never meant.
+    // java.time.LocalDate is proleptic, so this is what matching it actually requires.
     private static let calendar: Calendar = {
-        var calendar = Calendar(identifier: .gregorian)
+        var calendar = Calendar(identifier: .iso8601)
         calendar.timeZone = TimeZone(identifier: "UTC") ?? .current
         return calendar
     }()
@@ -61,7 +64,7 @@ public struct LocalDate: Hashable, Comparable, Sendable, CustomStringConvertible
     }
 
     public static func today(in zone: TimeZone = .current) -> LocalDate {
-        var local = Calendar(identifier: .gregorian)
+        var local = Calendar(identifier: .iso8601)
         local.timeZone = zone
         let parts = local.dateComponents([.year, .month, .day], from: Date())
         return LocalDate(parts.year ?? 1970, parts.month ?? 1, parts.day ?? 1)

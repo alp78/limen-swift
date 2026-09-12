@@ -72,8 +72,13 @@ struct Revealed<Key: Equatable, Content: View>: View {
             }
             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             .onChange(of: key, initial: true) { _, _ in
+                // Both writes reach SwiftUI in one update and collapse to the final value, so the
+                // wash played on the first reveal, when progress was already 0, and never again.
+                // The reset is presented on its own and the fade is asked for in the pass after it.
                 progress = 1
-                withAnimation(reduceMotion ? nil : .easeOut(duration: 0.7)) { progress = 0 }
+                Task { @MainActor in
+                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.7)) { progress = 0 }
+                }
             }
     }
 }
@@ -113,6 +118,45 @@ struct Panel<Content: View>: View {
 /// The value sits above every iPhone's portrait width, so a phone held upright never reaches it
 /// and renders exactly as it did, and below every iPad's, so a tablet always does. Android's
 /// ReadableMax, 560 dp, chosen for the same two devices there.
+/// Compose's `Modifier.weight` divides a row by the numbers given, whatever its contents would
+/// rather be. SwiftUI has no spelling for that, and `layoutPriority` is not one: it offers the whole
+/// row to the highest number first and leaves the others whatever survives, which collapsed the
+/// handover time beside its date to an empty stub with no label and no value on every screen. This
+/// splits the width the way the Kotlin rows do, so the proportions are Android's at any size.
+struct WeightedRow: Layout {
+    let weights: [CGFloat]
+    var spacing: CGFloat = 8
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let width = proposal.replacingUnspecifiedDimensions().width
+        let widths = share(width, among: subviews.count)
+        let height = zip(subviews, widths).map { $0.sizeThatFits(ProposedViewSize(width: $1, height: nil)).height }.max() ?? 0
+        return CGSize(width: width, height: height)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let widths = share(bounds.width, among: subviews.count)
+        var x = bounds.minX
+        for (index, subview) in subviews.enumerated() {
+            // Top aligned, as a Compose Row is unless it says otherwise: a field that wraps to two
+            // lines grows downward and leaves its neighbour's first line where it was.
+            subview.place(at: CGPoint(x: x, y: bounds.minY), proposal: ProposedViewSize(width: widths[index], height: nil))
+            x += widths[index] + spacing
+        }
+    }
+
+    /// The row's width less the gaps, apportioned by weight. A subview with no weight of its own
+    /// counts as 1, so a row can name only the shares that differ.
+    private func share(_ total: CGFloat, among count: Int) -> [CGFloat] {
+        guard count > 0 else { return [] }
+        let shares = (0..<count).map { $0 < weights.count ? max(weights[$0], 0) : 1 }
+        let sum = shares.reduce(0, +)
+        guard sum > 0 else { return Array(repeating: 0, count: count) }
+        let free = max(total - spacing * CGFloat(count - 1), 0)
+        return shares.map { free * $0 / sum }
+    }
+}
+
 let readableMax: CGFloat = 560
 
 extension View {
@@ -156,7 +200,7 @@ struct LangMenu: View {
                 .padding(.horizontal, 12)
                 .padding(.vertical, 9)
         }
-        .buttonStyle(MenuKeyStyle(fill: colors.input, edge: colors.input.shaded(0.16), dark: colors.isDark))
+        .buttonStyle(MenuKeyStyle(fill: colors.input, edge: colors.input.shaded(0.16), outline: colors.plateEdge, dark: colors.isDark))
         .accessibilityLabel(current.ownName)
     }
 }
@@ -165,16 +209,21 @@ struct LangMenu: View {
 private struct MenuKeyStyle: ButtonStyle {
     let fill: Color
     let edge: Color
+    let outline: Color
     let dark: Bool
 
     func makeBody(configuration: Configuration) -> some View {
         let shape = RoundedRectangle(cornerRadius: 9, style: .continuous)
         configuration.label
             .padding(.bottom, dark ? 2 : 3)
+            // The same floor and the same day-treatment rule every KeySurface keeps: a key this one
+            // sits beside was 48 points with a face outline while this one was 35 with none.
+            .frame(minWidth: 48, minHeight: 48)
             .background {
                 ZStack(alignment: .top) {
                     shape.fill(edge)
                     shape.fill(LinearGradient(colors: [fill.lifted(dark ? 0.18 : 0.30), fill, fill.shaded(dark ? 0.18 : 0.12)], startPoint: .top, endPoint: .bottom))
+                        .overlay(dark ? nil : shape.strokeBorder(outline, lineWidth: 1))
                         .padding(.bottom, dark ? 2 : 3)
                 }
             }
@@ -207,6 +256,10 @@ struct ThemeToggle: View {
                 .padding(3)
             }
             .animation(.easeOut(duration: 0.15), value: dark)
+            // The capsule stays 52 by 32, as Android's switch is, but the hand needs the same
+            // 48-point floor every key on the screen already keeps.
+            .frame(minWidth: 48, minHeight: 48)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel(description)
@@ -383,5 +436,8 @@ struct NoticeBar: View {
             .background(colors.plateRaised, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
             .padding(.horizontal, 20)
             .padding(.vertical, 10)
+            // Android's toast is spoken by TalkBack on its own; a bar that appears and leaves
+            // again says nothing here unless it asks to be read.
+            .onAppear { AccessibilityNotification.Announcement(text).post() }
     }
 }

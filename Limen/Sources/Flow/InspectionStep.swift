@@ -120,18 +120,20 @@ private struct RoomKey: View {
     var body: some View {
         let flagged = defects > 0
         let state: String = flagged ? "! \(defects)\(inspected ? " · ✓" : "")" : (inspected ? "✓ \(s.inspectedNoDefects)" : s.notInspected)
+        // The label names the room and the value carries its state, because a single
+        // accessibility label on the key replaced both Texts and the count went unread.
         KeySurface(radius: 12, fillColor: flagged ? colors.warning : colors.plateRaised, outlineColor: flagged ? colors.warningOutline : colors.actionOutline, accessibilityLabel: label, onPress: onPress) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(label).font(LimenType.rowTitle).lineLimit(2).foregroundStyle(colors.ink).multilineTextAlignment(.leading)
                 Text(state)
                     .font(LimenType.mono(13, flagged ? .bold : .regular, like: .footnote))
-                    .lineLimit(2)
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(flagged ? colors.dangerOutline : (inspected ? colors.seal : colors.inkDim))
             }
             .padding(12)
             .frame(width: 164, alignment: .leading)
         }
+        .accessibilityValue(state)
         .frame(width: 164)
     }
 }

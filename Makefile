@@ -7,7 +7,7 @@ WORKSPACE := Limen.xcworkspace
 DEST := platform=iOS Simulator,id=$(SIM_ID)
 
 .DEFAULT_GOAL := help
-.PHONY: help strings phones marks gen build test kit-test lint fmt run icon device clean
+.PHONY: help strings phones marks gen build test kit-test lint fmt run icon shots device clean
 
 help: ## Show this help
 	@grep -E '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-8s\033[0m %s\n", $$1, $$2}'
@@ -49,9 +49,20 @@ run: build ## Build, install and launch on the simulator
 	@open -a Simulator
 
 icon: ## Regenerate the app icon from the seal (runs the icon test, copies the PNG)
+	# mkdir first: tee cannot create the log in a DD that a clean tree has not built yet, and the
+	# copy runs only if the test passed, because a stale log would otherwise be copied over.
+	@mkdir -p DD
 	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme AllTests -only-testing:LimenTests/AppIconTests \
-		-destination '$(DEST)' -derivedDataPath ./DD test 2>&1 | tee DD/icon.log | xcbeautify --quiet; \
+		-destination '$(DEST)' -derivedDataPath ./DD test 2>&1 | tee DD/icon.log | xcbeautify --quiet && \
 	cp "$$(grep -o 'LIMEN_ICON_WRITTEN .*' DD/icon.log | head -1 | cut -d' ' -f2)" Limen/Resources/Assets.xcassets/AppIcon.appiconset/icon-1024.png
+
+shots: ## Export the UI test screenshots from the newest result bundle into DD/shots
+	# The runner cannot write to a folder named by an environment variable that nothing sets, so
+	# the screenshots are taken out of the result bundle, which carries every one of them.
+	@R=$$(ls -td DD/Logs/Test/*.xcresult | head -1); \
+	rm -rf DD/shots && mkdir -p DD/shots && \
+	xcrun xcresulttool export attachments --path "$$R" --output-path DD/shots >/dev/null && \
+	python3 tools/name-shots.py DD/shots
 
 device: ## Build Release and install + launch on the connected iPhone
 	# The destination names the phone rather than 'generic/platform=iOS': a free team registers a

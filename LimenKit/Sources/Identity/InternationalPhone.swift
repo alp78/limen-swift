@@ -96,7 +96,7 @@ public enum InternationalPhone {
 
     public static func parse(_ value: String, regionCode: String) -> Parsed? {
         guard let territory = territories[regionCode] else { return nil }
-        let raw = extractPossible(value)
+        let raw = extractPossible(withoutExtension(value))
         guard !raw.isEmpty else { return nil }
         var digits: String
         var countryCode: Int?
@@ -133,6 +133,26 @@ public enum InternationalPhone {
         let national = stripNationalPrefix(digits, in: owner)
         guard (2...17).contains(national.count) else { return nil }
         return Parsed(countryCode: code, nationalNumber: national)
+    }
+
+    /// libphonenumber's `maybeStripExtension`. A switchboard number is written with its extension
+    /// after it, and everything from the marker onward is not part of the number: without this the
+    /// extension's digits were scanned as more of the number, which then failed its length rule and
+    /// was refused outright where Android accepted it. The extension itself is dropped, since E.164
+    /// has nowhere to put one.
+    private static func withoutExtension(_ value: String) -> String {
+        var cut: String.Index?
+        for marker in [";ext=", "extn.", "extn", "ext.", "ext", "#", "x"] {
+            guard let found = value.range(of: marker, options: [.caseInsensitive]) else { continue }
+            // A marker counts only with a number on both sides of it, so the "x" in a name or a
+            // lone hash never truncates a number that was written plainly.
+            guard value[..<found.lowerBound].contains(where: \.isNumber),
+                  value[found.upperBound...].contains(where: \.isNumber) else { continue }
+            if let earliest = cut, earliest <= found.lowerBound { continue }
+            cut = found.lowerBound
+        }
+        guard let cut else { return value }
+        return String(value[..<cut])
     }
 
     /// Everything from the first digit or plus sign to the last digit; anything else a person

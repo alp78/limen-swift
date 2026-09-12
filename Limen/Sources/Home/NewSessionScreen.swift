@@ -129,11 +129,10 @@ struct NewSessionScreen: View {
                             Field(label: s.flatNumber, value: flatNumber, onFocusChanged: { setFocused("flat", $0) }) { value in
                                 changeAddress { flatNumber = value }
                             }
-                            HStack(alignment: .top, spacing: 8) {
+                            WeightedRow(weights: [0.35, 0.65]) {
                                 Field(label: s.postalCode, value: postalCode, keyboard: usesSwissAddress ? .numberPad : .default, onFocusChanged: { setFocused("postal", $0) }) { value in
                                     changeAddress { postalCode = usesSwissAddress ? String(value.filter(\.isNumber).prefix(4)) : value }
                                 }
-                                .frame(width: 110)
                                 Field(label: s.city, value: city, onFocusChanged: { setFocused("city", $0) }) { value in
                                     changeAddress { city = value }
                                 }

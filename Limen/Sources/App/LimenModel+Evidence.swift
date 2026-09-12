@@ -206,7 +206,10 @@ extension LimenModel {
             case .written(let file):
                 var stamped = p
                 stamped.exportedEpochMs = Self.now()
-                try? store.save(stamped)
+                // Off the main actor, as the Kotlin dispatches it to IO: a finished record can be
+                // a long document, and the screen is changing in the same breath as this write.
+                let written = stamped
+                await Task.detached { try? store.save(written) }.value
                 if stillOpen {
                     exported = file
                     working = stamped

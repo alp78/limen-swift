@@ -62,6 +62,11 @@ let project = Project(
             deploymentTargets: deployment,
             infoPlist: .extendingDefault(with: [
                 "CFBundleDisplayName": "Limen",
+                // Tuist's default Info.plist carries 1.0 and 1, which is what the built bundle
+                // showed while the two settings above said 1.1.2 and 4. The phone's Settings pane
+                // and the crash reports read the bundle, so the bundle has to be told.
+                "CFBundleShortVersionString": "$(MARKETING_VERSION)",
+                "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
                 // The splash cannot read the saved day/night preference, so it wears the day
                 // plate: day is the default face of this instrument.
                 "UILaunchScreen": ["UIColorName": "DayPlate"],
@@ -121,7 +126,10 @@ let project = Project(
             bundleId: "dev.peringer.limen.uitests",
             deploymentTargets: deployment,
             sources: ["LimenUITests/Sources/**"],
-            dependencies: [.target(name: "Limen")],
+            // LimenKit rides along so the five-language walk can assert on `Str` itself rather
+            // than on a table of expected words retyped here, which would drift from the
+            // generated strings the moment a translation changed.
+            dependencies: [.target(name: "Limen"), .target(name: "LimenKit")],
             settings: .settings(base: baseSettings)
         ),
     ],

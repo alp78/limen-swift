@@ -19,8 +19,11 @@ public enum PhotoDecode {
         // ImageIO's thumbnail path applies the EXIF orientation itself and decodes at the
         // requested size; the size is the longer edge, so the width asked for is honoured
         // whichever way the picture was taken.
+        // Against the width, not the shorter edge: dividing by the short edge honoured the
+        // request only on a portrait picture and decoded a landscape one oversized by its aspect
+        // ratio, which is the opposite of what this function exists to avoid.
         let longest = max(width, height)
-        let scale = Double(targetWidth) / Double(min(width, height))
+        let scale = Double(targetWidth) / Double(width)
         let pixels = max(Int(Double(longest) * min(scale, 1)), 1)
         let options: [CFString: Any] = [
             kCGImageSourceCreateThumbnailFromImageAlways: true,

@@ -207,7 +207,11 @@ enum Deflate {
     }
 
     private static func run(_ input: Data, operation: compression_stream_operation, limit: Int?) -> Data? {
-        var stream = compression_stream(dst_ptr: UnsafeMutablePointer<UInt8>.allocate(capacity: 1), dst_size: 0, src_ptr: UnsafePointer<UInt8>(bitPattern: 1) ?? UnsafePointer(UnsafeMutablePointer<UInt8>.allocate(capacity: 1)), src_size: 0, state: nil)
+        // Both pointers are placeholders: the initialiser only wants non-null fields, and the real
+        // buffers are set before every process call. Allocating one here leaked a byte for every
+        // entry compressed or inflated, and the fallback behind the other could never be reached.
+        guard let placeholder = UnsafeMutablePointer<UInt8>(bitPattern: 1) else { return nil }
+        var stream = compression_stream(dst_ptr: placeholder, dst_size: 0, src_ptr: UnsafePointer(placeholder), src_size: 0, state: nil)
         guard compression_stream_init(&stream, operation, COMPRESSION_ZLIB) == COMPRESSION_STATUS_OK else { return nil }
         defer { compression_stream_destroy(&stream) }
         var output = Data()
@@ -264,8 +268,16 @@ enum CRC32 {
     }
 
     static func checksum(_ data: Data) -> UInt32 {
+        // Data's element iterator is a function call per byte on a type that need not be
+        // contiguous, and over an archive of photographs that is the whole cost of the checksum.
+        // The bytes are read straight from the buffer, and the table through a binding the
+        // compiler does not bounds-check on every lookup.
         var crc: UInt32 = 0xFFFF_FFFF
-        for byte in data { crc = table[Int((crc ^ UInt32(byte)) & 0xFF)] ^ (crc >> 8) }
+        table.withUnsafeBufferPointer { lookup in
+            data.withUnsafeBytes { bytes in
+                for byte in bytes { crc = lookup[Int((crc ^ UInt32(byte)) & 0xFF)] ^ (crc >> 8) }
+            }
+        }
         return crc ^ 0xFFFF_FFFF
     }
 }

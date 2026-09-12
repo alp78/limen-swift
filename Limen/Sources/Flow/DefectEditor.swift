@@ -75,14 +75,13 @@ struct DefectEditor: View {
                                     PillRow(options: [(FixBy.open, s.fixOpen), (.tenant, s.role(.tenant)), (.landlord, s.role(.landlord))], current: d.fixBy, dense: true, enabled: !locked) { f in
                                         model.updateDefect(defectId) { var x = $0; x.fixBy = f; return x }
                                     }
-                                    HStack(alignment: .top, spacing: 8) {
+                                    WeightedRow(weights: [1, 1.4]) {
                                         DateField(label: s.fixDeadline, stored: d.fixDeadline) { value in
                                             model.updateDefect(defectId) { var x = $0; x.fixDeadline = value; return x }
                                         }
                                         Field(label: s.costNote, value: d.costNote) { value in
                                             model.updateDefect(defectId) { var x = $0; x.costNote = value; return x }
                                         }
-                                        .layoutPriority(1.4)
                                     }
                                     Field(label: s.reservationLabel, value: d.reservation) { value in
                                         model.updateDefect(defectId) { var x = $0; x.reservation = value; return x }
@@ -99,7 +98,7 @@ struct DefectEditor: View {
                             }
                         }
                     }
-                    HStack(spacing: 8) {
+                    WeightedRow(weights: locked ? [1] : [1, 1.6]) {
                         if !locked {
                             IconKey(glyph: .delete, label: s.delete, destructive: true, tick: .reject, stretch: true) { model.removeDefect(defectId) }
                         }

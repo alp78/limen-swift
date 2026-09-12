@@ -302,7 +302,6 @@ struct DepositCompareOverlay: View {
     @Environment(LimenModel.self) private var model
     @Environment(\.limen) private var colors
     @Environment(\.str) private var s
-    @Environment(\.openURL) private var openURL
 
     var body: some View {
         VStack(spacing: 0) {

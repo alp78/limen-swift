@@ -26,6 +26,7 @@ struct SignPadOverlay: View {
     @Environment(\.limen) private var colors
     @Environment(\.str) private var s
     @Environment(\.displayScale) private var displayScale
+    @Environment(\.scenePhase) private var scenePhase
     let title: String
     let meaning: String
     let onKeep: (Data) -> Void
@@ -51,7 +52,7 @@ struct SignPadOverlay: View {
                         var guide = Path()
                         guide.move(to: CGPoint(x: canvasSize.width * 0.07, y: canvasSize.height * 0.72))
                         guide.addLine(to: CGPoint(x: canvasSize.width * 0.93, y: canvasSize.height * 0.72))
-                        context.stroke(guide, with: .color(Color(hex: 0xD9D9D9)), lineWidth: 2)
+                        context.stroke(guide, with: .color(Color(hex: 0xD9D9D9)), lineWidth: 2 / displayScale)
                         let ink = StrokeStyle(lineWidth: inkWidthPixels / displayScale, lineCap: .round, lineJoin: .round)
                         for stroke in strokes { context.stroke(inkPath(stroke.points), with: .color(inkColor), style: ink) }
                         if !live.isEmpty { context.stroke(inkPath(live), with: .color(inkColor), style: ink) }
@@ -85,7 +86,9 @@ struct SignPadOverlay: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             Spacer().frame(height: 12)
-            HStack(spacing: 8) {
+            // Clear and Cancel take a share each and Keep takes 1.4 of one, as the Kotlin row does:
+            // the key that ends the signing is the widest target on the pad.
+            WeightedRow(weights: [1, 1, 1.4]) {
                 IconKey(glyph: .clear, label: s.clearInk, destructive: true, stretch: true) {
                     strokes = []
                     live = []
@@ -105,6 +108,14 @@ struct SignPadOverlay: View {
         .frame(maxWidth: readableMax)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(colors.plate.ignoresSafeArea())
+        // A drag the system takes away never reaches onEnded, and SwiftUI has no onCancelled, so
+        // the abandoned stroke stayed painted on the pad while `renderStrokes` replayed only the
+        // finished ones: the pad showed ink the PNG would not carry, and VoiceOver called the pad
+        // signed. Leaving the foreground is how that interruption arrives, and Android's
+        // onDragCancel drops the stroke from the screen as well as from the file.
+        .onChange(of: scenePhase) { _, phase in
+            if phase != .active { live = [] }
+        }
     }
 }
 

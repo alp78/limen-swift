@@ -74,6 +74,13 @@ enum ArchiveCrypto {
         // end is what makes the bytes mean anything, and the installer only ever sees a verified
         // file.
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        // The staged file is every record in the archive in the clear, and the defer below cannot
+        // run if the process is killed part way. Anything an earlier run left behind goes first,
+        // rather than sitting in Application Support until the app is deleted.
+        for stale in (try? FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil)) ?? []
+        where stale.lastPathComponent.hasPrefix("archive-decrypt-") {
+            try? FileManager.default.removeItem(at: stale)
+        }
         let staged = root.appendingPathComponent("archive-decrypt-\(UUID().uuidString).zip")
         defer { try? FileManager.default.removeItem(at: staged) }
         FileManager.default.createFile(atPath: staged.path, contents: nil)

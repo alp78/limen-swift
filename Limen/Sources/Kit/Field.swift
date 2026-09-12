@@ -58,9 +58,6 @@ struct Field: View {
     }
 }
 
-/// A day the picker returns, counted from the epoch it hands back.
-private let dayMs: Int64 = 86_400_000
-
 /// A date, typed or picked, never merely typed at.
 ///
 /// Both roads exist because both are used: a person reading a tenancy agreement aloud types the
@@ -89,13 +86,24 @@ struct DateField: View {
     /// then stored the day after the one the person tapped. Both ends use the device calendar now,
     /// as TimeField already did, and midday rather than midnight because a few zones have no
     /// midnight on the day they enter summer time.
+    /// The device's ZONE, which the decision calls for, but never the device's calendar SYSTEM.
+    /// iOS offers Buddhist and Japanese beside Gregorian under Language and Region, and
+    /// `Calendar.current` follows that choice, so a picked day read back through it handed
+    /// `LocalDate` a year the record cannot mean. `LocalDate` pins Gregorian for the same reason,
+    /// and java.time.LocalDate is proleptic ISO whatever the handset is set to.
+    private static var deviceCalendar: Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = .current
+        return calendar
+    }
+
     private static func middayInDeviceZone(_ day: LocalDate) -> Date? {
         var parts = DateComponents()
         parts.year = day.year
         parts.month = day.month
         parts.day = day.day
         parts.hour = 12
-        return Calendar.current.date(from: parts)
+        return Self.deviceCalendar.date(from: parts)
     }
 
     var body: some View {
@@ -134,7 +142,7 @@ struct DateField: View {
                 HStack(spacing: 8) {
                     SmallKey(label: s.cancel, stretch: true) { picking = false }
                     SmallKey(label: s.done, stretch: true) {
-                        let parts = Calendar.current.dateComponents([.year, .month, .day], from: picked)
+                        let parts = Self.deviceCalendar.dateComponents([.year, .month, .day], from: picked)
                         if let day = LocalDate.of(parts.year ?? 1970, parts.month ?? 1, parts.day ?? 1) { onChange(day.isoString) }
                         picking = false
                     }
@@ -217,8 +225,8 @@ struct DateAndTimeRow: View {
     let onTime: (String) -> Void
 
     var body: some View {
-        HStack(alignment: .top, spacing: 8) {
-            DateField(label: dateLabel, stored: date, onChange: onDate).layoutPriority(1.5)
+        WeightedRow(weights: [1.5, 1]) {
+            DateField(label: dateLabel, stored: date, onChange: onDate)
             TimeField(label: timeLabel, stored: time, onChange: onTime)
         }
     }

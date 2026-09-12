@@ -16,7 +16,7 @@ struct DossierStep: View {
     let p: HandoverProtocol
     @State private var removing: DossierCard?
     @State private var confirmRemove = false
-    @State private var frames: [String: CGRect] = [:]
+    @State private var active = 0
     @State private var headerHeight: CGFloat = 0
     @State private var viewport: CGFloat = 0
 
@@ -33,9 +33,7 @@ struct DossierStep: View {
             Section(id: "parties", label: s.parties, complete: partiesSectionComplete(p)),
         ] + cards.map { Section(id: "card-\($0.rawValue)", label: s.dossierCard($0), complete: dossierSectionComplete(p, $0)) }
         let absent = DossierCard.allCases.filter { !cards.contains($0) }
-        // Android's activeSection is firstVisibleItemIndex - 1: the first section with any part
-        // still inside the list. Lit in the rail, so the rail says which section is on screen.
-        let active = sections.firstIndex { (frames[$0.id]?.maxY ?? -1) > 0 } ?? 0
+        let sectionIds = sections.map(\.id)
         ScrollViewReader { reader in
             ScrollView {
                 LazyVStack(spacing: 10, pinnedViews: .sectionHeaders) {
@@ -45,9 +43,9 @@ struct DossierStep: View {
                             LegalOverlayPanel(p: p)
                             HandoverDeadline(p: p)
                         }
-                        .id("object")
                         .reportFrame("object")
-                        PartiesCard(p: p).id("parties").reportFrame("parties")
+                        .scrollMarker("object")
+                        PartiesCard(p: p).reportFrame("parties").scrollMarker("parties")
                         ForEach(cards, id: \.self) { card in
                             Group {
                                 switch card {
@@ -58,8 +56,8 @@ struct DossierStep: View {
                                 case .notes: NotesCard(p: p) { ask(card) }
                                 }
                             }
-                            .id("card-\(card.rawValue)")
                             .reportFrame("card-\(card.rawValue)")
+                            .scrollMarker("card-\(card.rawValue)")
                         }
                         if !absent.isEmpty, !locked {
                             Panel(label: s.addComponent) {
@@ -95,7 +93,14 @@ struct DossierStep: View {
                 }
             }
             .coordinateSpace(name: "dossier")
-            .onPreferenceChange(SectionFrames.self) { frames = $0 }
+            // Android's activeSection is firstVisibleItemIndex - 1: the first section with any
+            // part still inside the list. Only that index reaches the body, because the rectangles
+            // arrive on every scroll frame and holding them in @State re-ran the whole step at
+            // display rate for a number that changes once a section.
+            .onPreferenceChange(SectionFrames.self) { frames in
+                let now = sectionIds.firstIndex { (frames[$0]?.maxY ?? -1) > 0 } ?? 0
+                if now != active { active = now }
+            }
             .background(GeometryReader { geometry in
                 Color.clear.onChange(of: geometry.size.height, initial: true) { _, height in viewport = height }
             })
@@ -464,14 +469,14 @@ private struct DepositCard: View {
                                 if CautionProvider.fromStoredName(p.deposit.provider) == .other {
                                     Field(label: s.otherCautionProvider, value: p.deposit.provider) { v in model.edit { var x = $0; x.deposit.provider = v; return x } }
                                 }
-                                HStack(alignment: .top, spacing: 8) {
-                                    Field(label: s.depositPolicy, value: p.deposit.policyNo) { v in model.edit { var x = $0; x.deposit.policyNo = v; return x } }.layoutPriority(1.3)
+                                WeightedRow(weights: [1.3, 1]) {
+                                    Field(label: s.depositPolicy, value: p.deposit.policyNo) { v in model.edit { var x = $0; x.deposit.policyNo = v; return x } }
                                     Field(label: s.depositAmount, value: p.deposit.amountChf, keyboard: .decimalPad) { v in model.edit { var x = $0; x.deposit.amountChf = v; return x } }
                                 }
                             } else {
                                 Field(label: s.depositBankName, value: p.deposit.bank) { v in model.edit { var x = $0; x.deposit.bank = v; return x } }
-                                HStack(alignment: .top, spacing: 8) {
-                                    Field(label: s.depositAccount, value: p.deposit.account) { v in model.edit { var x = $0; x.deposit.account = v; return x } }.layoutPriority(1.3)
+                                WeightedRow(weights: [1.3, 1]) {
+                                    Field(label: s.depositAccount, value: p.deposit.account) { v in model.edit { var x = $0; x.deposit.account = v; return x } }
                                     Field(label: s.depositAmount, value: p.deposit.amountChf, keyboard: .decimalPad) { v in model.edit { var x = $0; x.deposit.amountChf = v; return x } }
                                 }
                             }
@@ -668,6 +673,7 @@ private struct CautionProviderPicker: View {
             .overlay(shape.strokeBorder(colors.plateEdge, lineWidth: 1))
         }
         .accessibilityLabel(s.depositProvider)
+        .accessibilityValue(s.cautionProvider(selected))
     }
 }
 
@@ -742,6 +748,14 @@ private struct SectionFrames: PreferenceKey {
 }
 
 private extension View {
+    /// The rail's scroll target, a point rather than the card itself: `scrollTo` places the
+    /// anchor fraction of whatever carries the id, so on a section taller than the viewport the
+    /// fraction of the whole card landed well past its top. A zero-height marker at the card's
+    /// top has only one point to place, and the overlay keeps it out of the stack's spacing.
+    func scrollMarker(_ id: String) -> some View {
+        overlay(alignment: .top) { Color.clear.frame(height: 0).id(id) }
+    }
+
     func reportFrame(_ id: String) -> some View {
         background(GeometryReader { geometry in
             Color.clear.preference(key: SectionFrames.self, value: [id: geometry.frame(in: .named("dossier"))])

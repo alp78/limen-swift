@@ -99,8 +99,6 @@ public enum PdfExport {
         let s: Str
         let reference: String
         let total: Int
-        let renderer: UIGraphicsPDFRenderer
-        private var context: UIGraphicsPDFRendererContext?
         private let data = NSMutableData()
         private var consumer: CGDataConsumer?
         private var pdf: CGContext?
@@ -122,7 +120,6 @@ public enum PdfExport {
             self.s = s
             self.reference = reference
             self.total = total
-            renderer = UIGraphicsPDFRenderer(bounds: CGRect(origin: .zero, size: a4))
             titleInk = Ink(font: .monospacedSystemFont(ofSize: 40, weight: .bold), colour: black)
             section = Ink(font: .systemFont(ofSize: 26, weight: .bold), colour: black)
             label = Ink(font: .systemFont(ofSize: 20), colour: grey)
@@ -133,8 +130,6 @@ public enum PdfExport {
             self.consumer = consumer
             self.pdf = pdf
         }
-
-        var canvas: CGContext? { pdf }
 
         func newPage() {
             finish()

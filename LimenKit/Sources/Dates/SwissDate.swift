@@ -23,7 +23,7 @@ public enum SwissDate {
     /// an error to report: it is the answer for "17/0" as much as for "31/02/2026", and the field
     /// decides which of the two deserves a mark.
     public static func toStored(_ typed: String) -> String? {
-        let digits = typed.filter(\.isASCIIDigit)
+        let digits = digits(in: typed)
         guard digits.count == 8 else { return nil }
         let day = Int(digits.prefix(2)) ?? 0
         let month = Int(digits.dropFirst(2).prefix(2)) ?? 0
@@ -32,11 +32,22 @@ public enum SwissDate {
         return LocalDate.of(year, month, day)?.isoString
     }
 
+    /// Kotlin's `Char.isDigit` accepts any Unicode decimal digit, and a handset set to an
+    /// Arabic-Indic or Devanagari keypad types those: filtering to ASCII dropped the whole entry
+    /// and the field stayed empty however carefully the date was typed. Each digit is carried over
+    /// to its ASCII twin so everything downstream still sees "0" to "9".
+    private static func digits(in raw: String) -> String {
+        String(raw.compactMap { character -> Character? in
+            guard character.isWholeNumber, let value = character.wholeNumberValue, (0...9).contains(value) else { return nil }
+            return Character(String(value))
+        })
+    }
+
     /// Digits with the separators put back in, so the field can never hold a shape that is not a
     /// date. Typing is the fast road and the calendar is the sure one; masking is what keeps the
     /// fast road from producing "12 mai" or "5.6.26".
     public static func mask(_ raw: String) -> String {
-        let digits = raw.filter(\.isASCIIDigit).prefix(8)
+        let digits = digits(in: raw).prefix(8)
         var out = ""
         for (index, ch) in digits.enumerated() {
             if index == 2 || index == 4 { out.append("/") }
@@ -49,7 +60,7 @@ public enum SwissDate {
 
     /// Stored as HH:mm on the 24 hour clock, which is how Swiss forms are printed.
     public static func toStoredTime(_ typed: String) -> String? {
-        let digits = typed.filter(\.isASCIIDigit)
+        let digits = digits(in: typed)
         guard digits.count == 4 else { return nil }
         let hour = Int(digits.prefix(2)) ?? 0
         let minute = Int(digits.dropFirst(2)) ?? 0
@@ -58,7 +69,7 @@ public enum SwissDate {
     }
 
     public static func maskTime(_ raw: String) -> String {
-        let digits = raw.filter(\.isASCIIDigit).prefix(4)
+        let digits = digits(in: raw).prefix(4)
         var out = ""
         for (index, ch) in digits.enumerated() {
             if index == 2 { out.append(":") }

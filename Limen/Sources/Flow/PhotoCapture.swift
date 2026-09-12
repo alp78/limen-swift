@@ -131,26 +131,36 @@ struct CameraCapture: UIViewControllerRepresentable {
             }
             var properties = (info[.mediaMetadata] as? [String: Any]) ?? [:]
             properties[kCGImageDestinationLossyCompressionQuality as String] = 0.92
-            let encoded = NSMutableData()
-            guard let destination = CGImageDestinationCreateWithData(encoded, UTType.jpeg.identifier as CFString, 1, nil) else {
-                onResult(nil)
-                return
-            }
-            CGImageDestinationAddImage(destination, cgImage, properties as CFDictionary)
-            // length, not existence: a camera that reports success without a picture, or a full
-            // disk, would leave a zero-byte file that the evidence hash then refused outright.
-            guard CGImageDestinationFinalize(destination), encoded.length > 0 else {
-                onResult(nil)
-                return
-            }
-            let data = encoded as Data
             let slot = dir.appendingPathComponent("cap\(Int64(Date().timeIntervalSince1970 * 1000)).jpg")
-            do {
-                try data.write(to: slot)
-                onResult(slot)
-            } catch {
-                try? FileManager.default.removeItem(at: slot)
-                onResult(nil)
+            // The dictionary and the bitmap are read here, on the main thread the delegate arrives
+            // on, and nothing else touches either afterwards: the picker is done with them and this
+            // is the only reference. The JPEG encode of a twelve-megapixel capture is tens of
+            // milliseconds of the main thread otherwise, and it happens while the picker is
+            // dismissing, which is exactly when the animation cannot afford it.
+            nonisolated(unsafe) let bitmap = cgImage
+            nonisolated(unsafe) let tags = properties
+            // Only ever called back on the main actor, which is where it came from.
+            nonisolated(unsafe) let report = onResult
+            Task.detached {
+                let encoded = NSMutableData()
+                guard let destination = CGImageDestinationCreateWithData(encoded, UTType.jpeg.identifier as CFString, 1, nil) else {
+                    await MainActor.run { report(nil) }
+                    return
+                }
+                CGImageDestinationAddImage(destination, bitmap, tags as CFDictionary)
+                // length, not existence: a camera that reports success without a picture, or a full
+                // disk, would leave a zero-byte file that the evidence hash then refused outright.
+                guard CGImageDestinationFinalize(destination), encoded.length > 0 else {
+                    await MainActor.run { report(nil) }
+                    return
+                }
+                do {
+                    try (encoded as Data).write(to: slot)
+                    await MainActor.run { report(slot) }
+                } catch {
+                    try? FileManager.default.removeItem(at: slot)
+                    await MainActor.run { report(nil) }
+                }
             }
         }
 
@@ -175,7 +185,7 @@ struct PhotoThumb: View {
         ZStack(alignment: .topTrailing) {
             Group {
                 if let image {
-                    Image(decorative: image, scale: 1).resizable().scaledToFill()
+                    Image(image, scale: 1, orientation: .up, label: Text(name)).resizable().scaledToFill()
                 } else {
                     // The same square, empty, so nothing jumps when the picture arrives.
                     Color.clear

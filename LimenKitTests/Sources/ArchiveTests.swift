@@ -29,6 +29,31 @@ import Testing
         #expect(readText(restored.photoDir("p1").appendingPathComponent("wall.jpg")) == "original evidence")
     }
 
+    /// The decrypt loop reads 256 KiB at a time and carries a 16-byte tail between reads, so the
+    /// tag handling and the chunk seam only run on an archive bigger than one read. Every other
+    /// round trip here fits in a single one, which left the seam untested. The evidence is
+    /// pseudo-random so DEFLATE cannot shrink it back under the threshold.
+    @Test func roundTripSurvivesAnArchiveLargerThanOneReadOfTheDecryptLoop() throws {
+        let root = try temporaryRoot()
+        let source = Store(root: root.appendingPathComponent("source"))
+        var p = record("big", .entry, 7)
+        p.defects = [Defect(id: "d1", photos: ["noise.bin"])]
+        try source.save(p)
+        var generator = SystemRandomNumberGenerator()
+        var noise = Data(capacity: 700 * 1024)
+        for _ in 0..<(700 * 1024 / 8) { withUnsafeBytes(of: generator.next()) { noise.append(contentsOf: $0) } }
+        try noise.write(to: source.photoDir("big").appendingPathComponent("noise.bin"))
+        let archive = root.appendingPathComponent("backup.limen")
+        try source.exportArchive(password: password, to: archive)
+        let size = (try FileManager.default.attributesOfItem(atPath: archive.path)[.size] as? Int) ?? 0
+        #expect(size > 256 * 1024)
+
+        let restored = Store(root: root.appendingPathComponent("restored"))
+        #expect(try restored.importArchive(password: password, from: archive) == ArchiveImportResult(imported: 1, skippedExisting: 0, rejected: 0))
+        #expect(restored.load("big") == p)
+        #expect(try Data(contentsOf: restored.photoDir("big").appendingPathComponent("noise.bin")) == noise)
+    }
+
     @Test func restoreRejectsARecordWhoseEvidenceIsMissing() throws {
         let root = try temporaryRoot()
         let source = Store(root: root.appendingPathComponent("source"))

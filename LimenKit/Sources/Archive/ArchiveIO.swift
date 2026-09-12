@@ -33,6 +33,12 @@ enum ArchiveIO {
     private static let maxEntries = 20_000
     private static let stagePrefix = ".archive-import-"
     private static let maxUnpackedBytes: Int64 = 2 * 1024 * 1024 * 1024
+    /// An entry is inflated whole before it is written, so its declared size is also how much
+    /// memory it asks for at once. Metering only the running total let a single entry claim the
+    /// whole budget and take the app down with it. Android streams each entry to disk and meters
+    /// the bytes as they come out; until this reader does the same, no one entry may ask for more
+    /// than a generous ceiling on the largest thing an archive legitimately carries, a photograph.
+    private static let maxEntryBytes: Int64 = 64 * 1024 * 1024
 
     static func export(root: URL, to output: URL) throws {
         let zip = try Zip.Writer(to: output)
@@ -84,6 +90,7 @@ enum ArchiveIO {
             let target = stage.appendingPathComponent(name).standardizedFileURL
             guard target.path.hasPrefix(stagePath) else { throw ArchiveError.invalidEntry(name) }
             try FileManager.default.createDirectory(at: target.deletingLastPathComponent(), withIntermediateDirectories: true)
+            guard entry.uncompressedSize <= maxEntryBytes else { throw ArchiveError.tooLarge }
             bytes += entry.uncompressedSize
             guard bytes <= maxUnpackedBytes else { throw ArchiveError.tooLarge }
             let data = try reader.read(entry)

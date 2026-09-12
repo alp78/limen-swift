@@ -49,8 +49,8 @@ struct DataPrivacyScreen: View {
                             Field(label: s.organisation, value: controller.organisation, onChange: update { $0.organisation = $1 })
                             Field(label: s.controllerContact, value: controller.contactName, onChange: update { $0.contactName = $1 })
                             Field(label: s.street, value: controller.street, onChange: update { $0.street = $1 })
-                            HStack(alignment: .top, spacing: 8) {
-                                Field(label: s.postalCode, value: controller.postalCode, onChange: update { $0.postalCode = $1 }).frame(width: 120)
+                            WeightedRow(weights: [0.38, 0.62]) {
+                                Field(label: s.postalCode, value: controller.postalCode, onChange: update { $0.postalCode = $1 })
                                 Field(label: s.city, value: controller.city, onChange: update { $0.city = $1 })
                             }
                             HStack(alignment: .top, spacing: 8) {
@@ -167,9 +167,13 @@ private struct LicencesView: View {
     @Environment(\.str) private var s
     let onBack: () -> Void
 
+    /// Read once for the life of the process. The body runs again on every scroll, theme change
+    /// and rotation, and this was a file read plus a decode of the whole notice each time.
+    private static let notice: String = Bundle.main.url(forResource: "NOTICE", withExtension: nil)
+        .flatMap { try? String(contentsOf: $0, encoding: .utf8) } ?? ""
+
     var body: some View {
-        let notice = Bundle.main.url(forResource: "NOTICE", withExtension: nil)
-            .flatMap { try? String(contentsOf: $0, encoding: .utf8) } ?? s.licencesMissing
+        let notice = Self.notice.isEmpty ? s.licencesMissing : Self.notice
         VStack(spacing: 0) {
             PageMast(title: s.licencesTitle, controls: false, onBack: onBack)
             Spacer().frame(height: 14)

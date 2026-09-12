@@ -8,9 +8,9 @@ private struct ReviewLine: View {
 
     var body: some View {
         if !value.isBlank {
-            HStack(alignment: .top, spacing: 8) {
-                Text(label).font(LimenType.labelSmall).foregroundStyle(colors.inkDim).frame(maxWidth: .infinity, alignment: .leading).layoutPriority(0.42)
-                Text(value).font(LimenType.bodyMedium).foregroundStyle(colors.ink).frame(maxWidth: .infinity, alignment: .leading).layoutPriority(0.58)
+            WeightedRow(weights: [0.42, 0.58]) {
+                Text(label).font(LimenType.labelSmall).foregroundStyle(colors.inkDim).frame(maxWidth: .infinity, alignment: .leading)
+                Text(value).font(LimenType.bodyMedium).foregroundStyle(colors.ink).frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
