@@ -85,7 +85,11 @@ let project = Project(
                 // permission of its own; iOS has no such route, so the camera is asked for
                 // once. Nothing the camera writes leaves the app's private storage.
                 "NSCameraUsageDescription": "Limen photographs defects and supplied items for the handover record. Photos stay in this app's private storage and leave the phone only in the PDF or backup you export.",
-                "ITSAppUsesNonExemptEncryption": false,
+                // Deliberately absent. The app implements its own AES-256-GCM for the encrypted
+                // backup rather than only calling the operating system's TLS, so the blanket "false"
+                // this key used to carry was very likely the wrong declaration. Without the key App
+                // Store Connect asks the export compliance question on every upload, with Apple's
+                // own criteria on the page, and the answer is given there rather than asserted here.
             ]),
             sources: ["Limen/Sources/**"],
             // The third-party notice ships INSIDE the app, referenced at the repository root

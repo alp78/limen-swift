@@ -6,11 +6,16 @@ struct LimenApp: App {
     @State private var model: LimenModel = {
         #if DEBUG
         let arguments = ProcessInfo.processInfo.arguments
-        if arguments.contains("LIMEN_RESET") || arguments.contains("LIMEN_DEMO") {
+        if arguments.contains("LIMEN_RESET") || arguments.contains("LIMEN_DEMO") || arguments.contains("LIMEN_STORE") {
             LimenModel.resetForTests(prefs: .standard, root: AppFiles.support)
         }
         if let lang = ProcessInfo.processInfo.environment["LIMEN_LANG"] { UserDefaults.standard.set(lang, forKey: "lang") }
         if arguments.contains("LIMEN_DEMO") { LimenModel.seedDemo(into: Store(root: AppFiles.support), prefs: .standard) }
+        // The store screenshots walk a scene of their own, one per language, and start at the
+        // landing rather than inside the record, so this seeds without opening anything.
+        if arguments.contains("LIMEN_STORE") {
+            LimenModel.seedStoreScene(into: Store(root: AppFiles.support), prefs: .standard, lang: Lang.from(ProcessInfo.processInfo.environment["LIMEN_LANG"]))
+        }
         #endif
         return LimenModel()
     }()
