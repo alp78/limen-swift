@@ -1,0 +1,374 @@
+diff --git a/src/content/legal/limen/en.mdx b/src/content/legal/limen/en.mdx
+--- a/src/content/legal/limen/en.mdx
++++ b/src/content/legal/limen/en.mdx
+@@ -3,15 +3,31 @@
+ lang: en
+ title: "Privacy Policy for Limen"
+ description: "Limen records apartment handovers on an Android phone or an iPhone. It is published by Alexis Peringer."
+-updated: 2026-10-01
++updated: 2026-10-14
++# Proposed Android/iPhone 1.2 audit changes authored by Codex, 2026-10-14.
++# This is a draft; native-language and professional legal review are pending.
+ ---
+-Limen records apartment handovers on an Android phone or an iPhone. It is published by Alexis Peringer. Both versions record the same protocol and produce the same PDF, and this notice covers them both. Where the two platforms differ, the text says which is which.
++Limen records apartment handovers on Android and iPhone. It is published by Alexis Peringer. This notice covers both platforms and identifies the version-specific differences.
++
++## Android 1.2
++
++Android 1.2 can also store supporting documents, individual participant positions and follow-up notes. It retains exact exported PDFs and accessible HTML companions in private storage. Recovery copies can retain removed evidence until the complete record is deleted. Exports in Downloads and copies shared with other apps must be deleted separately. A backup can cover one record or the library and contains the referenced evidence and retained exports. Creating an unencrypted archive requires an explicit choice.
++
++## iPhone 1.2
++
++iPhone 1.2 also records supporting documents, each participant's position and follow-up notes. Limen keeps exact exported PDF and HTML copies in private storage so the user can reopen them. At the user's request, it saves the finished copies in Documents/Limen, visible in Files under On My iPhone, and offers the system share sheet. Deleting a record removes its private evidence, recovery copies and retained exports; it does not delete copies already exported or shared.
++
++Recovery copies can still refer to removed photos, signature ink or supporting documents. Limen therefore retains these originals privately until the complete record is deleted. Recovery also preserves an unreadable record's original file. A backup can contain one record or the library, with each selected record's referenced evidence and retained exports. It excludes unused originals and private recovery copies. An unprotected ZIP requires an explicit choice and is readable by anyone who has the file. Password-protected archives are encrypted; Limen cannot recover a lost password.
++
++The optional device-owner authentication gate protects entry to the saved-record library and settings. It leaves the current shared handover accessible and does not encrypt exported files. The user can enable it only after successful device authentication.
+ 
+ ## The short version
+ 
+ > Peringer does not collect, receive, sell or share the personal data entered into Limen. There is no Limen account, developer-operated server, advertising, analytics, telemetry or crash-reporting service. Protocols, photos and drawn signatures stay in the app's private storage unless the user exports, shares or backs them up.
+ 
+ The person or organisation using a Limen installation decides why and how protocol data is recorded and is the data controller for that data. A professional operator remains responsible for giving participants its identity, contact details and any additional notice its processing requires.
++
++For access, correction or deletion requests concerning a handover, contact the person or organisation identified as the data controller in the participant notice. That operator manages the record and any copies it has shared. Peringer cannot access records stored on the user's device.
+ 
+ ## Data the user can record
+ 
+@@ -25,13 +41,13 @@
+ 
+ Limen can create a backup containing records, original photos and signature ink, and saves it where it saves the PDF: Downloads on Android, the Limen folder in Documents on iPhone. A password on that backup is optional. With one, the archive is encrypted and Limen cannot recover the password. Without one, anyone who has the file can read everything in it, which the app says on screen when it saves. A backup in either place is outside Limen's private storage and under the user's control. Restoring a backup reads only the file the user selects.
+ 
+-While it builds a password-protected archive, the iPhone version writes the unencrypted intermediate copy into its own cache rather than beside the finished file, removes it when the export ends, and sweeps it again on the next export in case the app was killed part way.
++On iPhone 1.2, Limen stages exports privately before publishing the finished files to Documents. It removes temporary files when an operation ends and clears abandoned staging when the app next starts. An encrypted backup can have an unencrypted intermediate copy in this private staging area.
+ 
+-Limen keeps its private app data out of the platform's own backups. On Android it disables cloud backup and device-to-device transfer. On iPhone it marks those files as excluded, so neither an iCloud backup nor a backup to a computer copies them.
++On Android, Limen disables cloud backup and device-to-device transfer. On iPhone 1.2, Limen excludes private records, original evidence, recovery copies, retained PDF/HTML copies and private operation staging from system backups. iOS Data Protection protects those private files after a restart until the first device unlock; this is separate from password-protected archive encryption. Preferences remain subject to the operating system's normal storage and backup behaviour. They can include operator/contact defaults, interface choices, the open record identifier and recovery values for recent input. Deleting a record does not clear reusable contact defaults; the operator must also remove those defaults when appropriate. Files exported to Documents or shared with another app are separate copies under the user's control.
+ 
+ ## Network use
+ 
+-Limen uses the network for one in-app service. After the user types at least three characters in a Swiss address field, the app waits briefly and automatically sends the typed search text and ordinary network metadata to the Swiss federal swisstopo SearchServer at `https://api3.geo.admin.ch/rest/services/ech/SearchServer`. That service is operated under its own terms and privacy information. The lookup does not send protocol records, photos or signatures to Peringer. On iPhone the app makes that request through an ephemeral session, so neither the typed address nor the reply is written to a shared cache on disk.
++On Android 1.2 and iPhone 1.2, online address suggestions are optional and off by default. Before activation, Limen identifies swisstopo and explains that the typed address is sent; the user confirms the choice. When enabled, typing at least three characters in a Swiss address field sends the search text and ordinary network metadata to the federal swisstopo SearchServer at `https://api3.geo.admin.ch/rest/services/ech/SearchServer`. Manual entry works offline. Earlier Android and iPhone versions start suggestions automatically after typing. Swisstopo operates under its own terms and privacy information. The lookup does not send records, photos or signatures to Peringer. On iPhone, an ephemeral network session avoids a shared disk cache for the query and reply.
+ 
+ The app also contains links to independent rental-deposit providers. Opening one hands the URL to the user's browser; the browser and destination site then operate under their own terms. Limen does not receive information about the visit.
+ 
+@@ -39,13 +55,13 @@
+ 
+ On Android, Limen declares no camera or storage permission: a photo is taken by the device's system camera through a temporary grant for one destination file, or selected through the system picker.
+ 
+-On iPhone, the camera is the one permission Limen asks for, because iOS has no way to hand the capture to a separate camera app the way Android does. The photo library is reached through the system picker, which needs no permission. In both versions, only the system components involved and the item the user chooses take part.
++On iPhone, Limen asks for camera access to take a photo inside the app. The system photo picker gives access only to selected items without general photo-library permission. On iPhone 1.2, the system file picker also lets the user choose supporting documents; Limen copies only the selected files into the record's private evidence storage.
+ 
+ ## Permissions and third-party components
+ 
+ The signed Android release declares the `INTERNET` permission. It also contains `dev.peringer.limen.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION`, a private permission generated by an Android support library so the app's own components can communicate; it grants no access to device data and cannot be used by other apps.
+ 
+-iOS has no equivalent of an internet permission. The iPhone release declares one usage description, for the camera, which is the text the system shows when it asks.
++iOS has no equivalent of an internet permission. Before iPhone 1.2, Limen declares a camera usage description. iPhone 1.2 also supplies a Face ID usage description for the optional library/settings gate. The operating system performs device-owner authentication; Limen does not receive the user's biometric data or device passcode.
+ 
+ Open-source libraries used by the Android build run inside the app. The iPhone build carries no third-party code at all: it ships a reduced copy of libphonenumber's published metadata and the cantonal flags as data files. Neither build adds advertising, analytics or developer-operated collection services.
+ 
+diff --git a/src/content/legal/limen/fr.mdx b/src/content/legal/limen/fr.mdx
+--- a/src/content/legal/limen/fr.mdx
++++ b/src/content/legal/limen/fr.mdx
+@@ -3,18 +3,35 @@
+ lang: fr
+ title: "Politique de confidentialité de Limen"
+ description: "Confidentialité de Limen : conservation des constats sur l’appareil, exports, sauvegardes, recherche d’adresses et autorisations sur Android et iPhone."
+-updated: 2026-10-07
+-# Translated from en.mdx. sourceHash tracks the English this came from,
+-# so a changed source is retranslated and an unchanged one is skipped.
++updated: 2026-10-14
++# Base translation from en.mdx; sourceHash below identifies that historical base.
++# New audit paragraphs are Codex draft translations, not a new provider translation.
++# The historical hash is intentionally unchanged; the revised notice needs review.
+ sourceHash: 8080a521ed2dfb0c
++# Proposed Android/iPhone 1.2 audit changes authored by Codex, 2026-10-14.
++# This is a draft; native-language and professional legal review are pending.
+ ---
+-Limen permet d’établir des constats d’état des lieux sur Android et iPhone. Alexis Peringer publie les deux versions. Cette politique décrit leur fonctionnement commun et précise les différences entre les deux plateformes.
++Limen permet d’établir des constats d’état des lieux sur Android et iPhone. Alexis Peringer publie les deux versions. Cette politique couvre les deux plateformes et précise les différences propres aux versions.
++
++## Android 1.2
++
++Android 1.2 peut aussi conserver des pièces justificatives, les positions individuelles des participants et des notes de suivi. Limen conserve les PDF exportés et leurs copies HTML accessibles à l’identique dans son stockage privé. Les copies de récupération peuvent garder des preuves retirées jusqu’à la suppression du constat entier. L’utilisateur supprime séparément les exports dans Téléchargements et les copies partagées avec d’autres applications. Une sauvegarde peut couvrir un constat ou la collection et contient les preuves référencées ainsi que les exports conservés. La création d’une archive non chiffrée exige un choix explicite.
++
++## iPhone 1.2
++
++La version iPhone 1.2 enregistre aussi des pièces justificatives, la position de chaque participant et des notes de suivi. Limen conserve les copies PDF et HTML exportées à l’identique dans son stockage privé pour permettre leur réouverture. À votre demande, l’application enregistre les copies terminées dans Documents/Limen, accessible dans Fichiers sous « Sur mon iPhone », et propose le menu de partage du système. La suppression d’un constat retire ses preuves privées, ses copies de récupération et ses exports conservés ; elle ne supprime pas les copies déjà exportées ou partagées.
++
++Les copies de récupération peuvent encore faire référence à des photographies, tracés de signatures ou pièces justificatives retirés du constat. Limen garde donc ces originaux dans son stockage privé jusqu’à la suppression du constat entier. Lors d’une récupération, Limen préserve aussi le fichier original d’un constat illisible. Une sauvegarde peut comprendre un constat ou la collection, avec les preuves référencées et les exports conservés de chaque constat sélectionné. Elle exclut les originaux inutilisés et les copies privées de récupération. Un ZIP sans protection exige un choix explicite ; toute personne disposant du fichier peut le lire. Limen chiffre les archives protégées par mot de passe, mais ne peut pas récupérer un mot de passe perdu.
++
++Le contrôle d’accès facultatif utilise l’authentification du propriétaire de l’appareil pour ouvrir la collection de constats et les réglages. Le constat partagé en cours reste accessible. Ce contrôle ne chiffre pas les fichiers exportés. Vous pouvez l’activer uniquement après une authentification réussie sur l’appareil.
+ 
+ ## Résumé
+ 
+ > Le développeur ne reçoit pas les données personnelles saisies dans Limen et ne les vend ni ne les partage. L’application conserve les constats, photographies et tracés des signatures sur votre appareil. Vous décidez de leur export, de leur partage et de leur sauvegarde. Limen ne nécessite aucun compte auprès du développeur et n’intègre ni publicité, ni outil de mesure d’utilisation, ni télémétrie, ni service de signalement des plantages.
+ 
+ La personne ou l’organisation qui utilise Limen détermine les finalités et les modalités d’enregistrement des données du constat. Elle assume les responsabilités liées à ce traitement. Dans un cadre professionnel, elle communique aux participants son identité, ses coordonnées et les informations requises pour les usages concernés.
++
++Pour demander l’accès aux données d’un constat, leur rectification ou leur suppression, contactez la personne ou l’organisation que l’information destinée aux participants désigne comme responsable du traitement. Cet opérateur gère le constat et les copies qu’il a partagées. Peringer n’a pas accès aux constats conservés sur votre appareil.
+ 
+ ## Données que l’utilisateur peut enregistrer
+ 
+@@ -35,13 +52,13 @@
+ 
+ Limen peut créer une archive de sauvegarde comprenant les constats, les photographies originales et les tracés des signatures. L’archive utilise le même emplacement que les PDF exportés. Vous pouvez la protéger par un mot de passe : Limen chiffre alors l’archive, mais ne peut pas récupérer un mot de passe perdu. Sans mot de passe, toute personne disposant du fichier peut en lire le contenu ; l’application l’indique avant l’enregistrement. Vous restez responsable des copies exportées. Pour une restauration, Limen lit uniquement le fichier que vous sélectionnez.
+ 
+-Lors de la création d’une archive chiffrée sur iPhone, Limen place la copie temporaire non chiffrée dans son cache privé. L’application la supprime à la fin de l’export et vérifie à l’export suivant qu’aucun fichier temporaire ne subsiste après une éventuelle interruption.
++Sur iPhone 1.2, Limen prépare les exports dans un espace privé avant de publier les fichiers terminés dans Documents. L’application supprime les fichiers temporaires à la fin d’une opération et nettoie les fichiers abandonnés au démarrage suivant. Une sauvegarde chiffrée peut avoir une copie intermédiaire non chiffrée dans cet espace privé.
+ 
+-Limen exclut ses données privées des sauvegardes automatiques du système. La version Android désactive la sauvegarde cloud et le transfert vers un autre appareil. La version iPhone marque les fichiers concernés comme exclus des sauvegardes iCloud et des sauvegardes sur ordinateur.
++Sur Android, Limen désactive la sauvegarde cloud et le transfert vers un autre appareil. Sur iPhone 1.2, Limen exclut des sauvegardes système les constats privés, les preuves originales, les copies de récupération, les copies PDF/HTML conservées et les fichiers temporaires privés des opérations. Après un redémarrage, la protection des données d’iOS protège ces fichiers privés jusqu’au premier déverrouillage de l’appareil ; cette protection est distincte du chiffrement des archives par mot de passe. Les préférences suivent les règles habituelles de stockage et de sauvegarde du système. Elles peuvent contenir les coordonnées et contacts par défaut de l’opérateur, les choix d’interface, l’identifiant du constat ouvert et des valeurs de récupération de la saisie récente. La suppression d’un constat n’efface pas les contacts réutilisables ; l’opérateur doit aussi supprimer ces valeurs lorsque la situation l’exige. Vous gérez séparément les fichiers exportés dans Documents ou partagés avec une autre application.
+ 
+ ## Utilisation du réseau
+ 
+-La recherche d’adresses suisses est le seul service réseau intégré à Limen. À partir de trois caractères saisis, l’application attend brièvement puis transmet le texte au service SearchServer de swisstopo à l’adresse `https://api3.geo.admin.ch/rest/services/ech/SearchServer`. La requête comporte aussi les informations techniques nécessaires à la connexion. Swisstopo traite ces demandes selon ses propres conditions et informations de confidentialité. Cette recherche ne transmet ni les constats, ni les photographies, ni les signatures au développeur. Sur iPhone, une session réseau temporaire évite l’enregistrement de l’adresse et de la réponse dans un cache partagé sur le disque.
++Sur Android 1.2 et iPhone 1.2, les suggestions d’adresses en ligne sont facultatives et désactivées au départ. Avant leur activation, Limen nomme swisstopo et explique l’envoi de l’adresse saisie ; vous confirmez ensuite votre choix. Après activation, Limen transmet le texte de recherche et les métadonnées réseau usuelles au service fédéral SearchServer de swisstopo à l’adresse `https://api3.geo.admin.ch/rest/services/ech/SearchServer` dès la saisie d’au moins trois caractères dans un champ d’adresse suisse. La saisie manuelle fonctionne hors ligne. Les versions Android et iPhone antérieures démarrent automatiquement les suggestions après la saisie. Swisstopo applique ses propres conditions et informations de confidentialité. Cette recherche ne transmet ni constat, ni photographie, ni signature à Peringer. Sur iPhone, une session réseau temporaire évite un cache partagé sur disque pour la requête et la réponse.
+ 
+ L’application propose aussi des liens vers des fournisseurs indépendants de garanties de loyer. Lorsque vous ouvrez un lien, Limen transmet l’adresse au navigateur. Le navigateur et le site destinataire appliquent leurs propres conditions de traitement des données. Limen ne reçoit pas d’information sur la visite.
+ 
+@@ -49,13 +66,13 @@
+ 
+ Sur Android, Limen ne demande pas d’accès général à l’appareil photo ni au stockage. Vous prenez une photographie avec l’application Appareil photo du téléphone ou choisissez une image avec le sélecteur système. Pour la prise de vue, le système accorde un accès temporaire au fichier de destination.
+ 
+-Sur iPhone, Limen demande l’autorisation d’utiliser l’appareil photo pour prendre un cliché dans l’application. Vous choisissez les images existantes au moyen du sélecteur de photos du système, sans donner à Limen un accès général à la photothèque. Dans les deux versions, l’application reçoit uniquement les photographies prises ou sélectionnées pour le constat.
++Sur iPhone, Limen demande l’accès à l’appareil photo pour prendre un cliché dans l’application. Le sélecteur de photos du système donne accès aux seuls éléments sélectionnés, sans autorisation générale d’accès à la photothèque. Sur iPhone 1.2, vous pouvez aussi choisir des pièces justificatives dans le sélecteur de fichiers du système ; Limen copie uniquement les fichiers sélectionnés dans le stockage privé des preuves du constat.
+ 
+ ## Autorisations et composants tiers
+ 
+ La version Android déclare la permission `INTERNET` pour la recherche d’adresses. Elle contient aussi `dev.peringer.limen.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION`, une permission technique privée créée par une bibliothèque Android pour les échanges entre les composants internes de l’application. Cette permission n’accorde pas d’accès aux données personnelles de l’appareil.
+ 
+-iOS ne présente pas de demande d’autorisation générale pour l’accès à internet. La version iPhone fournit le texte expliquant l’utilisation de l’appareil photo, que le système affiche lorsqu’il demande votre accord.
++iOS ne présente pas de demande d’autorisation générale pour l’accès à internet. Avant la version iPhone 1.2, Limen fournit une description d’utilisation de l’appareil photo. La version iPhone 1.2 fournit aussi une description d’utilisation de Face ID pour le contrôle d’accès facultatif à la collection et aux réglages. Le système authentifie le propriétaire de l’appareil ; Limen ne reçoit ni ses données biométriques ni le code de l’appareil.
+ 
+ Les bibliothèques open source de la version Android fonctionnent dans l’application. La version iPhone n’intègre pas de bibliothèque logicielle tierce ; elle contient une copie réduite des métadonnées de libphonenumber et les images des drapeaux cantonaux. Les deux versions n’intègrent ni publicité, ni outil de mesure d’utilisation, ni service de collecte exploité par le développeur.
+ 
+diff --git a/src/content/legal/limen/de.mdx b/src/content/legal/limen/de.mdx
+--- a/src/content/legal/limen/de.mdx
++++ b/src/content/legal/limen/de.mdx
+@@ -3,18 +3,35 @@
+ lang: de
+ title: "Datenschutzerklärung für Limen"
+ description: "Limen zeichnet Wohnungsübergaben auf einem Android-Telefon oder einem iPhone auf. Es wird von Alexis Peringer veröffentlicht."
+-updated: 2026-10-01
+-# Translated from en.mdx. sourceHash tracks the English this came from,
+-# so a changed source is retranslated and an unchanged one is skipped.
++updated: 2026-10-14
++# Base translation from en.mdx; sourceHash below identifies that historical base.
++# New audit paragraphs are Codex draft translations, not a new provider translation.
++# The historical hash is intentionally unchanged; the revised notice needs review.
+ sourceHash: 8080a521ed2dfb0c
++# Proposed Android/iPhone 1.2 audit changes authored by Codex, 2026-10-14.
++# This is a draft; native-language and professional legal review are pending.
+ ---
+-Limen zeichnet Wohnungsübergaben auf einem Android-Telefon oder einem iPhone auf. Es wird von Alexis Peringer veröffentlicht. Beide Fassungen zeichnen dasselbe Protokoll auf und erzeugen dasselbe PDF, und diese Erklärung gilt für beide. Wo sich die zwei Plattformen unterscheiden, nennt der Text die jeweilige.
++Limen dokumentiert Wohnungsübergaben auf Android und iPhone. Alexis Peringer veröffentlicht die App. Diese Erklärung gilt für beide Plattformen und benennt Unterschiede zwischen den Versionen.
++
++## Android 1.2
++
++Android 1.2 kann auch Beilagen, individuelle Stellungnahmen der Beteiligten und Nachverfolgungsnotizen speichern. Exportierte PDFs und zugängliche HTML-Kopien bleiben unverändert im privaten Speicher erhalten. Wiederherstellungskopien können entfernte Belege bis zur Löschung des gesamten Protokolls behalten. Exporte in Downloads und an andere Apps weitergegebene Kopien sind gesondert zu löschen. Eine Sicherung kann ein Protokoll oder die Sammlung umfassen und enthält die zugehörigen Belege und aufbewahrten Exporte. Ein unverschlüsseltes Archiv erfordert eine ausdrückliche Auswahl.
++
++## iPhone 1.2
++
++Die iPhone-Version 1.2 erfasst ebenfalls Beilagen, die Stellungnahme jeder beteiligten Person und Nachverfolgungsnotizen. Limen bewahrt exportierte PDF- und HTML-Kopien unverändert im privaten Speicher auf, damit sie erneut geöffnet werden können. Auf Wunsch speichert die App die fertigen Kopien in Documents/Limen, sichtbar in Dateien unter «Auf meinem iPhone», und bietet das Teilen über das System an. Beim Löschen eines Protokolls entfernt Limen dessen private Belege, Wiederherstellungskopien und aufbewahrte Exporte. Bereits exportierte oder geteilte Kopien werden dadurch nicht gelöscht.
++
++Wiederherstellungskopien können weiterhin auf entfernte Fotos, Unterschriftenspuren oder Beilagen verweisen. Limen behält diese Originale deshalb bis zur Löschung des gesamten Protokolls im privaten Speicher. Bei einer Wiederherstellung bleibt auch die Originaldatei eines unlesbaren Protokolls erhalten. Eine Sicherung kann ein Protokoll oder die Sammlung mit den referenzierten Belegen und aufbewahrten Exporten jedes ausgewählten Protokolls enthalten. Unbenutzte Originale und private Wiederherstellungskopien sind nicht enthalten. Ein ungeschütztes ZIP erfordert eine ausdrückliche Auswahl; jede Person mit Zugriff auf die Datei kann es lesen. Passwortgeschützte Archive sind verschlüsselt. Limen kann ein verlorenes Passwort nicht wiederherstellen.
++
++Die optionale Geräteauthentifizierung schützt den Zugang zur Protokollsammlung und zu den Einstellungen. Die aktuell gemeinsam bearbeitete Übergabe bleibt zugänglich. Dieser Zugangsschutz verschlüsselt keine exportierten Dateien. Er lässt sich erst nach erfolgreicher Authentifizierung am Gerät aktivieren.
+ 
+ ## Die kurze Version
+ 
+ > Peringer sammelt, empfängt, verkauft oder teilt die in Limen eingegebenen personenbezogenen Daten nicht. Es gibt kein Limen-Konto, keinen vom Entwickler betriebenen Server, keine Werbung, Analysen, Telemetrie oder Absturzberichte-Dienste. Protokolle, Fotos und gezeichnete Unterschriften bleiben in der privaten Speicherung der App, es sei denn, der Benutzer exportiert, teilt oder sichert sie.
+ 
+ Die Person oder Organisation, die eine Limen-Installation verwendet, entscheidet, warum und wie Protokolldaten aufgezeichnet werden, und ist der Verantwortliche für diese Daten. Ein professioneller Betreiber bleibt dafür verantwortlich, den Teilnehmern seine Identität, Kontaktdaten und alle zusätzlichen Hinweise zu geben, die seine Verarbeitung erfordert.
++
++Für Auskunft, Berichtigung oder Löschung zu einem Übergabeprotokoll wenden Sie sich an die Person oder Organisation, die in der Teilnehmerinformation als datenschutzrechtlich verantwortlich genannt wird. Dieser Betreiber verwaltet das Protokoll und die von ihm weitergegebenen Kopien. Peringer kann nicht auf Protokolle auf Ihrem Gerät zugreifen.
+ 
+ ## Daten, die der Benutzer aufzeichnen kann
+ 
+@@ -28,13 +45,13 @@
+ 
+ Limen kann ein Backup erstellen, das Aufzeichnungen, Originalfotos und Unterschriften enthält, und speichert es dort, wo es das PDF speichert: im Download-Ordner auf Android, im Limen-Ordner in den Dokumenten auf dem iPhone. Ein Passwort für dieses Backup ist optional. Mit einem Passwort wird das Archiv verschlüsselt und Limen kann das Passwort nicht wiederherstellen. Ohne ein Passwort kann jeder, der die Datei besitzt, alles darin lesen, was die App bei der Speicherung auf dem Bildschirm anzeigt. Ein Backup an beiden Orten liegt ausserhalb des privaten Speichers von Limen und unter der Kontrolle des Benutzers. Beim Wiederherstellen eines Backups wird nur die Datei gelesen, die der Benutzer auswählt.
+ 
+-Während die iPhone-Fassung ein passwortgeschütztes Archiv aufbaut, schreibt sie die unverschlüsselte Zwischenkopie in ihren eigenen Cache und nicht neben die fertige Datei, entfernt sie am Ende des Exports und räumt sie beim nächsten Export erneut weg, falls die App zwischenzeitlich beendet wurde.
++Unter iPhone 1.2 bereitet Limen Exporte im privaten Speicher vor und legt erst fertige Dateien in Documents ab. Die App entfernt temporäre Dateien nach Abschluss eines Vorgangs und beseitigt liegen gebliebene Arbeitsdateien beim nächsten Start. Für eine verschlüsselte Sicherung kann in diesem privaten Bereich eine unverschlüsselte Zwischenkopie entstehen.
+ 
+-Limen hält seine privaten App-Daten aus den Backups der Plattform heraus. Auf Android deaktiviert es Cloud-Backup und Gerät-zu-Gerät-Übertragung. Auf dem iPhone markiert es diese Dateien als ausgeschlossen, sodass weder ein iCloud-Backup noch ein Backup auf einen Computer sie kopiert.
++Auf Android deaktiviert Limen Cloud-Backup und Gerät-zu-Gerät-Übertragung. Unter iPhone 1.2 schliesst Limen private Protokolle, Originalbelege, Wiederherstellungskopien, aufbewahrte PDF/HTML-Kopien und private temporäre Arbeitsdateien von Systemsicherungen aus. Nach einem Neustart schützt iOS Data Protection diese privaten Dateien bis zur ersten Geräteentsperrung; dieser Schutz ist von der passwortbasierten Archivverschlüsselung getrennt. Für Einstellungen gelten die üblichen Speicher- und Sicherungsregeln des Betriebssystems. Sie können voreingestellte Betreiber- und Kontaktdaten, Oberflächenoptionen, die Kennung des offenen Protokolls und Wiederherstellungswerte kürzlich erfolgter Eingaben enthalten. Das Löschen eines Protokolls entfernt wiederverwendbare Kontaktdaten nicht; der Betreiber muss diese Vorgaben bei Bedarf ebenfalls löschen. Nach Documents exportierte oder mit anderen Apps geteilte Dateien sind gesonderte Kopien unter der Kontrolle der nutzenden Person.
+ 
+ ## Netzwerknutzung
+ 
+-Limen nutzt das Netzwerk für einen einzigen Dienst in der App. Nachdem der Benutzer mindestens drei Zeichen in ein Schweizer Adressfeld eingegeben hat, wartet die App kurz und sendet automatisch den eingegebenen Suchtext und gewöhnliche Netzwerk-Metadaten an den Schweizer Bundes-Suchserver von swisstopo unter `https://api3.geo.admin.ch/rest/services/ech/SearchServer`. Dieser Dienst wird unter seinen eigenen Bedingungen und Datenschutzinformationen betrieben. Die Suche sendet keine Protokolldaten, Fotos oder Unterschriften an Peringer. Auf dem iPhone stellt die App diese Anfrage über eine ephemere Sitzung, sodass weder die eingegebene Adresse noch die Antwort in einen gemeinsamen Cache auf der Festplatte geschrieben wird.
++Unter Android 1.2 und iPhone 1.2 sind Online-Adressvorschläge freiwillig und zunächst ausgeschaltet. Vor der Aktivierung nennt Limen swisstopo und erklärt die Übermittlung der eingegebenen Adresse; die nutzende Person bestätigt ihre Wahl. Nach der Aktivierung werden ab drei Zeichen in einem Schweizer Adressfeld der Suchtext und übliche Netzwerkmetadaten an den Bundesdienst swisstopo SearchServer unter `https://api3.geo.admin.ch/rest/services/ech/SearchServer` gesendet. Die manuelle Eingabe funktioniert offline. Frühere Android- und iPhone-Versionen starten Vorschläge automatisch nach der Eingabe. Für swisstopo gelten dessen eigene Bedingungen und Datenschutzinformationen. Die Suche sendet keine Protokolle, Fotos oder Unterschriften an Peringer. Auf dem iPhone verhindert eine temporäre Netzwerksitzung einen gemeinsamen Festplattencache für Anfrage und Antwort.
+ 
+ Die App enthält auch Links zu unabhängigen Mietkautionsanbietern. Das Öffnen eines Links übergibt die URL an den Browser des Benutzers; der Browser und die Zielseite arbeiten dann unter ihren eigenen Bedingungen. Limen empfängt keine Informationen über den Besuch.
+ 
+@@ -42,13 +59,13 @@
+ 
+ Auf Android deklariert Limen keine Kamera- oder Speicherberechtigung: ein Foto wird über die Systemkamera des Geräts durch eine temporäre Freigabe für eine Zieldatei aufgenommen oder über den Systemauswahlbildschirm ausgewählt.
+ 
+-Auf dem iPhone ist die Kamera die eine Berechtigung, um die Limen bittet, denn iOS kann die Aufnahme nicht wie Android an eine eigene Kamera-App abgeben. Die Fotobibliothek läuft über den Systemauswahlbildschirm, der keine Berechtigung verlangt. In beiden Fassungen sind nur die beteiligten Systemkomponenten und das Element, das der Benutzer auswählt, im Spiel.
++Auf dem iPhone bittet Limen um Kamerazugriff, um ein Foto innerhalb der App aufzunehmen. Die Fotoauswahl des Systems gewährt nur Zugriff auf ausgewählte Elemente und benötigt keine allgemeine Berechtigung für die Fotomediathek. Unter iPhone 1.2 können auch Beilagen über die Dateiauswahl des Systems gewählt werden. Limen kopiert nur die ausgewählten Dateien in den privaten Belegspeicher des Protokolls.
+ 
+ ## Berechtigungen und Komponenten von Drittanbietern
+ 
+ Die signierte Android-Version deklariert die Berechtigung `INTERNET`. Sie enthält auch `dev.peringer.limen.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION`, eine private Berechtigung, die von einer Android-Unterstützungsbibliothek generiert wird, damit die Komponenten der App untereinander kommunizieren können; sie gewährt keinen Zugriff auf Gerätedaten und kann nicht von anderen Apps verwendet werden.
+ 
+-iOS hat kein Gegenstück zu einer Internet-Berechtigung. Die iPhone-Version deklariert eine einzige Verwendungsbeschreibung, die der Kamera, und das ist der Text, den das System beim Fragen anzeigt.
++iOS hat kein Gegenstück zu einer Internet-Berechtigung. Vor iPhone 1.2 deklariert Limen eine Verwendungsbeschreibung für die Kamera. Die iPhone-Version 1.2 liefert zusätzlich eine Verwendungsbeschreibung für Face ID beim optionalen Zugangsschutz für Sammlung und Einstellungen. Das Betriebssystem führt die Geräteauthentifizierung durch. Limen erhält weder biometrische Daten noch den Gerätecode.
+ 
+ Open-Source-Bibliotheken, die von der Android-Fassung verwendet werden, laufen innerhalb der App. Die iPhone-Fassung enthält überhaupt keinen Fremdcode: sie liefert eine reduzierte Kopie der veröffentlichten Metadaten von libphonenumber und die Kantonswappen als Datendateien mit. Keine der beiden Fassungen fügt Werbung, Analysen oder vom Entwickler betriebene Sammeldienste hinzu.
+ 
+diff --git a/src/content/legal/limen/it.mdx b/src/content/legal/limen/it.mdx
+--- a/src/content/legal/limen/it.mdx
++++ b/src/content/legal/limen/it.mdx
+@@ -3,18 +3,35 @@
+ lang: it
+ title: "Informativa sulla privacy per Limen"
+ description: "Limen registra le consegne di appartamenti su un telefono Android o un iPhone. È pubblicato da Alexis Peringer."
+-updated: 2026-10-01
+-# Translated from en.mdx. sourceHash tracks the English this came from,
+-# so a changed source is retranslated and an unchanged one is skipped.
++updated: 2026-10-14
++# Base translation from en.mdx; sourceHash below identifies that historical base.
++# New audit paragraphs are Codex draft translations, not a new provider translation.
++# The historical hash is intentionally unchanged; the revised notice needs review.
+ sourceHash: 8080a521ed2dfb0c
++# Proposed Android/iPhone 1.2 audit changes authored by Codex, 2026-10-14.
++# This is a draft; native-language and professional legal review are pending.
+ ---
+-Limen registra le consegne di appartamenti su un telefono Android o un iPhone. È pubblicato da Alexis Peringer. Le due versioni registrano lo stesso protocollo e producono lo stesso PDF, e questa informativa vale per entrambe. Dove le due piattaforme differiscono, il testo indica quale.
++Limen documenta le consegne di abitazioni su Android e iPhone. È pubblicato da Alexis Peringer. Questa informativa copre entrambe le piattaforme e indica le differenze tra le versioni.
++
++## Android 1.2
++
++Android 1.2 può conservare anche documenti giustificativi, posizioni individuali dei partecipanti e note di seguito. I PDF esportati e le copie HTML accessibili sono conservati senza modifiche nello spazio privato. Le copie di recupero possono conservare prove rimosse fino alla cancellazione dell’intero verbale. Le esportazioni in Download e le copie condivise con altre app si eliminano separatamente. Un backup può comprendere un verbale o la raccolta e contiene le prove referenziate e le esportazioni conservate. Un archivio non cifrato richiede una scelta esplicita.
++
++## iPhone 1.2
++
++La versione iPhone 1.2 registra anche documenti giustificativi, la posizione di ciascun partecipante e note di seguito. Limen conserva copie identiche dei PDF e dei documenti HTML esportati nello spazio privato, per consentirne la riapertura. Su richiesta dell’utente, salva le copie complete in Documents/Limen, visibile in File sotto «Su questo iPhone», e propone il menu di condivisione del sistema. L’eliminazione di un verbale rimuove le relative prove private, le copie di recupero e le esportazioni conservate; non elimina le copie già esportate o condivise.
++
++Le copie di recupero possono ancora fare riferimento a foto, tracciati delle firme o documenti giustificativi rimossi. Limen conserva quindi questi originali nello spazio privato fino all’eliminazione dell’intero verbale. Durante il recupero preserva anche il file originale di un verbale illeggibile. Un backup può contenere un verbale o la raccolta, con le prove referenziate e le esportazioni conservate di ciascun verbale selezionato. Esclude gli originali inutilizzati e le copie private di recupero. Uno ZIP non protetto richiede una scelta esplicita ed è leggibile da chiunque disponga del file. Gli archivi protetti da password sono cifrati; Limen non può recuperare una password persa.
++
++Il controllo d’accesso facoltativo usa l’autenticazione del proprietario del dispositivo per aprire la raccolta dei verbali e le impostazioni. La consegna condivisa in corso resta accessibile. Questo controllo non cifra i file esportati. L’utente può attivarlo solo dopo un’autenticazione riuscita sul dispositivo.
+ 
+ ## La versione breve
+ 
+ > Peringer non raccoglie, riceve, vende o condivide i dati personali inseriti in Limen. Non esiste un account Limen, server gestiti dallo sviluppatore, pubblicità, analisi, telemetria o servizi di segnalazione errori. ProtocollI, foto e firme disegnate rimangono nell'archiviazione privata dell'app a meno che l'utente non li esporti, condivida o esegua il backup.
+ 
+ La persona o l'organizzazione che utilizza un'installazione di Limen decide perché e come i dati del protocollo vengono registrati ed è il titolare del trattamento per tali dati. Un operatore professionista rimane responsabile di fornire ai partecipanti la propria identità, i dettagli di contatto e qualsiasi ulteriore informazione che il suo trattamento richiede.
++
++Per chiedere l’accesso, la rettifica o la cancellazione dei dati di un verbale, contattare la persona o l’organizzazione indicata come titolare del trattamento nell’informativa ai partecipanti. Tale operatore gestisce il verbale e le copie che ha condiviso. Peringer non può accedere ai verbali conservati sul dispositivo dell’utente.
+ 
+ ## Dati che l'utente può registrare
+ 
+@@ -28,13 +45,13 @@
+ 
+ Limen può creare un backup contenente registrazioni, foto originali e inchiostro delle firme e lo salva dove salva il PDF: in Download su Android, nella cartella Limen dei Documenti su iPhone. Una password per quel backup è facoltativa. Con una password, l'archivio è crittografato e Limen non può recuperare la password. Senza una password, chiunque abbia il file può leggere tutto ciò che contiene, come indicato dall'app al momento del salvataggio. Un backup in entrambe le posizioni è al di fuori dell'archiviazione privata di Limen e sotto il controllo dell'utente. Il ripristino di un backup legge solo il file che l'utente seleziona.
+ 
+-Mentre costruisce un archivio protetto da password, la versione iPhone scrive la copia intermedia non crittografata nella propria cache e non accanto al file finito, la rimuove alla fine dell'esportazione e la spazza via di nuovo all'esportazione successiva, nel caso in cui l'app sia stata chiusa a metà.
++Su iPhone 1.2, Limen prepara le esportazioni in uno spazio privato prima di pubblicare i file completi in Documents. Rimuove i file temporanei al termine dell’operazione e cancella quelli abbandonati al successivo avvio dell’app. Un backup cifrato può avere una copia intermedia non cifrata in questo spazio privato.
+ 
+-Limen tiene i propri dati privati dell'app fuori dai backup della piattaforma. Su Android disabilita il backup cloud e il trasferimento dispositivo-dispositivo. Su iPhone contrassegna quei file come esclusi, così né un backup iCloud né un backup su un computer li copia.
++Su Android, Limen disabilita il backup cloud e il trasferimento tra dispositivi. Su iPhone 1.2, Limen esclude dai backup di sistema i verbali privati, le prove originali, le copie di recupero, le copie PDF/HTML conservate e i file temporanei privati delle operazioni. Dopo un riavvio, la protezione dei dati di iOS protegge questi file privati fino al primo sblocco del dispositivo; è distinta dalla cifratura degli archivi tramite password. Le preferenze seguono le normali regole di archiviazione e backup del sistema operativo. Possono contenere dati predefiniti dell’operatore e dei contatti, scelte dell’interfaccia, l’identificativo del verbale aperto e valori per il recupero di dati inseriti di recente. L’eliminazione di un verbale non cancella i contatti riutilizzabili; l’operatore deve eliminare anche questi valori quando necessario. I file esportati in Documents o condivisi con un’altra app sono copie separate sotto il controllo dell’utente.
+ 
+ ## Utilizzo della rete
+ 
+-Limen usa la rete per un solo servizio in-app. Dopo che l'utente digita almeno tre caratteri in un campo di indirizzo svizzero, l'app attende brevemente e invia automaticamente il testo di ricerca digitato e metadati di rete ordinari al Swiss federal swisstopo SearchServer all'indirizzo `https://api3.geo.admin.ch/rest/services/ech/SearchServer`. Tale servizio è gestito secondo i propri termini e le proprie informazioni sulla privacy. La ricerca non invia registrazioni di protocollo, foto o firme a Peringer. Su iPhone l'app effettua quella richiesta tramite una sessione effimera, così né l'indirizzo digitato né la risposta vengono scritti in una cache condivisa su disco.
++Su Android 1.2 e iPhone 1.2 i suggerimenti di indirizzi online sono facoltativi e inizialmente disattivati. Prima dell’attivazione, Limen indica swisstopo e spiega l’invio dell’indirizzo digitato; l’utente conferma la scelta. Dopo l’attivazione, digitare almeno tre caratteri in un campo di indirizzo svizzero invia il testo di ricerca e i normali metadati di rete al servizio federale SearchServer di swisstopo all’indirizzo `https://api3.geo.admin.ch/rest/services/ech/SearchServer`. L’inserimento manuale funziona offline. Le versioni Android e iPhone precedenti avviano automaticamente i suggerimenti dopo la digitazione. Swisstopo applica i propri termini e informazioni sulla privacy. La ricerca non invia verbali, fotografie o firme a Peringer. Su iPhone una sessione di rete temporanea evita una cache condivisa su disco per richiesta e risposta.
+ 
+ L'app contiene anche collegamenti a fornitori indipendenti di depositi cauzionali per affitti. L'apertura di uno di essi passa l'URL al browser dell'utente; il browser e il sito di destinazione operano quindi secondo i propri termini. Limen non riceve informazioni sulla visita.
+ 
+@@ -42,13 +59,13 @@
+ 
+ Su Android, Limen non dichiara alcun permesso per fotocamera o archiviazione: una foto viene scattata tramite la fotocamera di sistema del dispositivo con una concessione temporanea per un file di destinazione, oppure selezionata tramite il selettore di sistema.
+ 
+-Su iPhone, la fotocamera è il solo permesso che Limen chiede, perché iOS non consente di affidare lo scatto a un'app fotocamera separata come fa Android. La libreria foto passa dal selettore di sistema, che non chiede alcun permesso. In entrambe le versioni sono coinvolti solo i componenti di sistema interessati e solo l'elemento scelto dall'utente.
++Su iPhone, Limen chiede l’accesso alla fotocamera per scattare una foto nell’app. Il selettore di foto del sistema dà accesso solo agli elementi scelti, senza autorizzazione generale alla libreria fotografica. Su iPhone 1.2, il selettore di file del sistema permette anche di scegliere documenti giustificativi; Limen copia soltanto i file selezionati nello spazio privato delle prove del verbale.
+ 
+ ## Autorizzazioni e componenti di terze parti
+ 
+ La versione Android firmata dichiara il permesso `INTERNET`. Contiene inoltre `dev.peringer.limen.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION`, un permesso privato generato da una libreria di supporto Android in modo che i componenti dell'app possano comunicare; non concede accesso ai dati del dispositivo e non può essere utilizzato da altre app.
+ 
+-iOS non ha un equivalente del permesso Internet. La versione iPhone dichiara una sola descrizione d'uso, quella della fotocamera, che è il testo mostrato dal sistema quando la chiede.
++iOS non ha un equivalente del permesso Internet. Prima della versione iPhone 1.2, Limen dichiara una descrizione d’uso della fotocamera. La versione iPhone 1.2 fornisce anche una descrizione d’uso di Face ID per il controllo d’accesso facoltativo alla raccolta e alle impostazioni. Il sistema operativo autentica il proprietario del dispositivo; Limen non riceve i dati biometrici o il codice del dispositivo.
+ 
+ Le librerie open source utilizzate dalla versione Android vengono eseguite all'interno dell'app. La versione iPhone non contiene alcun codice di terze parti: porta con sé una copia ridotta dei metadati pubblicati di libphonenumber e le bandiere cantonali come file di dati. Nessuna delle due versioni aggiunge servizi di pubblicità, analisi o raccolta gestiti dallo sviluppatore.
+ 
+diff --git a/src/content/legal/limen/rm.mdx b/src/content/legal/limen/rm.mdx
+--- a/src/content/legal/limen/rm.mdx
++++ b/src/content/legal/limen/rm.mdx
+@@ -3,18 +3,35 @@
+ lang: rm
+ title: "Politica da protecziun da datas per Limen"
+ description: "Limen registra surdadas d'abitaziuns sin in telefon Android u sin in iPhone. El vegn publitgà da Alexis Peringer."
+-updated: 2026-10-01
+-# Translated from en.mdx. sourceHash tracks the English this came from,
+-# so a changed source is retranslated and an unchanged one is skipped.
++updated: 2026-10-14
++# Base translation from en.mdx; sourceHash below identifies that historical base.
++# New audit paragraphs are Codex draft translations, not a new provider translation.
++# The historical hash is intentionally unchanged; the revised notice needs review.
+ sourceHash: 8080a521ed2dfb0c
++# Proposed Android/iPhone 1.2 audit changes authored by Codex, 2026-10-14.
++# This is a draft; native-language and professional legal review are pending.
+ ---
+-Limen registra surdadas d'abitaziuns sin in telefon Android u sin in iPhone. El vegn publitgà da Alexis Peringer. Omaduas versiuns registran il medem protocol e produceschan il medem PDF, e questa politica vala per omaduas. Nua che las duas plattafurmas differenzieschan, inditgescha il text quala.
++Limen documentescha surdadas d’abitaziuns sin Android ed iPhone. Alexis Peringer publitgescha l’app. Questa infurmaziun vala per omaduas plattafurmas ed inditgescha las differenzas tranter las versiuns.
++
++## Android 1.2
++
++Android 1.2 po er conservar documents cumprovants, posiziuns individualas dals participants e notas da seguiment. Ils PDFs exportads e las copias HTML accessiblas restan conservads senza midadas en la memoria privata. Copias da recuperaziun pon conservar cumprovas allontanadas fin a la stizzada da l’entir protocol. Exports en Downloads e copias cundivididas cun autras apps ston vegnir stizzads separadamain. Ina segirezza po cumpigliar in protocol u la collecziun e cuntegna las cumprovas referenziadas ed ils exports conservads. In archiv betg criptà pretenda ina tscherna explicita.
++
++## iPhone 1.2
++
++La versiun iPhone 1.2 registrescha er documents cumprovants, la posiziun da mintga participant e notas da seguiment. Limen conserva copias identicas dals PDFs e dals documents HTML exportads en la memoria privata per pudair als avrir danovamain. Sin giavisch da l’utilisader memorisescha l’app las copias terminadas en Documents/Limen, visibel en Files sut «Sin mes iPhone», e porscha la funcziun da cundivider dal sistem. Stizzar in protocol allontanescha sias cumprovas privatas, sias copias da recuperaziun e ses exports conservads; las copias gia exportadas u cundivididas restan.
++
++Las copias da recuperaziun pon anc far referenza a fotografias, fastizs da suttascripziuns u documents cumprovants allontanads. Limen conserva perquai quests originals en la memoria privata fin a la stizzada da l’entir protocol. Durant ina recuperaziun conserva l’app er il file original d’in protocol illegibel. Ina copia da segirezza po cuntegnair in protocol u la collecziun, cun las cumprovas referenziadas ed ils exports conservads da mintga protocol tschernì. Ella na cuntegna betg originals betg utilisads u copias privatas da recuperaziun. In ZIP senza protecziun pretenda ina tscherna explicita; mintga persuna che posseda il file po leger el. Archivs protegids cun in pled-clav èn criptads; Limen na po betg recuperar in pled-clav pers.
++
++Il control d’access facultativ dovra l’autentificaziun dal possessur dal dispositiv per avrir la collecziun da protocols ed ils parameters. La surdada communabla actuala resta accessibla. Quest control na criptescha betg ils files exportads. L’utilisader po activar el mo suenter in’autentificaziun reussida sin il dispositiv.
+ 
+ ## La versiun curta
+ 
+ > Peringer na ramassa, na retschaiva, na venda ni na parta betg las datas persunalas endatas en Limen. I na dat nagin conto da Limen, nagin server gestiunà dal sviluppader, nagina reclama, naginas analisas, nagina telemetria ni nagin servetsch da rapportar craschs. Protocs, fotografias e suttasignaturas disegnadas restan en il deposit privat da l'app, fin che l'utilisader las exportescha, parta ni arcuneschia.
+ 
+ La persuna u l'organisaziun che utilisescha in'installaziun da Limen decida per tge motiv e co che las datas dal protocol vegnan registradas ed è il controllader da quellas datas. In operatur professiunal resta responsabel da dar als participants sia identitad, sias indicaziuns da contact e tut ils avis supplementars che ses elavuraziun pretenda.
++
++Per dumondas d’access, rectificaziun u stizzada da datas d’in protocol, As drizzai a la persuna u a l’organisaziun numnada sco responsabla per l’elavuraziun da datas en l’infurmaziun per ils participants. Quest operatur administrescha il protocol e las copias ch’el ha cundividì. Peringer na po betg acceder als protocols memorisads sin Voss dispositiv.
+ 
+ ## Datas che l'utilisader po registrar
+ 
+@@ -28,13 +45,13 @@
+ 
+ Limen po crear in backup che cuntegna protocols, fotografias originalas ed inchi da las suttasignaturas, e salvescha el là nua ch'el salvescha il PDF: en Downloads sin Android, en la cartella da Limen dals Documents sin l'iPhone. Ina parola d'admissiun per quel backup è opziunala. Cun ina, l'archiv è criptà e Limen na po betg recuperar la parola. Senza ina, tut tgi che ha il file po leger tut il cuntegn, quai che l'app inditgescha sin il visur cura ch'ella salvescha. In backup en omadus lieus è ordaifer il deposit privat da Limen e sut il controlla da l'utilisader. Restabilir in backup legia mo il file che l'utilisader selecziunescha.
+ 
+-Durant ch'ella construescha in archiv protegì cun ina parola d'admissiun, scriva la versiun iPhone la copia intermedia betg criptada en ses agen cache e betg sper il file final, elimineschia ella a la fin da l'export e la stgaffa danovamain al proxim export, en cas che l'app è vegnida serrada a mez.
++Sin iPhone 1.2 prepara Limen ils exports en in spazi privat avant da publitgar ils files terminads en Documents. L’app stizza ils files temporars a la fin d’ina operaziun ed allontanescha ils files abbandunads al proxim aviar. Ina copia da segirezza criptada po avair ina copia intermediara betg criptada en quest spazi privat.
+ 
+-Limen tegna sias datas privatas da l'app ordaifer ils backups da la plattafurma. Sin Android desactivescha el il backup da nuvel e la transfer da dispositiv a dispositiv. Sin l'iPhone marcheschia el quels files sco exclus, uschè che ni in backup iCloud ni in backup sin in computer ils copiescha.
++Sin Android deactivescha Limen la copia da segirezza en il cloud ed il transfer tranter dispositivs. Sin iPhone 1.2 excluda Limen ils protocols privats, las cumprovas originalas, las copias da recuperaziun, las copias PDF/HTML conservadas ed ils files temporars privats da las operaziuns da las copias da segirezza dal sistem. Suenter in nov aviar protegia la protecziun da datas dad iOS quests files privats fin a l’emprima disbloccada dal dispositiv; questa protecziun è separada da la criptaziun d’archivs cun in pled-clav. Las preferenzas suondan las reglas usitadas dal sistem per memorisar datas e far copias da segirezza. Ellas pon cuntegnair datas predefinidas da l’operatur e dals contacts, tschernas da l’interfatscha, l’identificatur dal protocol avert e valurs per recuperar endataziuns recentas. Stizzar in protocol na stizza betg ils contacts reutilisabels; l’operatur sto er stizzar questas valurs sche necessari. Files exportads en Documents u cundividids cun in’autra app èn copias separadas sut la controlla da l’utilisader.
+ 
+ ## Diever da la rait
+ 
+-Limen dovra la rait per in sulet servetsch in-app. Cura che l'utilisader scriva almain trais caracters en in champ d'adressa svizzer, spetga l'app in mument e trametta automaticamain il text da tschertga scrit e las metadatas da rait ordinarias al servetsch da tschertga swisstopo SearchServer da la Confederaziun svizra a `https://api3.geo.admin.ch/rest/services/ech/SearchServer`. Quel servetsch funcziunescha tenor sias atgnas cundiziuns e infurmaziuns davart la protecziun da datas. La tschertga na trametta protocols, fotografias ni suttasignaturas a Peringer. Sin l'iPhone fa l'app quella dumonda tras ina sesida efemera, uschè che ni l'adressa scritta ni la resposta vegnan scrittas en in cache cuminaivel sin il disc.
++Sin Android 1.2 ed iPhone 1.2 èn las propostas d’adressas online facultativas e deactivadas al cumenzament. Avant l’activaziun numna Limen swisstopo e declera ch’ella trametta l’adressa endatada; l’utilisader conferma la tscherna. Suenter l’activaziun trametta l’endataziun d’almain trais segns en in champ d’adressa svizra il text da tschertga e metadatas da rait usitadas al servetsch federal SearchServer da swisstopo sut `https://api3.geo.admin.ch/rest/services/ech/SearchServer`. L’endataziun manuala funcziuna offline. Versiuns Android ed iPhone anteriuras cumenzan automaticamain cun las propostas suenter l’endataziun. Swisstopo applitgescha sias atgnas cundiziuns ed infurmaziuns da protecziun da datas. La tschertga na trametta betg protocols, fotografias u suttascripziuns a Peringer. Sin iPhone evitescha ina sessiun da rait temporara in cache cuminaivel sin disc per dumonda e resposta.
+ 
+ L'app cuntegna er colliaziuns cun furniturs independents da deposits da locaziun. Avrir ina d'ellas surdat l'URL al navigatur dal utilisader; il navigatur ed il site destinaziun funcziuneschan alura tenor lur atgnas cundiziuns. Limen na retschaiva naginas infurmaziuns davart la visita.
+ 
+@@ -42,13 +59,13 @@
+ 
+ Sin Android declera Limen nagina permissiun da camera ni da deposit: ina fotografia vegn fatga tras la camera da sistems dal dispositiv cun ina concessiun temporala per in file da destinaziun, u vegn selecziunada tras il picker da sistems.
+ 
+-Sin l'iPhone è la camera la suletta permissiun che Limen dumonda, perquai che iOS na permetta betg da dar la prendida ad ina app da camera separada sco Android. La biblioteca da fotografias va tras il picker da sistems, che na dumonda nagina permissiun. En omaduas versiuns èn mo ils components da sistems pertutgads e mo l'element che l'utilisader tscherna involvids.
++Sin iPhone dumonda Limen l’access a la camera per far ina fotografia en l’app. Il selectur da fotografias dal sistem dat access mo als elements tschernids, senza permissiun generala per la biblioteca da fotografias. Sin iPhone 1.2 permetta il selectur da files dal sistem er da tscherner documents cumprovants; Limen copiescha mo ils files tschernids en la memoria privata da las cumprovas dal protocol.
+ 
+ ## Permissiuns e components da terzas parts
+ 
+ Il relasch Android signà declera la permissiun `INTERNET`. El cuntegna er `dev.peringer.limen.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION`, ina permissiun privata generada d'ina biblioteca da sustegn d'Android per che las atgnas components da l'app possian communitgar; ella na conceda nagin access a datas dal dispositiv e na po betg vegnir duvrada dad autras apps.
+ 
+-iOS n'ha nagin equivalent d'ina permissiun d'internet. Il relasch iPhone declera ina suletta descripziun d'utilisaziun, quella da la camera, ch'è il text che il sistem mussa cura ch'el la dumonda.
++iOS n’ha nagin equivalent d’ina permissiun d’internet. Avant la versiun iPhone 1.2 declera Limen ina descripziun d’utilisaziun da la camera. La versiun iPhone 1.2 furnescha er ina descripziun d’utilisaziun da Face ID per il control d’access facultativ a la collecziun ed als parameters. Il sistem operativ autentifitgescha il possessur dal dispositiv; Limen na retschaiva betg datas biometricas u il code dal dispositiv.
+ 
+ Las bibliotecas da cudesch avert utilisadas da la versiun Android funcziuneschan en l'app. La versiun iPhone na cuntegna nagin cudesch da terzas partidas: ella porta cun sai ina copia reducida da las metadatas publitgadas da libphonenumber e las bandieras chantunalas sco files da datas. Nagina da las duas versiuns agiunta reclama, analisas u servetschs da collecziun gestiunads dal sviluppader.
+ 

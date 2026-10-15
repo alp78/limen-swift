@@ -105,128 +105,13 @@ struct ObjectBuilder {
     var json: JSON { .object(fields) }
 }
 
-/// Reads one object the way kotlinx's `ignoreUnknownKeys` reader does: a missing key takes the
-/// default, an unknown key is skipped, a wrong type or an unknown enum name refuses the file.
-struct ObjectReader {
-    let dictionary: [String: Any]
-
-    init(_ any: Any) throws {
-        guard let dictionary = any as? [String: Any] else { throw ProtocolJSONError.notAnObject }
-        self.dictionary = dictionary
-    }
-
-    func string(_ key: String, default fallback: String = "") throws -> String {
-        guard let raw = dictionary[key], !(raw is NSNull) else { return fallback }
-        guard let value = raw as? String else { throw ProtocolJSONError.wrongType(key) }
-        return value
-    }
-
-    func requiredString(_ key: String) throws -> String {
-        guard let raw = dictionary[key], !(raw is NSNull) else { throw ProtocolJSONError.missing(key) }
-        guard let value = raw as? String else { throw ProtocolJSONError.wrongType(key) }
-        return value
-    }
-
-    func int(_ key: String, default fallback: Int64 = 0) throws -> Int64 {
-        guard let raw = dictionary[key], !(raw is NSNull) else { return fallback }
-        guard let number = raw as? NSNumber else { throw ProtocolJSONError.wrongType(key) }
-        return number.int64Value
-    }
-
-    func requiredInt(_ key: String) throws -> Int64 {
-        guard dictionary[key] != nil else { throw ProtocolJSONError.missing(key) }
-        return try int(key)
-    }
-
-    func bool(_ key: String, default fallback: Bool = false) throws -> Bool {
-        guard let raw = dictionary[key], !(raw is NSNull) else { return fallback }
-        guard let number = raw as? NSNumber else { throw ProtocolJSONError.wrongType(key) }
-        return number.boolValue
-    }
-
-    func strings(_ key: String) throws -> [String] {
-        guard let raw = dictionary[key], !(raw is NSNull) else { return [] }
-        guard let array = raw as? [Any] else { throw ProtocolJSONError.wrongType(key) }
-        return try array.map { item in
-            guard let text = item as? String else { throw ProtocolJSONError.wrongType(key) }
-            return text
-        }
-    }
-
-    func objects(_ key: String) throws -> [ObjectReader] {
-        guard let raw = dictionary[key], !(raw is NSNull) else { return [] }
-        guard let array = raw as? [Any] else { throw ProtocolJSONError.wrongType(key) }
-        return try array.map(ObjectReader.init)
-    }
-
-    func object(_ key: String) throws -> ObjectReader? {
-        guard let raw = dictionary[key], !(raw is NSNull) else { return nil }
-        return try ObjectReader(raw)
-    }
-
-    func enumValue<E: RawRepresentable>(_ key: String, default fallback: E) throws -> E where E.RawValue == String {
-        guard let raw = dictionary[key], !(raw is NSNull) else { return fallback }
-        return try Self.enumFrom(raw, key)
-    }
-
-    func optionalEnum<E: RawRepresentable>(_ key: String) throws -> E? where E.RawValue == String {
-        guard let raw = dictionary[key], !(raw is NSNull) else { return nil }
-        return try Self.enumFrom(raw, key) as E
-    }
-
-    func requiredEnum<E: RawRepresentable>(_ key: String) throws -> E where E.RawValue == String {
-        guard let raw = dictionary[key], !(raw is NSNull) else { throw ProtocolJSONError.missing(key) }
-        return try Self.enumFrom(raw, key)
-    }
-
-    func enums<E: RawRepresentable>(_ key: String) throws -> [E] where E.RawValue == String {
-        try strings(key).map { name in
-            guard let value = E(rawValue: name) else { throw ProtocolJSONError.unknownEnum(key, name) }
-            return value
-        }
-    }
-
-    /// A JSON object whose keys are enum names, in the order the file holds them. JSONSerialization
-    /// hands the object back unordered, so the order is recovered from the raw text by
-    /// `ProtocolJSON`, which is why this takes the ordered pairs rather than the dictionary.
-    func orderedEnumMap<K: RawRepresentable, V: RawRepresentable>(_ key: String, order: [String: [String]]) throws -> OrderedMap<K, V>
-    where K.RawValue == String, V.RawValue == String {
-        guard let raw = dictionary[key], !(raw is NSNull) else { return OrderedMap() }
-        guard let map = raw as? [String: Any] else { throw ProtocolJSONError.wrongType(key) }
-        var result = OrderedMap<K, V>()
-        let keys = (order[key] ?? []).filter { map[$0] != nil } + map.keys.filter { !(order[key] ?? []).contains($0) }.sorted()
-        for name in keys {
-            guard let k = K(rawValue: name) else { throw ProtocolJSONError.unknownEnum(key, name) }
-            let v: V = try Self.enumFrom(map[name] ?? NSNull(), key)
-            result[k] = v
-        }
-        return result
-    }
-
-    func orderedStringMap<K: RawRepresentable>(_ key: String, order: [String: [String]]) throws -> OrderedMap<K, String> where K.RawValue == String {
-        guard let raw = dictionary[key], !(raw is NSNull) else { return OrderedMap() }
-        guard let map = raw as? [String: Any] else { throw ProtocolJSONError.wrongType(key) }
-        var result = OrderedMap<K, String>()
-        let keys = (order[key] ?? []).filter { map[$0] != nil } + map.keys.filter { !(order[key] ?? []).contains($0) }.sorted()
-        for name in keys {
-            guard let k = K(rawValue: name) else { throw ProtocolJSONError.unknownEnum(key, name) }
-            guard let v = map[name] as? String else { throw ProtocolJSONError.wrongType(key) }
-            result[k] = v
-        }
-        return result
-    }
-
-    private static func enumFrom<E: RawRepresentable>(_ raw: Any, _ key: String) throws -> E where E.RawValue == String {
-        guard let name = raw as? String else { throw ProtocolJSONError.wrongType(key) }
-        guard let value = E(rawValue: name) else { throw ProtocolJSONError.unknownEnum(key, name) }
-        return value
-    }
-}
-
 public enum ProtocolJSONError: Error, Equatable {
     case notAnObject
     case missing(String)
     case wrongType(String)
     case unknownEnum(String, String)
     case notUTF8
+    case malformed
+    case limit
+    case unsupported(String)
 }

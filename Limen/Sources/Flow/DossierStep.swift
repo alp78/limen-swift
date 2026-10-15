@@ -14,6 +14,7 @@ struct DossierStep: View {
     @Environment(\.str) private var s
     @Environment(\.recordLocked) private var locked
     let p: HandoverProtocol
+    @Environment(\.dynamicTypeSize) private var typeSize
     @State private var removing: DossierCard?
     @State private var confirmRemove = false
     @State private var active = 0
@@ -36,7 +37,7 @@ struct DossierStep: View {
         let sectionIds = sections.map(\.id)
         ScrollViewReader { reader in
             ScrollView {
-                LazyVStack(spacing: 10, pinnedViews: .sectionHeaders) {
+                LazyVStack(spacing: 10, pinnedViews: typeSize.isAccessibilitySize ? [] : .sectionHeaders) {
                     SwiftUI.Section {
                         VStack(spacing: 10) {
                             ObjectCard(p: p)
@@ -68,6 +69,7 @@ struct DossierStep: View {
                                 }
                             }
                         }
+                        RecordDetailPanels(p: p)
                         BigKey(label: locked ? s.stepExport.uppercased() : s.hubClose) { model.goTo(locked ? .export : .review) }
                         Spacer().frame(height: 12)
                     } header: {
@@ -105,6 +107,13 @@ struct DossierStep: View {
                 Color.clear.onChange(of: geometry.size.height, initial: true) { _, height in viewport = height }
             })
             .scrollDismissesKeyboard(.interactively)
+            .onChange(of: model.dossierTarget, initial: true) { _, target in
+                guard let target else { return }
+                Task { @MainActor in
+                    reader.scrollTo(target, anchor: .center)
+                    model.dossierTarget = nil
+                }
+            }
         }
         .confirmDialog($confirmRemove, body: s.removeComponentBody) {
             if let removing { model.removeDossierCard(removing) }
@@ -132,7 +141,8 @@ private func dossierSectionComplete(_ p: HandoverProtocol, _ card: DossierCard) 
     case .contract: return p.contract != Contract()
     case .deposit:
         switch p.deposit.kind {
-        case .none: return false
+        case .none: return true
+        case .unknown: return !(p.details.scopeNotes["Deposit"] ?? "").isBlank
         case .bankAccount: return [p.deposit.amountChf, p.deposit.bank, p.deposit.account].allSatisfy { !$0.isBlank }
         case .insurance: return [p.deposit.amountChf, p.deposit.provider, p.deposit.policyNo].allSatisfy { !$0.isBlank }
         }
@@ -179,6 +189,7 @@ private struct ObjectCard: View {
         let query: String
         let anyFocus: Bool
         let verified: Bool
+        let enabled: Bool
     }
 
     var body: some View {
@@ -186,6 +197,7 @@ private struct ObjectCard: View {
         let query = [p.address, p.place].filter { !$0.isBlank }.joined(separator: " ")
         Panel(label: s.objectLabel, info: s.tipAddress()) {
             VStack(alignment: .leading, spacing: 8) {
+                LookupPreference()
                 // Above the fields they fill: below them, the keyboard covered the answer.
                 if anyFocus, !verified, searching {
                     Text(s.addressSearching).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
@@ -201,7 +213,6 @@ private struct ObjectCard: View {
                             // Re-picking the same address must not discard answers already given for it.
                             if moved {
                                 next.romandFrameworkInLease = false
-                                next.legalOverlay = LegalOverlayRecord()
                             }
                             return next
                         }
@@ -221,20 +232,21 @@ private struct ObjectCard: View {
                         var next = current
                         next.objectCanton = canton
                         next.romandFrameworkInLease = false
-                        next.legalOverlay = LegalOverlayRecord()
                         return next
                     }
                 }
+                Field(label: s.municipality, value: p.details.municipality) { v in model.edit { var x = $0; x.details.municipality = v; return x } }
+                Field(label: s.district, value: p.details.district) { v in model.edit { var x = $0; x.details.district = v; return x } }
+                Field(label: s.habitableRooms, value: p.details.habitableRooms, keyboard: .numberPad) { v in model.edit { var x = $0; x.details.habitableRooms = v; return x } }
                 Field(label: s.objectDetail, value: p.objectDetail) { value in model.edit { var x = $0; x.objectDetail = value; return x } }
                 DateAndTimeRow(dateLabel: s.handoverDate, date: p.handoverDate, timeLabel: s.handoverTime, time: p.handoverTime, onDate: { value in
                     model.edit { current in
                         var next = current
                         next.handoverDate = value
-                        if current.handoverDate != value { next.legalOverlay = LegalOverlayRecord() }
                         return next
                     }
                 }, onTime: { value in model.edit { var x = $0; x.handoverTime = value; return x } })
-                DateField(label: s.lastProtocol, stored: p.lastProtocolDate) { value in model.edit { var x = $0; x.lastProtocolDate = value; return x } }
+                DateField(label: s.lastProtocol, stored: p.lastProtocolDate, fieldKey: "lastProtocolDate") { value in model.edit { var x = $0; x.lastProtocolDate = value; return x } }
             }
         }
         .onChange(of: p.id, initial: true) { _, id in
@@ -244,8 +256,8 @@ private struct ObjectCard: View {
             matches = []
             focused = []
         }
-        .task(id: LookupKey(id: p.id, query: query, anyFocus: anyFocus, verified: verified)) {
-            if !anyFocus || verified || query.trimmingCharacters(in: .whitespaces).count < 3 {
+        .task(id: LookupKey(id: p.id, query: query, anyFocus: anyFocus, verified: verified, enabled: model.addressLookupEnabled)) {
+            if !model.addressLookupEnabled || !anyFocus || verified || query.trimmingCharacters(in: .whitespaces).count < 3 {
                 matches = []
                 searching = false
                 return
@@ -283,22 +295,9 @@ private struct HandoverDeadline: View {
     let p: HandoverProtocol
 
     var body: some View {
-        if let handover = SwissDate.parse(p.handoverDate) {
-            if p.kind == .entry {
-                Panel(label: s.clockEntryTitle, info: s.tipEntryNotice()) {
-                    Deadline(label: s.listBy, date: Clocks.entryListBy(handover))
-                }
-            } else {
-                Panel(label: s.clockExitTitle, info: s.tipExitNotice()) {
-                    // Bottom-aligned because the two labels are not the same length and one wraps:
-                    // in English "3-working-day practice reference" takes two lines where the other
-                    // takes one, which hangs the two dates at different heights. Aligning the
-                    // bottoms puts the dates on one line, which is the pair a reader compares.
-                    HStack(alignment: .bottom, spacing: 16) {
-                        Deadline(label: s.safeBy, date: Clocks.exitNoticeSafeBy(handover)).frame(maxWidth: .infinity, alignment: .leading)
-                        Deadline(label: s.latestBy, date: Clocks.exitNoticeLatest(handover)).frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                }
+        if let deadline = Clocks.agreedPlanningDate(p) {
+            Panel(label: s.notificationClause, info: p.kind == .entry ? s.tipEntryNotice() : s.tipExitNotice()) {
+                Deadline(label: s.notificationClause, date: deadline)
             }
         }
     }
@@ -339,11 +338,11 @@ private struct PartiesCard: View {
                     }
                 }
                 if !locked {
-                    HStack(spacing: 6) {
-                        ForEach([Role.witness, .expert, .nextTenant], id: \.self) { role in
-                            if !p.parties.contains(where: { $0.role == role }) {
+                    FlowRow(spacing: 6) {
+                        ForEach([Role.tenant, .landlord, .witness, .expert, .nextTenant], id: \.self) { role in
+                            if role == .tenant || role == .landlord || !p.parties.contains(where: { $0.role == role }) {
                                 SmallKey(label: "+ \(s.role(role))", stretch: true) {
-                                    model.edit { var x = $0; x.parties.append(Party(role)); return x }
+                                    model.addParticipant(role: role)
                                 }
                             }
                         }
@@ -378,7 +377,7 @@ private struct PartyBlock: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Text(s.role(party.role).uppercased()).font(LimenType.labelSmall).foregroundStyle(colors.inkDim).frame(maxWidth: .infinity, alignment: .leading)
-                let removable = [Role.witness, .expert, .nextTenant].contains(party.role)
+                let removable = p.parties.filter { $0.role == party.role }.count > 1 || [Role.witness, .expert, .nextTenant].contains(party.role)
                 if removable, !locked {
                     IconKey(glyph: .delete, label: s.delete, destructive: true) {
                         model.edit { current in
@@ -393,10 +392,16 @@ private struct PartyBlock: View {
             if party.role == .landlord || party.role == .tenant {
                 Field(label: s.representedBy, value: party.representedBy, onChange: update { $0.representedBy = $1 })
             }
+            if party.role == .landlord {
+                Field(label: s.companyName, value: party.agency, onChange: update { $0.agency = $1 })
+            }
+            if !party.representedBy.isBlank || !party.agency.isBlank {
+                Field(label: s.authority, value: party.authority, singleLine: false, onChange: update { $0.authority = $1 })
+            }
             if party.role == .tenant, p.kind == .exit {
                 Field(label: s.newAddress, value: party.address, onChange: update { $0.address = $1 })
             }
-            HStack(alignment: .top, spacing: 8) {
+            WeightedRow(weights: [1, 1]) {
                 Field(label: s.phoneNumber, value: party.phone, keyboard: .phonePad, onChange: update { $0.phone = $1 })
                 Field(label: s.email, value: party.email, keyboard: .emailAddress, onChange: update { $0.email = $1 })
             }
@@ -416,23 +421,22 @@ private struct ContractCard: View {
         Panel(label: s.contract) {
             VStack(alignment: .leading, spacing: 8) {
                 CardHeader(onRemove: onRemove)
-                HStack(alignment: .top, spacing: 8) {
+                WeightedRow(weights: [1, 1]) {
                     Field(label: s.monthlyRent, value: p.contract.monthlyRentChf, keyboard: .decimalPad) { v in model.edit { var x = $0; x.contract.monthlyRentChf = v; return x } }
                     Field(label: s.serviceCharges, value: p.contract.serviceChargesChf, keyboard: .decimalPad) { v in model.edit { var x = $0; x.contract.serviceChargesChf = v; return x } }
                 }
-                DateField(label: s.leaseConcludedOn, stored: p.contract.conclusionDate) { v in
+                DateField(label: s.leaseConcludedOn, stored: p.contract.conclusionDate, fieldKey: "contract.conclusionDate") { v in
                     model.edit { record in
                         var next = record
                         next.contract.conclusionDate = v
-                        if record.contract.conclusionDate != v { next.legalOverlay = LegalOverlayRecord() }
                         return next
                     }
                 }
                 HStack(alignment: .top, spacing: 8) {
-                    DateField(label: s.tenancyStart, stored: p.contract.startDate) { v in model.edit { var x = $0; x.contract.startDate = v; return x } }
-                    DateField(label: s.tenancyEnd, stored: p.contract.endDate) { v in model.edit { var x = $0; x.contract.endDate = v; return x } }
+                    DateField(label: s.tenancyStart, stored: p.contract.startDate, fieldKey: "contract.startDate") { v in model.edit { var x = $0; x.contract.startDate = v; return x } }
+                    DateField(label: s.tenancyEnd, stored: p.contract.endDate, fieldKey: "contract.endDate") { v in model.edit { var x = $0; x.contract.endDate = v; return x } }
                 }
-                DateField(label: s.noticeDate, stored: p.contract.noticeDate) { v in model.edit { var x = $0; x.contract.noticeDate = v; return x } }
+                DateField(label: s.noticeDate, stored: p.contract.noticeDate, fieldKey: "contract.noticeDate") { v in model.edit { var x = $0; x.contract.noticeDate = v; return x } }
             }
         }
     }
@@ -506,15 +510,15 @@ private struct MetersCard: View {
         Panel(label: s.meters) {
             VStack(alignment: .leading, spacing: 8) {
                 CardHeader(onRemove: onRemove)
-                HStack(alignment: .top, spacing: 8) {
+                WeightedRow(weights: [1, 1]) {
                     Field(label: s.meterElec1, value: p.meters.electricity1, keyboard: .decimalPad) { v in model.edit { var x = $0; x.meters.electricity1 = v; return x } }
                     Field(label: s.meterElec2, value: p.meters.electricity2, keyboard: .decimalPad) { v in model.edit { var x = $0; x.meters.electricity2 = v; return x } }
                 }
-                HStack(alignment: .top, spacing: 8) {
+                WeightedRow(weights: [1, 1]) {
                     Field(label: s.meterGas, value: p.meters.gas, keyboard: .decimalPad) { v in model.edit { var x = $0; x.meters.gas = v; return x } }
                     Field(label: s.meterWater, value: p.meters.water, keyboard: .decimalPad) { v in model.edit { var x = $0; x.meters.water = v; return x } }
                 }
-                HStack(alignment: .top, spacing: 8) {
+                WeightedRow(weights: [1, 1]) {
                     Field(label: s.meterHotWater, value: p.meters.hotWater, keyboard: .decimalPad) { v in model.edit { var x = $0; x.meters.hotWater = v; return x } }
                     Field(label: s.meterOil, value: p.meters.heatingOil, keyboard: .decimalPad) { v in model.edit { var x = $0; x.meters.heatingOil = v; return x } }
                 }
@@ -628,7 +632,7 @@ private struct NotesCard: View {
                 CardHeader(onRemove: onRemove)
                 Field(label: s.remarks, value: p.remarks, singleLine: false) { v in model.edit { var x = $0; x.remarks = v; return x } }
                 // A date, and typed as one: the label has always said "by", in every language.
-                DateField(label: s.chargesBy, stored: p.chargesStatementBy) { v in model.edit { var x = $0; x.chargesStatementBy = v; return x } }
+                DateField(label: s.chargesBy, stored: p.chargesStatementBy, fieldKey: "chargesStatementBy") { v in model.edit { var x = $0; x.chargesStatementBy = v; return x } }
             }
         }
     }
@@ -688,10 +692,6 @@ struct LegalOverlayPanel: View {
     var body: some View {
         if let overlay = p.resolvedLegalOverlay() {
             let complete = overlay.isComplete(p.legalOverlay)
-            let needsNote = overlay.requirements.contains { requirement in
-                let status = p.legalOverlay.status(requirement)
-                return status != nil && status != .confirmed
-            }
             Panel(label: s.legalOverlayTitle, info: s.tipLegalOverlay(), warning: !complete) {
                 VStack(alignment: .leading, spacing: 12) {
                     HStack(spacing: 10) {
@@ -724,13 +724,25 @@ struct LegalOverlayPanel: View {
                                     let selected = p.legalOverlay.status(requirement) == status
                                     Chip(label: s.legalCheckStatus(status), active: selected, tick: status == .confirmed ? .confirm : .key, enabled: !locked, destructive: status == .missingOrDisputed, selectionState: selected) {
                                         model.edit { var x = $0; x.legalOverlay = $0.legalOverlay.withStatus(requirement, status); return x }
-                                    }
+                                    }.accessibilityIdentifier("legal-\(requirement.rawValue)-\(status.rawValue)")
+                                }
+                            }
+                            if p.legalOverlay.status(requirement) != nil {
+                                Field(label: s.legalOverlayNote, value: p.legalOverlay.notes[requirement] ?? "", singleLine: false, isError: overlay.needsExplanation(requirement, record: p.legalOverlay) && (p.legalOverlay.notes[requirement] ?? "").isBlank, identifier: "legal-note-\(requirement.rawValue)") { note in
+                                    model.edit { var next = $0; next.legalOverlay.notes[requirement] = note; return next }
                                 }
                             }
                         }
                         .padding(.vertical, 2)
                     }
-                    Field(label: s.legalOverlayNote, value: p.legalOverlay.note, singleLine: false, hint: needsNote && p.legalOverlay.note.isBlank ? s.legalOverlayNoteRequired : nil, isError: needsNote && p.legalOverlay.note.isBlank) { note in
+                    if let snapshot = p.freezeLegalRules() {
+                        ForEach(snapshot.sources, id: \.self) { source in
+                            if let url = URL(string: source) { Link(s.sourceLabel + " · " + (url.host ?? source), destination: url).font(LimenType.bodySmall).padding(.vertical, 6) }
+                        }
+                    }
+                    if p.objectCanton == .ti { Text(s.ticinoExpertRoute).font(LimenType.bodySmall).foregroundStyle(colors.ink) }
+                    if !s.depositLocal(p.objectCanton).isBlank { Text(s.depositLocal(p.objectCanton)).font(LimenType.bodySmall).foregroundStyle(colors.ink) }
+                    Field(label: s.legalOverlayNote, value: p.legalOverlay.note, singleLine: false) { note in
                         model.edit { var x = $0; x.legalOverlay.note = note; return x }
                     }
                 }

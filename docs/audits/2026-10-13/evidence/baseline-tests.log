@@ -1,0 +1,1707 @@
+set -o pipefail && xcodebuild -workspace Limen.xcworkspace -scheme AllTests \
+		-destination 'platform=iOS Simulator,id=CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA' -derivedDataPath ./DD test | xcbeautify --quiet
+
+----- xcbeautify -----
+Version: 3.2.1
+----------------------
+
+[Limen] Compiling LimenApp.swift
+[!]  /Users/aperi/DEV/SWIFT/limen/Limen/Sources/Flow/PhotoCapture.swift:140:13: 'nonisolated(unsafe)' is unnecessary for a constant with 'Sendable' type 'CGImage', consider removing it
+138 |             // milliseconds of the main thread otherwise, and it happens while the picker is
+139 |             // dismissing, which is exactly when the animation cannot afford it.
+[Limen] Compiling ObjectsStep.swift
+[!]  /Users/aperi/DEV/SWIFT/limen/Limen/Sources/Flow/ReviewSignExport.swift:276:1: extension declares a conformance of imported type 'Role' to imported protocol 'Identifiable'; this will not behave correctly if the owners of 'LimenKit' introduce this conformance in the future
+274 | }
+275 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/Limen/Sources/Flow/ReviewSignExport.swift:432:1: extension declares a conformance of imported type 'ExportedFile' to imported protocol 'Identifiable'; this will not behave correctly if the owners of 'LimenKit' introduce this conformance in the future
+430 | }
+431 | 
+[Limen] Compiling DefectEditor.swift
+[!]  /Users/aperi/DEV/SWIFT/limen/Limen/Sources/Flow/ReviewSignExport.swift:276:1: extension declares a conformance of imported type 'Role' to imported protocol 'Identifiable'; this will not behave correctly if the owners of 'LimenKit' introduce this conformance in the future
+274 | }
+275 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/Limen/Sources/Flow/ReviewSignExport.swift:432:1: extension declares a conformance of imported type 'ExportedFile' to imported protocol 'Identifiable'; this will not behave correctly if the owners of 'LimenKit' introduce this conformance in the future
+430 | }
+431 | 
+[Limen] Compiling Theme.swift
+[!]  /Users/aperi/DEV/SWIFT/limen/Limen/Sources/Kit/Field.swift:35:74: converting non-Sendable function value to '@isolated(any) @Sendable (String) -> Void' may introduce data races
+ 33 |                     .frame(maxWidth: .infinity, alignment: .leading)
+ 34 |             } else {
+[Limen] Copy arm64-apple-ios-simulator.abi.json -> Limen.abi.json
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:18:56: call to main actor-isolated instance method 'screenshot()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 13 |     }
+ 14 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:18:51: main actor-isolated class property 'main' can not be referenced from a nonisolated context
+ 13 |     }
+ 14 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:18:75: call to main actor-isolated instance method 'screenshot()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 13 |     }
+ 14 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:24:29: main actor-isolated property 'pngRepresentation' can not be referenced from a nonisolated context
+ 13 |     }
+ 14 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:29:101: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 26 |     }
+ 27 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:29:41: call to main actor-isolated instance method 'matching' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 26 |     }
+ 27 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:29:13: call to main actor-isolated instance method 'descendants(matching:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 26 |     }
+ 27 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:33:19: call to main actor-isolated initializer 'init()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 30 |     }
+ 31 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:34:13: main actor-isolated property 'launchArguments' can not be mutated from a nonisolated context
+ 30 |     }
+ 31 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:35:13: main actor-isolated property 'launchEnvironment' can not be mutated from a nonisolated context
+ 30 |     }
+ 31 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:36:13: call to main actor-isolated instance method 'launch()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 30 |     }
+ 31 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:42:50: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 40 |     func testTheLandingTheFormAndThePrivacyPage() {
+ 41 |         let app = launch(["LIMEN_RESET"])
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:42:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 40 |     func testTheLandingTheFormAndThePrivacyPage() {
+ 41 |         let app = launch(["LIMEN_RESET"])
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:42:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 40 |     func testTheLandingTheFormAndThePrivacyPage() {
+ 41 |         let app = launch(["LIMEN_RESET"])
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:45:36: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:45:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:45:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:46:45: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 44 | 
+ 45 |         app.buttons["NEW SESSION"].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:46:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 44 | 
+ 45 |         app.buttons["NEW SESSION"].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:46:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 44 | 
+ 45 |         app.buttons["NEW SESSION"].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:47:33: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:47:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:47:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:48:31: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:48:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:48:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:49:51: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 47 |         app.buttons["Landlord"].tap()
+ 48 |         app.buttons["Agency"].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:50:44: main actor-isolated property 'exists' can not be referenced from a nonisolated autoclosure
+ 48 |         app.buttons["Agency"].tap()
+ 49 |         XCTAssertTrue(element(app, "Agency name").waitForExistence(timeout: 5))
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:50:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 48 |         app.buttons["Agency"].tap()
+ 49 |         XCTAssertTrue(element(app, "Agency name").waitForExistence(timeout: 5))
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:50:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 48 |         app.buttons["Agency"].tap()
+ 49 |         XCTAssertTrue(element(app, "Agency name").waitForExistence(timeout: 5))
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:51:29: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:51:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:51:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:52:30: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:52:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:52:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:54:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:54:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:54:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:54:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:56:61: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 54 |         app.buttons["BACK"].firstMatch.tap()
+ 55 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:56:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 54 |         app.buttons["BACK"].firstMatch.tap()
+ 55 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:56:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 54 |         app.buttons["BACK"].firstMatch.tap()
+ 55 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:57:47: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:57:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:57:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:58:59: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 56 |         XCTAssertTrue(app.buttons["DATA, BACKUP & PRIVACY"].waitForExistence(timeout: 10))
+ 57 |         app.buttons["DATA, BACKUP & PRIVACY"].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:59:67: main actor-isolated property 'exists' can not be referenced from a nonisolated autoclosure
+ 57 |         app.buttons["DATA, BACKUP & PRIVACY"].tap()
+ 58 |         XCTAssertTrue(element(app, "Privacy information").waitForExistence(timeout: 10))
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:61:13: call to main actor-isolated instance method 'swipeUp()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:64:47: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 62 | 
+ 63 |         // The notice reached the bundle: a build that dropped it shows the missing line instead.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:64:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 62 | 
+ 63 |         // The notice reached the bundle: a build that dropped it shows the missing line instead.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:64:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 62 | 
+ 63 |         // The notice reached the bundle: a build that dropped it shows the missing line instead.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:65:33: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:65:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:65:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:66:69: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 64 |         XCTAssertTrue(app.buttons["LICENCES"].waitForExistence(timeout: 5))
+ 65 |         app.buttons["LICENCES"].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:68:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:68:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:68:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:68:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:69:59: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 67 |         shoot(app, "04-licences")
+ 68 |         app.buttons["BACK"].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:70:13: call to main actor-isolated instance method 'swipeUp()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:72:52: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 70 |         app.swipeUp()
+ 71 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:72:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 70 |         app.swipeUp()
+ 71 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:72:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 70 |         app.swipeUp()
+ 71 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:73:38: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:73:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:73:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:74:45: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 72 |         XCTAssertTrue(app.buttons["CREATE BACKUP"].waitForExistence(timeout: 5))
+ 73 |         app.buttons["CREATE BACKUP"].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:74:34: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated autoclosure
+ 72 |         XCTAssertTrue(app.buttons["CREATE BACKUP"].waitForExistence(timeout: 5))
+ 73 |         app.buttons["CREATE BACKUP"].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:74:27: main actor-isolated property 'alerts' can not be referenced from a nonisolated autoclosure
+ 72 |         XCTAssertTrue(app.buttons["CREATE BACKUP"].waitForExistence(timeout: 5))
+ 73 |         app.buttons["CREATE BACKUP"].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:79:45: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:79:27: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:79:20: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:79:13: main actor-isolated property 'alerts' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:80:58: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 78 |         // making the password optional is that an unprotected archive announces itself.
+ 79 |         app.alerts.buttons["CREATE BACKUP"].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:81:13: call to main actor-isolated instance method 'swipeUp()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:84:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:84:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:84:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:84:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 38 |     }
+ 39 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:85:50: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 83 | 
+ 84 |         app.buttons["BACK"].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:85:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 83 | 
+ 84 |         app.buttons["BACK"].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:85:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 83 | 
+ 84 |         app.buttons["BACK"].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:90:50: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 88 |     func testTheSeededDraftWalksEveryStep() {
+ 89 |         let app = launch(["LIMEN_DEMO"])
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:93:36: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:94:43: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 92 | 
+ 93 |         element(app, "INSPECTION").tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:94:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 92 | 
+ 93 |         element(app, "INSPECTION").tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:94:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 92 | 
+ 93 |         element(app, "INSPECTION").tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:96:32: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:96:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:96:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:97:58: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 95 |         shoot(app, "08-inspection")
+ 96 |         app.buttons["OBJECTS"].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:101:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:101:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:101:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:101:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:102:43: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+100 |         // the hub is one press further out.
+101 |         app.buttons["BACK"].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:102:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+100 |         // the hub is one press further out.
+101 |         app.buttons["BACK"].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:102:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+100 |         // the hub is one press further out.
+101 |         app.buttons["BACK"].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:103:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:103:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:103:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:103:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:104:47: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+102 |         XCTAssertTrue(app.buttons["Room"].waitForExistence(timeout: 10))
+103 |         app.buttons["BACK"].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:105:33: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:106:47: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+104 |         XCTAssertTrue(element(app, "DOSSIER").waitForExistence(timeout: 10))
+105 |         element(app, "DOSSIER").tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:108:36: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:108:29: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:109:33: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+107 |         shoot(app, "10-dossier")
+108 |         let cantonKey = app.buttons["SELECT CANTON"]
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:110:19: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:111:52: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+109 |         XCTAssertTrue(cantonKey.waitForExistence(timeout: 5))
+110 |         cantonKey.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:111:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+109 |         XCTAssertTrue(cantonKey.waitForExistence(timeout: 5))
+110 |         cantonKey.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:111:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+109 |         XCTAssertTrue(cantonKey.waitForExistence(timeout: 5))
+110 |         cantonKey.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:113:38: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:113:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:113:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:114:100: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+112 |         shoot(app, "11-cantons")
+113 |         app.buttons["ZH · Zürich"].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:116:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:116:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:116:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:116:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:117:55: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+115 |         shoot(app, "12-legal-overlay")
+116 |         app.buttons["BACK"].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:117:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+115 |         shoot(app, "12-legal-overlay")
+116 |         app.buttons["BACK"].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:117:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+115 |         shoot(app, "12-legal-overlay")
+116 |         app.buttons["BACK"].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:118:41: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:118:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:118:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:119:46: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+117 |         XCTAssertTrue(app.buttons["CLOSE THE RECORD"].waitForExistence(timeout: 10))
+118 |         app.buttons["CLOSE THE RECORD"].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:121:13: call to main actor-isolated instance method 'swipeUp()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:122:49: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+120 |         shoot(app, "13-review")
+121 |         app.swipeUp()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:122:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+120 |         shoot(app, "13-review")
+121 |         app.swipeUp()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:122:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+120 |         shoot(app, "13-review")
+121 |         app.swipeUp()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:123:35: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:123:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:123:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:124:57: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+122 |         XCTAssertTrue(app.buttons["SIGNATURES"].waitForExistence(timeout: 5))
+123 |         app.buttons["SIGNATURES"].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:126:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:126:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:126:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:126:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:127:62: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+125 |         shoot(app, "14-sign")
+126 |         app.buttons["SIGN"].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:129:74: call to main actor-isolated instance method 'press(forDuration:thenDragTo:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:129:13: call to main actor-isolated instance method 'coordinate(withNormalizedOffset:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:129:114: call to main actor-isolated instance method 'coordinate(withNormalizedOffset:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:131:29: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:131:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:131:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:132:46: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+130 |         shoot(app, "15-ink")
+131 |         app.buttons["KEEP"].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:137:27: main actor-isolated property 'orientation' can not be mutated from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:137:20: main actor-isolated class property 'shared' can not be mutated from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:138:34: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:138:26: main actor-isolated property 'windows' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:139:51: main actor-isolated property 'frame' can not be referenced from a nonisolated context
+137 |         XCUIDevice.shared.orientation = .landscapeLeft
+138 |         let window = app.windows.firstMatch
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:139:72: main actor-isolated property 'frame' can not be referenced from a nonisolated context
+137 |         XCUIDevice.shared.orientation = .landscapeLeft
+138 |         let window = app.windows.firstMatch
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:141:46: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+139 |         let turned = NSPredicate { _, _ in window.frame.width > window.frame.height }
+140 |         wait(for: [expectation(for: turned, evaluatedWith: nil)], timeout: 10)
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:143:27: main actor-isolated property 'orientation' can not be mutated from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:143:20: main actor-isolated class property 'shared' can not be mutated from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:144:52: main actor-isolated property 'frame' can not be referenced from a nonisolated context
+142 |         shoot(app, "17-signed-landscape", wholeScreen: true)
+143 |         XCUIDevice.shared.orientation = .portrait
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:144:74: main actor-isolated property 'frame' can not be referenced from a nonisolated context
+142 |         shoot(app, "17-signed-landscape", wholeScreen: true)
+143 |         XCUIDevice.shared.orientation = .portrait
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:146:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:146:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:146:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:146:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:147:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:147:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:147:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:147:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:148:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:148:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:148:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:148:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 86 |     }
+ 87 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:149:50: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+147 |         app.buttons["BACK"].firstMatch.tap()
+148 |         app.buttons["BACK"].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:149:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+147 |         app.buttons["BACK"].firstMatch.tap()
+148 |         app.buttons["BACK"].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/SmokeTest.swift:149:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+147 |         app.buttons["BACK"].firstMatch.tap()
+148 |         app.buttons["BACK"].firstMatch.tap()
+[LimenUITests] Compiling SmokeTest.swift
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:29:19: call to main actor-isolated initializer 'init()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:30:13: main actor-isolated property 'launchArguments' can not be mutated from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:31:13: main actor-isolated property 'launchEnvironment' can not be mutated from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:32:13: call to main actor-isolated instance method 'launch()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:35:54: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 33 | 
+ 34 |         // 01 the app's face, and the two ways into a record
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:35:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 33 | 
+ 34 |         // 01 the app's face, and the two ways into a record
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:35:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 33 | 
+ 34 |         // 01 the app's face, and the two ways into a record
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:38:36: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:38:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:38:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:40:28: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 38 |         app.buttons[s.allSessions].tap()
+ 39 |         let card = element(app, s.exit)
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:41:14: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:44:54: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 42 | 
+ 43 |         // 02 the rooms, each carrying its own inspected mark
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:45:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:46:54: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 44 |         XCTAssertTrue(element(app, s.stepInspection).waitForExistence(timeout: 20), "no hub in \(lang.rawValue)")
+ 45 |         element(app, s.stepInspection).tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:50:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:52:30: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 50 |         element(app, s.room(.kitchen)).tap()
+ 51 |         let defect = element(app, StoreScene.of(lang).defect)
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:53:16: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:54:59: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 52 |         XCTAssertTrue(defect.waitForExistence(timeout: 15), "no defect on the room in \(lang.rawValue)")
+ 53 |         defect.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:61:44: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:62:44: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:62:33: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:62:24: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:62:17: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:67:51: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 65 | 
+ 66 |         // 04 the canton overlay, its legal basis and its dated period
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:68:37: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:69:47: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 67 |         XCTAssertTrue(element(app, s.stepDossier).waitForExistence(timeout: 15), "no way back to the hub in \(lang.rawValue)")
+ 68 |         element(app, s.stepDossier).tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:75:30: main actor-isolated property 'exists' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:75:53: main actor-isolated property 'isHittable' can not be referenced from a nonisolated autoclosure
+ 73 |         let overlayTitle = element(app, s.legalOverlayTitle)
+ 74 |         var creeps = 0
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:77:18: call to main actor-isolated instance method 'press(forDuration:thenDragTo:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:76:17: call to main actor-isolated instance method 'coordinate(withNormalizedOffset:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:77:59: call to main actor-isolated instance method 'coordinate(withNormalizedOffset:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:80:36: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 78 |             creeps += 1
+ 79 |         }
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:82:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:82:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:82:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:82:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:85:47: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 83 | 
+ 84 |         // 05 the whole protocol, before anyone signs it
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:85:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 83 | 
+ 84 |         // 05 the whole protocol, before anyone signs it
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:85:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 83 | 
+ 84 |         // 05 the whole protocol, before anyone signs it
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:86:33: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:86:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:86:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:87:51: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 85 |         XCTAssertTrue(app.buttons[s.hubClose].waitForExistence(timeout: 15), "no close key in \(lang.rawValue)")
+ 86 |         app.buttons[s.hubClose].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:91:13: call to main actor-isolated instance method 'swipeUp()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:93:34: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 91 |         app.swipeUp()
+ 92 |         let signatures = key(app, s.stepSign)
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:94:20: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:95:57: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 93 |         XCTAssertTrue(signatures.waitForExistence(timeout: 10), "no signatures key in \(lang.rawValue)")
+ 94 |         signatures.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:95:46: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated autoclosure
+ 93 |         XCTAssertTrue(signatures.waitForExistence(timeout: 10), "no signatures key in \(lang.rawValue)")
+ 94 |         signatures.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:95:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 93 |         XCTAssertTrue(signatures.waitForExistence(timeout: 10), "no signatures key in \(lang.rawValue)")
+ 94 |         signatures.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:95:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 93 |         XCTAssertTrue(signatures.waitForExistence(timeout: 10), "no signatures key in \(lang.rawValue)")
+ 94 |         signatures.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:96:43: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:96:32: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:96:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:96:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:98:27: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 96 |         app.buttons[s.signKey].firstMatch.tap()
+ 97 |         let pad = element(app, s.signaturePad)
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:101:32: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:101:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:101:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:104:57: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+102 | 
+103 |         // The second party signs too, because a finalized record needs both outcomes.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:104:46: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated autoclosure
+102 | 
+103 |         // The second party signs too, because a finalized record needs both outcomes.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:104:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+102 | 
+103 |         // The second party signs too, because a finalized record needs both outcomes.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:104:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+102 | 
+103 |         // The second party signs too, because a finalized record needs both outcomes.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:105:43: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:105:32: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:105:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:105:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:107:30: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+105 |         app.buttons[s.signKey].firstMatch.tap()
+106 |         let second = element(app, s.signaturePad)
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:109:32: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:109:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:109:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:113:32: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+111 |         // 07 the sealed record, its evidence fingerprint and the five languages of the document
+112 |         let finalize = key(app, s.finalizeRecord)
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:114:13: call to main actor-isolated instance method 'swipeUp()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:116:49: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+114 |         app.swipeUp()
+115 |         press(finalize)
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:123:36: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:123:29: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 24 |     func testStoreShotsInRomansh() { walk(.rm) }
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:124:33: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+122 |         // word "EXPORT", and a contains-match found the disabled key on the page behind this one.
+123 |         let exportKey = app.buttons[s.exportPdf]
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:126:43: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+124 |         XCTAssertTrue(exportKey.waitForExistence(timeout: 15), "no export page in \(lang.rawValue)")
+125 |         press(exportKey)
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:126:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+124 |         XCTAssertTrue(exportKey.waitForExistence(timeout: 15), "no export page in \(lang.rawValue)")
+125 |         press(exportKey)
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:126:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+124 |         XCTAssertTrue(exportKey.waitForExistence(timeout: 15), "no export page in \(lang.rawValue)")
+125 |         press(exportKey)
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:141:18: call to main actor-isolated instance method 'press(forDuration:thenDragTo:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+131 | 
+132 |     /// A signature rather than a scribble: three strokes that read as handwriting at listing size.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:140:17: call to main actor-isolated instance method 'coordinate(withNormalizedOffset:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+131 | 
+132 |     /// A signature rather than a scribble: three strokes that read as handwriting at listing size.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:141:59: call to main actor-isolated instance method 'coordinate(withNormalizedOffset:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+131 | 
+132 |     /// A signature rather than a scribble: three strokes that read as handwriting at listing size.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:152:21: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+146 |     /// the column, and a step that has just changed is still settling. This waits for the hit test
+147 |     /// to agree, then presses the middle of the key directly if it never does.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:154:82: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+146 |     /// the column, and a step that has just changed is still settling. This waits for the hit test
+147 |     /// to agree, then presses the middle of the key directly if it never does.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:154:21: call to main actor-isolated instance method 'coordinate(withNormalizedOffset:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+146 |     /// the column, and a step that has just changed is still settling. This waits for the hit test
+147 |     /// to agree, then presses the middle of the key directly if it never does.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:159:101: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+156 |     }
+157 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:159:41: call to main actor-isolated instance method 'matching' in a synchronous nonisolated context [#ActorIsolatedCall]
+156 |     }
+157 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:159:13: call to main actor-isolated instance method 'descendants(matching:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+156 |     }
+157 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:163:81: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+160 |     }
+161 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:163:21: call to main actor-isolated instance method 'matching' in a synchronous nonisolated context [#ActorIsolatedCall]
+160 |     }
+161 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:163:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+160 |     }
+161 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:167:30: call to main actor-isolated instance method 'screenshot()' in a synchronous nonisolated context [#ActorIsolatedCall]
+164 |     }
+165 | 
+[LimenTests] Compiling ExportTests.swift
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenTests/Sources/ExportTests.swift:120:37: '#require(_:_:)' is redundant because 'FileHandle(forReadingFrom: exported.url).readData(ofLength: 5)' never equals 'nil' (from macro 'require')
+118 |             let exported = try PdfExport.export(record, Str(lang), photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id), folder: root)
+119 |             #expect(exported.bytes > 1_000, "\(lang)")
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenTests/Sources/ExportTests.swift:144:27: result of call to 'export(_:_:photoDir:signatureDir:folder:now:)' is unused [#NoUsage]
+142 |             var draft = record
+143 |             draft.finalizedEpochMs = 0
+[!]  macro expansion #expect:4:27: result of call to 'export(_:_:photoDir:signatureDir:folder:now:)' is unused [#NoUsage]
+`- /Users/aperi/DEV/SWIFT/limen/LimenTests/Sources/ExportTests.swift:145:10: note: expanded code originates here
+139 |         let store = Store(root: root)
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:34:13: call to main actor-isolated instance method 'terminate()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 24 |     // MARK: - The walk
+ 25 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:43:54: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 41 | 
+ 42 |     private func landing(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:43:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 41 | 
+ 42 |     private func landing(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:43:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 41 | 
+ 42 |     private func landing(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:44:50: main actor-isolated property 'exists' can not be referenced from a nonisolated autoclosure
+ 42 |     private func landing(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+ 43 |         XCTAssertTrue(app.buttons[s.startNewSession].waitForExistence(timeout: 60), "no start key in \(lang.rawValue)")
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:44:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 42 |     private func landing(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+ 43 |         XCTAssertTrue(app.buttons[s.startNewSession].waitForExistence(timeout: 60), "no start key in \(lang.rawValue)")
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:44:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 42 |     private func landing(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+ 43 |         XCTAssertTrue(app.buttons[s.startNewSession].waitForExistence(timeout: 60), "no start key in \(lang.rawValue)")
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:45:53: main actor-isolated property 'exists' can not be referenced from a nonisolated autoclosure
+ 43 |         XCTAssertTrue(app.buttons[s.startNewSession].waitForExistence(timeout: 60), "no start key in \(lang.rawValue)")
+ 44 |         XCTAssertTrue(app.buttons[s.allSessions].exists, "no sessions key in \(lang.rawValue)")
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:45:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 43 |         XCTAssertTrue(app.buttons[s.startNewSession].waitForExistence(timeout: 60), "no start key in \(lang.rawValue)")
+ 44 |         XCTAssertTrue(app.buttons[s.allSessions].exists, "no sessions key in \(lang.rawValue)")
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:45:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 43 |         XCTAssertTrue(app.buttons[s.startNewSession].waitForExistence(timeout: 60), "no start key in \(lang.rawValue)")
+ 44 |         XCTAssertTrue(app.buttons[s.allSessions].exists, "no sessions key in \(lang.rawValue)")
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:50:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:50:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:50:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:51:52: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 49 |     private func newSessionForm(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+ 50 |         app.buttons[s.startNewSession].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:51:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 49 |     private func newSessionForm(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+ 50 |         app.buttons[s.startNewSession].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:51:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 49 |     private func newSessionForm(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+ 50 |         app.buttons[s.startNewSession].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:52:59: main actor-isolated property 'exists' can not be referenced from a nonisolated autoclosure
+ 50 |         app.buttons[s.startNewSession].tap()
+ 51 |         XCTAssertTrue(app.buttons[s.role(.tenant)].waitForExistence(timeout: 15), "no tenant choice in \(lang.rawValue)")
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:52:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 50 |         app.buttons[s.startNewSession].tap()
+ 51 |         XCTAssertTrue(app.buttons[s.role(.tenant)].waitForExistence(timeout: 15), "no tenant choice in \(lang.rawValue)")
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:52:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 50 |         app.buttons[s.startNewSession].tap()
+ 51 |         XCTAssertTrue(app.buttons[s.role(.tenant)].waitForExistence(timeout: 15), "no tenant choice in \(lang.rawValue)")
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:56:36: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:56:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:56:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:57:51: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 55 |         // reacts in this language and not only that its keys are translated.
+ 56 |         app.buttons[s.actorAgency].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:58:43: main actor-isolated property 'exists' can not be referenced from a nonisolated autoclosure
+ 56 |         app.buttons[s.actorAgency].tap()
+ 57 |         XCTAssertTrue(element(app, s.companyName).waitForExistence(timeout: 10), "no agency field in \(lang.rawValue)")
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:58:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 56 |         app.buttons[s.actorAgency].tap()
+ 57 |         XCTAssertTrue(element(app, s.companyName).waitForExistence(timeout: 10), "no agency field in \(lang.rawValue)")
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:58:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 56 |         app.buttons[s.actorAgency].tap()
+ 57 |         XCTAssertTrue(element(app, s.companyName).waitForExistence(timeout: 10), "no agency field in \(lang.rawValue)")
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:59:29: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:59:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:59:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:60:30: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:60:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:60:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:61:51: main actor-isolated property 'exists' can not be referenced from a nonisolated autoclosure
+ 59 |         app.buttons[s.exit].tap()
+ 60 |         app.buttons[s.entry].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:63:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:63:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:63:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:63:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 47 |     }
+ 48 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:67:53: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 65 | 
+ 66 |     private func privacyAndLicences(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:67:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 65 | 
+ 66 |     private func privacyAndLicences(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:67:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 65 | 
+ 66 |     private func privacyAndLicences(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:68:39: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 64 |     }
+ 65 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:68:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 64 |     }
+ 65 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:68:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 64 |     }
+ 65 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:69:52: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 67 |         XCTAssertTrue(app.buttons[s.dataAndPrivacy].waitForExistence(timeout: 15), "no way back to the landing in \(lang.rawValue)")
+ 68 |         app.buttons[s.dataAndPrivacy].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:70:55: main actor-isolated property 'exists' can not be referenced from a nonisolated autoclosure
+ 68 |         app.buttons[s.dataAndPrivacy].tap()
+ 69 |         XCTAssertTrue(element(app, s.privacyTitle).waitForExistence(timeout: 15), "no privacy title in \(lang.rawValue)")
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:73:13: call to main actor-isolated instance method 'swipeUp()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 64 |     }
+ 65 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:74:51: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 72 | 
+ 73 |         app.swipeUp()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:74:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+ 72 | 
+ 73 |         app.swipeUp()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:74:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+ 72 | 
+ 73 |         app.swipeUp()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:75:37: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 64 |     }
+ 65 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:75:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 64 |     }
+ 65 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:75:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 64 |     }
+ 65 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:78:69: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 76 |         // The notice is one document in one language, as Apache-2.0 section 4(d) asks for it, so
+ 77 |         // the assertion here is its own words and the same in every run.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:80:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 64 |     }
+ 65 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:80:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 64 |     }
+ 65 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:80:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 64 |     }
+ 65 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:80:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 64 |     }
+ 65 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:81:52: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 79 |         shoot(app, "\(tag)-04-licences")
+ 80 |         app.buttons[s.back].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:85:54: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 83 | 
+ 84 |     private func hubAndInspection(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:88:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 82 |     }
+ 83 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:89:51: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 87 | 
+ 88 |         element(app, s.stepInspection).tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:92:33: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 82 |     }
+ 83 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:93:49: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 91 | 
+ 92 |         key(app, s.stepObjects).tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:95:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 82 |     }
+ 83 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:95:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 82 |     }
+ 83 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:95:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 82 |     }
+ 83 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:95:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 82 |     }
+ 83 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:96:51: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 94 |         shoot(app, "\(tag)-07-objects")
+ 95 |         app.buttons[s.back].firstMatch.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:97:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 82 |     }
+ 83 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:97:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 82 |     }
+ 83 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:97:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 82 |     }
+ 83 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:97:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 82 |     }
+ 83 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:101:51: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 99 | 
+100 |     private func dossierAndCanton(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:102:37: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 98 |     }
+ 99 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:103:47: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+101 |         XCTAssertTrue(element(app, s.stepDossier).waitForExistence(timeout: 15), "no dossier door in \(lang.rawValue)")
+102 |         element(app, s.stepDossier).tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:106:36: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 98 |     }
+ 99 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:106:29: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 98 |     }
+ 99 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:107:33: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+105 | 
+106 |         let cantonKey = app.buttons[s.selectCanton]
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:108:19: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 98 |     }
+ 99 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:109:33: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 98 |     }
+ 99 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:109:26: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 98 |     }
+ 99 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:110:30: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+108 |         cantonKey.tap()
+109 |         let zurich = app.buttons[s.canton(.zh)]
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:112:16: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 98 |     }
+ 99 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:115:70: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+113 |         // Choosing a canton is what makes the legal overlay speak, and its rows are the longest
+114 |         // sentences in the app: if a language breaks a panel, it breaks here.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:117:40: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+ 98 |     }
+ 99 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:117:29: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+ 98 |     }
+ 99 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:117:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+ 98 |     }
+ 99 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:117:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+ 98 |     }
+ 99 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:121:47: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+119 | 
+120 |     private func reviewAndSignature(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:121:34: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated autoclosure
+119 | 
+120 |     private func reviewAndSignature(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:121:27: main actor-isolated property 'buttons' can not be referenced from a nonisolated autoclosure
+119 | 
+120 |     private func reviewAndSignature(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:122:33: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+118 |     }
+119 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:122:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+118 |     }
+119 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:122:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+118 |     }
+119 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:123:51: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+121 |         XCTAssertTrue(app.buttons[s.hubClose].waitForExistence(timeout: 15), "no close key in \(lang.rawValue)")
+122 |         app.buttons[s.hubClose].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:126:13: call to main actor-isolated instance method 'swipeUp()' in a synchronous nonisolated context [#ActorIsolatedCall]
+118 |     }
+119 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:128:34: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+126 |         app.swipeUp()
+127 |         let signatures = key(app, s.stepSign)
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:129:20: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+118 |     }
+119 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:130:48: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+128 |         XCTAssertTrue(signatures.waitForExistence(timeout: 10), "no signatures key in \(lang.rawValue)")
+129 |         signatures.tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:133:43: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+118 |     }
+119 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:133:32: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+118 |     }
+119 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:133:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+118 |     }
+119 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:133:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+118 |     }
+119 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:135:27: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+133 |         app.buttons[s.signKey].firstMatch.tap()
+134 |         let pad = element(app, s.signaturePad)
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:137:14: call to main actor-isolated instance method 'press(forDuration:thenDragTo:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+118 |     }
+119 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:136:13: call to main actor-isolated instance method 'coordinate(withNormalizedOffset:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+118 |     }
+119 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:137:54: call to main actor-isolated instance method 'coordinate(withNormalizedOffset:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+118 |     }
+119 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:139:32: call to main actor-isolated instance method 'tap()' in a synchronous nonisolated context [#ActorIsolatedCall]
+118 |     }
+119 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:139:20: main actor-isolated subscript 'subscript(_:)' can not be referenced from a nonisolated context
+118 |     }
+119 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:139:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+118 |     }
+119 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:140:46: call to main actor-isolated instance method 'waitForExistence(timeout:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+138 |         shoot(app, "\(tag)-13-ink")
+139 |         app.buttons[s.saveInk].tap()
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:147:19: call to main actor-isolated initializer 'init()' in a synchronous nonisolated context [#ActorIsolatedCall]
+144 |     // MARK: - Driving
+145 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:148:13: main actor-isolated property 'launchArguments' can not be mutated from a nonisolated context
+144 |     // MARK: - Driving
+145 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:149:13: main actor-isolated property 'launchEnvironment' can not be mutated from a nonisolated context
+144 |     // MARK: - Driving
+145 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:150:13: call to main actor-isolated instance method 'launch()' in a synchronous nonisolated context [#ActorIsolatedCall]
+144 |     // MARK: - Driving
+145 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:157:101: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+154 |     /// Text inside a SwiftUI button is folded into the button's own label, so a row is found by the
+155 |     /// words its label contains rather than as a static text of its own.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:157:41: call to main actor-isolated instance method 'matching' in a synchronous nonisolated context [#ActorIsolatedCall]
+154 |     /// Text inside a SwiftUI button is folded into the button's own label, so a row is found by the
+155 |     /// words its label contains rather than as a static text of its own.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:157:13: call to main actor-isolated instance method 'descendants(matching:)' in a synchronous nonisolated context [#ActorIsolatedCall]
+154 |     /// Text inside a SwiftUI button is folded into the button's own label, so a row is found by the
+155 |     /// words its label contains rather than as a static text of its own.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:163:81: main actor-isolated property 'firstMatch' can not be referenced from a nonisolated context
+160 |     /// A key whose view uppercases what `Str` holds in sentence case, matched on the word rather
+161 |     /// than on the casing so the one lookup serves both shapes.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:163:21: call to main actor-isolated instance method 'matching' in a synchronous nonisolated context [#ActorIsolatedCall]
+160 |     /// A key whose view uppercases what `Str` holds in sentence case, matched on the word rather
+161 |     /// than on the casing so the one lookup serves both shapes.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:163:13: main actor-isolated property 'buttons' can not be referenced from a nonisolated context
+160 |     /// A key whose view uppercases what `Str` holds in sentence case, matched on the word rather
+161 |     /// than on the casing so the one lookup serves both shapes.
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:167:30: call to main actor-isolated instance method 'screenshot()' in a synchronous nonisolated context [#ActorIsolatedCall]
+164 |     }
+165 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:173:29: main actor-isolated property 'pngRepresentation' can not be referenced from a nonisolated context
+164 |     }
+165 | 
+Test Suite 'All tests' passed at 2026-10-13 23:55:43.906.
+Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.002) seconds
+Test run started.
+Suite ArchiveTests started
+Suite ArchiveTests passed after 1.471 seconds
+Suite InternationalIdentityTests started
+Suite InternationalIdentityTests passed after 0.061 seconds
+Suite StringsTests started
+Suite StringsTests passed after 0.007 seconds
+Suite LegacyCompatTests started
+Suite LegacyCompatTests passed after 0.028 seconds
+Suite SwissDateTests started
+Suite SwissDateTests passed after 0.001 seconds
+Suite ClocksTests started
+Suite ClocksTests passed after 0.003 seconds
+Suite ZeitwertTests started
+Suite ZeitwertTests passed after 0.001 seconds
+Suite TemplatesTests started
+Suite TemplatesTests passed after 0.004 seconds
+Suite CautionProviderTests started
+Suite CautionProviderTests passed after 0.001 seconds
+Suite LegalProfileTests started
+Suite LegalProfileTests passed after 0.005 seconds
+Suite LegalOverlayTests started
+Suite LegalOverlayTests passed after 0.005 seconds
+Suite ReportTests started
+Suite ReportTests passed after 0.002 seconds
+Suite ProtocolIntegrityTests started
+Suite ProtocolIntegrityTests passed after 0.018 seconds
+Suite CompletionRulesTests started
+Suite CompletionRulesTests passed after 0.009 seconds
+Suite StoreTests started
+Suite Sto2026-10-13 23:56:05.455 xcodebuild[16853:87213]  iOSSimulator: CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA: Failed to launch app with identifier: dev.peringer.limen.audit and options: {
+    "activate_suspended" = 0;
+    arguments =     (
+    );
+    environment =     {
+        "APP_DISTRIBUTOR_ID_OVERRIDE" = "com.apple.AppStore";
+        "CA_ASSERT_MAIN_THREAD_TRANSACTIONS" = 0;
+        "CA_DEBUG_TRANSACTIONS" = 0;
+        "DYLD_FRAMEWORK_PATH" = "/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks";
+        "DYLD_INSERT_LIBRARIES" = "/usr/lib/libRPAC.dylib:/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/Limen.app/Frameworks/libXCTestBundleInject.dylib:/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.GSg66O/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libMainThreadChecker.dylib:/usr/lib/libRPAC.dylib";
+        "DYLD_LIBRARY_PATH" = "/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib";
+        "IDE_CHOSEN_LOGGING_METHOD" = 1;
+        "LLVM_PROFILE_FILE" = "/var/folders/rw/fgcvq6x158n7xh21ygb3g4bc0000gn/T/dev.peringer.limen.audit/DF55FF77-73D1-479D-90D1-A9E2C3E3BF8B-16853-0000000D119BCE5C/F255F8B2-80AD-49E9-B8D2-641077DF555F-%p%c.profraw";
+        NSApplicationQuitWithoutSuddenTermination = YES;
+        NSUnbufferedIO = YES;
+        "OS_ACTIVITY_DT_MODE" = YES;
+        "PERFC_ENABLE_EXTENDED_DIAGNOSTIC_FORMAT" = 1;
+        "PERFC_ENABLE_PROFILE_MODE" = 1;
+        "PERFC_RESET_INSERT_LIBRARIES" = 1;
+        "PERFC_SUPPRESS_SYSTEM_REPORTS" = 1;
+        "RUN_DESTINATION_DEVICE_NAME" = "iPhone 18 Pro";
+        "RUN_DESTINATION_DEVICE_PLATFORM_IDENTIFIER" = "com.apple.platform.iphonesimulator";
+        "RUN_DESTINATION_DEVICE_UDID" = "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA";
+        "SQLITE_ENABLE_THREAD_ASSERTIONS" = 1;
+        "SWIFT_BACKTRACE" = "enable=no";
+        TERM = dumb;
+        XCInjectBundleInto = unused;
+        "XCODE_SCHEME_NAME" = AllTests;
+        XCTestBundleInjectPath = "/usr/lib/libRPAC.dylib:/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/Limen.app/Frameworks/libXCTestBundleInject.dylib:/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.GSg66O/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libMainThreadChecker.dylib:/usr/lib/libRPAC.dylib";
+        XCTestBundlePath = "PlugIns/LimenTests.xctest";
+        XCTestConfigurationFilePath = "";
+        XCTestSessionIdentifier = "E10C48A7-D4B4-460F-BF9D-EC1DE149B110";
+        "__XCODE_BUILT_PRODUCTS_DIR_PATHS" = "/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator";
+        "__XPC_DYLD_FRAMEWORK_PATH" = "/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator";
+        "__XPC_DYLD_LIBRARY_PATH" = "/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator";
+        "__XPC_LLVM_PROFILE_FILE" = "/var/folders/rw/fgcvq6x158n7xh21ygb3g4bc0000gn/T/dev.peringer.limen.audit/DF55FF77-73D1-479D-90D1-A9E2C3E3BF8B-16853-0000000D119BCE5C/F255F8B2-80AD-49E9-B8D2-641077DF555F-%p%c.profraw";
+    };
+    stderr = "/dev/ttys005";
+    stdout = "/dev/ttys005";
+    "terminate_running_process" = 1;
+    "wait_for_debugger" = 1;
+} (error = Error Domain=NSPOSIXErrorDomain Code=3 "No such process" UserInfo={SimCallingSelector=launchApplicationWithID:options:pid:error:, NSLocalizedDescription=Simulator device failed to launch dev.peringer.limen.audit., NSUnderlyingError=0xb1402dce0 {Error Domain=NSPOSIXErrorDomain Code=3 "No such process" UserInfo={NSLocalizedDescription=Application launch for 'dev.peringer.limen.audit' did not return a process handle nor launch error.}}})
+2026-10-13 23:56:05.487 xcodebuild[16853:84181] [MT] IDELaunchReport: 7be4e25cf9b95980:7be4e25cf9b95cc0:Launching LimenTests Finished with error: Simulator device failed to launch dev.peringer.limen.audit.
+Domain: NSPOSIXErrorDomain
+Code: 3
+Failure Reason: No such process
+User Info: {
+    DVTErrorCreationDateKey = "2026-10-13 21:56:05 +0000";
+    IDERunOperationFailingWorker = IDELaunchiPhoneSimulatorLauncher;
+    SimCallingSelector = "launchApplicationWithID:options:pid:error:";
+}
+--
+Application launch for 'dev.peringer.limen.audit' did not return a process handle nor launch error.
+Domain: NSPOSIXErrorDomain
+Code: 3
+Failure Reason: No such process
+--
+
+2026-10-13 23:56:05.488 xcodebuild[16853:84181] [MT] IDELaunchReport: 7be4e25cf9b95980:7be4e25cf9b95cc0:Launching LimenTests com.apple.dt.IDERunOperationWorkerFinished {
+    "device_identifier" = "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA";
+    "device_model" = "iPhone19,2";
+    "device_osBuild" = "27.0 (24A434)";
+    "device_osBuild_monotonic" = 24000434000000000;
+    "device_os_variant" = 1;
+    "device_platform" = "com.apple.platform.iphonesimulator";
+    "device_platform_family" = 2;
+    "device_reality" = 2;
+    "device_thinningType" = "iPhone19,2";
+    "device_transport" = 4;
+    "launchSession_initiator" = 1;
+    "launchSession_schemeCommand" = Test;
+    "launchSession_schemeCommand_enum" = 2;
+    "launchSession_targetArch" = arm64;
+    "launchSession_targetArch_enum" = 6;
+    "operation_duration_ms" = 19628;
+    "operation_errorCode" = 3;
+    "operation_errorDomain" = NSPOSIXErrorDomain;
+    "operation_errorWorker" = IDELaunchiPhoneSimulatorLauncher;
+    "operation_error_reportable" = 1;
+    "operation_name" = IDELaunchiPhoneSimulatorLauncher;
+    "param_consoleMode" = 0;
+    "param_debugger_attachToExtensions" = 0;
+    "param_debugger_attachToXPC" = 0;
+    "param_debugger_type" = 1;
+    "param_destination_isProxy" = 0;
+    "param_destination_platform" = "com.apple.platform.iphonesimulator";
+    "param_diag_MTE_enable" = 0;
+    "param_diag_MainThreadChecker_stopOnIssue" = 0;
+    "param_diag_MallocStackLogging_enableDuringAttach" = 0;
+    "param_diag_MallocStackLogging_enableForXPC" = 0;
+    "param_diag_allowLocationSimulation" = 1;
+    "param_diag_checker_mtc_enable" = 0;
+    "param_diag_checker_tpc_enable" = 1;
+    "param_diag_gpu_frameCapture_enable" = 3;
+    "param_diag_gpu_shaderValidation_enable" = 0;
+    "param_diag_gpu_validation_enable" = 1;
+    "param_diag_guardMalloc_enable" = 0;
+    "param_diag_memoryGraphOnResourceException" = 0;
+    "param_diag_queueDebugging_enable" = 0;
+    "param_diag_runtimeProfile_generate" = 1;
+    "param_diag_sanitizer_asan_enable" = 0;
+    "param_diag_sanitizer_mtasan_enable" = 0;
+    "param_diag_sanitizer_tsan_enable" = 0;
+    "param_diag_sanitizer_tsan_stopOnIssue" = 0;
+    "param_diag_sanitizer_ubsan_enable" = 0;
+    "param_diag_sanitizer_ubsan_stopOnIssue" = 0;
+    "param_diag_showNonLocalizedStrings" = 0;
+    "param_diag_viewDebugging_enabled" = 0;
+    "param_diag_viewDebugging_insertDylibOnLaunch" = 0;
+    "param_install_style" = 2;
+    "param_launcher_UID" = 2;
+    "param_launcher_allowDeviceSensorReplayData" = 0;
+    "param_launcher_kind" = 0;
+    "param_launcher_style" = 0;
+    "param_launcher_substyle" = 0;
+    "param_runnable_appExtensionHostRunMode" = 0;
+    "param_runnable_productType" = "com.apple.product-type.application";
+    "param_testing_launchedForTesting" = 1;
+    "param_testing_suppressSimulatorApp" = 1;
+    "param_testing_usingCLI" = 0;
+    "sdk_canonicalName" = "iphonesimulator27.0";
+    "sdk_osVersion" = "27.0";
+    "sdk_platformID" = 7;
+    "sdk_variant" = iphonesimulator;
+    "sdk_version_monotonic" = 24000430000000000;
+}
+2026-10-13 23:56:05.489 xcodebuild[16853:84181] [MT] IDELaunchReport: 7be4e25cf9b95980:7be4e25cf9b95980: Finished with error: Simulator device failed to launch dev.peringer.limen.audit.
+Domain: NSPOSIXErrorDomain
+Code: 3
+Failure Reason: No such process
+User Info: {
+    DVTErrorCreationDateKey = "2026-10-13 21:56:05 +0000";
+    IDERunOperationFailingWorker = IDELaunchiPhoneSimulatorLauncher;
+    SimCallingSelector = "launchApplicationWithID:options:pid:error:";
+}
+--
+Application launch for 'dev.peringer.limen.audit' did not return a process handle nor launch error.
+Domain: NSPOSIXErrorDomain
+Code: 3
+Failure Reason: No such process
+--
+
+2026-10-13 23:56:05.490 xcodebuild[16853:84181] [MT] IDELaunchReport: 7be4e25cf9b95980:7be4e25cf9b95980: com.apple.dt.IDERunOperationWorkerFinished {
+    "device_identifier" = "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA";
+    "device_model" = "iPhone19,2";
+    "device_osBuild" = "27.0 (24A434)";
+    "device_osBuild_monotonic" = 24000434000000000;
+    "device_os_variant" = 1;
+    "device_platform" = "com.apple.platform.iphonesimulator";
+    "device_platform_family" = 2;
+    "device_reality" = 2;
+    "device_thinningType" = "iPhone19,2";
+    "device_transport" = 4;
+    "launchSession_initiator" = 1;
+    "launchSession_schemeCommand" = Test;
+    "launchSession_schemeCommand_enum" = 2;
+    "launchSession_targetArch" = arm64;
+    "launchSession_targetArch_enum" = 6;
+    "operation_duration_ms" = 19641;
+    "operation_errorCode" = 3;
+    "operation_errorDomain" = NSPOSIXErrorDomain;
+    "operation_errorWorker" = IDELaunchiPhoneSimulatorLauncher;
+    "operation_error_reportable" = 1;
+    "operation_name" = IDERunOperationWorkerGroup;
+    "param_consoleMode" = 0;
+    "param_debugger_attachToExtensions" = 0;
+    "param_debugger_attachToXPC" = 0;
+    "param_debugger_type" = 1;
+    "param_destination_isProxy" = 0;
+    "param_destination_platform" = "com.apple.platform.iphonesimulator";
+    "param_diag_MTE_enable" = 0;
+    "param_diag_MainThreadChecker_stopOnIssue" = 0;
+    "param_diag_MallocStackLogging_enableDuringAttach" = 0;
+    "param_diag_MallocStackLogging_enableForXPC" = 0;
+    "param_diag_allowLocationSimulation" = 1;
+    "param_diag_checker_mtc_enable" = 0;
+    "param_diag_checker_tpc_enable" = 1;
+    "param_diag_gpu_frameCapture_enable" = 3;
+    "param_diag_gpu_shaderValidation_enable" = 0;
+    "param_diag_gpu_validation_enable" = 1;
+    "param_diag_guardMalloc_enable" = 0;
+    "param_diag_memoryGraphOnResourceException" = 0;
+    "param_diag_queueDebugging_enable" = 0;
+    "param_diag_runtimeProfile_generate" = 1;
+    "param_diag_sanitizer_asan_enable" = 0;
+    "param_diag_sanitizer_mtasan_enable" = 0;
+    "param_diag_sanitizer_tsan_enable" = 0;
+    "param_diag_sanitizer_tsan_stopOnIssue" = 0;
+    "param_diag_sanitizer_ubsan_enable" = 0;
+    "param_diag_sanitizer_ubsan_stopOnIssue" = 0;
+    "param_diag_showNonLocalizedStrings" = 0;
+    "param_diag_viewDebugging_enabled" = 0;
+    "param_diag_viewDebugging_insertDylibOnLaunch" = 0;
+    "param_install_style" = 2;
+    "param_launcher_UID" = 2;
+    "param_launcher_allowDeviceSensorReplayData" = 0;
+    "param_launcher_kind" = 0;
+    "param_launcher_style" = 0;
+    "param_launcher_substyle" = 0;
+    "param_runnable_appExtensionHostRunMode" = 0;
+    "param_runnable_productType" = "com.apple.product-type.application";
+    "param_testing_launchedForTesting" = 1;
+    "param_testing_suppressSimulatorApp" = 1;
+    "param_testing_usingCLI" = 0;
+    "sdk_canonicalName" = "iphonesimulator27.0";
+    "sdk_osVersion" = "27.0";
+    "sdk_platformID" = 7;
+    "sdk_variant" = iphonesimulator;
+    "sdk_version_monotonic" = 24000430000000000;
+}
+2026-10-13 23:56:16.667 xcodebuild[16853:87219]  iOSSimulator: CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA: Failed to launch app with identifier: dev.peringer.limen.uitests.xctrunner and options: {
+    "activate_suspended" = 1;
+    arguments =     (
+    );
+    environment =     {
+        "APP_DISTRIBUTOR_ID_OVERRIDE" = "com.apple.AppStore";
+        "CA_ASSERT_MAIN_THREAD_TRANSACTIONS" = 0;
+        "CA_DEBUG_TRANSACTIONS" = 0;
+        "DYLD_FRAMEWORK_PATH" = "/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks";
+        "DYLD_INSERT_LIBRARIES" = "/usr/lib/libRPAC.dylib:/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.GSg66O/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libMainThreadChecker.dylib";
+        "DYLD_LIBRARY_PATH" = "/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib";
+        "IDE_CHOSEN_LOGGING_METHOD" = 1;
+        "LLVM_PROFILE_FILE" = "/var/folders/rw/fgcvq6x158n7xh21ygb3g4bc0000gn/T/dev.peringer.limen.uitests.xctrunner/A533393F-F467-465B-A45B-D75156CBEB5A-16853-0000000D2E25D473/79212A44-97EB-4EC6-8CED-1CDA183DC3EA-%p%c.profraw";
+        NSApplicationQuitWithoutSuddenTermination = YES;
+        NSUnbufferedIO = YES;
+        "OS_ACTIVITY_DT_MODE" = YES;
+        "PERFC_ENABLE_EXTENDED_DIAGNOSTIC_FORMAT" = 1;
+        "PERFC_ENABLE_PROFILE_MODE" = 1;
+        "PERFC_RESET_INSERT_LIBRARIES" = 1;
+        "PERFC_SUPPRESS_SYSTEM_REPORTS" = 1;
+        "RUN_DESTINATION_DEVICE_NAME" = "iPhone 18 Pro";
+        "RUN_DESTINATION_DEVICE_PLATFORM_IDENTIFIER" = "com.apple.platform.iphonesimulator";
+        "RUN_DESTINATION_DEVICE_UDID" = "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA";
+        "SQLITE_ENABLE_THREAD_ASSERTIONS" = 1;
+        "SWIFT_BACKTRACE" = "enable=no";
+        TERM = dumb;
+        "XCODE_SCHEME_NAME" = AllTests;
+        XCTestBundleInjectPath = "/usr/lib/libRPAC.dylib:/var/run/com.apple.security.cryptexd/mnt/com.apple.iPhoneOS.SimulatorRuntime-v24.1.434.0.GSg66O/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 27.0.simruntime/Contents/Resources/RuntimeRoot/usr/lib/libMainThreadChecker.dylib";
+        XCTestBundlePath = "PlugIns/LimenUITests.xctest";
+        XCTestConfigurationFilePath = "";
+        XCTestSessionIdentifier = "45FA6CA3-E6EF-44EE-9A1E-BE7CD77010A6";
+        "__XCODE_BUILT_PRODUCTS_DIR_PATHS" = "/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator";
+        "__XPC_DYLD_FRAMEWORK_PATH" = "/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator";
+        "__XPC_DYLD_LIBRARY_PATH" = "/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator";
+        "__XPC_LLVM_PROFILE_FILE" = "/var/folders/rw/fgcvq6x158n7xh21ygb3g4bc0000gn/T/dev.peringer.limen.uitests.xctrunner/A533393F-F467-465B-A45B-D75156CBEB5A-16853-0000000D2E25D473/79212A44-97EB-4EC6-8CED-1CDA183DC3EA-%p%c.profraw";
+    };
+    stderr = "/dev/ttys005";
+    stdout = "/dev/ttys005";
+    "terminate_running_process" = 1;
+    "wait_for_debugger" = 1;
+} (error = Error Domain=FBSOpenApplicationServiceErrorDomain Code=1 "Simulator device failed to launch dev.peringer.limen.uitests.xctrunner." UserInfo={NSLocalizedDescription=Simulator device failed to launch dev.peringer.limen.uitests.xctrunner., NSUnderlyingError=0xb15d03750 {Error Domain=FBSOpenApplicationServiceErrorDomain Code=1 "The request to open "dev.peringer.limen.uitests.xctrunner" failed." UserInfo={BSErrorCodeDescription=RequestDenied, NSLocalizedDescription=The request to open "dev.peringer.limen.uitests.xctrunner" failed., NSUnderlyingError=0xb15d00030 {Error Domain=FBSOpenApplicationErrorDomain Code=4 "Unknown application display identifier dev.peringer.limen.uitests.xctrunner." UserInfo={BSErrorCodeDescription=NotFound, NSLocalizedFailureReason=Unknown application display identifier dev.peringer.limen.uitests.xctrunner.}}, FBSOpenApplicationRequestID=0xed16, NSLocalizedFailureReason=The request was denied by service delegate (SBMainWorkspace) for reason: NotFound ("Unknown application display identifier dev.peringer.limen.uitests.xctrunner").}}, NSLocalizedFailureReason=The request was denied by service delegate (SBMainWorkspace) for reason: NotFound ("Unknown application display identifier dev.peringer.limen.uitests.xctrunner")., FBSOpenApplicationRequestID=0xed16, SimCallingSelector=launchApplicationWithID:options:pid:error:, BSErrorCodeDescription=RequestDenied})
+2026-10-13 23:56:16.673 xcodebuild[16853:84181] [MT] IDELaunchReport: 7be4e25cf74db340:7be4e25cf9b95a00:Launching LimenUITests Finished with error: Simulator device failed to launch dev.peringer.limen.uitests.xctrunner.
+Domain: FBSOpenApplicationServiceErrorDomain
+Code: 1
+Failure Reason: The request was denied by service delegate (SBMainWorkspace) for reason: NotFound ("Unknown application display identifier dev.peringer.limen.uitests.xctrunner").
+User Info: {
+    BSErrorCodeDescription = RequestDenied;
+    DVTErrorCreationDateKey = "2026-10-13 21:56:16 +0000";
+    FBSOpenApplicationRequestID = 0xed16;
+    IDERunOperationFailingWorker = IDELaunchiPhoneSimulatorLauncher;
+    SimCallingSelector = "launchApplicationWithID:options:pid:error:";
+}
+--
+The request to open "dev.peringer.limen.uitests.xctrunner" failed.
+Domain: FBSOpenApplicationServiceErrorDomain
+Code: 1
+Failure Reason: The request was denied by service delegate (SBMainWorkspace) for reason: NotFound ("Unknown application display identifier dev.peringer.limen.uitests.xctrunner").
+User Info: {
+    BSErrorCodeDescription = RequestDenied;
+    FBSOpenApplicationRequestID = 0xed16;
+}
+--
+The operation couldn’t be completed. Unknown application display identifier dev.peringer.limen.uitests.xctrunner.
+Domain: FBSOpenApplicationErrorDomain
+Code: 4
+Failure Reason: Unknown application display identifier dev.peringer.limen.uitests.xctrunner.
+User Info: {
+    BSErrorCodeDescription = NotFound;
+}
+--
+
+2026-10-13 23:56:16.673 xcodebuild[16853:84181] [MT] IDELaunchReport: 7be4e25cf74db340:7be4e25cf9b95a00:Launching LimenUITests com.apple.dt.IDERunOperationWorkerFinished {
+    "device_identifier" = "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA";
+    "device_model" = "iPhone19,2";
+    "device_osBuild" = "27.0 (24A434)";
+    "device_osBuild_monotonic" = 24000434000000000;
+    "device_os_variant" = 1;
+    "device_platform" = "com.apple.platform.iphonesimulator";
+    "device_platform_family" = 2;
+    "device_reality" = 2;
+    "device_thinningType" = "iPhone19,2";
+    "device_transport" = 4;
+    "launchSession_initiator" = 1;
+    "launchSession_schemeCommand" = Test;
+    "launchSession_schemeCommand_enum" = 2;
+    "launchSession_targetArch" = arm64;
+    "launchSession_targetArch_enum" = 6;
+    "operation_duration_ms" = 10871;
+    "operation_errorCode" = 1;
+    "operation_errorDomain" = FBSOpenApplicationServiceErrorDomain;
+    "operation_errorWorker" = IDELaunchiPhoneSimulatorLauncher;
+    "operation_error_reportable" = 1;
+    "operation_name" = IDELaunchiPhoneSimulatorLauncher;
+    "param_consoleMode" = 0;
+    "param_debugger_attachToExtensions" = 0;
+    "param_debugger_attachToXPC" = 0;
+    "param_debugger_type" = 1;
+    "param_destination_isProxy" = 0;
+    "param_destination_platform" = "com.apple.platform.iphonesimulator";
+    "param_diag_MTE_enable" = 0;
+    "param_diag_MainThreadChecker_stopOnIssue" = 0;
+    "param_diag_MallocStackLogging_enableDuringAttach" = 0;
+    "param_diag_MallocStackLogging_enableForXPC" = 0;
+    "param_diag_allowLocationSimulation" = 1;
+    "param_diag_checker_mtc_enable" = 0;
+    "param_diag_checker_tpc_enable" = 1;
+    "param_diag_gpu_frameCapture_enable" = 3;
+    "param_diag_gpu_shaderValidation_enable" = 0;
+    "param_diag_gpu_validation_enable" = 1;
+    "param_diag_guardMalloc_enable" = 0;
+    "param_diag_memoryGraphOnResourceException" = 0;
+    "param_diag_queueDebugging_enable" = 0;
+    "param_diag_runtimeProfile_generate" = 1;
+    "param_diag_sanitizer_asan_enable" = 0;
+    "param_diag_sanitizer_mtasan_enable" = 0;
+    "param_diag_sanitizer_tsan_enable" = 0;
+    "param_diag_sanitizer_tsan_stopOnIssue" = 0;
+    "param_diag_sanitizer_ubsan_enable" = 0;
+    "param_diag_sanitizer_ubsan_stopOnIssue" = 0;
+    "param_diag_showNonLocalizedStrings" = 0;
+    "param_diag_viewDebugging_enabled" = 0;
+    "param_diag_viewDebugging_insertDylibOnLaunch" = 0;
+    "param_install_style" = 2;
+    "param_launcher_UID" = 2;
+    "param_launcher_allowDeviceSensorReplayData" = 0;
+    "param_launcher_kind" = 0;
+    "param_launcher_style" = 0;
+    "param_launcher_substyle" = 64;
+    "param_runnable_appExtensionHostRunMode" = 0;
+    "param_runnable_productType" = "com.apple.product-type.application";
+    "param_testing_launchedForTesting" = 1;
+    "param_testing_suppressSimulatorApp" = 1;
+    "param_testing_usingCLI" = 0;
+    "sdk_canonicalName" = "iphonesimulator27.0";
+    "sdk_osVersion" = "27.0";
+    "sdk_platformID" = 7;
+    "sdk_variant" = iphonesimulator;
+    "sdk_version_monotonic" = 24000430000000000;
+}
+2026-10-13 23:56:16.675 xcodebuild[16853:84181] [MT] IDELaunchReport: 7be4e25cf74db340:7be4e25cf74db340: Finished with error: Simulator device failed to launch dev.peringer.limen.uitests.xctrunner.
+Domain: FBSOpenApplicationServiceErrorDomain
+Code: 1
+Failure Reason: The request was denied by service delegate (SBMainWorkspace) for reason: NotFound ("Unknown application display identifier dev.peringer.limen.uitests.xctrunner").
+User Info: {
+    BSErrorCodeDescription = RequestDenied;
+    DVTErrorCreationDateKey = "2026-10-13 21:56:16 +0000";
+    FBSOpenApplicationRequestID = 0xed16;
+    IDERunOperationFailingWorker = IDELaunchiPhoneSimulatorLauncher;
+    SimCallingSelector = "launchApplicationWithID:options:pid:error:";
+}
+--
+The request to open "dev.peringer.limen.uitests.xctrunner" failed.
+Domain: FBSOpenApplicationServiceErrorDomain
+Code: 1
+Failure Reason: The request was denied by service delegate (SBMainWorkspace) for reason: NotFound ("Unknown application display identifier dev.peringer.limen.uitests.xctrunner").
+User Info: {
+    BSErrorCodeDescription = RequestDenied;
+    FBSOpenApplicationRequestID = 0xed16;
+}
+--
+The operation couldn’t be completed. Unknown application display identifier dev.peringer.limen.uitests.xctrunner.
+Domain: FBSOpenApplicationErrorDomain
+Code: 4
+Failure Reason: Unknown application display identifier dev.peringer.limen.uitests.xctrunner.
+User Info: {
+    BSErrorCodeDescription = NotFound;
+}
+--
+
+2026-10-13 23:56:16.675 xcodebuild[16853:84181] [MT] IDELaunchReport: 7be4e25cf74db340:7be4e25cf74db340: com.apple.dt.IDERunOperationWorkerFinished {
+    "device_identifier" = "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA";
+    "device_model" = "iPhone19,2";
+    "device_osBuild" = "27.0 (24A434)";
+    "device_osBuild_monotonic" = 24000434000000000;
+    "device_os_variant" = 1;
+    "device_platform" = "com.apple.platform.iphonesimulator";
+    "device_platform_family" = 2;
+    "device_reality" = 2;
+    "device_thinningType" = "iPhone19,2";
+    "device_transport" = 4;
+    "launchSession_initiator" = 1;
+    "launchSession_schemeCommand" = Test;
+    "launchSession_schemeCommand_enum" = 2;
+    "launchSession_targetArch" = arm64;
+    "launchSession_targetArch_enum" = 6;
+    "operation_duration_ms" = 10876;
+    "operation_errorCode" = 1;
+    "operation_errorDomain" = FBSOpenApplicationServiceErrorDomain;
+    "operation_errorWorker" = IDELaunchiPhoneSimulatorLauncher;
+    "operation_error_reportable" = 1;
+    "operation_name" = IDERunOperationWorkerGroup;
+    "param_consoleMode" = 0;
+    "param_debugger_attachToExtensions" = 0;
+    "param_debugger_attachToXPC" = 0;
+    "param_debugger_type" = 1;
+    "param_destination_isProxy" = 0;
+    "param_destination_platform" = "com.apple.platform.iphonesimulator";
+    "param_diag_MTE_enable" = 0;
+    "param_diag_MainThreadChecker_stopOnIssue" = 0;
+    "param_diag_MallocStackLogging_enableDuringAttach" = 0;
+    "param_diag_MallocStackLogging_enableForXPC" = 0;
+    "param_diag_allowLocationSimulation" = 1;
+    "param_diag_checker_mtc_enable" = 0;
+    "param_diag_checker_tpc_enable" = 1;
+    "param_diag_gpu_frameCapture_enable" = 3;
+    "param_diag_gpu_shaderValidation_enable" = 0;
+    "param_diag_gpu_validation_enable" = 1;
+    "param_diag_guardMalloc_enable" = 0;
+    "param_diag_memoryGraphOnResourceException" = 0;
+    "param_diag_queueDebugging_enable" = 0;
+    "param_diag_runtimeProfile_generate" = 1;
+    "param_diag_sanitizer_asan_enable" = 0;
+    "param_diag_sanitizer_mtasan_enable" = 0;
+    "param_diag_sanitizer_tsan_enable" = 0;
+    "param_diag_sanitizer_tsan_stopOnIssue" = 0;
+    "param_diag_sanitizer_ubsan_enable" = 0;
+    "param_diag_sanitizer_ubsan_stopOnIssue" = 0;
+    "param_diag_showNonLocalizedStrings" = 0;
+    "param_diag_viewDebugging_enabled" = 0;
+    "param_diag_viewDebugging_insertDylibOnLaunch" = 0;
+    "param_install_style" = 2;
+    "param_launcher_UID" = 2;
+    "param_launcher_allowDeviceSensorReplayData" = 0;
+    "param_launcher_kind" = 0;
+    "param_launcher_style" = 0;
+    "param_launcher_substyle" = 64;
+    "param_runnable_appExtensionHostRunMode" = 0;
+    "param_runnable_productType" = "com.apple.product-type.application";
+    "param_testing_launchedForTesting" = 1;
+    "param_testing_suppressSimulatorApp" = 1;
+    "param_testing_usingCLI" = 0;
+    "sdk_canonicalName" = "iphonesimulator27.0";
+    "sdk_osVersion" = "27.0";
+    "sdk_platformID" = 7;
+    "sdk_variant" = iphonesimulator;
+    "sdk_version_monotonic" = 24000430000000000;
+}
+2026-10-13 23:56:38.717 xcodebuild[16853:84181] [MT] IDETestOperationsObserverDebug: 69.164 elapsed -- Testing started completed.
+2026-10-13 23:56:38.717 xcodebuild[16853:84181] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-13 23:56:38.717 xcodebuild[16853:84181] [MT] IDETestOperationsObserverDebug: 69.164 sec, +69.164 sec -- end
+Testing failed:
+	Simulator device failed to launch dev.peringer.limen.audit.
+	Simulator device failed to launch dev.peringer.limen.uitests.xctrunner.
+	Limen encountered an error (Failed to install or launch the test runner. (Underlying Error: Simulator device failed to launch dev.peringer.limen.audit. No such process. (Underlying Error: Application launch for 'dev.peringer.limen.audit' did not return a process handle nor launch error. No such process)))
+	LimenUITests-Runner encountered an error (Failed to install or launch the test runner. (Underlying Error: Simulator device failed to launch dev.peringer.limen.uitests.xctrunner. The request was denied by service delegate (SBMainWorkspace) for reason: NotFound ("Unknown application display identifier dev.peringer.limen.uitests.xctrunner"). (Underlying Error: The request to open "dev.peringer.limen.uitests.xctrunner" failed. The request was denied by service delegate (SBMainWorkspace) for reason: NotFound ("Unknown application display identifier dev.peringer.limen.uitests.xctrunner"). (Underlying Error: The operation couldn’t be completed. Unknown application display identifier dev.peringer.limen.uitests.xctrunner.))))
+
+** TEST FAILED **
+
+reTests passed after 0.020 seconds
+Test session results: /Users/aperi/DEV/SWIFT/limen/DD/Logs/Test/Test-AllTests-2026.10.13_23-55-22-+0200.xcresult
+make: *** [test] Error 65

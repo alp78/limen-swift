@@ -1,7 +1,8 @@
 import Foundation
 
 /// What an export produced: where it is, what it is called, how heavy it got.
-public struct ExportedFile: Hashable, Sendable {
+public struct ExportedFile: Hashable, Sendable, Identifiable {
+    public var id: URL { url }
     public let url: URL
     public let displayName: String
     public let bytes: Int64
@@ -32,9 +33,10 @@ public enum Exports {
     /// Writes into the export folder through a scratch file, so a failure leaves nothing behind
     /// and a reader never sees a half-written document.
     public static func write(name: String, in folder: URL = folder, _ body: (URL) throws -> Void) throws -> ExportedFile {
+        guard EvidenceNames.isSafe(name) else { throw CocoaError(.fileWriteInvalidFileName) }
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         let target = folder.appendingPathComponent(name)
-        let tmp = folder.appendingPathComponent(".\(name).part")
-        try? FileManager.default.removeItem(at: tmp)
+        let tmp = AppFiles.scratch.appendingPathComponent("export-\(UUID().uuidString).part")
         do {
             try body(tmp)
             try Files.replace(target, with: tmp)

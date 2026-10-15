@@ -1,0 +1,35 @@
+[
+  {
+    "test": "ParityJourneyTest/testEmptyFormToDrawnSignaturesAndOpenedDocument()",
+    "result": "/tmp/limen-physical-ui-retry-attachments",
+    "configurationName": "Test Scheme Action",
+    "deviceId": "00008150-001074183A7B401C",
+    "deviceName": "Alexis\u2019s iPhone",
+    "exportedFileName": "4AC26E5C-CC9E-4EDA-AA9A-5756FD83DD34.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "empty-journey-opened-pdf_0_D496AFA1-0D9D-404E-9A9D-A86A575A79C7.png",
+    "timestamp": 1791932310.743
+  },
+  {
+    "test": "ParityJourneyTest/testEmptyFormToDrawnSignaturesAndOpenedDocument()",
+    "result": "/tmp/limen-physical-ui-retry-attachments",
+    "configurationName": "Test Scheme Action",
+    "deviceId": "00008150-001074183A7B401C",
+    "deviceName": "Alexis\u2019s iPhone",
+    "exportedFileName": "8AC1FB5C-6A3B-4BA7-A71B-4F527A56C413.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "empty-journey-signed_0_81C8C28A-155F-4559-AEBE-D8C5F75547CC.png",
+    "timestamp": 1791932306.366
+  },
+  {
+    "test": "ParityJourneyTest/testEmptyFormToDrawnSignaturesAndOpenedDocument()",
+    "result": "/tmp/limen-physical-ui-retry-attachments",
+    "configurationName": "Test Scheme Action",
+    "deviceId": "00008150-001074183A7B401C",
+    "deviceName": "Alexis\u2019s iPhone",
+    "exportedFileName": "35673D03-FD99-4656-9985-84C82EFDD6EC.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "empty-journey-complete-draft_0_1C809BC7-470B-4E0D-82B9-7C31EE498436.png",
+    "timestamp": 1791932292.631
+  }
+]

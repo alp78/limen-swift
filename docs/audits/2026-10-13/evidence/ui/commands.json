@@ -1,0 +1,82 @@
+[
+  {
+    "result": "/tmp/limen-ui-parity-7.xcresult",
+    "log": "/tmp/limen-ui-parity-7.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA\" -derivedDataPath ./DD -collect-test-diagnostics never \"-only-testing:LimenUITests/AccessibilityJourneyTest/testEnglishDefault\" \"-only-testing:LimenUITests/ParityJourneyTest\" -resultBundlePath /tmp/limen-ui-parity-7.xcresult test"
+  },
+  {
+    "result": "/tmp/limen-ui-parity-8.xcresult",
+    "log": "/tmp/limen-ui-parity-8.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA\" -derivedDataPath ./DD -collect-test-diagnostics never \"-only-testing:LimenUITests/AccessibilityJourneyTest\" \"-only-testing:LimenUITests/ParityJourneyTest/testEmptyFormToDrawnSignaturesAndOpenedDocument\" -resultBundlePath /tmp/limen-ui-parity-8.xcresult test"
+  },
+  {
+    "result": "/tmp/limen-ui-lifecycles.xcresult",
+    "log": "/tmp/limen-ui-lifecycles.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA\" -derivedDataPath ./DD -collect-test-diagnostics never \"-only-testing:LimenUITests/ParityJourneyTest/testAgencyStandaloneExitThenAmendment\" \"-only-testing:LimenUITests/ParityJourneyTest/testPrivateLandlordEntryThenSeededExit\" \"-only-testing:LimenUITests/AccessibilityJourneyTest/testMainHandoverScreens\" -resultBundlePath /tmp/limen-ui-lifecycles.xcresult test"
+  },
+  {
+    "result": "/tmp/limen-ui-lifecycles-retry.xcresult",
+    "log": "/tmp/limen-ui-lifecycles-retry.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA\" -derivedDataPath ./DD -collect-test-diagnostics never \"-only-testing:LimenUITests/ParityJourneyTest/testAgencyStandaloneExitThenAmendment\" \"-only-testing:LimenUITests/AccessibilityJourneyTest/testMainHandoverScreens\" -resultBundlePath /tmp/limen-ui-lifecycles-retry.xcresult test"
+  },
+  {
+    "result": "/tmp/limen-ui-language-default.xcresult",
+    "log": "/tmp/limen-ui-language-default.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA\" -derivedDataPath ./DD -collect-test-diagnostics never \"-only-testing:LimenUITests/LanguageWalkTest/testTheWalkInEnglish\" \"-only-testing:LimenUITests/LanguageWalkTest/testTheWalkInFrench\" \"-only-testing:LimenUITests/LanguageWalkTest/testTheWalkInGerman\" \"-only-testing:LimenUITests/LanguageWalkTest/testTheWalkInItalian\" \"-only-testing:LimenUITests/LanguageWalkTest/testTheWalkInRomansh\" \"-only-testing:LimenUITests/AccessibilityJourneyTest/testEnglishDefault\" -resultBundlePath /tmp/limen-ui-language-default.xcresult test"
+  },
+  {
+    "result": "/tmp/limen-ui-audit-final.xcresult",
+    "log": "/tmp/limen-ui-audit-final.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA\" -derivedDataPath ./DD -collect-test-diagnostics never -resultBundlePath /tmp/limen-ui-audit-final.xcresult \"-only-testing:LimenUITests/AccessibilityJourneyTest/testMainHandoverScreens\" test"
+  },
+  {
+    "result": "/tmp/limen-ui-language-axlargest.xcresult",
+    "log": "/tmp/limen-ui-language-axlargest.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA\" -derivedDataPath ./DD -collect-test-diagnostics never -resultBundlePath /tmp/limen-ui-language-axlargest.xcresult \"-only-testing:LimenUITests/LanguageWalkTest/testEnglishLargestAccessibility\" \"-only-testing:LimenUITests/LanguageWalkTest/testFrenchLargestAccessibility\" \"-only-testing:LimenUITests/LanguageWalkTest/testGermanLargestAccessibility\" \"-only-testing:LimenUITests/LanguageWalkTest/testItalianLargestAccessibility\" \"-only-testing:LimenUITests/LanguageWalkTest/testRomanshLargestAccessibility\" test"
+  },
+  {
+    "result": "/tmp/limen-small-retry.xcresult",
+    "log": "/tmp/limen-small-retry.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=48BEE103-20ED-422E-80F7-101A4058AB0A\" -derivedDataPath ./DD-responsive -collect-test-diagnostics never \"-only-testing:LimenUITests/LanguageWalkTest/testEnglishLargestAccessibility\" -resultBundlePath /tmp/limen-small-retry.xcresult test"
+  },
+  {
+    "result": "/tmp/limen-small-landscape-final.xcresult",
+    "log": "/tmp/limen-small-landscape-final.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=48BEE103-20ED-422E-80F7-101A4058AB0A\" -derivedDataPath ./DD-responsive -parallel-testing-enabled NO -collect-test-diagnostics never \"-only-testing:LimenUITests/LanguageWalkTest/testEnglishLandscape\" -resultBundlePath /tmp/limen-small-landscape-final.xcresult test"
+  },
+  {
+    "result": "/tmp/limen-tablet.xcresult",
+    "log": "/tmp/limen-tablet.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=1832F00F-BAD8-43C6-8246-4E23D1763BFD\" -derivedDataPath ./DD-tablet -collect-test-diagnostics never \"-only-testing:LimenUITests/LanguageWalkTest/testGermanLarge\" -resultBundlePath /tmp/limen-tablet.xcresult test"
+  },
+  {
+    "result": "/tmp/limen-ui-sized-audits-final.xcresult",
+    "log": "/tmp/limen-ui-sized-audits-final.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=6F9172CC-DF86-4F05-9EB3-42E8E287668F\" -derivedDataPath ./DD-final -collect-test-diagnostics never -resultBundlePath /tmp/limen-ui-sized-audits-final.xcresult \"-only-testing:LimenUITests/AccessibilityJourneyTest/testFrenchLarge\" \"-only-testing:LimenUITests/AccessibilityJourneyTest/testGermanLargestAccessibility\" \"-only-testing:LimenUITests/AccessibilityJourneyTest/testItalianLargestAccessibility\" \"-only-testing:LimenUITests/AccessibilityJourneyTest/testRomanshLargestAccessibility\" test"
+  },
+  {
+    "result": "/tmp/limen-ui-visible-audits-final.xcresult",
+    "log": "/tmp/limen-ui-visible-audits-final.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=6F9172CC-DF86-4F05-9EB3-42E8E287668F\" -derivedDataPath ./DD-final -collect-test-diagnostics never -resultBundlePath /tmp/limen-ui-visible-audits-final.xcresult \"-only-testing:LimenUITests/AccessibilityJourneyTest/testFrenchLargeVisibleAddress\" \"-only-testing:LimenUITests/AccessibilityJourneyTest/testGermanLargestVisibleExit\" \"-only-testing:LimenUITests/AccessibilityJourneyTest/testItalianLargestVisibleExit\" \"-only-testing:LimenUITests/AccessibilityJourneyTest/testRomanshLargestVisibleExit\" test"
+  },
+  {
+    "result": "/tmp/limen-ui-visible-audits-retry.xcresult",
+    "log": "/tmp/limen-ui-visible-audits-retry.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=6F9172CC-DF86-4F05-9EB3-42E8E287668F\" -derivedDataPath ./DD-final -collect-test-diagnostics never -resultBundlePath /tmp/limen-ui-visible-audits-retry.xcresult \"-only-testing:LimenUITests/AccessibilityJourneyTest/testFrenchLargeVisibleAddress\" \"-only-testing:LimenUITests/AccessibilityJourneyTest/testGermanLargestVisibleExit\" \"-only-testing:LimenUITests/AccessibilityJourneyTest/testItalianLargestVisibleExit\" \"-only-testing:LimenUITests/AccessibilityJourneyTest/testRomanshLargestVisibleExit\" test"
+  },
+  {
+    "result": "/tmp/limen-small-landscape-screen.xcresult",
+    "log": "/tmp/limen-small-landscape-screen.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=48BEE103-20ED-422E-80F7-101A4058AB0A\" -derivedDataPath ./DD-responsive -parallel-testing-enabled NO -collect-test-diagnostics never \"-only-testing:LimenUITests/LanguageWalkTest/testEnglishLandscape\" -resultBundlePath /tmp/limen-small-landscape-screen.xcresult test"
+  },
+  {
+    "result": "/tmp/limen-final-tablet-matrix.xcresult",
+    "log": "/tmp/limen-final-tablet-matrix.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=1832F00F-BAD8-43C6-8246-4E23D1763BFD\" -derivedDataPath ./DD-tablet -collect-test-diagnostics never -parallel-testing-enabled NO \"-only-testing:LimenUITests/LanguageWalkTest/testEnglishLarge\" \"-only-testing:LimenUITests/LanguageWalkTest/testFrenchLarge\" \"-only-testing:LimenUITests/LanguageWalkTest/testGermanLarge\" \"-only-testing:LimenUITests/LanguageWalkTest/testItalianLarge\" \"-only-testing:LimenUITests/LanguageWalkTest/testRomanshLarge\" \"-only-testing:LimenUITests/LanguageWalkTest/testRomanshLargestAccessibilityLandscape\" -resultBundlePath /tmp/limen-final-tablet-matrix.xcresult test"
+  },
+  {
+    "result": "/tmp/limen-tablet-final-style.xcresult",
+    "log": "/tmp/limen-tablet-final-style.log",
+    "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination \"platform=iOS Simulator,id=1832F00F-BAD8-43C6-8246-4E23D1763BFD\" -derivedDataPath ./DD-tablet -collect-test-diagnostics never -parallel-testing-enabled NO \"-only-testing:LimenUITests/LanguageWalkTest/testGermanLarge\" \"-only-testing:LimenUITests/LanguageWalkTest/testRomanshLargestAccessibilityLandscape\" -resultBundlePath /tmp/limen-tablet-final-style.xcresult test"
+  }
+]

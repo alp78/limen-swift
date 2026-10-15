@@ -2,18 +2,27 @@ SIM ?= iPhone 17 Pro
 # By UDID for install, launch and screenshots: two simulators can carry one name across runtimes.
 SIM_ID ?= 6F9172CC-DF86-4F05-9EB3-42E8E287668F
 DEVICE_ID ?= D5A6144A-6100-5A25-90E7-898D11325105
-BUNDLE_ID ?= dev.peringer.limen
+BUNDLE_ID ?= dev.peringer.limen.audit
+RELEASE_BUNDLE_ID := dev.peringer.limen
 WORKSPACE := Limen.xcworkspace
 DEST := platform=iOS Simulator,id=$(SIM_ID)
 
 .DEFAULT_GOAL := help
-.PHONY: help strings phones marks gen build test kit-test lint fmt run icon shots device clean
+.PHONY: help strings schema check-generated phones marks gen build test kit-test lint fmt run icon shots device clean
 
 help: ## Show this help
 	@grep -E '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-8s\033[0m %s\n", $$1, $$2}'
 
 strings: ## Regenerate Str.swift from the Android Strings.kt
 	python3 tools/strings.py
+
+schema: ## Regenerate model and ordered codec from LIMEN_ANDROID
+	python3 tools/schema.py
+
+check-generated: ## Check schema and five-language string generation
+	python3 tools/schema.py --check
+	python3 tools/strings.py --check
+	python3 -m unittest discover -s tools -p 'test_*.py'
 
 phones: ## Regenerate the phone number metadata from the pinned libphonenumber release
 	python3 tools/phones.py
@@ -46,7 +55,7 @@ run: build ## Build, install and launch on the simulator
 	@xcrun simctl boot "$(SIM_ID)" 2>/dev/null || true
 	@xcrun simctl install "$(SIM_ID)" ./DD/Build/Products/Debug-iphonesimulator/Limen.app
 	@xcrun simctl launch "$(SIM_ID)" $(BUNDLE_ID)
-	@open -a Simulator
+	@open -a Simulator 2>/dev/null || open -a "$$(xcode-select -p)/../Applications/DeviceHub.app" 'devices://device/open?id=$(SIM_ID)'
 
 icon: ## Regenerate the app icon from the seal (runs the icon test, copies the PNG)
 	# mkdir first: tee cannot create the log in a DD that a clean tree has not built yet, and the
@@ -71,7 +80,7 @@ device: ## Build Release and install + launch on the connected iPhone
 		-destination 'id=$(DEVICE_ID)' -configuration Release \
 		-derivedDataPath ./DD -allowProvisioningUpdates build | xcbeautify --quiet
 	xcrun devicectl device install app --device $(DEVICE_ID) ./DD/Build/Products/Release-iphoneos/Limen.app
-	xcrun devicectl device process launch --device $(DEVICE_ID) $(BUNDLE_ID)
+	xcrun devicectl device process launch --device $(DEVICE_ID) $(RELEASE_BUNDLE_ID)
 
 clean: ## Remove generated project and build output
 	rm -rf DD *.xcodeproj *.xcworkspace Derived .tuist

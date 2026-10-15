@@ -103,6 +103,11 @@ public struct HandoverProtocol: Hashable, Sendable {
     public var deliveryMetadataEpochMs: Int64 = 0
     public var exportedEpochMs: Int64 = 0
 
+    public var details = RecordDetails()
+    public var deliveryRevision: Int64 = 0
+    public var exportHistory: [ExportCopy] = []
+    public var saveSequence: Int64 = 0
+
     public init(id: String, kind: Kind, createdEpochMs: Int64) {
         self.id = id
         self.kind = kind
@@ -117,7 +122,10 @@ public struct HandoverProtocol: Hashable, Sendable {
     public func isExported() -> Bool { exportedEpochMs > 0 }
     public func isCurrent(_ signature: Signature) -> Bool { signature.contentRevision == contentRevision }
     public func copyDeliveredTo(_ role: Role) -> Bool { deliveryReceipts.contains { $0.role == role } }
-    public func deliveryComplete() -> Bool { [Role.tenant, .landlord].allSatisfy(copyDeliveredTo) }
+    public func deliveryComplete() -> Bool {
+        let recipients = parties.filter { $0.role == .tenant || $0.role == .landlord }
+        return [.tenant, .landlord].allSatisfy { role in recipients.contains { $0.role == role } } && recipients.allSatisfy(copyDeliveredTo)
+    }
 }
 
 public enum Kind: String, CaseIterable, Hashable, Sendable {
@@ -145,7 +153,8 @@ public enum Grade: String, CaseIterable, Hashable, Sendable {
     case poor = "Poor"
 }
 
-public enum Role: String, CaseIterable, Hashable, Sendable {
+public enum Role: String, CaseIterable, Hashable, Sendable, Identifiable {
+    public var id: String { rawValue }
     case tenant = "Tenant"
     case landlord = "Landlord"
     case nextTenant = "NextTenant"
@@ -176,6 +185,10 @@ public struct Party: Hashable, Sendable {
     public var representedBy: String = ""
     public var phone: String = ""
     public var email: String = ""
+
+    public var id = ""
+    public var agency = ""
+    public var authority = ""
 
     public init(_ role: Role, name: String = "", address: String = "", representedBy: String = "", phone: String = "", email: String = "") {
         self.role = role
@@ -256,6 +269,7 @@ public struct Deposit: Hashable, Sendable {
 }
 
 public enum DepositKind: String, CaseIterable, Hashable, Sendable {
+    case unknown = "Unknown"
     case none = "None"
     case bankAccount = "BankAccount"
     case insurance = "Insurance"
@@ -525,6 +539,8 @@ public struct Defect: Hashable, Sendable {
     /// Set instead of `roomId` when the finding is about a supplied `ObjectEntry`.
     public var objectId: String = ""
 
+    public var participantPositions = OrderedMap<String, TenantPosition>()
+
     public init(id: String, roomId: String = "", item: ItemKey? = nil, text: String = "", photos: [String] = [], photoEvidence: [PhotoEvidence] = [], chargedToTenant: Bool = false, fixBy: FixBy = .open, fixDeadline: String = "", costNote: String = "", reservation: String = "", tenantResponse: TenantResponse = .notStated, tenantComment: String = "", itemId: String = "", itemLabel: String = "", objectId: String = "") {
         self.id = id
         self.roomId = roomId
@@ -569,6 +585,8 @@ public struct PhotoEvidence: Hashable, Sendable {
     public var capturedEpochMs: Int64 = 0
     public var source: PhotoSource = .unknown
 
+    public var importedEpochMs: Int64 = 0
+
     public init(_ file: String, sha256: String = "", capturedEpochMs: Int64 = 0, source: PhotoSource = .unknown) {
         self.file = file
         self.sha256 = sha256
@@ -596,6 +614,8 @@ public struct DeliveryReceipt: Hashable, Sendable {
     public var epochMs: Int64 = 0
     public var method: DeliveryMethod = .inPerson
     public var note: String = ""
+
+    public var participantId = ""
 
     public init(_ role: Role, epochMs: Int64 = 0, method: DeliveryMethod = .inPerson, note: String = "") {
         self.role = role
@@ -626,6 +646,9 @@ public struct Signature: Hashable, Sendable {
     public var epochMs: Int64 = 0
     /// The protocol revision shown to the signer.
     public var contentRevision: Int64 = 0
+
+    public var participantId = ""
+    public var outcome = ""
 
     public init(_ role: Role, name: String = "", plane: Plane, file: String = "", refused: Bool = false, reservation: String = "", epochMs: Int64 = 0, contentRevision: Int64 = 0) {
         self.role = role

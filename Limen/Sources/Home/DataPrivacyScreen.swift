@@ -20,6 +20,8 @@ struct DataPrivacyScreen: View {
     // must not go near saved state. The cost is retyping it after a rotation.
     @State private var password = ""
     @State private var confirmation = ""
+    @State private var plainConfirmation = false
+    @State private var sharing: ExportedFile?
 
     var body: some View {
         if showLicences {
@@ -42,6 +44,10 @@ struct DataPrivacyScreen: View {
                                 Text(paragraph).font(LimenType.bodyMedium).foregroundStyle(colors.ink)
                             }
                         }
+                    }
+                    LookupPreference()
+                    Panel(label: s.libraryProtection) {
+                        Toggle(label: s.libraryProtection, on: model.libraryProtectionEnabled) { model.setLibraryProtectionEnabled(!model.libraryProtectionEnabled) }
                     }
                     Panel(label: s.controllerTitle) {
                         VStack(alignment: .leading, spacing: 8) {
@@ -68,7 +74,8 @@ struct DataPrivacyScreen: View {
                     Panel(label: s.backupTitle) {
                         VStack(alignment: .leading, spacing: 10) {
                             Text(s.backupBody).font(LimenType.bodyMedium).foregroundStyle(colors.ink)
-                            HStack(spacing: 8) {
+                            ArchiveScopePicker()
+                            WeightedRow(weights: [1, 1]) {
                                 SmallKey(label: s.createBackup, enabled: !model.archiveBusy, stretch: true) {
                                     password = ""
                                     confirmation = ""
@@ -76,6 +83,7 @@ struct DataPrivacyScreen: View {
                                 }
                                 SmallKey(label: s.restoreBackup, enabled: !model.archiveBusy, stretch: true) { picking = true }
                             }
+                            SmallKey(label: s.plainArchive, enabled: !model.archiveBusy, stretch: true) { plainConfirmation = true }
                             if model.archiveBusy {
                                 Text(s.working).font(LimenType.bodySmall).foregroundStyle(colors.inkDim)
                             } else if model.archiveFailed {
@@ -84,6 +92,7 @@ struct DataPrivacyScreen: View {
                                 Text(model.archiveProtected ? s.archiveSaved(exported.displayName) : s.archiveSavedOpen(exported.displayName))
                                     .font(LimenType.bodySmall)
                                     .foregroundStyle(model.archiveProtected ? colors.seal : colors.warningOutline)
+                                SmallKey(label: s.share, stretch: true) { sharing = exported }
                             } else if let imported = model.archiveImported {
                                 Text(s.archiveRestored(imported)).font(LimenType.bodySmall).foregroundStyle(colors.seal)
                             }
@@ -99,19 +108,26 @@ struct DataPrivacyScreen: View {
         .readable()
         .background(colors.plate.ignoresSafeArea())
         .fileImporter(isPresented: $picking, allowedContentTypes: [.zip, .data]) { result in
-            if case .success(let url) = result {
+            switch result {
+            case .success(let url):
                 pendingRestore = url
                 password = ""
                 archiveAction = .import
+            case .failure(let error):
+                let failure = error as NSError
+                if failure.domain != NSCocoaErrorDomain || failure.code != NSUserCancelledError {
+                    model.evidenceError = error.localizedDescription
+                }
             }
         }
+        .sheet(item: $sharing) { file in ShareSheet(url: file.url) }
+        .confirmDialog($plainConfirmation, body: s.plainArchiveWarning) { model.exportArchive(password: "") }
         .alert(archiveAction == .export ? s.protectBackup : s.unlockBackup, isPresented: Binding(get: { archiveAction != nil }, set: { if !$0 { archiveAction = nil } })) {
-            // A password is optional both ways: an export without one writes a plain archive, and a
-            // restore without one reads exactly that. The only thing that can be wrong here is a
-            // confirmation that does not match, and that disables the key as it does on Android
-            // rather than letting a press dismiss the alert having made nothing.
+            // This export path always requires a nonempty, matching password. Plain export has
+            // its own explicit warning and confirmation. A plain archive can be restored with
+            // an empty password, while an encrypted one is authenticated by the archive reader.
             let isExport = archiveAction == .export
-            let valid = !isExport || password == confirmation
+            let valid = !isExport || (!password.isEmpty && password == confirmation)
             SecureField(s.backupPassword, text: $password)
             if isExport {
                 SecureField(s.confirmBackupPassword, text: $confirmation)
@@ -189,5 +205,27 @@ private struct LicencesView: View {
         .padding(.horizontal, 20)
         .padding(.vertical, 8)
         .background(colors.plate.ignoresSafeArea())
+    }
+}
+
+private struct ArchiveScopePicker: View {
+    @Environment(LimenModel.self) private var model
+    @Environment(\.str) private var s
+
+    var body: some View {
+        DisclosureGroup(s.allSessions) {
+            VStack(spacing: 8) {
+                SmallKey(label: s.selectAll) { model.archiveSelection = [] }
+                ForEach(model.protocols, id: \.id) { record in
+                    let included = model.archiveSelection.isEmpty || model.archiveSelection.contains(record.id)
+                    Toggle(label: "\(record.address.ifBlank(s.noAddress)) · \(SwissDate.display(record.handoverDate))", on: included, enabled: model.protocols.count > 1) {
+                        if model.archiveSelection.isEmpty { model.archiveSelection = Set(model.protocols.map(\.id)) }
+                        if included {
+                            if model.archiveSelection.count > 1 { model.archiveSelection.remove(record.id) }
+                        } else { model.archiveSelection.insert(record.id) }
+                    }
+                }
+            }.padding(.top, 8)
+        }
     }
 }

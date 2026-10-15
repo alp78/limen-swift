@@ -143,7 +143,15 @@ extension LimenModel {
 
     // MARK: The dossier
 
-    func addDossierCard(_ card: DossierCard) { setDossier { $0 + [card] } }
+    func addDossierCard(_ card: DossierCard) {
+        edit { p in
+            var next = p
+            next.dossier = (p.dossierCards() + [card]).distinct().sorted { $0.ordinal < $1.ordinal }
+            next.dossierChosen = true
+            if card == .deposit && p.deposit == Deposit() { next.deposit.kind = .unknown }
+            return next
+        }
+    }
 
     /// Removing a component takes its content with it, so the record never prints a stale field.
     func removeDossierCard(_ card: DossierCard) {
@@ -273,10 +281,8 @@ extension LimenModel {
     }
 
     func deletePhotos(_ names: [String]) {
-        guard let dir = photoDir() else { return }
-        for name in names.distinct().filter(EvidenceNames.isSafe) {
-            try? FileManager.default.removeItem(at: dir.appendingPathComponent(name))
-        }
+        // References disappear from the next save, originals remain private for recovery.
+        // Scoped exports select only referenced files; deleting the record removes them all.
     }
 
 }

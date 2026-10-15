@@ -8,42 +8,28 @@ extension LimenModel {
     /// A photo the camera or picker delivered, preserved byte-for-byte beside the protocol and
     /// hashed at once, because the hash is what the fingerprint later covers. The owner is a
     /// defect or a supplied object; the file is named after it either way.
-    nonisolated static func copyPhoto(into dir: URL, ownerId: String, existing: Int, source: URL, photoSource: PhotoSource) -> PhotoEvidence? {
-        let ownerToken = EvidenceNames.isArchiveSafe(ownerId) ? String(ownerId.prefix(80)) : "e\(String(UInt32(truncatingIfNeeded: ownerId.hashValue), radix: 16))"
-        let name = "\(ownerToken)-\(Int64(Date().timeIntervalSince1970 * 1000))-\(existing + 1).jpg"
+    nonisolated static func copyPhoto(into dir: URL, ownerId: String, existing: Int, source: URL, photoSource: PhotoSource) throws -> PhotoEvidence {
+        let secured = source.startAccessingSecurityScopedResource()
+        defer { if secured { source.stopAccessingSecurityScopedResource() } }
+        let mime = try EvidenceValidation.validatePhoto(source)
+        let suffix = ["image/jpeg": "jpg", "image/png": "png", "image/heic": "heic", "image/heif": "heif", "image/tiff": "tiff"][mime] ?? "image"
+        let name = "photo-\(UUID().uuidString).\(suffix)"
         let target = dir.appendingPathComponent(name)
         do {
-            try? FileManager.default.removeItem(at: target)
             try FileManager.default.copyItem(at: source, to: target)
+            let hash = try ProtocolIntegrity.fileHash(target)
+            let now = Int64(Date().timeIntervalSince1970 * 1000)
+            var evidence = PhotoEvidence(name, sha256: hash, capturedEpochMs: photoSource == .camera ? now : 0, source: photoSource)
+            evidence.importedEpochMs = now
+            return evidence
         } catch {
             try? FileManager.default.removeItem(at: target)
-            return nil
+            throw error
         }
-        try? FileManager.default.removeItem(at: source)
-        // fileHash refuses an empty or unreadable file, and a copy onto a full card still
-        // produces one. Dropping the photograph is the right answer.
-        guard let hash = try? ProtocolIntegrity.fileHash(target) else {
-            try? FileManager.default.removeItem(at: target)
-            return nil
-        }
-        return PhotoEvidence(name, sha256: hash, capturedEpochMs: Int64(Date().timeIntervalSince1970 * 1000), source: photoSource)
     }
 
-    /// The copy and the SHA-256 run off this thread: both walk the whole JPEG, and a gallery pick
-    /// of a twelve-megapixel photograph froze the frame for as long as three passes take.
     func attachPhoto(_ defectId: String, source: URL, photoSource: PhotoSource = .unknown) {
-        if contentLocked { return }
-        guard let dir = photoDir() else { return }
-        let had = working?.defects.first { $0.id == defectId }?.photos.count ?? 0
-        Task {
-            guard let evidence = await Task.detached(operation: { Self.copyPhoto(into: dir, ownerId: defectId, existing: had, source: source, photoSource: photoSource) }).value else { return }
-            updateDefect(defectId) { defect in
-                var d = defect
-                d.photos.append(evidence.file)
-                d.photoEvidence = d.photoEvidence.filter { $0.file != evidence.file } + [evidence]
-                return d
-            }
-        }
+        intakePhoto(ownerId: defectId, source: source, photoSource: photoSource, kind: .defect)
     }
 
     func removePhoto(_ defectId: String, name: String) {
@@ -62,18 +48,7 @@ extension LimenModel {
     }
 
     func attachObjectPhoto(_ objectId: String, source: URL, photoSource: PhotoSource = .unknown) {
-        if contentLocked { return }
-        guard let dir = photoDir() else { return }
-        let had = working?.objects.first { $0.id == objectId }?.photos.count ?? 0
-        Task {
-            guard let evidence = await Task.detached(operation: { Self.copyPhoto(into: dir, ownerId: objectId, existing: had, source: source, photoSource: photoSource) }).value else { return }
-            updateObject(objectId) { entry in
-                var e = entry
-                e.photos.append(evidence.file)
-                e.photoEvidence = e.photoEvidence.filter { $0.file != evidence.file } + [evidence]
-                return e
-            }
-        }
+        intakePhoto(ownerId: objectId, source: source, photoSource: photoSource, kind: .object)
     }
 
     func removeObjectPhoto(_ objectId: String, name: String) {
@@ -93,75 +68,85 @@ extension LimenModel {
 
     // MARK: Signatures
 
-    func deleteSignatureFile(_ name: String) {
-        guard EvidenceNames.isSafe(name), let dir = signatureDir() else { return }
-        try? FileManager.default.removeItem(at: dir.appendingPathComponent(name))
-    }
+    // Evidence files are immutable once written. Clearing or replacing ink only removes its
+    // reference; last-good records can still recover the original until the record is deleted.
+    func deleteSignatureFile(_ name: String) {}
 
-    /// Keeps the ink: the PNG is written beside the protocol and the record points at it.
-    ///
-    /// Staged and moved rather than written in place, and the write result is read. A write
-    /// that failed part way left a truncated PNG with a length, which passed the evidence check
-    /// and printed as an empty rule under a full signature caption.
     func keepSignature(_ role: Role, plane: Plane, png: Data) {
-        if contentLocked { return }
-        guard let dir = signatureDir(), !png.isEmpty else { return }
-        let name = "\(role.rawValue.lowercased())-\(plane.rawValue.lowercased()).png"
-        let target = dir.appendingPathComponent(name)
-        let staged = dir.appendingPathComponent("\(name).part")
+        guard let party = working?.parties.first(where: { $0.role == role }) else { return }
+        keepSignature(participantId: party.participantKey(), plane: plane, png: png)
+    }
+
+    func keepSignature(participantId: String, plane: Plane, png: Data) {
+        guard !contentLocked, let p = working,
+              let party = p.parties.first(where: { $0.participantKey() == participantId }) else { return }
+        let target = store.signatureDir(p.id).appendingPathComponent("ink-\(UUID().uuidString).png")
         do {
-            try png.write(to: staged)
-            try? FileManager.default.removeItem(at: target)
-            try FileManager.default.moveItem(at: staged, to: target)
+            try png.write(to: target, options: .atomic)
+            _ = try EvidenceValidation.validatePhoto(target)
+            editSignatures { current in
+                var next = current
+                var signature = Signature(party.role, name: party.signerName(), plane: plane, file: target.lastPathComponent,
+                                          reservation: current.reservationFor(party: party), epochMs: Self.now(), contentRevision: current.contentRevision)
+                signature.participantId = participantId
+                next.signatures.removeAll { Self.belongs($0, to: party, plane: plane) }
+                next.signatures.append(signature)
+                return next
+            }
         } catch {
-            try? FileManager.default.removeItem(at: staged)
-            return
-        }
-        let partyName = working?.parties.first { $0.role == role }?.name ?? ""
-        editSignatures { p in
-            let reservation = (p.pendingRecordReservations[role] ?? p.signatures.first { $0.role == role && $0.plane == plane }?.reservation ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-            var next = p
-            next.signatures = p.signatures.filter { !($0.role == role && $0.plane == plane) } +
-                [Signature(role, name: partyName, plane: plane, file: name, reservation: reservation, epochMs: Self.now(), contentRevision: p.contentRevision)]
-            return next
+            try? FileManager.default.removeItem(at: target)
+            evidenceError = error.localizedDescription
         }
     }
 
-    /// Refusal is an outcome the record keeps, not an error it recovers from.
+    nonisolated static func belongs(_ signature: Signature, to party: Party, plane: Plane) -> Bool {
+        signature.plane == plane && (signature.participantId.isEmpty ? party.id.isEmpty && signature.role == party.role : signature.participantId == party.participantKey())
+    }
+
     func refuseSignature(_ role: Role, plane: Plane) {
-        if contentLocked { return }
-        if let existing = working?.signatures.first(where: { $0.role == role && $0.plane == plane }), !existing.file.isBlank {
-            deleteSignatureFile(existing.file)
-        }
-        let partyName = working?.parties.first { $0.role == role }?.name ?? ""
+        guard let party = working?.parties.first(where: { $0.role == role }) else { return }
+        outcomeSignature(participantId: party.participantKey(), outcome: "refused", plane: plane)
+    }
+
+    func outcomeSignature(participantId: String, outcome: String, plane: Plane = .record) {
+        guard ["refused", "absent", "unable"].contains(outcome), !contentLocked,
+              let party = working?.parties.first(where: { $0.participantKey() == participantId }) else { return }
         editSignatures { p in
-            let reservation = (p.pendingRecordReservations[role] ?? p.signatures.first { $0.role == role && $0.plane == plane }?.reservation ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
             var next = p
-            next.signatures = p.signatures.filter { !($0.role == role && $0.plane == plane) } +
-                [Signature(role, name: partyName, plane: plane, refused: true, reservation: reservation, epochMs: Self.now(), contentRevision: p.contentRevision)]
+            var signature = Signature(party.role, name: party.signerName(), plane: plane, refused: outcome == "refused",
+                                      reservation: p.reservationFor(party: party), epochMs: Self.now(), contentRevision: p.contentRevision)
+            signature.participantId = participantId
+            signature.outcome = outcome == "refused" ? "" : outcome
+            next.signatures.removeAll { Self.belongs($0, to: party, plane: plane) }
+            next.signatures.append(signature)
             return next
         }
     }
 
     func clearSignature(_ role: Role, plane: Plane) {
-        if contentLocked { return }
-        let existing = working?.signatures.first { $0.role == role && $0.plane == plane }
-        if let existing, !existing.file.isBlank { deleteSignatureFile(existing.file) }
+        guard let party = working?.parties.first(where: { $0.role == role }) else { return }
+        clearSignature(participantId: party.participantKey(), plane: plane)
+    }
+
+    func clearSignature(participantId: String, plane: Plane) {
+        guard let party = working?.parties.first(where: { $0.participantKey() == participantId }) else { return }
         editSignatures { p in
-            let reservation = existing?.reservation ?? ""
             var next = p
-            next.signatures = p.signatures.filter { !($0.role == role && $0.plane == plane) }
-            if !reservation.isBlank { next.pendingRecordReservations[role] = reservation }
+            next.details.reservations[participantId] = p.reservationFor(party: party)
+            next.signatures.removeAll { Self.belongs($0, to: party, plane: plane) }
             return next
         }
     }
 
     func setRecordReservation(_ role: Role, _ text: String) {
-        // A reservation is printed in the shared record. Changing it after another person signed
-        // must therefore move the revision and require that signature to be reviewed.
+        guard let party = working?.parties.first(where: { $0.role == role }) else { return }
+        setRecordReservation(participantId: party.participantKey(), text)
+    }
+
+    func setRecordReservation(participantId: String, _ text: String) {
         edit { p in
             var next = p
-            next.pendingRecordReservations[role] = text.isBlank ? nil : text
+            next.details.reservations[participantId] = text
             return next
         }
     }
@@ -172,57 +157,85 @@ extension LimenModel {
 
     func exportPdf() {
         guard let p = working else { return }
-        guard p.isFinalized() else {
-            exportIssue = .notFinalized
-            return
-        }
-        if exporting { return }
+        guard p.isFinalized() else { exportIssue = .notFinalized; return }
+        guard !exporting, flush(), let snapshot = working else { return }
         exporting = true
         exportIssue = nil
-        exported = nil
         let docLang = pdfLang ?? lang
         let store = store
-        Task {
-            let outcome: ExportOutcome = await Task.detached {
-                let photos = store.photoDir(p.id)
-                let ink = store.signatureDir(p.id)
-                if !ProtocolIntegrity.matches(p, photoDir: photos, signatureDir: ink) { return .mismatch }
-                do {
-                    return .written(try PdfExport.export(p, Str(docLang), photoDir: photos, signatureDir: ink))
-                } catch {
-                    return .failed
-                }
-            }.value
+        let renderer = exportRenderer
+        let retainedDirectory = store.root.appendingPathComponent("exports").appendingPathComponent(snapshot.id)
+        let publicDirectory = Exports.folder
+        let existingRetained = Set((try? FileManager.default.contentsOfDirectory(atPath: retainedDirectory.path)) ?? [])
+        let existingPublic = Set((try? FileManager.default.contentsOfDirectory(atPath: publicDirectory.path)) ?? [])
+        exportTask = Task {
+            let result: Result<ExportCopy, Error>
+            do { result = .success(try await renderer(snapshot, Str(docLang), store)) } catch { result = .failure(error) }
             exporting = false
-            // The export outlives the screen that started it. Everything it writes back is bound
-            // to the record it was started for: closing the flow mid-export used to stamp the
-            // moment onto whatever draft happened to be open when the writer finished.
-            let stillOpen = working?.id == p.id
-            switch outcome {
-            case .mismatch:
-                if stillOpen { exportIssue = .integrityMismatch }
-            case .failed:
-                if stillOpen { exportIssue = .failed }
-            case .written(let file):
-                var stamped = p
-                stamped.exportedEpochMs = Self.now()
-                // Off the main actor, as the Kotlin dispatches it to IO: a finished record can be
-                // a long document, and the screen is changing in the same breath as this write.
-                let written = stamped
-                await Task.detached { try? store.save(written) }.value
-                if stillOpen {
-                    exported = file
-                    working = stamped
+            switch result {
+            case .success(let copy):
+                // Merge only metadata into the latest state. A delivery can change while the
+                // renderer works; the copy keeps the revision it actually rendered.
+                let saved = store.load(snapshot.id)
+                let current = working?.id == snapshot.id ? working : saved
+                guard let saved, saved.isFinalized(), saved.evidenceFingerprint == snapshot.evidenceFingerprint,
+                      var latest = current, latest.isFinalized(), latest.evidenceFingerprint == snapshot.evidenceFingerprint else {
+                    let protected = Set((snapshot.exportHistory + (saved?.exportHistory ?? []) + (current?.exportHistory ?? [])).map(\.name))
+                    Self.discardExport(copy, directory: retainedDirectory, existing: existingRetained.union(protected))
+                    Self.discardExport(copy, directory: publicDirectory, existing: existingPublic.union(protected))
+                    return
                 }
-                protocols = store.list()
+                latest.exportedEpochMs = copy.epochMs
+                latest.exportHistory.append(copy)
+                latest.saveSequence += 1
+                if working?.id == snapshot.id { working = latest }
+                do {
+                    try store.save(latest)
+                    if working?.id == snapshot.id { restoreExport(latest); saveError = nil }
+                } catch {
+                    if working?.id == snapshot.id { saveError = str.saveFailed + " (\(error.localizedDescription))" }
+                }
+                refreshLibrary()
+            case .failure(let error):
+                if working?.id == snapshot.id {
+                    exportIssue = .failed
+                    evidenceError = error.localizedDescription
+                }
             }
         }
     }
 
-    enum ExportOutcome: Sendable {
-        case written(ExportedFile)
-        case mismatch
-        case failed
+    /// A completed render can outlive its record. Remove only its new pair, never an older copy,
+    /// an unrelated file, or anything reached through the descriptive cross-device URI fields.
+    nonisolated private static func discardExport(_ copy: ExportCopy, directory: URL, existing: Set<String>) {
+        guard EvidenceNames.isArchiveSafe(copy.name), !existing.contains(copy.name), !copy.sha256.isEmpty else { return }
+        let pdf = directory.appendingPathComponent(copy.name)
+        guard let hash = try? ProtocolIntegrity.fileHash(pdf), hash == copy.sha256 else { return }
+        try? FileManager.default.removeItem(at: pdf)
+        let html = pdf.deletingPathExtension().appendingPathExtension("html")
+        if !existing.contains(html.lastPathComponent) { try? FileManager.default.removeItem(at: html) }
+    }
+
+    func openExport(_ copy: ExportCopy) {
+        guard var record = working else { return }
+        record.exportHistory = [copy]
+        restoreExport(record)
+    }
+
+    func restoreExport(_ record: HandoverProtocol) {
+        exported = nil
+        accessibleExport = nil
+        for copy in record.exportHistory.reversed() {
+            let pdf = store.root.appendingPathComponent("exports").appendingPathComponent(record.id).appendingPathComponent(copy.name)
+            guard EvidenceNames.isSafe(copy.name), FileManager.default.fileExists(atPath: pdf.path),
+                  let hash = try? ProtocolIntegrity.fileHash(pdf), !copy.sha256.isEmpty, hash == copy.sha256 else { continue }
+            exported = ExportedFile(url: pdf, displayName: copy.name, bytes: copy.bytes)
+            let html = pdf.deletingPathExtension().appendingPathExtension("html")
+            if let size = try? html.resourceValues(forKeys: [.fileSizeKey]).fileSize {
+                accessibleExport = ExportedFile(url: html, displayName: html.lastPathComponent, bytes: Int64(size))
+            }
+            break
+        }
     }
 
     func setDepositCompare(_ open: Bool) { showDepositCompare = open }

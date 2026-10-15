@@ -1,29 +1,35 @@
 import Foundation
 
-/// The arithmetic of the paritaetische Lebensdauertabelle (MV + HEV), the joint lifespan table
-/// Swiss conciliation boards compute with. Two iron rules, both encoded here and printed wherever
-/// the numbers appear:
-///
-/// 1. The tenant owes only the remaining value: cost x (lifespan - age) / lifespan. Past the full
-///    lifespan the share is zero, however real the damage.
-/// 2. Age counts from the LAST RENOVATION of the surface or device, not from the start of the
-///    tenancy; a flat taken over unrenovated carries its full age.
-///
-/// The table itself carries no binding force (its own disclaimer), so the values shipped in
-/// `Lifespans` are the publicly cited ones with sources, and every lifespan can be overridden by hand.
+/// Indicative remaining replacement value. This arithmetic establishes neither liability nor
+/// a debt, and must not be used as an automatic repair, cleaning or loss-of-value allocation.
 public enum Zeitwert {
-    /// The unamortized fraction of a thing's value, in 0..1.
     public static func remainingFraction(lifespanYears: Double, ageYears: Double) -> Double {
-        if lifespanYears <= 0 { return 0 }
-        if ageYears < 0 { return 1 }
+        guard lifespanYears.isFinite, ageYears.isFinite, lifespanYears > 0, ageYears >= 0 else { return 0 }
         return min(max((lifespanYears - ageYears) / lifespanYears, 0), 1)
     }
 
-    /// The tenant's share of a repair, by remaining value. Zero past the lifespan.
-    public static func tenantShare(costChf: Double, lifespanYears: Double, ageYears: Double) -> Double {
-        if costChf <= 0 { return 0 }
+    /// Nil means invalid input, so the caller cannot display it as a legitimate zero estimate.
+    public static func replacementResidualValue(costChf: Double, lifespanYears: Double, ageYears: Double) -> Double? {
+        guard costChf.isFinite, lifespanYears.isFinite, ageYears.isFinite,
+              costChf >= 0, lifespanYears > 0, ageYears >= 0 else { return nil }
         return costChf * remainingFraction(lifespanYears: lifespanYears, ageYears: ageYears)
     }
+
+    /// Source compatibility for historic callers. New UI uses replacementResidualValue and
+    /// distinguishes invalid inputs from a valid fully amortized replacement value.
+    public static func tenantShare(costChf: Double, lifespanYears: Double, ageYears: Double) -> Double {
+        replacementResidualValue(costChf: costChf, lifespanYears: lifespanYears, ageYears: ageYears) ?? 0
+    }
+}
+
+extension ReplacementEstimate {
+    public var residualValue: Double? {
+        guard let cost = NumberValidation.nonNegativeNumber(replacementChf),
+              let age = NumberValidation.nonNegativeNumber(ageYears),
+              let life = NumberValidation.nonNegativeNumber(lifeYears) else { return nil }
+        return Zeitwert.replacementResidualValue(costChf: cost, lifespanYears: life, ageYears: age)
+    }
+    public var isValid: Bool { residualValue != nil && !RecordInputValidation.invalidOptionalDate(date) }
 }
 
 /// One row of the shipped table: what, how long it lives, and who says so.
@@ -35,7 +41,8 @@ public struct LifeItem: Hashable, Sendable {
 /// The publicly cited lifespans. Deliberately NOT the full 80-page table, which is a copyrighted
 /// brochure sold by HEV and MV; these are the values their own public pages and the
 /// tenant-association literature quote, and the face links to the brochure for the rest. Values
-/// as of the 2021 public excerpts; the 2024 edition is checked at release time.
+/// inherited from the Android reference; the operator records a source and may override them.
+/// No professional or current-edition validation is implied.
 public enum LifeKey: String, CaseIterable, Hashable, Sendable {
     case dispersionPaint = "DispersionPaint", acrylicPaint = "AcrylicPaint", woodchipWallpaper = "WoodchipWallpaper"
     case paintableWallpaper = "PaintableWallpaper", carpet = "Carpet", needleFelt = "NeedleFelt", laminateMid = "LaminateMid"

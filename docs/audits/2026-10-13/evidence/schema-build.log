@@ -1,0 +1,30 @@
+set -o pipefail && xcodebuild -workspace Limen.xcworkspace -scheme Limen \
+		-destination 'platform=iOS Simulator,id=CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA' -derivedDataPath ./DD build | xcbeautify --quiet
+
+----- xcbeautify -----
+Version: 3.2.1
+----------------------
+
+[LimenKit] Compiling LimenKit_vers.c
+[!]  /Users/aperi/DEV/SWIFT/limen/Limen/Sources/Flow/ReviewSignExport.swift:276:1: extension declares a conformance of imported type 'Role' to imported protocol 'Identifiable'; this will not behave correctly if the owners of 'LimenKit' introduce this conformance in the future
+274 | }
+275 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/Limen/Sources/Flow/ReviewSignExport.swift:432:1: extension declares a conformance of imported type 'ExportedFile' to imported protocol 'Identifiable'; this will not behave correctly if the owners of 'LimenKit' introduce this conformance in the future
+430 | }
+431 | 
+[Limen] Compiling SignPad.swift
+[!]  /Users/aperi/DEV/SWIFT/limen/Limen/Sources/Flow/ReviewSignExport.swift:276:1: extension declares a conformance of imported type 'Role' to imported protocol 'Identifiable'; this will not behave correctly if the owners of 'LimenKit' introduce this conformance in the future
+274 | }
+275 | 
+[!]  /Users/aperi/DEV/SWIFT/limen/Limen/Sources/Flow/ReviewSignExport.swift:432:1: extension declares a conformance of imported type 'ExportedFile' to imported protocol 'Identifiable'; this will not behave correctly if the owners of 'LimenKit' introduce this conformance in the future
+430 | }
+431 | 
+[Limen] Compiling FlowScreen.swift
+[!]  /Users/aperi/DEV/SWIFT/limen/Limen/Sources/Flow/PhotoCapture.swift:140:13: 'nonisolated(unsafe)' is unnecessary for a constant with 'Sendable' type 'CGImage', consider removing it
+138 |             // milliseconds of the main thread otherwise, and it happens while the picker is
+139 |             // dismissing, which is exactly when the animation cannot afford it.
+[Limen] Compiling PhotoCapture.swift
+[!]  /Users/aperi/DEV/SWIFT/limen/Limen/Sources/Kit/Field.swift:35:74: converting non-Sendable function value to '@isolated(any) @Sendable (String) -> Void' may introduce data races
+ 33 |                     .frame(maxWidth: .infinity, alignment: .leading)
+ 34 |             } else {
+Build Succeeded

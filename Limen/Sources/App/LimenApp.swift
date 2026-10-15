@@ -5,11 +5,14 @@ import SwiftUI
 struct LimenApp: App {
     @State private var model: LimenModel = {
         #if DEBUG
-        let arguments = ProcessInfo.processInfo.arguments
+        // A separate installed app and OS container are the boundary, even if reset arguments
+        // accidentally reach the owner's production app. An environment flag is not a boundary.
+        let isolated = Bundle.main.bundleIdentifier == "dev.peringer.limen.audit"
+        let arguments = isolated ? ProcessInfo.processInfo.arguments : []
         if arguments.contains("LIMEN_RESET") || arguments.contains("LIMEN_DEMO") || arguments.contains("LIMEN_STORE") {
             LimenModel.resetForTests(prefs: .standard, root: AppFiles.support)
         }
-        if let lang = ProcessInfo.processInfo.environment["LIMEN_LANG"] { UserDefaults.standard.set(lang, forKey: "lang") }
+        if isolated, let lang = ProcessInfo.processInfo.environment["LIMEN_LANG"] { UserDefaults.standard.set(lang, forKey: "lang") }
         if arguments.contains("LIMEN_DEMO") { LimenModel.seedDemo(into: Store(root: AppFiles.support), prefs: .standard) }
         // The store screenshots walk a scene of their own, one per language, and start at the
         // landing rather than inside the record, so this seeds without opening anything.
@@ -17,6 +20,12 @@ struct LimenApp: App {
             LimenModel.seedStoreScene(into: Store(root: AppFiles.support), prefs: .standard, lang: Lang.from(ProcessInfo.processInfo.environment["LIMEN_LANG"]))
         }
         #endif
+        // Startup precedes any operation; only our private staging directories are swept.
+        for directory in [AppFiles.scratch, AppFiles.captures] {
+            for file in (try? FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)) ?? [] {
+                try? FileManager.default.removeItem(at: file)
+            }
+        }
         return LimenModel()
     }()
 
@@ -61,8 +70,29 @@ struct RootView: View {
         // banner, the app switcher and an incoming call all pass through .inactive, and a flush
         // there commits the six-second undo the moment the person glances away. Every path off the
         // screen passes through .background before the process can be ended.
+        .alert(s.signatureEditWarning, isPresented: Binding(get: { model.pendingEdit != nil }, set: { if !$0 { model.cancelMaterialEdit() } })) {
+            Button(s.cancel, role: .cancel) { model.cancelMaterialEdit() }
+            Button(s.done) { model.confirmMaterialEdit() }
+        } message: { Text(model.pendingEditNames.joined(separator: ", ")) }
+        .overlay(alignment: .bottom) {
+            if let error = model.saveError {
+                VStack {
+                    Text(error).font(.body).accessibilityLabel(error)
+                    Button(s.retry) { model.persistWorking() }
+                }.padding().background(.regularMaterial)
+            } else if let error = model.evidenceError {
+                VStack {
+                    Text(error).font(.body)
+                    Button(s.done) { model.evidenceError = nil }
+                }.padding().background(.regularMaterial)
+            }
+        }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .background { model.flush() }
+            if phase == .background {
+                model.flush()
+                model.libraryUnlocked = false
+                if model.libraryProtectionEnabled && model.working == nil { model.homePage = .landing }
+            }
         }
     }
 }

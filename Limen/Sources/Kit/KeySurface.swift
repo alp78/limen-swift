@@ -10,6 +10,7 @@ struct KeySurface<Content: View>: View {
     var active = false
     var enabled = true
     var radius: CGFloat = 12
+    var flat = true
     var fillColor: Color?
     var outlineColor: Color?
     var tick: Tick = .key
@@ -28,7 +29,8 @@ struct KeySurface<Content: View>: View {
         } label: {
             content()
         }
-        .buttonStyle(KeyStyle(fill: fill, outline: outline, radius: radius, enabled: enabled, dark: colors.isDark))
+        .buttonStyle(KeyStyle(fill: fill, outline: outline, radius: radius, enabled: enabled, dark: colors.isDark, flat: flat || !enabled))
+        .fixedSize(horizontal: false, vertical: true)
         .disabled(!enabled)
         .modifier(OptionalLabel(label: accessibilityLabel))
     }
@@ -49,6 +51,7 @@ private struct KeyStyle: ButtonStyle {
     let radius: CGFloat
     let enabled: Bool
     let dark: Bool
+    let flat: Bool
 
     func makeBody(configuration: Configuration) -> some View {
         // A smaller lower edge in night mode keeps the visible face the same weight as an active
@@ -62,6 +65,7 @@ private struct KeyStyle: ButtonStyle {
         // The face is a background of the label, never a sibling: a shape beside the label in a
         // stack takes every point it is offered, and the key grew to fill its row.
         configuration.label
+            .fixedSize(horizontal: false, vertical: true)
             .offset(y: pressed ? depth : 0)
             .padding(.bottom, depth)
             .frame(minWidth: 48, minHeight: 48)
@@ -70,7 +74,7 @@ private struct KeyStyle: ButtonStyle {
                     shape.fill(edge)
                     VStack(spacing: 0) {
                         shape
-                            .fill(LinearGradient(stops: [.init(color: topLight, location: 0), .init(color: fill, location: 0.36), .init(color: lowerTone, location: 1)], startPoint: .top, endPoint: .bottom))
+                            .fill(LinearGradient(stops: [.init(color: flat ? fill : topLight, location: 0), .init(color: fill, location: 0.36), .init(color: flat ? fill : lowerTone, location: 1)], startPoint: .top, endPoint: .bottom))
                             // A full stroke includes a horizontal rule at the lower face edge. On
                             // dark fills it read as a stray line, so the night treatment relies on the edge.
                             .overlay(dark ? nil : shape.strokeBorder(outline, lineWidth: 1))
@@ -157,15 +161,15 @@ struct BigKey: View {
         KeySurface(active: active && enabled, enabled: enabled, radius: 12, tick: tick, onPress: onPress) {
             Text(label)
                 .font(LimenType.key)
-                .tracking(0.8)
+                .lineLimit(nil)
                 .multilineTextAlignment(.center)
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
+                .fixedSize(horizontal: false, vertical: true)
                 .foregroundStyle(active && enabled ? colors.onInk : (enabled ? colors.ink : colors.disabledInk))
                 .padding(.horizontal, 20)
                 .padding(.vertical, 18)
                 .frame(maxWidth: .infinity)
         }
+        .fixedSize(horizontal: false, vertical: true)
         .frame(maxWidth: .infinity)
     }
 }
@@ -185,8 +189,7 @@ struct SmallKey: View {
                 .font(LimenType.smallKey)
                 .tracking(0.4)
                 .multilineTextAlignment(.center)
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
+                .fixedSize(horizontal: false, vertical: true)
                 .foregroundStyle(enabled ? colors.ink : colors.disabledInk)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 13)
@@ -216,15 +219,14 @@ struct Chip: View {
             if destructive { return colors.dangerOutline }
             if active { return colors.onInk }
             if !enabled { return colors.disabledInk }
-            return dim ? colors.inkDim : colors.ink
+            return colors.ink
         }()
-        KeySurface(active: active && !destructive, enabled: enabled, radius: 10, fillColor: destructiveFill, outlineColor: destructive ? colors.dangerOutline : nil, tick: tick, onPress: onPress) {
+        KeySurface(active: active && !destructive, enabled: enabled, radius: 10, flat: true, fillColor: destructiveFill, outlineColor: destructive ? colors.dangerOutline : nil, tick: tick, onPress: onPress) {
             Text(label)
                 .font(LimenType.chip)
                 .tracking(0.3)
                 .multilineTextAlignment(.center)
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
+                .fixedSize(horizontal: false, vertical: true)
                 .foregroundStyle(ink)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 9)
@@ -326,6 +328,7 @@ struct Stepper: View {
 
 /// A labelled switch for persistent on/off choices.
 struct Toggle: View {
+    @Environment(\.str) private var s
     @Environment(\.limen) private var colors
     let label: String
     let on: Bool
@@ -340,8 +343,7 @@ struct Toggle: View {
                 Text(label)
                     .font(LimenType.chip)
                     .tracking(0.2)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
+                    .fixedSize(horizontal: false, vertical: true)
                     .foregroundStyle(colors.ink)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 ZStack(alignment: on ? .trailing : .leading) {
@@ -356,7 +358,7 @@ struct Toggle: View {
         }
         .frame(maxWidth: .infinity)
         .accessibilityAddTraits(.isToggle)
-        .accessibilityValue(on ? "1" : "0")
+        .accessibilityValue(on ? s.yes : s.no)
     }
 }
 
@@ -379,8 +381,7 @@ struct RoomActionKey: View {
                 Text(label)
                     .font(LimenType.labelLarge)
                     .tracking(0.4)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
+                    .fixedSize(horizontal: false, vertical: true)
                     .foregroundStyle(text)
             }
             .padding(.horizontal, 14)

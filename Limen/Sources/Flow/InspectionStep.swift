@@ -32,6 +32,7 @@ private struct RoomGrid: View {
             VStack(alignment: .leading, spacing: 10) {
                 if !locked, p.rooms.isEmpty, !p.roomSetupComplete {
                     InitialRoomSetup(p: p)
+                    Panel(label: s.scopeReason) { ScopeNote(p: p, key: "Inspection") }
                     Spacer().frame(height: 12)
                 } else {
                     FlowRow(spacing: 8) {
@@ -124,7 +125,7 @@ private struct RoomKey: View {
         // accessibility label on the key replaced both Texts and the count went unread.
         KeySurface(radius: 12, fillColor: flagged ? colors.warning : colors.plateRaised, outlineColor: flagged ? colors.warningOutline : colors.actionOutline, accessibilityLabel: label, onPress: onPress) {
             VStack(alignment: .leading, spacing: 4) {
-                Text(label).font(LimenType.rowTitle).lineLimit(2).foregroundStyle(colors.ink).multilineTextAlignment(.leading)
+                Text(label).font(LimenType.rowTitle).fixedSize(horizontal: false, vertical: true).foregroundStyle(colors.ink).multilineTextAlignment(.leading)
                 Text(state)
                     .font(LimenType.mono(13, flagged ? .bold : .regular, like: .footnote))
                     .multilineTextAlignment(.leading)
@@ -166,10 +167,21 @@ private struct RoomDetail: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 // Only a room the canon has no word for needs naming; the rest are named already.
-                if room.kind == .custom {
-                    Field(label: s.roomName, value: room.name) { model.renameRoom(room.id, name: $0) }
+                Field(label: s.roomName, value: room.name, hint: s.room(room.kind)) { model.renameRoom(room.id, name: $0) }
+                if !locked {
+                    WeightedRow(weights: [1, 1]) {
+                        SmallKey(label: s.moveUp, enabled: p.rooms.first?.id != room.id) { model.moveRoom(id: room.id, offset: -1) }
+                        SmallKey(label: s.moveDown, enabled: p.rooms.last?.id != room.id) { model.moveRoom(id: room.id, offset: 1) }
+                    }
                 }
                 Toggle(label: s.roomInspected, on: room.inspected, enabled: !locked) { model.setRoomInspected(room.id, !room.inspected) }
+                if !room.inspected { ScopeNote(p: p, key: room.id) }
+                Panel(label: s.overviewPhotos) {
+                    EvidencePhotos(photos: p.details.roomPhotos[room.id] ?? [], add: { url, source in model.attachRoomPhoto(room.id, source: url, photoSource: source) }, remove: { name in model.removeRoomPhoto(room.id, name: name) })
+                }
+                if let baseline = model.entryBaseline, entryRoom != nil {
+                    BaselineRoomPanel(p: baseline, roomId: room.id)
+                }
                 if !locked {
                     ItemPicker(kind: room.kind) { key, label in model.openDefect(room.id, item: key, itemLabel: label) }
                 }
@@ -205,11 +217,13 @@ private struct RoomDetail: View {
                     }
                 }
                 if !locked {
-                    HStack(spacing: 8) {
-                        RoomActionKey(label: s.clearRoom, fill: colors.danger, outline: colors.dangerOutline, text: colors.dangerOutline, glyph: .clear) { confirmingClear = true }
-                        RoomActionKey(label: s.removeRoom, fill: colors.danger, outline: colors.dangerOutline, text: colors.dangerOutline, glyph: .delete) { confirmingRemove = true }
-                    }
+                    Menu(s.roomActions) {
+                        Button(s.clearRoom, role: .destructive) { confirmingClear = true }
+                        Button(s.removeRoom, role: .destructive) { confirmingRemove = true }
+                    }.font(LimenType.bodyMedium).frame(minHeight: 44)
+
                 }
+                BigKey(label: s.nextRoom) { model.nextRoom() }
                 Spacer().frame(height: 12)
             }
         }
@@ -277,6 +291,52 @@ private struct ItemPicker: View {
                     }
                 }
             }
+        }
+    }
+}
+
+private struct BaselineRoomPanel: View {
+    @Environment(LimenModel.self) private var model
+    @Environment(\.str) private var s
+    @Environment(\.limen) private var colors
+    let p: HandoverProtocol
+    let roomId: String
+    @State private var showingDocument = false
+
+    var body: some View {
+        Panel(label: s.atEntry) {
+            DisclosureGroup(s.atEntry) {
+                VStack(alignment: .leading, spacing: 8) {
+                    SmallKey(label: s.preview, stretch: true) { model.previewDocument(p); showingDocument = true }
+                    ForEach(p.objects.filter { $0.roomId == roomId }, id: \.id) { entry in
+                        Text(entry.displayName(s)).font(LimenType.bodyMedium).foregroundStyle(colors.ink)
+                        Text(entry.note).font(LimenType.bodySmall).foregroundStyle(colors.inkDim)
+                        ScrollView(.horizontal) {
+                            HStack { ForEach(entry.photoFiles(), id: \.self) { file in
+                                PhotoThumb(name: file, evidence: entry.photoEvidence.first { $0.file == file }, fileURL: model.store.photoDir(p.id).appendingPathComponent(file)) {}
+                            } }
+                        }
+                    }
+                    ForEach(p.defects.filter { $0.roomId == roomId }, id: \.id) { defect in
+                        Text(defect.text).font(LimenType.bodyMedium).foregroundStyle(colors.ink)
+                        if !defect.reservation.isBlank { Text(defect.reservation).font(LimenType.bodySmall).foregroundStyle(colors.inkDim) }
+                        ScrollView(.horizontal) {
+                            HStack { ForEach(defect.photoFiles(), id: \.self) { file in
+                                PhotoThumb(name: file, evidence: defect.photoEvidence.first { $0.file == file }, fileURL: model.store.photoDir(p.id).appendingPathComponent(file)) {}
+                            } }
+                        }
+                    }
+                    ScrollView(.horizontal) {
+                        HStack { ForEach(p.details.roomPhotos[roomId] ?? [], id: \.file) { photo in
+                            PhotoThumb(name: photo.file, evidence: photo, fileURL: model.store.photoDir(p.id).appendingPathComponent(photo.file)) {}
+                        } }
+                    }
+                }
+                .environment(\.recordLocked, true)
+            }
+        }
+        .sheet(isPresented: $showingDocument) {
+            if let file = model.documentPreview { DocumentPreview(file: file) } else if let error = model.previewError { Text(error).padding() } else { ProgressView(s.working) }
         }
     }
 }

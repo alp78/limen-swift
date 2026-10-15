@@ -12,6 +12,7 @@ import XCTest
 /// The shots, in upload order:
 ///   01 home, 02 rooms, 03 defect editor, 04 canton overlay,
 ///   05 review, 06 signature, 07 finalized, 08 exported
+@MainActor
 final class StoreShotsTest: XCTestCase {
     override func setUp() {
         continueAfterFailure = false
@@ -88,11 +89,17 @@ final class StoreShotsTest: XCTestCase {
         shoot(app, "\(tag)-05-review")
 
         // 06 signing on the device
-        app.swipeUp()
+        let preview = app.buttons["preview-document"]
+        reveal(app, preview)
+        preview.tap()
+        XCTAssertTrue(app.buttons["confirm-review"].waitForExistence(timeout: 30))
+        app.buttons["confirm-review"].tap()
         let signatures = key(app, s.stepSign)
         XCTAssertTrue(signatures.waitForExistence(timeout: 10), "no signatures key in \(lang.rawValue)")
+        reveal(app, signatures)
         signatures.tap()
         XCTAssertTrue(app.buttons[s.signKey].firstMatch.waitForExistence(timeout: 15), "no sign key in \(lang.rawValue)")
+        reveal(app, app.buttons[s.signKey].firstMatch)
         app.buttons[s.signKey].firstMatch.tap()
         let pad = element(app, s.signaturePad)
         XCTAssertTrue(pad.waitForExistence(timeout: 15), "no ink pad in \(lang.rawValue)")
@@ -102,6 +109,7 @@ final class StoreShotsTest: XCTestCase {
 
         // The second party signs too, because a finalized record needs both outcomes.
         XCTAssertTrue(app.buttons[s.signKey].firstMatch.waitForExistence(timeout: 15), "no second sign key in \(lang.rawValue)")
+        reveal(app, app.buttons[s.signKey].firstMatch)
         app.buttons[s.signKey].firstMatch.tap()
         let second = element(app, s.signaturePad)
         XCTAssertTrue(second.waitForExistence(timeout: 15), "no second ink pad in \(lang.rawValue)")
@@ -131,20 +139,39 @@ final class StoreShotsTest: XCTestCase {
 
     /// A signature rather than a scribble: three strokes that read as handwriting at listing size.
     private func sign(_ pad: XCUIElement) {
-        let marks: [(CGFloat, CGFloat, CGFloat, CGFloat)] = [
-            (0.14, 0.62, 0.34, 0.34),
-            (0.30, 0.58, 0.52, 0.40),
-            (0.48, 0.44, 0.82, 0.52),
+        let marks: [(CGVector, CGVector)] = [
+            (CGVector(dx: 0.14, dy: 0.62), CGVector(dx: 0.34, dy: 0.34)),
+            (CGVector(dx: 0.30, dy: 0.58), CGVector(dx: 0.52, dy: 0.40)),
+            (CGVector(dx: 0.48, dy: 0.44), CGVector(dx: 0.82, dy: 0.52)),
         ]
         for mark in marks {
-            pad.coordinate(withNormalizedOffset: CGVector(dx: mark.0, dy: mark.1))
-                .press(forDuration: 0.05, thenDragTo: pad.coordinate(withNormalizedOffset: CGVector(dx: mark.2, dy: mark.3)))
+            pad.coordinate(withNormalizedOffset: mark.0)
+                .press(forDuration: 0.05, thenDragTo: pad.coordinate(withNormalizedOffset: mark.1))
         }
     }
 
     /// A key that exists is not always a key that can be pressed: the passing notice slides over
     /// the column, and a step that has just changed is still settling. This waits for the hit test
     /// to agree, then presses the middle of the key directly if it never does.
+    private func reveal(_ app: XCUIApplication, _ target: XCUIElement) {
+        for _ in 0..<30 {
+            let scroller = app.scrollViews.firstMatch
+            let viewport = scroller.exists && target.identifier != "start-session" ? scroller.frame : app.frame
+            let top = viewport.minY + (target.elementType == .textField ? min(55, viewport.height * 0.2) : 8)
+            let bottom = viewport.maxY - 24
+            var upwards = true
+            if target.exists {
+                let frame = target.frame
+                if target.isHittable && frame.midY >= top && frame.midY <= bottom { return }
+                upwards = frame.midY >= top
+            }
+            let surface = scroller.exists ? scroller : app
+            let from = surface.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: upwards ? 0.75 : 0.25))
+            let to = surface.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: upwards ? 0.25 : 0.75))
+            from.press(forDuration: 0.05, thenDragTo: to)
+        }
+    }
+
     private func press(_ element: XCUIElement) {
         let hittable = NSPredicate(format: "isHittable == true")
         let settled = expectation(for: hittable, evaluatedWith: element)

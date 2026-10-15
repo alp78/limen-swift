@@ -1,0 +1,35 @@
+[
+  {
+    "test": "RuntimeBoundaryTests/testCameraPermissionDenialOffersSettingsAndPreservesDraft()",
+    "result": "/tmp/limen-physical-interruption-attachments",
+    "configurationName": "Test Scheme Action",
+    "deviceId": "00008150-001074183A7B401C",
+    "deviceName": "Alexis\u2019s iPhone",
+    "exportedFileName": "6647E583-3028-4AEF-9A1E-3D304030BA69.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "runtime-camera-denied-physical_0_85CE6BE0-282E-4827-98B9-FDD97F046E91.png",
+    "timestamp": 1791932657.663
+  },
+  {
+    "test": "RuntimeBoundaryTests/testSupportingDocumentPickerCancellationPreservesDraft()",
+    "result": "/tmp/limen-physical-interruption-attachments",
+    "configurationName": "Test Scheme Action",
+    "deviceId": "00008150-001074183A7B401C",
+    "deviceName": "Alexis\u2019s iPhone",
+    "exportedFileName": "2AAEC2AA-AC4F-414B-89D1-8429E900BDB9.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "runtime-files-picker-cancelled_0_95CE4250-B66C-4338-A9A3-277321248F0F.png",
+    "timestamp": 1791932700.72
+  },
+  {
+    "test": "RuntimeBoundaryTests/testSupportingDocumentPickerCancellationPreservesDraft()",
+    "result": "/tmp/limen-physical-interruption-attachments",
+    "configurationName": "Test Scheme Action",
+    "deviceId": "00008150-001074183A7B401C",
+    "deviceName": "Alexis\u2019s iPhone",
+    "exportedFileName": "5CB7EF4D-C3ED-4739-8FB5-4FFD7269816F.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "runtime-files-picker-before-cancel_0_8139CB8B-5ECD-47BE-AB45-3323215A989A.png",
+    "timestamp": 1791932698.062
+  }
+]

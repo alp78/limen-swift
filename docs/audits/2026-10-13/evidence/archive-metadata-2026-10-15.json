@@ -1,0 +1,45 @@
+{
+  "built": "2026-10-15T22:09:52+02:00",
+  "bundleIdentifier": "dev.peringer.limen",
+  "version": "1.2.0",
+  "build": "5",
+  "localizations": [
+    "en",
+    "fr",
+    "de",
+    "it",
+    "rm"
+  ],
+  "minimumOS": "17.0",
+  "team": [
+    "KDSZB7N44K"
+  ],
+  "profileName": "iOS Team Provisioning Profile: dev.peringer.limen",
+  "profileUUID": "6e717535-f97c-4623-9c54-56ade729d5cd",
+  "profileExpiration": "2027-09-30T22:49:07",
+  "phoneProvisioned": true,
+  "archiveExecutableSHA256": "abdaeb83f620902f4cad2458918e103e3dbb103e578f5b7c3aae541d7cfaf8ea",
+  "developmentIPA": {
+    "path": "DD-release/export-current-dev/Limen.ipa",
+    "sha256": "b745635bc54815d68d373cbe6e978e1bca8fe597e6645a731aaae578b5a5294f",
+    "exportMethod": "debugging",
+    "get-task-allow": true,
+    "payloadExecutableSHA256": "339ea00158b82036865b47ff26e50d81f7bee393057407e43338364468218490",
+    "installedOnPhone": "00008150-001074183A7B401C"
+  },
+  "distributionIPA": {
+    "path": "DD-release/export-current-store/Limen.ipa",
+    "sha256": "6b216b0fca92e9ffb364da4e7c3f5612cd3f501382b222148240077790ac00c6",
+    "exportMethod": "app-store-connect",
+    "uploaded": false
+  },
+  "archivePath": "DD-release/Limen-1.2.0-5-current.xcarchive",
+  "sourceManifest": "docs/audits/2026-10-13/evidence/release-source-manifest-2026-10-15.json",
+  "sourceManifestSHA256": "4a072b3e6feccb67aaf671ec6e5e7dd7ad7055f61c1d3be82621d47c739bbcfb",
+  "sourcesChangedSince14October": [
+    "Limen/Sources/Flow/SignPad.swift",
+    "Limen/Sources/Home/DataPrivacyScreen.swift",
+    "Limen/Sources/Home/NewSessionScreen.swift",
+    "Limen/Sources/Kit/Field.swift"
+  ]
+}

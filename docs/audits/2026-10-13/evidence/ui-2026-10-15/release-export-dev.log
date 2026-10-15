@@ -1,0 +1,4 @@
+2026-10-15 21:50:42.851 xcodebuild[14784:142686] [MT] IDEDistribution: -[IDEDistributionLogging _createLoggingBundleAtPath:]: Created bundle at path "/var/folders/rw/fgcvq6x158n7xh21ygb3g4bc0000gn/T/Limen_2026-10-15_21-50-42.844.xcdistributionlogs".
+Exported Limen to: /Users/aperi/DEV/SWIFT/limen/DD-release/export-current-dev
+** EXPORT SUCCEEDED **
+

@@ -1,0 +1,2 @@
+"NSCameraUsageDescription" = "Limen uses the camera to photograph findings and supplied items. Originals stay in this app until you export or delete the record.";
+"NSFaceIDUsageDescription" = "Use Face ID to open the saved-record library and settings when you enable this option. The shared handover remains available.";

@@ -9,6 +9,8 @@ excluded:
   - DD
   - Derived
   - LimenKit/Sources/Strings/Str.swift
+  - LimenKit/Sources/JSON/ProtocolJSON.swift
+  - LimenKit/Sources/Model/RecordDetails.swift
 
 opt_in_rules:
   - force_unwrapping

@@ -1,0 +1,2 @@
+"NSCameraUsageDescription" = "Limen utilise l’appareil photo pour documenter les défauts et objets fournis. Les originaux restent dans cette app jusqu’à l’export ou la suppression du dossier.";
+"NSFaceIDUsageDescription" = "Utiliser Face ID pour ouvrir les dossiers enregistrés et les réglages si vous activez cette option. Le constat partagé reste accessible.";

@@ -51,17 +51,17 @@ import Testing
 @Suite struct ClocksTests {
     @Test func weekendDoesNotCount() {
         let friday = LocalDate(2026, 7, 31)
-        #expect(Clocks.exitNoticeSafeBy(friday) == LocalDate(2026, 8, 4))
-        #expect(Clocks.exitNoticeLatest(friday) == LocalDate(2026, 8, 5))
+        #expect(Clocks.addWorkingDays(friday, 2) == LocalDate(2026, 8, 4))
+        #expect(Clocks.addWorkingDays(friday, 3) == LocalDate(2026, 8, 5))
     }
 
     @Test func midweekRunsStraightThrough() {
-        #expect(Clocks.exitNoticeSafeBy(LocalDate(2026, 8, 3)) == LocalDate(2026, 8, 5))
+        #expect(Clocks.addWorkingDays(LocalDate(2026, 8, 3), 2) == LocalDate(2026, 8, 5))
     }
 
     @Test func holidaysAreSkippedWhenGiven() {
         let thursday = LocalDate(2026, 7, 30)
-        #expect(Clocks.exitNoticeSafeBy(thursday, holidays: [LocalDate(2026, 7, 31)]) == LocalDate(2026, 8, 4))
+        #expect(Clocks.addWorkingDays(thursday, 2, holidays: [LocalDate(2026, 7, 31)]) == LocalDate(2026, 8, 4))
     }
 
     @Test func returnDueShiftsSundayOrRecognizedHolidayButNotSaturday() {
@@ -72,8 +72,15 @@ import Testing
         #expect(Clocks.returnDue(wednesday, holidays: [wednesday]) == LocalDate(2026, 8, 6))
     }
 
-    @Test func entryListRunsTenCalendarDays() {
-        #expect(Clocks.entryListBy(LocalDate(2026, 7, 31)) == LocalDate(2026, 8, 10))
+    @Test func planningDateRequiresActualTransferAndRecordedClause() {
+        var record = HandoverProtocol(id: "planning", kind: .entry, createdEpochMs: 1)
+        record.handoverDate = "2026-07-31"
+        #expect(Clocks.agreedPlanningDate(record) == nil)
+        record.details.actualTransferDate = "2026-08-02"
+        record.details.notificationDays = "10"
+        #expect(Clocks.agreedPlanningDate(record) == nil)
+        record.details.notificationClause = "Lease section 8, agreed period"
+        #expect(Clocks.agreedPlanningDate(record) == LocalDate(2026, 8, 12))
     }
 
     @Test func depositBackstopIsOneYear() {
@@ -110,8 +117,8 @@ import Testing
         #expect(abs(Zeitwert.tenantShare(costChf: 1200, lifespanYears: 8, ageYears: 0) - 1200) < 1e-9)
     }
 
-    @Test func negativeAgeReadsAsNew() {
-        #expect(Zeitwert.remainingFraction(lifespanYears: 8, ageYears: -2) == 1)
+    @Test func negativeAgeIsInvalidRatherThanANewReplacement() {
+        #expect(Zeitwert.replacementResidualValue(costChf: 500, lifespanYears: 8, ageYears: -2) == nil)
     }
 
     @Test func zeroLifespanNeverDivides() {
@@ -252,7 +259,7 @@ import Testing
         let disputed = LegalOverlayRecord().withStatus(.leaseAndLocalTiming, .missingOrDisputed)
         #expect(!overlay.isComplete(disputed))
         var explained = disputed
-        explained.note = "Lease gives a different appointment."
+        explained.notes[.leaseAndLocalTiming] = "Lease gives a different appointment."
         #expect(overlay.isComplete(explained))
         #expect(overlay.isComplete(LegalOverlayRecord().withStatus(.leaseAndLocalTiming, .confirmed)))
     }
@@ -393,6 +400,8 @@ import Testing
         p.objectCanton = .vd
         p.handoverDate = "2026-08-18"
         p.handoverTime = "10:00"
+        p.contract.conclusionDate = "2026-08-01"
+        p.details.district = "Lausanne"
         var overlay = LegalOverlayRecord()
         if kind == .entry {
             overlay = overlay.withStatus(.leaseAndLocalTiming, .confirmed).withStatus(.initialRentForm, .confirmed)
@@ -474,12 +483,14 @@ import Testing
         #expect(try issues(complete(.exit, .tenant)).isEmpty)
     }
 
-    @Test func removingTheKeysCardRemovesTheKeyRuleWithIt() throws {
+    @Test func removingTheKeysCardNeedsAnExplanation() throws {
         var withoutKeys = complete(.entry, .tenant)
         withoutKeys.dossier = []
         withoutKeys.dossierChosen = true
         withoutKeys.keys = []
         withoutKeys.keyTransfer = .notRecorded
+        #expect(try issues(withoutKeys).contains(.keys))
+        withoutKeys.details.scopeNotes["Keys"] = "Keys remain with the caretaker pending a separate transfer"
         #expect(try issues(withoutKeys).isEmpty)
     }
 

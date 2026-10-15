@@ -1,0 +1,37 @@
+{
+  "role": "phone",
+  "test": "testRomanshLargestAccessibilitySignatureOnly",
+  "category": "UICTContentSizeCategoryAccessibilityXXXL",
+  "app_frame_points": [
+    402,
+    874
+  ],
+  "uuid": "7685239C-7EC2-48B9-ADFD-66CC3C649D9A",
+  "runtime": "iOS 26.5",
+  "screens": [
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-signature-only-11-review.png",
+      "sha256": "e2a5d05714f6f9f880fc1bead2e8dad4b3ed42961895f45e64d8539746ebe7ab"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-signature-only-11a-review-action.png",
+      "sha256": "af4f801030f715cd3789b496f4509b0c1fd6de714e2a2d51eb2ea77f7f1889e9"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-signature-only-12-sign.png",
+      "sha256": "41aa131bbfe8a8592c4647699b6a26001c781ce02c5d9e75eaffcb03cecaf738"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-signature-only-12a-signature-purpose.png",
+      "sha256": "7de3ad51a78f6872cc1aab65c8cdb0ab1384b0813dd4aadf5793f1b50dd7cd4e"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-signature-only-13-ink.png",
+      "sha256": "8de1ba8de4d30aacd683f36242020fbb3cbcdaba5d97903500b3f78b23c08b7c"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-signature-only-14-signed.png",
+      "sha256": "36b2fd49f4703ee0774b75d460ee8a47d514e41a82084afbcc3b703e9c4aad8c"
+    }
+  ]
+}

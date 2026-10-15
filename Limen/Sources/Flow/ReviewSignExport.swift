@@ -43,7 +43,8 @@ struct ReviewStep: View {
                         }
                     }
                 }
-                BigKey(label: s.stepSign.uppercased()) { model.goTo(.sign) }
+                CompletePreviewPanel(p: p)
+                BigKey(label: s.stepSign.uppercased(), enabled: p.isFinalized() || p.details.reviewRevision == p.contentRevision) { model.goTo(.sign) }
                 Spacer().frame(height: 12)
             }
         }
@@ -60,7 +61,7 @@ struct ReviewStep: View {
                     ReviewLine(label: s.objectDetail, value: p.objectDetail)
                     // Swiss, like every other date the operator sees and every date on the paper.
                     ReviewLine(label: s.handoverDate, value: [SwissDate.display(p.handoverDate), p.handoverTime].filter { !$0.isBlank }.joined(separator: " · "))
-                    ReviewLine(label: s.legalBasis, value: s.legalProfile(p.legalProfile()))
+                    ReviewLine(label: s.legalBasis, value: s.legalProfile(p.resolvedLegalOverlay()?.profile ?? p.legalProfile()))
                 }
             }
             Panel(label: s.parties) {
@@ -110,6 +111,7 @@ struct ReviewStep: View {
                     }
                     ForEach(requirements, id: \.self) { requirement in
                         ReviewLine(label: s.legalRequirement(requirement), value: p.legalOverlay.status(requirement).map(s.legalCheckStatus) ?? s.stillMissing)
+                        ReviewLine(label: s.legalOverlayNote, value: p.legalOverlay.notes[requirement] ?? "")
                     }
                     ReviewLine(label: s.legalOverlayNote, value: p.legalOverlay.note)
                 }
@@ -189,7 +191,7 @@ struct SignStep: View {
     @Environment(\.str) private var s
     @Environment(\.recordLocked) private var locked
     let p: HandoverProtocol
-    @State private var padTarget: Role?
+    @State private var padTarget: ParticipantTarget?
     // Recomputed when the record changes, as Android's remember(p) does, not on every body pass:
     // the check stats every photograph and every signature file on disk.
     @State private var issues: [FinalizationIssue] = []
@@ -230,8 +232,9 @@ struct SignStep: View {
                             Field(label: s.unilateralNote, value: p.unilateralNote, singleLine: false) { v in model.edit { var x = $0; x.unilateralNote = v; return x } }
                         }
                         Text(s.reservationBeforeSign).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
-                        ForEach(model.requiredRecordRoles(p), id: \.self) { role in
-                            SignRow(p: p, role: role, plane: .record) { padTarget = role }
+                        CompletePreviewPanel(p: p)
+                        ForEach(CompletionRules.requiredRecordParticipants(p, fallbackRole: model.myRole), id: \.uiKey) { party in
+                            SignRow(p: p, party: party, plane: .record) { padTarget = ParticipantTarget(party: party) }
                         }
                         Text(s.inkEvidenceNotice).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
                     }
@@ -243,7 +246,7 @@ struct SignStep: View {
                             if !issues.isEmpty {
                                 Text(s.finalizationNeeds).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
                                 ForEach(issues, id: \.self) { issue in
-                                    Text("• \(s.finalizationIssue(issue))").font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
+                                    CompletionIssueKey(p: p, issue: issue)
                                 }
                             }
                             if model.finalizationError {
@@ -262,9 +265,9 @@ struct SignStep: View {
         }
         .scrollDismissesKeyboard(.interactively)
         .onChange(of: p, initial: true) { _, now in issues = model.completionIssues(now) }
-        .fullScreenCover(item: $padTarget) { role in
-            SignPadOverlay(title: "\(s.signRecordTitle) · \(s.role(role))", meaning: s.tipRecord().lead, onKeep: { png in
-                model.keepSignature(role, plane: .record, png: png)
+        .fullScreenCover(item: $padTarget) { target in
+            SignPadOverlay(title: "\(s.signRecordTitle) · \(target.party.signerName())", meaning: s.tipRecord().lead, onKeep: { png in
+                model.keepSignature(participantId: target.id, plane: .record, png: png)
                 padTarget = nil
             }, onCancel: { padTarget = nil })
             .environment(\.limen, colors)
@@ -273,8 +276,9 @@ struct SignStep: View {
     }
 }
 
-extension Role: Identifiable {
-    public var id: String { rawValue }
+private struct ParticipantTarget: Identifiable {
+    let party: Party
+    var id: String { party.participantKey() }
 }
 
 private struct SignRow: View {
@@ -283,39 +287,46 @@ private struct SignRow: View {
     @Environment(\.str) private var s
     @Environment(\.recordLocked) private var locked
     let p: HandoverProtocol
-    let role: Role
+    let party: Party
     let plane: Plane
     let onSign: () -> Void
 
     var body: some View {
-        let sig = p.signatures.first { $0.role == role && $0.plane == plane }
+        let sig = p.signatureFor(party: party, plane: plane)
+        let participantId = party.participantKey()
         let current = sig.map(p.isCurrent) == true
-        let pendingReservation = p.pendingRecordReservations[role] ?? sig?.reservation ?? ""
+        let pendingReservation = p.reservationFor(party: party)
         // The status: the one place besides the case's chip where the seal colour appears.
         let status: (String, Bool) = {
             guard let sig else { return (s.notSigned, false) }
             if !current { return (s.resignRequired, false) }
+            if sig.outcome == "absent" { return (s.absentOutcome, false) }
+            if sig.outcome == "unable" { return (s.unableToDraw, false) }
             if sig.refused { return (s.refusedNote, false) }
             return (s.signed, true)
         }()
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 6) {
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(s.role(role)).font(LimenType.bodyMedium).foregroundStyle(colors.ink)
+                    Text("\(party.signerName().ifBlank(s.role(party.role))) · \(s.role(party.role))").font(LimenType.bodyMedium).foregroundStyle(colors.ink)
                     Text(status.0).font(LimenType.labelSmall).foregroundStyle(status.1 ? colors.seal : colors.inkDim)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 if locked {
                     // Nothing to offer: the ink is part of what the fingerprint covers.
                 } else if sig == nil || !current {
-                    IconKey(glyph: .edit, label: s.signKey, onPress: onSign)
-                    IconKey(glyph: .cancel, label: s.refusedKey, fillColor: colors.danger, outlineColor: colors.dangerOutline, tint: colors.dangerOutline, tick: .reject) { model.refuseSignature(role, plane: plane) }
+                    IconKey(glyph: .edit, label: s.signKey, enabled: p.details.reviewRevision == p.contentRevision, onPress: onSign).accessibilityIdentifier("sign-\(participantId)")
+                    IconKey(glyph: .cancel, label: s.refusedKey, fillColor: colors.danger, outlineColor: colors.dangerOutline, tint: colors.dangerOutline, tick: .reject) { model.outcomeSignature(participantId: participantId, outcome: "refused", plane: plane) }
                 } else {
-                    IconKey(glyph: .clear, label: s.clearInk, destructive: true) { model.clearSignature(role, plane: plane) }
+                    IconKey(glyph: .clear, label: s.clearInk, destructive: true) { model.clearSignature(participantId: participantId, plane: plane) }
                 }
             }
             if !locked, !current {
-                Field(label: s.reservationLabel, value: pendingReservation) { model.setRecordReservation(role, $0) }
+                Field(label: s.reservationLabel, value: pendingReservation, singleLine: false) { model.setRecordReservation(participantId: participantId, $0) }
+                FlowRow {
+                    Chip(label: s.absentOutcome) { model.outcomeSignature(participantId: participantId, outcome: "absent", plane: plane) }
+                    Chip(label: s.unableToDraw) { model.outcomeSignature(participantId: participantId, outcome: "unable", plane: plane) }
+                }
             } else if let sig, !sig.reservation.isBlank {
                 Text("\(s.reservationLabel): \(sig.reservation)").font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
             }
@@ -392,9 +403,18 @@ struct ExportStep: View {
                             }
                         }
                     }
+                    ExportHistoryPanel(p: p)
+                    if let html = model.accessibleExport {
+                        Panel(label: s.accessibleCopy) {
+                            WeightedRow(weights: [1, 1]) {
+                                SmallKey(label: s.open, stretch: true) { previewing = html }
+                                SmallKey(label: s.share, stretch: true) { sharing = html }
+                            }
+                        }
+                    }
                     if p.isExported() { CopyDeliveryPanel(p: p) }
                     // The deposit's next step, on screen as well as in the PDF.
-                    if p.kind == .exit, p.deposit.kind != .none {
+                    if p.kind == .exit, [.bankAccount, .insurance].contains(p.deposit.kind) {
                         Panel(label: s.releaseTitle) {
                             Text(p.deposit.kind == .bankAccount ? s.releaseBank : s.releaseInsurance).font(LimenType.bodyMedium).foregroundStyle(colors.ink)
                         }
@@ -418,19 +438,8 @@ struct ExportStep: View {
         // the key was released, so the confirmation is played by the result rather than the tap.
         .onChange(of: model.exported) { _, file in if file != nil { Haptics.play(.confirm) } }
         .sheet(item: $sharing) { file in ShareSheet(url: file.url) }
-        .sheet(item: $previewing) { file in
-            NavigationStack {
-                PDFPreview(url: file.url)
-                    .navigationTitle(file.displayName)
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar { ToolbarItem(placement: .confirmationAction) { Button(s.done.capitalized) { previewing = nil } } }
-            }
-        }
+        .sheet(item: $previewing) { file in DocumentPreview(file: file) }
     }
-}
-
-extension ExportedFile: Identifiable {
-    public var id: String { url.path }
 }
 
 private struct CopyDeliveryPanel: View {
@@ -438,34 +447,30 @@ private struct CopyDeliveryPanel: View {
     @Environment(\.limen) private var colors
     @Environment(\.str) private var s
     let p: HandoverProtocol
-    @State private var tenantDetail = ""
-    @State private var landlordDetail = ""
+    @State private var details: [String: String] = [:]
 
     var body: some View {
         Panel(label: s.copyDelivery) {
             VStack(alignment: .leading, spacing: 10) {
                 Text(s.deliverySelfDeclared).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
-                ForEach([Role.tenant, .landlord], id: \.self) { role in
-                    let receipt = p.deliveryReceipts.first { $0.role == role }
+                ForEach(p.parties.filter { !$0.name.isBlank }, id: \.uiKey) { party in
+                    let key = party.participantKey()
+                    let receipt = p.deliveryReceipts.first { $0.participantId == key || ($0.participantId.isBlank && party.id.isBlank && $0.role == party.role) }
                     VStack(alignment: .leading, spacing: 5) {
-                        Text(s.role(role)).font(LimenType.bodyMedium).foregroundStyle(colors.ink)
+                        Text("\(party.name) · \(s.role(party.role))").font(LimenType.bodyMedium).foregroundStyle(colors.ink)
                         if let receipt {
                             HStack {
                                 Text("\(s.deliveryMethod(receipt.method)) · \(deliveryMoment(receipt.epochMs))").font(LimenType.labelSmall).foregroundStyle(colors.seal).frame(maxWidth: .infinity, alignment: .leading)
-                                IconKey(glyph: .clear, label: s.clearDelivery, destructive: true) { model.clearDelivery(role) }
+                                IconKey(glyph: .clear, label: s.clearDelivery, destructive: true) { model.clearDelivery(participantId: key) }
                             }
-                            if !receipt.note.isBlank {
-                                Text(receipt.note).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
-                            }
+                            Text(receipt.note).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
                         } else {
-                            Text(s.recordCopyFor).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
-                            let detail = role == .tenant ? tenantDetail : landlordDetail
-                            Field(label: s.deliveryDetail, value: detail, editableWhenLocked: true) { value in
-                                if role == .tenant { tenantDetail = value } else { landlordDetail = value }
-                            }
+                            Field(label: s.deliveryDetail, value: details[key] ?? "", editableWhenLocked: true) { details[key] = $0 }
                             FlowRow(spacing: 6) {
                                 ForEach(DeliveryMethod.allCases, id: \.self) { method in
-                                    Chip(label: s.deliveryMethod(method), dim: false, enabled: method != .other || !detail.isBlank) { model.recordDelivery(role, method: method, note: detail) }
+                                    Chip(label: s.deliveryMethod(method), dim: false, enabled: method != .other || !(details[key] ?? "").isBlank) {
+                                        model.recordDelivery(participantId: key, method: method, note: details[key] ?? "")
+                                    }
                                 }
                             }
                         }
@@ -473,10 +478,7 @@ private struct CopyDeliveryPanel: View {
                 }
             }
         }
-        .onChange(of: p.id) { _, _ in
-            tenantDetail = ""
-            landlordDetail = ""
-        }
+        .onChange(of: p.id) { _, _ in details = [:] }
     }
 
     private func deliveryMoment(_ epochMs: Int64) -> String {

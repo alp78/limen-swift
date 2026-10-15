@@ -32,7 +32,20 @@ final class BundleTests: XCTestCase {
     /// Settings pane and every crash report read.
     func testTheBundleCarriesTheProjectsVersion() {
         let info = Bundle.main.infoDictionary
-        XCTAssertEqual(info?["CFBundleShortVersionString"] as? String, "1.1.2")
-        XCTAssertEqual(info?["CFBundleVersion"] as? String, "4")
+        XCTAssertEqual(info?["CFBundleShortVersionString"] as? String, "1.2.0")
+        XCTAssertEqual(info?["CFBundleVersion"] as? String, "5")
+    }
+
+    func testAuditIdentityAndLocalizedSystemPurposes() throws {
+        #if DEBUG
+        XCTAssertEqual(Bundle.main.bundleIdentifier, "dev.peringer.limen.audit")
+        #endif
+        for language in ["en", "fr", "de", "it", "rm"] {
+            let url = try XCTUnwrap(Bundle.main.url(forResource: "InfoPlist", withExtension: "strings", subdirectory: nil, localization: language))
+            let data = try Data(contentsOf: url)
+            let values = try XCTUnwrap(PropertyListSerialization.propertyList(from: data, format: nil) as? [String: String])
+            XCTAssertFalse(values["NSCameraUsageDescription", default: ""].isEmpty)
+            XCTAssertFalse(values["NSFaceIDUsageDescription", default: ""].isEmpty)
+        }
     }
 }

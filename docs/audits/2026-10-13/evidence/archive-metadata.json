@@ -1,0 +1,28 @@
+{
+  "bundleIdentifier": "dev.peringer.limen",
+  "version": "1.2.0",
+  "build": "5",
+  "localizations": [
+    "en",
+    "fr",
+    "de",
+    "it",
+    "rm"
+  ],
+  "minimumOS": "17.0",
+  "team": [
+    "KDSZB7N44K"
+  ],
+  "profileName": "iOS Team Provisioning Profile: dev.peringer.limen",
+  "profileUUID": "6e717535-f97c-4623-9c54-56ade729d5cd",
+  "profileExpiration": "2027-09-30 22:49:07",
+  "get-task-allow": true,
+  "phoneProvisioned": true,
+  "executableSHA256": "dbf414aee2f92b25d8892552356f7882014789456c78cbea7a8d73f9fd10b254",
+  "ipaSHA256": "c7b5cc731c455b9b2fe6bda79fb8a189dd753f49ffb633b8ae790ff155661698",
+  "exportMethod": "debugging",
+  "ipaPath": "/Users/aperi/DEV/SWIFT/limen/DD-release/export-final/Limen.ipa",
+  "archivePath": "/Users/aperi/DEV/SWIFT/limen/DD-release/Limen-1.2.0-5-final.xcarchive",
+  "payloadPath": "/Users/aperi/DEV/SWIFT/limen/DD-release/export-final/verified/Payload/Limen.app",
+  "sourceManifestSHA256": "7584b7a97903d84399671b95f132d67db9ec25f4f1b94bd77daf257478ed3194"
+}

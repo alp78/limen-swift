@@ -16,7 +16,7 @@ import Testing
         var p = record("p1", .entry, 1)
         p.defects = [Defect(id: "d1", photos: ["wall.jpg"])]
         try source.save(p)
-        try writeText("original evidence", to: source.photoDir("p1").appendingPathComponent("wall.jpg"))
+        let original = try testImage(to: source.photoDir("p1").appendingPathComponent("wall.jpg"))
         let archive = root.appendingPathComponent("backup.limen")
         try source.exportArchive(password: password, to: archive)
 
@@ -26,7 +26,7 @@ import Testing
         #expect(first == ArchiveImportResult(imported: 1, skippedExisting: 0, rejected: 0))
         #expect(second == ArchiveImportResult(imported: 0, skippedExisting: 1, rejected: 0))
         #expect(restored.load("p1") == p)
-        #expect(readText(restored.photoDir("p1").appendingPathComponent("wall.jpg")) == "original evidence")
+        #expect(try Data(contentsOf: restored.photoDir("p1").appendingPathComponent("wall.jpg")) == original)
     }
 
     /// The decrypt loop reads 256 KiB at a time and carries a 16-byte tail between reads, so the
@@ -39,10 +39,7 @@ import Testing
         var p = record("big", .entry, 7)
         p.defects = [Defect(id: "d1", photos: ["noise.bin"])]
         try source.save(p)
-        var generator = SystemRandomNumberGenerator()
-        var noise = Data(capacity: 700 * 1024)
-        for _ in 0..<(700 * 1024 / 8) { withUnsafeBytes(of: generator.next()) { noise.append(contentsOf: $0) } }
-        try noise.write(to: source.photoDir("big").appendingPathComponent("noise.bin"))
+        let noise = try testImage(to: source.photoDir("big").appendingPathComponent("noise.bin"), width: 512, height: 512, noise: true)
         let archive = root.appendingPathComponent("backup.limen")
         try source.exportArchive(password: password, to: archive)
         let size = (try FileManager.default.attributesOfItem(atPath: archive.path)[.size] as? Int) ?? 0
@@ -61,7 +58,11 @@ import Testing
         p.defects = [Defect(id: "d2", photos: ["missing.jpg"])]
         try source.save(p)
         let archive = root.appendingPathComponent("backup.limen")
-        try source.exportArchive(password: password, to: archive)
+        #expect(throws: EvidenceValidation.UnrenderableEvidence.self) { try source.exportArchive(password: password, to: archive) }
+        let zip = try Zip.Writer(to: archive)
+        try zip.put(ArchiveIO.manifest, bytes: Data(ArchiveIO.marker.utf8))
+        try zip.put("protocols/p2.json", bytes: Data(Store.fileText(p).utf8))
+        try zip.finish()
         let restored = Store(root: root.appendingPathComponent("restored"))
         #expect(try restored.importArchive(password: password, from: archive).rejected == 1)
         #expect(restored.list().isEmpty)

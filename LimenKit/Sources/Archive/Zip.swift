@@ -16,6 +16,7 @@ enum Zip {
         let compressedSize: Int64
         let uncompressedSize: Int64
         let localHeaderOffset: Int64
+        var flags: UInt16 = 0x0800
         var isDirectory: Bool { name.hasSuffix("/") }
     }
 
@@ -69,6 +70,8 @@ enum Zip {
             header.appendUInt16(UInt16(nameBytes.count))
             header.appendUInt16(0)
             header.append(nameBytes)
+            guard entries.count < ArchiveLimits.entries, bytes.count <= ArchiveLimits.entry,
+                  offset + Int64(header.count + payload.count) <= ArchiveLimits.payload else { throw ArchiveError.tooLarge }
             try handle.write(contentsOf: header)
             try handle.write(contentsOf: payload)
             let entry = Entry(name: name, method: method, crc: crc, compressedSize: Int64(payload.count), uncompressedSize: Int64(bytes.count), localHeaderOffset: offset)
@@ -77,6 +80,7 @@ enum Zip {
         }
 
         func put(_ name: String, file: URL) throws {
+            guard Files.isRegularFile(file), Files.size(file) <= ArchiveLimits.entry else { throw ArchiveError.tooLarge }
             try put(name, bytes: try Data(contentsOf: file, options: .mappedIfSafe))
         }
 
@@ -113,10 +117,12 @@ enum Zip {
             end.appendUInt32(UInt32(central.count))
             end.appendUInt32(UInt32(start))
             end.appendUInt16(0)
+            guard offset + Int64(central.count + end.count) <= ArchiveLimits.payload else { throw ArchiveError.tooLarge }
             try handle.write(contentsOf: central)
             try handle.write(contentsOf: end)
             try handle.close()
         }
+        deinit { try? handle.close() }
     }
 
     // MARK: Reading
@@ -124,11 +130,13 @@ enum Zip {
     final class Reader {
         private let handle: FileHandle
         let entries: [Entry]
+        private let centralBoundary: Int64
 
         init(_ url: URL) throws {
             handle = try FileHandle(forReadingFrom: url)
             let size = Files.size(url)
             guard size >= 22 else { throw ZipError.notAZip }
+            guard size <= ArchiveLimits.payload else { throw ArchiveError.tooLarge }
             // The end record sits in the last 64 KB, behind an optional comment.
             let tailLength = Int(min(size, 66_000))
             try handle.seek(toOffset: UInt64(size - Int64(tailLength)))
@@ -139,7 +147,14 @@ enum Zip {
             let count = Int(record.uint16(at: 10))
             let centralSize = Int(record.uint32(at: 12))
             let centralOffset = Int64(record.uint32(at: 16))
-            if count == 0xFFFF || centralOffset == 0xFFFF_FFFF { throw ZipError.unsupported("zip64") }
+            if count == 0xFFFF || centralOffset == 0xFFFF_FFFF || centralSize == 0xFFFF_FFFF { throw ZipError.unsupported("zip64") }
+            guard record.uint16(at: 4) == 0, record.uint16(at: 6) == 0, Int(record.uint16(at: 8)) == count,
+                  22 + Int(record.uint16(at: 20)) == record.count else { throw ZipError.unsupported("split or malformed directory") }
+            guard count <= ArchiveLimits.entries else { throw ArchiveError.tooManyEntries }
+            let endOffset = size - Int64(tailLength) + Int64(eocd.lowerBound)
+            guard Int64(centralSize) <= ArchiveLimits.payload, centralOffset + Int64(centralSize) == endOffset,
+                  centralSize >= count * 46 else { throw ZipError.truncated }
+            centralBoundary = centralOffset
             try handle.seek(toOffset: UInt64(centralOffset))
             let central = try handle.read(upToCount: centralSize) ?? Data()
             guard central.count == centralSize else { throw ZipError.truncated }
@@ -156,24 +171,35 @@ enum Zip {
                 let extraLength = Int(central.uint16(at: cursor + 30))
                 let commentLength = Int(central.uint16(at: cursor + 32))
                 let localOffset = Int64(central.uint32(at: cursor + 42))
-                guard cursor + 46 + nameLength <= central.count else { throw ZipError.truncated }
+                guard cursor + 46 + nameLength + extraLength + commentLength <= central.count else { throw ZipError.truncated }
+                guard compressed <= ArchiveLimits.payload, uncompressed <= ArchiveLimits.entry,
+                      localOffset + 30 + compressed <= centralOffset else { throw ArchiveError.tooLarge }
+                // UNIX symlink entries can redirect a later install outside the record directory.
+                let mode = (central.uint32(at: cursor + 38) >> 16) & 0xF000
+                guard mode != 0xA000, central.uint16(at: cursor + 34) == 0 else { throw ZipError.unsupported("symlink or split entry") }
+                guard flags & ~UInt16(0x080E) == 0, method == 0 || method == 8 else { throw ZipError.unsupported("entry flags or method") }
+                guard method != 0 || compressed == uncompressed else { throw ZipError.truncated }
                 let nameData = central.subdata(in: (cursor + 46)..<(cursor + 46 + nameLength))
                 if flags & 0x0001 != 0 { throw ZipError.unsupported("encrypted entry") }
-                let name = String(decoding: nameData, as: UTF8.self)
-                list.append(Entry(name: name, method: method, crc: crc, compressedSize: compressed, uncompressedSize: uncompressed, localHeaderOffset: localOffset))
+                guard let name = String(data: nameData, encoding: .utf8) else { throw ZipError.unsupported("invalid UTF-8 name") }
+                list.append(Entry(name: name, method: method, crc: crc, compressedSize: compressed, uncompressedSize: uncompressed, localHeaderOffset: localOffset, flags: flags))
                 cursor += 46 + nameLength + extraLength + commentLength
+            }
+            guard cursor == central.count else { throw ZipError.truncated }
+            var priorEnd: Int64 = 0
+            for entry in list.sorted(by: { $0.localHeaderOffset < $1.localHeaderOffset }) {
+                guard entry.localHeaderOffset >= priorEnd else { throw ZipError.unsupported("overlapping entries") }
+                let payload = try Self.payloadOffset(entry, handle: handle, boundary: centralOffset)
+                priorEnd = payload + entry.compressedSize
+                if entry.flags & 8 != 0 { priorEnd += try Self.descriptorSize(entry, handle: handle, offset: priorEnd, boundary: centralOffset) }
             }
             entries = list
         }
 
         /// The entry's bytes, inflated and checked against the CRC the directory carries.
         func read(_ entry: Entry) throws -> Data {
-            try handle.seek(toOffset: UInt64(entry.localHeaderOffset))
-            let head = try handle.read(upToCount: 30) ?? Data()
-            guard head.count == 30, head.uint32(at: 0) == 0x0403_4B50 else { throw ZipError.truncated }
-            let nameLength = Int(head.uint16(at: 26))
-            let extraLength = Int(head.uint16(at: 28))
-            try handle.seek(toOffset: UInt64(entry.localHeaderOffset + 30 + Int64(nameLength + extraLength)))
+            let offset = try Self.payloadOffset(entry, handle: handle, boundary: centralBoundary)
+            try handle.seek(toOffset: UInt64(offset))
             let payload = try handle.read(upToCount: Int(entry.compressedSize)) ?? Data()
             guard Int64(payload.count) == entry.compressedSize else { throw ZipError.truncated }
             let bytes: Data
@@ -186,6 +212,35 @@ enum Zip {
             }
             guard Int64(bytes.count) == entry.uncompressedSize, CRC32.checksum(bytes) == entry.crc else { throw ZipError.badCRC(entry.name) }
             return bytes
+        }
+
+        private static func payloadOffset(_ entry: Entry, handle: FileHandle, boundary: Int64) throws -> Int64 {
+            try handle.seek(toOffset: UInt64(entry.localHeaderOffset))
+            let head = try handle.read(upToCount: 30) ?? Data()
+            guard head.count == 30, head.uint32(at: 0) == 0x0403_4B50,
+                  head.uint16(at: 6) == entry.flags, head.uint16(at: 8) == entry.method else { throw ZipError.truncated }
+            let nameLength = Int(head.uint16(at: 26)), extraLength = Int(head.uint16(at: 28))
+            let offset = entry.localHeaderOffset + 30 + Int64(nameLength + extraLength)
+            guard offset + entry.compressedSize <= boundary else { throw ZipError.truncated }
+            let name = try handle.read(upToCount: nameLength) ?? Data()
+            guard name == Data(entry.name.utf8) else { throw ZipError.unsupported("local name mismatch") }
+            if entry.flags & 8 == 0 {
+                guard head.uint32(at: 14) == entry.crc, Int64(head.uint32(at: 18)) == entry.compressedSize,
+                      Int64(head.uint32(at: 22)) == entry.uncompressedSize else { throw ZipError.truncated }
+            }
+            return offset
+        }
+
+        private static func descriptorSize(_ entry: Entry, handle: FileHandle, offset: Int64, boundary: Int64) throws -> Int64 {
+            guard offset + 12 <= boundary else { throw ZipError.truncated }
+            try handle.seek(toOffset: UInt64(offset))
+            let bytes = try handle.read(upToCount: Int(min(16, boundary - offset))) ?? Data()
+            guard bytes.count >= 12 else { throw ZipError.truncated }
+            let prefix = bytes.uint32(at: 0) == 0x0807_4B50 ? 4 : 0
+            guard bytes.count >= prefix + 12, bytes.uint32(at: prefix) == entry.crc,
+                  Int64(bytes.uint32(at: prefix + 4)) == entry.compressedSize,
+                  Int64(bytes.uint32(at: prefix + 8)) == entry.uncompressedSize else { throw ZipError.truncated }
+            return Int64(prefix + 12)
         }
 
         deinit { try? handle.close() }
@@ -233,7 +288,7 @@ enum Deflate {
                 if let limit, output.count > limit { return nil }
                 switch status {
                 case COMPRESSION_STATUS_OK: continue
-                case COMPRESSION_STATUS_END: return output
+                case COMPRESSION_STATUS_END: return stream.src_size == 0 ? output : nil
                 default: return nil
                 }
             }
@@ -252,7 +307,7 @@ enum Deflate {
             output.append(buffer, count: chunk - stream.dst_size)
             switch status {
             case COMPRESSION_STATUS_OK: continue
-            case COMPRESSION_STATUS_END: return output
+            case COMPRESSION_STATUS_END: return stream.src_size == 0 ? output : nil
             default: return nil
             }
         }

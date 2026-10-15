@@ -1,0 +1,38 @@
+{
+  "device": "iPad Pro 13-inch (M5)",
+  "runtime": "iOS 26.5",
+  "uuid": "1832F00F-BAD8-43C6-8246-4E23D1763BFD",
+  "native_pixels": [
+    2064,
+    2752
+  ],
+  "preferred_ui_scale": 2,
+  "full_screen_points_portrait": [
+    1032,
+    1376
+  ],
+  "full_screen_points_landscape": [
+    1376,
+    1032
+  ],
+  "final_portrait_png": {
+    "raw_pixels": [
+      2064,
+      2752
+    ],
+    "orientation": 1
+  },
+  "final_landscape_png": {
+    "raw_pixels": [
+      2064,
+      2752
+    ],
+    "orientation": 8,
+    "display_pixels": [
+      2752,
+      2064
+    ]
+  },
+  "verification": "simctl io enumerate LCD display; ImageIO PNG properties; full-screen XCUIScreen capture",
+  "split_window_executed": false
+}

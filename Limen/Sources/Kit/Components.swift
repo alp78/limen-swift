@@ -6,7 +6,7 @@ import SwiftUI
 struct InfoTip: View {
     @Environment(\.limen) private var colors
     let tip: Tip
-    var target: CGFloat = 40
+    var target: CGFloat = 44
     @State private var open = false
 
     var body: some View {
@@ -95,7 +95,7 @@ struct Panel<Content: View>: View {
         let shape = RoundedRectangle(cornerRadius: 12, style: .continuous)
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 2) {
-                Text(label).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
+                Text(label).font(LimenType.labelSmall).foregroundStyle(colors.inkDim).accessibilityAddTraits(.isHeader)
                 if let info { InfoTip(tip: info) }
             }
             content()
@@ -123,7 +123,25 @@ struct Panel<Content: View>: View {
 /// row to the highest number first and leaves the others whatever survives, which collapsed the
 /// handover time beside its date to an empty stub with no label and no value on every screen. This
 /// splits the width the way the Kotlin rows do, so the proportions are Android's at any size.
-struct WeightedRow: Layout {
+struct WeightedRow<Content: View>: View {
+    @Environment(\.dynamicTypeSize) private var typeSize
+    let weights: [CGFloat]
+    var spacing: CGFloat = 8
+    let content: Content
+
+    init(weights: [CGFloat], spacing: CGFloat = 8, @ViewBuilder content: () -> Content) {
+        self.weights = weights
+        self.spacing = spacing
+        self.content = content()
+    }
+
+    var body: some View {
+        let layout = typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(alignment: .leading, spacing: spacing)) : AnyLayout(WeightedRowLayout(weights: weights, spacing: spacing))
+        layout { content }
+    }
+}
+
+private struct WeightedRowLayout: Layout {
     let weights: [CGFloat]
     var spacing: CGFloat = 8
 
@@ -234,6 +252,7 @@ private struct MenuKeyStyle: ButtonStyle {
 /// Compact mode control: the system's own track and thumb shape, with the sun or the moon in it.
 struct ThemeToggle: View {
     @Environment(\.limen) private var colors
+    @Environment(\.str) private var s
     let dark: Bool
     let description: String
     let onToggle: () -> Void
@@ -264,7 +283,7 @@ struct ThemeToggle: View {
         .buttonStyle(.plain)
         .accessibilityLabel(description)
         .accessibilityAddTraits(.isToggle)
-        .accessibilityValue(dark ? "1" : "0")
+        .accessibilityValue(dark ? s.yes : s.no)
     }
 }
 
@@ -324,8 +343,7 @@ struct CantonPicker: View {
                     Text(selected.map(s.canton) ?? s.selectCanton)
                         .font(LimenType.bodyMedium)
                         .foregroundStyle(colors.ink)
-                        .lineLimit(1)
-                        .truncationMode(.tail)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 Image(systemName: "chevron.down").foregroundStyle(colors.inkDim)
@@ -356,7 +374,7 @@ private struct CantonGrid: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
                 Text(s.selectCanton).font(LimenType.titleMedium).foregroundStyle(colors.ink)
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 4), spacing: 8) {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 82), spacing: 8)], spacing: 8) {
                     ForEach(SwissCanton.allCases, id: \.self) { canton in
                         KeySurface(active: canton == selected, radius: 12, accessibilityLabel: s.canton(canton), onPress: { onSelect(canton) }) {
                             VStack(spacing: 4) {
@@ -368,7 +386,7 @@ private struct CantonGrid: View {
                             .padding(.vertical, 7)
                             .frame(maxWidth: .infinity)
                         }
-                        .frame(height: 64)
+                        .frame(minHeight: 64)
                     }
                 }
             }

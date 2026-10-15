@@ -1,0 +1,46 @@
+[
+  {
+    "test": "LanguageWalkTest/testEnglishLandscape()",
+    "result": "/tmp/limen-small-landscape-screen-attachments",
+    "configurationName": "Test Scheme Action",
+    "deviceId": "48BEE103-20ED-422E-80F7-101A4058AB0A",
+    "deviceName": "Limen Audit Small iPhone",
+    "exportedFileName": "A2B7C017-BE07-4484-BBFB-F736B9C1FFB8.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "en-UICTContentSizeCategoryL-13-ink_0_6DC63E3C-D2CA-49F7-B13C-C6F5FE404E86.png",
+    "timestamp": 1791932670.166
+  },
+  {
+    "test": "LanguageWalkTest/testEnglishLandscape()",
+    "result": "/tmp/limen-small-landscape-screen-attachments",
+    "configurationName": "Test Scheme Action",
+    "deviceId": "48BEE103-20ED-422E-80F7-101A4058AB0A",
+    "deviceName": "Limen Audit Small iPhone",
+    "exportedFileName": "3C1D12AB-E5E1-4B1A-838D-63AE2134A8A4.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "en-UICTContentSizeCategoryL-11a-review-action_0_F3EB233A-806F-4B2F-9111-063B31E04137.png",
+    "timestamp": 1791932646.84
+  },
+  {
+    "test": "LanguageWalkTest/testEnglishLandscape()",
+    "result": "/tmp/limen-small-landscape-screen-attachments",
+    "configurationName": "Test Scheme Action",
+    "deviceId": "48BEE103-20ED-422E-80F7-101A4058AB0A",
+    "deviceName": "Limen Audit Small iPhone",
+    "exportedFileName": "91D7320C-AC73-4134-9365-7FC3A9DBD79E.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "en-UICTContentSizeCategoryL-10-legal-overlay_0_8B948F71-020C-4AB1-B6A2-2BAAA4FFCDC6.png",
+    "timestamp": 1791932640.726
+  },
+  {
+    "test": "LanguageWalkTest/testEnglishLandscape()",
+    "result": "/tmp/limen-small-landscape-screen-attachments",
+    "configurationName": "Test Scheme Action",
+    "deviceId": "48BEE103-20ED-422E-80F7-101A4058AB0A",
+    "deviceName": "Limen Audit Small iPhone",
+    "exportedFileName": "BE39D72E-F429-48A2-B235-A67BEF322E50.png",
+    "isAssociatedWithFailure": false,
+    "suggestedHumanReadableName": "en-UICTContentSizeCategoryL-02-new-session_0_D28B18F6-F832-4901-8B5F-2FC4C3C06B06.png",
+    "timestamp": 1791932592.128
+  }
+]

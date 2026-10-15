@@ -30,19 +30,14 @@ public enum Clocks {
         return x
     }
 
-    /// A conservative planning target: the second working day after return. It is not a
-    /// statutory deadline and does not replace the duty to act immediately.
-    public static func exitNoticeSafeBy(_ keysReturned: LocalDate, holidays: Set<LocalDate> = []) -> LocalDate {
-        addWorkingDays(keysReturned, 2, holidays: holidays)
+    /// A date from a recorded contractual clause and actual transfer, never an assumed legal
+    /// grace period. Immediate statutory duties still require separate assessment.
+    public static func agreedPlanningDate(_ record: HandoverProtocol) -> LocalDate? {
+        guard !record.details.notificationClause.isBlank,
+              let days = Int(record.details.notificationDays), (1...365).contains(days),
+              let transfer = LocalDate.parse(record.details.actualTransferDate) else { return nil }
+        return transfer.plusDays(days)
     }
-
-    /// The three-working-day practice reference, not a guaranteed legal outer edge.
-    public static func exitNoticeLatest(_ keysReturned: LocalDate, holidays: Set<LocalDate> = []) -> LocalDate {
-        addWorkingDays(keysReturned, 3, holidays: holidays)
-    }
-
-    /// A common contractual ten-day period, shown only as a planning aid.
-    public static func entryListBy(_ moveIn: LocalDate) -> LocalDate { moveIn.plusDays(10) }
 
     /// Art. 257e para 3: if the landlord has asserted no claim legally within one year of the end
     /// of the tenancy, the bank pays the deposit back on the tenant's demand alone.

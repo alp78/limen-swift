@@ -1,0 +1,1520 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination "platform=iOS Simulator,id=48BEE103-20ED-422E-80F7-101A4058AB0A" -derivedDataPath ./DD-small -parallel-testing-enabled NO -collect-test-diagnostics never -resultBundlePath /private/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/verify/photo-small.xcresult "-only-testing:LimenUITests/PhotoViewerJourneyTests" test
+
+Writing result bundle at path:
+	/private/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/verify/photo-small.xcresult
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (5 targets)
+    Target 'LimenUITests' in project 'Limen'
+        ➜ Explicit dependency on target 'Limen' in project 'Limen'
+        ➜ Explicit dependency on target 'LimenKit' in project 'Limen'
+    Target 'LimenTests' in project 'Limen'
+        ➜ Explicit dependency on target 'Limen' in project 'Limen'
+    Target 'LimenKitTests' in project 'Limen'
+        ➜ Explicit dependency on target 'LimenKit' in project 'Limen'
+    Target 'Limen' in project 'Limen'
+        ➜ Explicit dependency on target 'LimenKit' in project 'Limen'
+    Target 'LimenKit' in project 'Limen' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/aperi/DEV/SWIFT/limen/Limen/Resources/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+Build description signature: 2207f62029f7b34ba4c8001cfa054c51
+Build description path: /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Intermediates.noindex/XCBuildData/2207f62029f7b34ba4c8001cfa054c51.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk /Users/aperi/DEV/SWIFT/limen/DD-small/SDKStatCaches.noindex/iphonesimulator27.0-24A430-8dc58220667be655e1bcc261a7455254.sdkstatcache
+    cd /Users/aperi/DEV/SWIFT/limen
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -o /Users/aperi/DEV/SWIFT/limen/DD-small/SDKStatCaches.noindex/iphonesimulator27.0-24A430-8dc58220667be655e1bcc261a7455254.sdkstatcache
+
+ProcessInfoPlistFile /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenKit.framework/Info.plist /Users/aperi/DEV/SWIFT/limen/Derived/InfoPlists/LimenKit-Info.plist (in target 'LimenKit' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-infoPlistUtility /Users/aperi/DEV/SWIFT/limen/Derived/InfoPlists/LimenKit-Info.plist -producttype com.apple.product-type.framework -expandbuildsettings -format binary -platform iphonesimulator -o /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenKit.framework/Info.plist
+
+Copy /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/Frameworks/LimenKit.framework /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenKit.framework (in target 'Limen' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -exclude Headers -exclude PrivateHeaders -exclude Modules -exclude \*.tbd -resolve-src-symlinks -remove-static-executable /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenKit.framework /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/Frameworks
+
+CodeSign /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/Frameworks/LimenKit.framework (in target 'Limen' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --preserve-metadata\=identifier,entitlements,flags --generate-entitlement-der /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/Frameworks/LimenKit.framework
+/Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/Frameworks/LimenKit.framework: replacing existing signature
+
+ProcessInfoPlistFile /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/Info.plist /Users/aperi/DEV/SWIFT/limen/Derived/InfoPlists/Limen-Info.plist (in target 'Limen' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-infoPlistUtility /Users/aperi/DEV/SWIFT/limen/Derived/InfoPlists/Limen-Info.plist -producttype com.apple.product-type.application -genpkginfo /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/Limen.build/assetcatalog_generated_info.plist -scanforprivacyfile /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/Frameworks/LimenKit.framework -o /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/Info.plist
+
+CopySwiftLibs /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app (in target 'Limen' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/Limen.debug.dylib --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/Frameworks --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/PlugIns --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/SystemExtensions --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/Extensions --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenKit.framework --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/Limen.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+ProcessInfoPlistFile /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/PlugIns/LimenTests.xctest/Info.plist /Users/aperi/DEV/SWIFT/limen/Derived/InfoPlists/LimenTests-Info.plist (in target 'LimenTests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-infoPlistUtility /Users/aperi/DEV/SWIFT/limen/Derived/InfoPlists/LimenTests-Info.plist -producttype com.apple.product-type.bundle.unit-test -expandbuildsettings -format binary -platform iphonesimulator -o /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/PlugIns/LimenTests.xctest/Info.plist
+
+CopySwiftLibs /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/PlugIns/LimenTests.xctest (in target 'LimenTests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/PlugIns/LimenTests.xctest/LimenTests --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/PlugIns/LimenTests.xctest/Frameworks --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/PlugIns/LimenTests.xctest/PlugIns --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/PlugIns/LimenTests.xctest/SystemExtensions --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/PlugIns/LimenTests.xctest/Extensions --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/PlugIns/LimenTests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenTests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+CodeSign /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/Limen.debug.dylib (in target 'Limen' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/Limen.debug.dylib
+/Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/Limen.debug.dylib: replacing existing signature
+
+CodeSign /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/__preview.dylib (in target 'Limen' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/__preview.dylib
+/Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app/__preview.dylib: replacing existing signature
+
+CodeSign /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app (in target 'Limen' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app
+/Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app: replacing existing signature
+
+Validate /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app (in target 'Limen' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-validationUtility /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/Limen.app -shallow-bundle -infoplist-subpath Info.plist
+
+Copy /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Frameworks/LimenKit.framework /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenKit.framework (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -exclude Headers -exclude PrivateHeaders -exclude Modules -exclude \*.tbd -resolve-src-symlinks -remove-static-executable /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenKit.framework /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Frameworks
+
+CodeSign /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Frameworks/LimenKit.framework (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --preserve-metadata\=identifier,entitlements,flags --generate-entitlement-der /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Frameworks/LimenKit.framework
+/Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Frameworks/LimenKit.framework: replacing existing signature
+
+ProcessInfoPlistFile /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenKitTests.xctest/Info.plist /Users/aperi/DEV/SWIFT/limen/Derived/InfoPlists/LimenKitTests-Info.plist (in target 'LimenKitTests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-infoPlistUtility /Users/aperi/DEV/SWIFT/limen/Derived/InfoPlists/LimenKitTests-Info.plist -producttype com.apple.product-type.bundle.unit-test -expandbuildsettings -format binary -platform iphonesimulator -o /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenKitTests.xctest/Info.plist
+
+ProcessInfoPlistFile /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Info.plist /Users/aperi/DEV/SWIFT/limen/Derived/InfoPlists/LimenUITests-Info.plist (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-infoPlistUtility /Users/aperi/DEV/SWIFT/limen/Derived/InfoPlists/LimenUITests-Info.plist -producttype com.apple.product-type.bundle.ui-testing -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/ProductTypeInfoPlistAdditions.plist -o /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Info.plist
+
+CopySwiftLibs /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/LimenUITests --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Frameworks --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/PlugIns --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/SystemExtensions --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Extensions --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenKit.framework --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+CodeSign /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest
+/Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest: replacing existing signature
+
+CodeSign /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app
+/Users/aperi/DEV/SWIFT/limen/DD-small/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app: replacing existing signature
+
+PruneExplicitPrecompiledModules /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/aperi/DEV/SWIFT/limen/DD-small/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/aperi/DEV/SWIFT/limen/DD-small/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+2026-10-15 21:41:49.941595+0200 LimenUITests-Runner[10883:112862] [Default] Running tests...
+2026-10-15 21:41:49.993476+0200 LimenUITests-Runner[10883:112942] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'Selected tests' started at 2026-10-15 21:41:50.497.
+Test Suite 'LimenUITests.xctest' started at 2026-10-15 21:41:50.497.
+Test Suite 'PhotoViewerJourneyTests' started at 2026-10-15 21:41:50.497.
+Test Case '-[LimenUITests.PhotoViewerJourneyTests testDraftPhotoOpensZoomsResetsAndClosesWithoutDeletion]' started.
+    t =     0.00s Start Test at 2026-10-15 21:41:50.498
+    t =     0.02s Set Up
+    t =     0.02s     Setting device orientation to Portrait
+    t =     0.02s         Device orientation changed to Portrait
+    t =     0.03s         Wait for com.apple.springboard to idle
+2026-10-15 21:41:50.545329+0200 LimenUITests-Runner[10883:112943] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+    t =     0.06s Open dev.peringer.limen.audit
+    t =     0.06s     Launch dev.peringer.limen.audit
+2026-10-15 21:41:50.620 xcodebuild[10814:112031] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-15 21:41:50.620 xcodebuild[10814:112031] [MT] IDELaunchParametersSnapshot: no debugger version
+objc[10883]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x10ab0c310) and /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x109f84398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =     0.74s         Setting up automation session
+    t =     1.42s         Wait for dev.peringer.limen.audit to idle
+    t =     2.82s Waiting 20.0s for "Room overview photographs" StaticText to exist
+    t =     3.89s     Checking `Expect predicate `existsNoRetry == 1` for object "Room overview photographs" StaticText`
+    t =     3.89s         Checking existence of `"Room overview photographs" StaticText`
+    t =     3.96s Checking existence of `"OPEN · synthetic-grid.png" Button`
+    t =     3.99s Find the "OPEN · synthetic-grid.png" Button
+    t =     4.01s Find the "OPEN · synthetic-grid.png" Button
+    t =     4.04s Find the Target Application 'dev.peringer.limen.audit'
+    t =     4.06s Find the Target Application 'dev.peringer.limen.audit'
+    t =     4.07s Waiting 5.0s for "DELETE" Button to exist
+    t =     5.14s     Checking `Expect predicate `existsNoRetry == 1` for object "DELETE" Button`
+    t =     5.14s         Checking existence of `"DELETE" Button`
+    t =     5.17s Find the "OPEN · synthetic-grid.png" Button
+    t =     5.19s Find the "DELETE" Button
+    t =     5.23s Find the Target Application 'dev.peringer.limen.audit'
+    t =     5.28s Added attachment named 'photo-draft-separate-open-delete'
+    t =     5.28s Requesting snapshot of accessibility hierarchy for app with pid 10894
+    t =     5.37s Requesting snapshot of accessibility hierarchy for app with pid 10894
+LIMEN_PHOTO_VIEWER_TREE photo-draft-separate-open-delete
+Attributes: Application, 0x116c6c000, pid: 10894, label: 'Limen'
+Element subtree:
+ →Application, 0x116c6c000, pid: 10894, label: 'Limen'
+    Window (Main), 0x116c6c140, {{0.0, 0.0}, {375.0, 667.0}}
+      Other, 0x116c6c280, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116c6c3c0, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116c6c500, {{0.0, 0.0}, {375.0, 667.0}}
+            Other, 0x116c6c640, {{0.0, 0.0}, {375.0, 667.0}}
+              Button, 0x116c6c780, {{20.0, 28.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+              Image, 0x116c6c8c0, {{74.0, 32.5}, {42.0, 42.0}}, label: 'limen-seal'
+              StaticText, 0x116c6ca00, {{124.0, 31.0}, {44.5, 16.0}}, label: 'ENTRY'
+              StaticText, 0x116c6cb40, {{124.0, 47.0}, {95.5, 29.0}}, label: 'Synthetic photo viewer fixture'
+              Button, 0x116c6db80, {{253.0, 31.5}, {44.0, 44.0}}, identifier: 'info.circle', label: 'Go through the flat in your own order. Confirm every listed room after checking it, even when there is no defect.'
+              Switch, 0x116c6ea80, {{303.0, 29.5}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dark theme', value: NO
+              ScrollView, 0x116c6ebc0, {{20.0, 87.0}, {335.0, 572.0}}
+                Other, 0x116c6ed00, {{20.0, 87.0}, {335.0, 738.5}}
+                  Button, 0x116c6ee40, {{20.0, 87.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+                  StaticText, 0x116c6ef80, {{76.0, 99.8}, {240.5, 25.5}}, label: 'SYNTHETIC GRID ROOM'
+                  Other, 0x116c6f0c0, {{20.0, 148.0}, {335.0, 76.5}}, label: 'Name of this room'
+                    StaticText, 0x116c6f200, {{32.0, 156.0}, {106.5, 14.5}}, label: 'Name of this room'
+                    TextField, 0x116c6f340, {{32.0, 172.5}, {311.0, 44.0}}, identifier: 'Name of this room', label: 'Name of this room', placeholderValue: 'Kitchen', value: Synthetic grid room
+                  Button, 0x116c6f480, {{20.0, 234.5}, {84.0, 48.0}}, label: 'Move up', Disabled
+                  Button, 0x116c6f5c0, {{191.5, 234.5}, {103.0, 48.0}}, label: 'Move down', Disabled
+                  Switch, 0x116c6f700, {{20.0, 292.5}, {335.0, 48.0}}, label: 'ROOM INSPECTED', value: YES
+                  StaticText, 0x116c6f840, {{36.0, 366.5}, {165.5, 14.5}}, label: 'Room overview photographs'
+                  Button, 0x116c6f980, {{36.0, 389.0}, {147.5, 51.0}}, identifier: 'camera', label: 'PHOTO'
+                  Button, 0x116c6fac0, {{191.5, 389.0}, {147.5, 51.0}}, identifier: 'photo.on.rectangle', label: 'GALLERY'
+                  ScrollView, 0x116c6fc00, {{36.0, 448.0}, {303.0, 134.0}}
+                    Other, 0x116c6fd40, {{36.0, 448.0}, {84.0, 134.0}}
+                      Button, 0x116c6fe80, {{22.0, 448.0}, {112.0, 84.0}}, label: 'OPEN · synthetic-grid.png'
+                      Button, 0x10725b200, {{74.0, 536.0}, {48.0, 48.0}}, identifier: 'trash', label: 'DELETE'
+                    Other, 0x10725b340, {{36.0, 549.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x10725b480, {{329.0, 576.0}, {7.0, 3.0}}
+                    Other, 0x10725b5c0, {{36.0, 549.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x10725b700, {{329.0, 576.0}, {7.0, 3.0}}
+                  Button, 0x10725b840, {{20.0, 608.0}, {335.0, 44.0}}, label: 'RECORD A DEFECT'
+                    Button, 0x10725b980, {{20.0, 608.0}, {335.0, 44.0}}
+                      Image, 0x10725bac0, {{36.0, 622.5}, {15.0, 15.0}}, identifier: 'plus', label: 'Add'
+                      StaticText, 0x10725bc00, {{61.0, 622.0}, {128.5, 16.0}}, label: 'RECORD A DEFECT'
+                      Image, 0x10725bd40, {{324.5, 626.0}, {14.5, 8.5}}, identifier: 'chevron.down', label: 'Go Down'
+                  StaticText, 0x10725be80, {{20.0, 662.0}, {207.5, 18.0}}, label: 'Inspected, no defect recorded'
+                  Button, 0x116d08000, {{20.0, 703.0}, {93.5, 18.0}}, label: 'Room actions'
+                    Button, 0x116d08140, {{20.0, 703.0}, {93.5, 18.0}}
+                      StaticText, 0x116d08280, {{20.0, 703.0}, {93.5, 18.0}}, label: 'Room actions'
+                  Button, 0x116d083c0, {{20.0, 744.0}, {335.0, 59.5}}, label: 'Next room / finish inspection'
+                Other, 0x116d08500, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                  Other, 0x116d08640, {{349.0, 649.0}, {3.0, 7.0}}
+                Other, 0x116d08780, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                  Other, 0x116d088c0, {{349.0, 649.0}, {3.0, 7.0}}
+Path to element:
+ →Application, 0x116c6c000, pid: 10894, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x116d08a00, pid: 10894, label: 'Limen'
+  }
+
+    t =     5.39s Tap "OPEN · synthetic-grid.png" Button
+    t =     5.40s     Wait for dev.peringer.limen.audit to idle
+    t =     5.40s     Find the "OPEN · synthetic-grid.png" Button
+    t =     5.42s     Check for interrupting elements affecting "OPEN · synthetic-grid.png" Button
+    t =     5.44s     Synthesize event
+    t =     5.74s     Wait for dev.peringer.limen.audit to idle
+    t =     6.09s Waiting 10.0s for "Original evidence" StaticText to exist
+    t =     7.15s     Checking `Expect predicate `existsNoRetry == 1` for object "Original evidence" StaticText`
+    t =     7.15s         Checking existence of `"Original evidence" StaticText`
+    t =     7.21s Waiting 10.0s for Image (First Match) to exist
+    t =     8.27s     Checking `Expect predicate `existsNoRetry == 1` for object Image (First Match)`
+    t =     8.27s         Checking existence of `Image (First Match)`
+    t =     8.28s Find the Image (First Match)
+    t =     8.29s Find the Image at {{16.0, 95.0}, {343.0, 339.0}}
+    t =     8.31s Waiting 10.0s for "100%" Button to exist
+    t =     9.38s     Checking `Expect predicate `existsNoRetry == 1` for object "100%" Button`
+    t =     9.38s         Checking existence of `"100%" Button`
+    t =     9.42s Find the "Decrease" Button
+    t =     9.44s Find the "Increase" Button
+    t =     9.47s Find the "DELETE" Button
+    t =     9.53s Find the Target Application 'dev.peringer.limen.audit'
+    t =     9.58s Added attachment named 'photo-draft-full-image-100'
+    t =     9.58s Requesting snapshot of accessibility hierarchy for app with pid 10894
+    t =     9.71s Requesting snapshot of accessibility hierarchy for app with pid 10894
+LIMEN_PHOTO_VIEWER_TREE photo-draft-full-image-100
+Attributes: Application, 0x116d08780, pid: 10894, label: 'Limen'
+Element subtree:
+ →Application, 0x116d08780, pid: 10894, label: 'Limen'
+    Window (Main), 0x116d088c0, {{0.0, 0.0}, {375.0, 667.0}}
+      Other, 0x116d08500, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116d08640, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116d083c0, {{0.0, 0.0}, {375.0, 667.0}}
+            Other, 0x116d08000, {{0.0, 0.0}, {375.0, 667.0}}
+              Button, 0x116d08140, {{20.0, 28.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+              Image, 0x116d08280, {{74.0, 32.5}, {42.0, 42.0}}, label: 'limen-seal'
+              StaticText, 0x116d09e00, {{124.0, 31.0}, {44.5, 16.0}}, label: 'ENTRY'
+              StaticText, 0x116d0a080, {{124.0, 47.0}, {95.5, 29.0}}, label: 'Synthetic photo viewer fixture'
+              Button, 0x116d09f40, {{253.0, 31.5}, {44.0, 44.0}}, identifier: 'info.circle', label: 'Go through the flat in your own order. Confirm every listed room after checking it, even when there is no defect.'
+              Switch, 0x116d09cc0, {{303.0, 29.5}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dark theme', value: NO
+              ScrollView, 0x116d09b80, {{20.0, 87.0}, {335.0, 572.0}}
+                Other, 0x116d097c0, {{20.0, 87.0}, {335.0, 738.5}}
+                  Button, 0x116d09680, {{20.0, 87.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+                  StaticText, 0x116d09540, {{76.0, 99.8}, {240.5, 25.5}}, label: 'SYNTHETIC GRID ROOM'
+                  Other, 0x116d09400, {{20.0, 148.0}, {335.0, 76.5}}, label: 'Name of this room'
+                    StaticText, 0x116d092c0, {{32.0, 156.0}, {106.5, 14.5}}, label: 'Name of this room'
+                    TextField, 0x116d09180, {{32.0, 172.5}, {311.0, 44.0}}, identifier: 'Name of this room', label: 'Name of this room', placeholderValue: 'Kitchen', value: Synthetic grid room
+                  Button, 0x10725be80, {{20.0, 234.5}, {84.0, 48.0}}, label: 'Move up', Disabled
+                  Button, 0x10725b840, {{191.5, 234.5}, {103.0, 48.0}}, label: 'Move down', Disabled
+                  Switch, 0x10725b980, {{20.0, 292.5}, {335.0, 48.0}}, label: 'ROOM INSPECTED', value: YES
+                  StaticText, 0x10725bd40, {{36.0, 366.5}, {165.5, 14.5}}, label: 'Room overview photographs'
+                  Button, 0x10725bc00, {{36.0, 389.0}, {147.5, 51.0}}, identifier: 'camera', label: 'PHOTO'
+                  Button, 0x10725bac0, {{191.5, 389.0}, {147.5, 51.0}}, identifier: 'photo.on.rectangle', label: 'GALLERY'
+                  ScrollView, 0x10725b5c0, {{36.0, 448.0}, {303.0, 134.0}}
+                    Other, 0x10725b700, {{36.0, 448.0}, {84.0, 134.0}}
+                      Button, 0x10725b340, {{22.0, 448.0}, {112.0, 84.0}}, label: 'OPEN · synthetic-grid.png'
+                      Button, 0x10725b480, {{74.0, 536.0}, {48.0, 48.0}}, identifier: 'trash', label: 'DELETE'
+                    Other, 0x10725b200, {{36.0, 549.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116c6c000, {{258.0, 576.0}, {78.0, 3.0}}
+                    Other, 0x116c6c140, {{36.0, 549.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116c6c280, {{258.0, 576.0}, {78.0, 3.0}}
+                  Button, 0x116c6c3c0, {{20.0, 608.0}, {335.0, 44.0}}, label: 'RECORD A DEFECT'
+                    Button, 0x116c6c500, {{20.0, 608.0}, {335.0, 44.0}}
+                      Image, 0x116c6c640, {{36.0, 622.5}, {15.0, 15.0}}, identifier: 'plus', label: 'Add'
+                      StaticText, 0x116c6ebc0, {{61.0, 622.0}, {128.5, 16.0}}, label: 'RECORD A DEFECT'
+                      Image, 0x116c6ed00, {{324.5, 626.0}, {14.5, 8.5}}, identifier: 'chevron.down', label: 'Go Down'
+                  StaticText, 0x116c6fc00, {{20.0, 662.0}, {207.5, 18.0}}, label: 'Inspected, no defect recorded'
+                  Button, 0x116c6fd40, {{20.0, 703.0}, {93.5, 18.0}}, label: 'Room actions'
+                    Button, 0x116c6fe80, {{20.0, 703.0}, {93.5, 18.0}}
+                      StaticText, 0x116c6fac0, {{20.0, 703.0}, {93.5, 18.0}}, label: 'Room actions'
+                  Button, 0x116c6f980, {{20.0, 744.0}, {335.0, 59.5}}, label: 'Next room / finish inspection'
+                Other, 0x116c6f840, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                  Other, 0x116c6f700, {{349.0, 90.0}, {3.0, 438.5}}
+                Other, 0x116c6f5c0, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                  Other, 0x116c6f480, {{349.0, 90.0}, {3.0, 438.5}}
+      Other, 0x116c6f0c0, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116c6f340, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116c6f200, {{0.0, 0.0}, {375.0, 667.0}}
+            StaticText, 0x116c6ef80, {{16.0, 48.8}, {170.5, 25.5}}, label: 'Original evidence'
+            Button, 0x116c6ee40, {{311.0, 36.0}, {48.0, 51.0}}, identifier: 'xmark', label: 'DONE'
+            ScrollView, 0x116c6ea80, {{16.0, 95.0}, {343.0, 339.0}}, label: 'synthetic-grid.png'
+              Image, 0x116c6db80, {{16.0, 95.0}, {343.0, 339.0}}
+              Other, 0x116c6cb40, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116c6ca00, {{353.0, 424.0}, {3.0, 7.0}}
+              Other, 0x116c6c8c0, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                Other, 0x116c6c780, {{349.0, 428.0}, {7.0, 3.0}}
+              Other, 0x116c6e940, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116c6dcc0, {{353.0, 424.0}, {3.0, 7.0}}
+              Other, 0x116c6de00, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                Other, 0x116c6df40, {{349.0, 428.0}, {7.0, 3.0}}
+            Button, 0x116c6e080, {{98.5, 442.5}, {48.0, 50.0}}, identifier: 'minus', label: 'Decrease', Disabled
+            Button, 0x116c6e1c0, {{154.5, 443.5}, {66.0, 48.0}}, label: '100%'
+            Button, 0x116c6e300, {{228.5, 442.0}, {48.0, 51.0}}, identifier: 'plus', label: 'Increase'
+            ScrollView, 0x116c6e440, {{19.0, 501.0}, {337.5, 150.0}}
+              Other, 0x116c6e580, {{19.0, 501.0}, {337.5, 82.0}}
+                StaticText, 0x116c6e6c0, {{19.0, 501.0}, {53.5, 14.5}}, label: 'GALLERY'
+                StaticText, 0x116c6e800, {{19.0, 520.5}, {197.0, 14.5}}, label: 'Imported on: 10/13/2026, 12:00 PM'
+                StaticText, 0x116f2c000, {{19.0, 540.0}, {337.5, 43.0}}, label: 'SHA-256: 84EA555CB3319DB0E3109F9801F5953E8D0C4FB6945C78C491BC00F49600119F'
+              Other, 0x116f2c140, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116f2c280, {{350.5, 641.0}, {3.0, 7.0}}
+              Other, 0x116f2c3c0, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116f2c500, {{350.5, 641.0}, {3.0, 7.0}}
+Path to element:
+ →Application, 0x116d08780, pid: 10894, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x116f2c640, pid: 10894, label: 'Limen'
+  }
+
+    t =     9.75s Tap "plus" Button
+    t =     9.75s     Wait for dev.peringer.limen.audit to idle
+    t =     9.75s     Find the "plus" Button
+    t =     9.78s     Check for interrupting elements affecting "plus" Button
+    t =     9.80s     Synthesize event
+    t =    10.10s     Wait for dev.peringer.limen.audit to idle
+    t =    10.10s Waiting 5.0s for "200%" Button to exist
+    t =    11.16s     Checking `Expect predicate `existsNoRetry == 1` for object "200%" Button`
+    t =    11.16s         Checking existence of `"200%" Button`
+    t =    11.19s Tap "plus" Button
+    t =    11.19s     Wait for dev.peringer.limen.audit to idle
+    t =    11.20s     Find the "plus" Button
+    t =    11.22s     Check for interrupting elements affecting "plus" Button
+    t =    11.25s     Synthesize event
+    t =    11.54s     Wait for dev.peringer.limen.audit to idle
+    t =    11.55s Waiting 5.0s for "400%" Button to exist
+    t =    12.60s     Checking `Expect predicate `existsNoRetry == 1` for object "400%" Button`
+    t =    12.60s         Checking existence of `"400%" Button`
+    t =    12.64s Tap "plus" Button
+    t =    12.64s     Wait for dev.peringer.limen.audit to idle
+    t =    12.64s     Find the "plus" Button
+    t =    12.67s     Check for interrupting elements affecting "plus" Button
+    t =    12.69s     Synthesize event
+    t =    12.99s     Wait for dev.peringer.limen.audit to idle
+    t =    13.00s Waiting 5.0s for "800%" Button to exist
+    t =    14.05s     Checking `Expect predicate `existsNoRetry == 1` for object "800%" Button`
+    t =    14.05s         Checking existence of `"800%" Button`
+    t =    14.09s Find the "plus" Button
+    t =    14.11s Find the "minus" Button
+    t =    14.14s Find the Target Application 'dev.peringer.limen.audit'
+    t =    14.19s Added attachment named 'photo-draft-zoom-800'
+    t =    14.19s Requesting snapshot of accessibility hierarchy for app with pid 10894
+    t =    14.31s Requesting snapshot of accessibility hierarchy for app with pid 10894
+LIMEN_PHOTO_VIEWER_TREE photo-draft-zoom-800
+Attributes: Application, 0x116f2c3c0, pid: 10894, label: 'Limen'
+Element subtree:
+ →Application, 0x116f2c3c0, pid: 10894, label: 'Limen'
+    Window (Main), 0x116f2c500, {{0.0, 0.0}, {375.0, 667.0}}
+      Other, 0x116f2c140, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116f2c280, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116f2c000, {{0.0, 0.0}, {375.0, 667.0}}
+            Other, 0x116f2f840, {{0.0, 0.0}, {375.0, 667.0}}
+              Button, 0x116f2f980, {{20.0, 28.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+              Image, 0x116f2f5c0, {{74.0, 32.5}, {42.0, 42.0}}, label: 'limen-seal'
+              StaticText, 0x116f2ef80, {{124.0, 31.0}, {44.5, 16.0}}, label: 'ENTRY'
+              StaticText, 0x116f2f0c0, {{124.0, 47.0}, {95.5, 29.0}}, label: 'Synthetic photo viewer fixture'
+              Button, 0x116f2f480, {{253.0, 31.5}, {44.0, 44.0}}, identifier: 'info.circle', label: 'Go through the flat in your own order. Confirm every listed room after checking it, even when there is no defect.'
+              Switch, 0x116f2f340, {{303.0, 29.5}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dark theme', value: NO
+              ScrollView, 0x116f2f200, {{20.0, 87.0}, {335.0, 572.0}}
+                Other, 0x116f2e580, {{20.0, 87.0}, {335.0, 738.5}}
+                  Button, 0x116f2ed00, {{20.0, 87.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+                  StaticText, 0x116f2ee40, {{76.0, 99.8}, {240.5, 25.5}}, label: 'SYNTHETIC GRID ROOM'
+                  Other, 0x116f2ea80, {{20.0, 148.0}, {335.0, 76.5}}, label: 'Name of this room'
+                    StaticText, 0x116f2ebc0, {{32.0, 156.0}, {106.5, 14.5}}, label: 'Name of this room'
+                    TextField, 0x116f2e6c0, {{32.0, 172.5}, {311.0, 44.0}}, identifier: 'Name of this room', label: 'Name of this room', placeholderValue: 'Kitchen', value: Synthetic grid room
+                  Button, 0x116f2e940, {{20.0, 234.5}, {84.0, 48.0}}, label: 'Move up', Disabled
+                  Button, 0x116f2e800, {{191.5, 234.5}, {103.0, 48.0}}, label: 'Move down', Disabled
+                  Switch, 0x116f2e440, {{20.0, 292.5}, {335.0, 48.0}}, label: 'ROOM INSPECTED', value: YES
+                  StaticText, 0x116f2e300, {{36.0, 366.5}, {165.5, 14.5}}, label: 'Room overview photographs'
+                  Button, 0x116f2e1c0, {{36.0, 389.0}, {147.5, 51.0}}, identifier: 'camera', label: 'PHOTO'
+                  Button, 0x116f2e080, {{191.5, 389.0}, {147.5, 51.0}}, identifier: 'photo.on.rectangle', label: 'GALLERY'
+                  ScrollView, 0x116f2df40, {{36.0, 448.0}, {303.0, 134.0}}
+                    Other, 0x116f2de00, {{36.0, 448.0}, {84.0, 134.0}}
+                      Button, 0x116f2da40, {{22.0, 448.0}, {112.0, 84.0}}, label: 'OPEN · synthetic-grid.png'
+                      Button, 0x116f2dcc0, {{74.0, 536.0}, {48.0, 48.0}}, identifier: 'trash', label: 'DELETE'
+                    Other, 0x116f2db80, {{36.0, 549.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116f2d900, {{258.0, 576.0}, {78.0, 3.0}}
+                    Other, 0x116f2d7c0, {{36.0, 549.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116f2d400, {{258.0, 576.0}, {78.0, 3.0}}
+                  Button, 0x116f2d2c0, {{20.0, 608.0}, {335.0, 44.0}}, label: 'RECORD A DEFECT'
+                    Button, 0x116f2d180, {{20.0, 608.0}, {335.0, 44.0}}
+                      Image, 0x116f2d040, {{36.0, 622.5}, {15.0, 15.0}}, identifier: 'plus', label: 'Add'
+                      StaticText, 0x116f2cf00, {{61.0, 622.0}, {128.5, 16.0}}, label: 'RECORD A DEFECT'
+                      Image, 0x116f2cdc0, {{324.5, 626.0}, {14.5, 8.5}}, identifier: 'chevron.down', label: 'Go Down'
+                  StaticText, 0x116c6f0c0, {{20.0, 662.0}, {207.5, 18.0}}, label: 'Inspected, no defect recorded'
+                  Button, 0x116c6f340, {{20.0, 703.0}, {93.5, 18.0}}, label: 'Room actions'
+                    Button, 0x116c6f200, {{20.0, 703.0}, {93.5, 18.0}}
+                      StaticText, 0x116c6e440, {{20.0, 703.0}, {93.5, 18.0}}, label: 'Room actions'
+                  Button, 0x116c6e580, {{20.0, 744.0}, {335.0, 59.5}}, label: 'Next room / finish inspection'
+                Other, 0x116c6e800, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                  Other, 0x116c6e6c0, {{349.0, 90.0}, {3.0, 438.5}}
+                Other, 0x116c6e300, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                  Other, 0x116c6e1c0, {{349.0, 90.0}, {3.0, 438.5}}
+      Other, 0x116c6e080, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116c6ea80, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116c6de00, {{0.0, 0.0}, {375.0, 667.0}}
+            StaticText, 0x116c6df40, {{16.0, 48.8}, {170.5, 25.5}}, label: 'Original evidence'
+            Button, 0x116c6e940, {{311.0, 36.0}, {48.0, 51.0}}, identifier: 'xmark', label: 'DONE'
+            ScrollView, 0x116c6dcc0, {{16.0, 95.0}, {343.0, 339.0}}, label: 'synthetic-grid.png'
+              Image, 0x116c6c8c0, {{-1184.5, -1091.5}, {2744.0, 2712.0}}
+              Other, 0x116c6c780, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 8 pages', value: 50%
+                Other, 0x116c6cb40, {{353.0, 244.0}, {3.0, 41.5}}
+              Other, 0x116c6ca00, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 8 pages', value: 50%
+                Other, 0x116c6db80, {{165.0, 428.0}, {42.0, 3.0}}
+              Other, 0x116c6ee40, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 8 pages', value: 50%
+                Other, 0x116c6ef80, {{353.0, 244.0}, {3.0, 41.5}}
+              Other, 0x116c6f5c0, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 8 pages', value: 50%
+                Other, 0x116c6f480, {{165.0, 428.0}, {42.0, 3.0}}
+            Button, 0x116c6f840, {{97.5, 442.0}, {48.0, 51.0}}, identifier: 'minus', label: 'Decrease'
+            Button, 0x116c6f700, {{153.5, 443.5}, {68.5, 48.0}}, label: '800%'
+            Button, 0x116c6f980, {{230.0, 442.5}, {48.0, 50.0}}, identifier: 'plus', label: 'Increase', Disabled
+            ScrollView, 0x116c6fd40, {{19.0, 501.0}, {337.5, 150.0}}
+              Other, 0x116c6fe80, {{19.0, 501.0}, {337.5, 82.0}}
+                StaticText, 0x116c6fac0, {{19.0, 501.0}, {53.5, 14.5}}, label: 'GALLERY'
+                StaticText, 0x116c6fc00, {{19.0, 520.5}, {197.0, 14.5}}, label: 'Imported on: 10/13/2026, 12:00 PM'
+                StaticText, 0x116c6c3c0, {{19.0, 540.0}, {337.5, 43.0}}, label: 'SHA-256: 84EA555CB3319DB0E3109F9801F5953E8D0C4FB6945C78C491BC00F49600119F'
+              Other, 0x116c6c500, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116c6ed00, {{350.5, 641.0}, {3.0, 7.0}}
+              Other, 0x116c6ebc0, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116c6c640, {{350.5, 641.0}, {3.0, 7.0}}
+Path to element:
+ →Application, 0x116f2c3c0, pid: 10894, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x116c6c140, pid: 10894, label: 'Limen'
+  }
+
+    t =    14.35s Tap "minus" Button
+    t =    14.35s     Wait for dev.peringer.limen.audit to idle
+    t =    14.35s     Find the "minus" Button
+    t =    14.38s     Check for interrupting elements affecting "minus" Button
+    t =    14.40s     Synthesize event
+    t =    14.70s     Wait for dev.peringer.limen.audit to idle
+    t =    14.70s Waiting 5.0s for "400%" Button to exist
+    t =    15.76s     Checking `Expect predicate `existsNoRetry == 1` for object "400%" Button`
+    t =    15.76s         Checking existence of `"400%" Button`
+    t =    15.79s Tap "400%" Button
+    t =    15.79s     Wait for dev.peringer.limen.audit to idle
+    t =    15.80s     Find the "400%" Button
+    t =    15.82s     Check for interrupting elements affecting "400%" Button
+    t =    15.85s     Synthesize event
+    t =    16.15s     Wait for dev.peringer.limen.audit to idle
+    t =    16.15s Waiting 5.0s for "100%" Button to exist
+    t =    17.20s     Checking `Expect predicate `existsNoRetry == 1` for object "100%" Button`
+    t =    17.20s         Checking existence of `"100%" Button`
+    t =    17.25s Find the "minus" Button
+    t =    17.28s Find the Target Application 'dev.peringer.limen.audit'
+    t =    17.33s Added attachment named 'photo-draft-reset-100'
+    t =    17.34s Requesting snapshot of accessibility hierarchy for app with pid 10894
+    t =    17.46s Requesting snapshot of accessibility hierarchy for app with pid 10894
+LIMEN_PHOTO_VIEWER_TREE photo-draft-reset-100
+Attributes: Application, 0x116d0a580, pid: 10894, label: 'Limen'
+Element subtree:
+ →Application, 0x116d0a580, pid: 10894, label: 'Limen'
+    Window (Main), 0x116d0ae40, {{0.0, 0.0}, {375.0, 667.0}}
+      Other, 0x116d08140, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116d0aa80, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116d0b200, {{0.0, 0.0}, {375.0, 667.0}}
+            Other, 0x116d0b0c0, {{0.0, 0.0}, {375.0, 667.0}}
+              Button, 0x116d0abc0, {{20.0, 28.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+              Image, 0x116d092c0, {{74.0, 32.5}, {42.0, 42.0}}, label: 'limen-seal'
+              StaticText, 0x116d09e00, {{124.0, 31.0}, {44.5, 16.0}}, label: 'ENTRY'
+              StaticText, 0x116d08280, {{124.0, 47.0}, {95.5, 29.0}}, label: 'Synthetic photo viewer fixture'
+              Button, 0x116d09f40, {{253.0, 31.5}, {44.0, 44.0}}, identifier: 'info.circle', label: 'Go through the flat in your own order. Confirm every listed room after checking it, even when there is no defect.'
+              Switch, 0x116d0a080, {{303.0, 29.5}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dark theme', value: NO
+              ScrollView, 0x116d09540, {{20.0, 87.0}, {335.0, 572.0}}
+                Other, 0x116d09cc0, {{20.0, 87.0}, {335.0, 738.5}}
+                  Button, 0x116d09680, {{20.0, 87.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+                  StaticText, 0x116d09180, {{76.0, 99.8}, {240.5, 25.5}}, label: 'SYNTHETIC GRID ROOM'
+                  Other, 0x116d09400, {{20.0, 148.0}, {335.0, 76.5}}, label: 'Name of this room'
+                    StaticText, 0x116d097c0, {{32.0, 156.0}, {106.5, 14.5}}, label: 'Name of this room'
+                    TextField, 0x116d09b80, {{32.0, 172.5}, {311.0, 44.0}}, identifier: 'Name of this room', label: 'Name of this room', placeholderValue: 'Kitchen', value: Synthetic grid room
+                  Button, 0x116d08000, {{20.0, 234.5}, {84.0, 48.0}}, label: 'Move up', Disabled
+                  Button, 0x116d083c0, {{191.5, 234.5}, {103.0, 48.0}}, label: 'Move down', Disabled
+                  Switch, 0x116d088c0, {{20.0, 292.5}, {335.0, 48.0}}, label: 'ROOM INSPECTED', value: YES
+                  StaticText, 0x116d08640, {{36.0, 366.5}, {165.5, 14.5}}, label: 'Room overview photographs'
+                  Button, 0x116d08500, {{36.0, 389.0}, {147.5, 51.0}}, identifier: 'camera', label: 'PHOTO'
+                  Button, 0x116d08780, {{191.5, 389.0}, {147.5, 51.0}}, identifier: 'photo.on.rectangle', label: 'GALLERY'
+                  ScrollView, 0x116c6e080, {{36.0, 448.0}, {303.0, 134.0}}
+                    Other, 0x116c6ea80, {{36.0, 448.0}, {84.0, 134.0}}
+                      Button, 0x116c6de00, {{22.0, 448.0}, {112.0, 84.0}}, label: 'OPEN · synthetic-grid.png'
+                      Button, 0x116c6fd40, {{74.0, 536.0}, {48.0, 48.0}}, identifier: 'trash', label: 'DELETE'
+                    Other, 0x116c6ebc0, {{36.0, 549.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116c6c640, {{258.0, 576.0}, {78.0, 3.0}}
+                    Other, 0x116c6c500, {{36.0, 549.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116c6ed00, {{258.0, 576.0}, {78.0, 3.0}}
+                  Button, 0x116c6fe80, {{20.0, 608.0}, {335.0, 44.0}}, label: 'RECORD A DEFECT'
+                    Button, 0x116c6c3c0, {{20.0, 608.0}, {335.0, 44.0}}
+                      Image, 0x116c6fc00, {{36.0, 622.5}, {15.0, 15.0}}, identifier: 'plus', label: 'Add'
+                      StaticText, 0x116c6fac0, {{61.0, 622.0}, {128.5, 16.0}}, label: 'RECORD A DEFECT'
+                      Image, 0x116c6f980, {{324.5, 626.0}, {14.5, 8.5}}, identifier: 'chevron.down', label: 'Go Down'
+                  StaticText, 0x116c6f700, {{20.0, 662.0}, {207.5, 18.0}}, label: 'Inspected, no defect recorded'
+                  Button, 0x116c6f840, {{20.0, 703.0}, {93.5, 18.0}}, label: 'Room actions'
+                    Button, 0x116c6dcc0, {{20.0, 703.0}, {93.5, 18.0}}
+                      StaticText, 0x116c6f5c0, {{20.0, 703.0}, {93.5, 18.0}}, label: 'Room actions'
+                  Button, 0x116c6f480, {{20.0, 744.0}, {335.0, 59.5}}, label: 'Next room / finish inspection'
+                Other, 0x116c6ee40, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                  Other, 0x116c6ef80, {{349.0, 90.0}, {3.0, 438.5}}
+                Other, 0x116c6ca00, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                  Other, 0x116c6db80, {{349.0, 90.0}, {3.0, 438.5}}
+      Other, 0x116c6c780, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116c6cb40, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116c6c8c0, {{0.0, 0.0}, {375.0, 667.0}}
+            StaticText, 0x116c6e940, {{16.0, 48.8}, {170.5, 25.5}}, label: 'Original evidence'
+            Button, 0x116c6df40, {{311.0, 36.0}, {48.0, 51.0}}, identifier: 'xmark', label: 'DONE'
+            ScrollView, 0x116c6e300, {{16.0, 95.0}, {343.0, 339.0}}, label: 'synthetic-grid.png'
+              Image, 0x116c6e1c0, {{16.0, 95.0}, {343.0, 339.0}}
+              Other, 0x116c6e800, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116c6e6c0, {{353.0, 98.0}, {3.0, 333.0}}
+              Other, 0x116c6e580, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                Other, 0x116c6f340, {{19.0, 428.0}, {337.0, 3.0}}
+              Other, 0x116c6f200, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116c6e440, {{353.0, 98.0}, {3.0, 333.0}}
+              Other, 0x116c6f0c0, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                Other, 0x116c6c140, {{19.0, 428.0}, {337.0, 3.0}}
+            Button, 0x116c6c280, {{98.5, 442.5}, {48.0, 50.0}}, identifier: 'minus', label: 'Decrease', Disabled
+            Button, 0x116c6c000, {{154.5, 443.5}, {66.0, 48.0}}, label: '100%'
+            Button, 0x116f2c3c0, {{228.5, 442.0}, {48.0, 51.0}}, identifier: 'plus', label: 'Increase'
+            ScrollView, 0x116f2c500, {{19.0, 501.0}, {337.5, 150.0}}
+              Other, 0x116f2c140, {{19.0, 501.0}, {337.5, 82.0}}
+                StaticText, 0x116f2c280, {{19.0, 501.0}, {53.5, 14.5}}, label: 'GALLERY'
+                StaticText, 0x116f2c000, {{19.0, 520.5}, {197.0, 14.5}}, label: 'Imported on: 10/13/2026, 12:00 PM'
+                StaticText, 0x116f2f840, {{19.0, 540.0}, {337.5, 43.0}}, label: 'SHA-256: 84EA555CB3319DB0E3109F9801F5953E8D0C4FB6945C78C491BC00F49600119F'
+              Other, 0x116f2f200, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116f2e580, {{350.5, 641.0}, {3.0, 7.0}}
+              Other, 0x116f2d2c0, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116f2d180, {{350.5, 641.0}, {3.0, 7.0}}
+Path to element:
+ →Application, 0x116d0a580, pid: 10894, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x116f2cdc0, pid: 10894, label: 'Limen'
+  }
+
+    t =    17.50s Tap "DONE" Button
+    t =    17.50s     Wait for dev.peringer.limen.audit to idle
+    t =    17.50s     Find the "DONE" Button
+    t =    17.53s     Check for interrupting elements affecting "xmark" Button
+    t =    17.55s     Synthesize event
+    t =    17.85s     Wait for dev.peringer.limen.audit to idle
+    t =    18.19s Waiting 10.0s for "OPEN · synthetic-grid.png" Button to exist
+    t =    19.24s     Checking `Expect predicate `existsNoRetry == 1` for object "OPEN · synthetic-grid.png" Button`
+    t =    19.24s         Checking existence of `"OPEN · synthetic-grid.png" Button`
+    t =    19.28s Checking existence of `"OPEN · synthetic-grid.png" Button`
+    t =    19.30s Terminate dev.peringer.limen.audit:10894
+    t =    20.38s Open dev.peringer.limen.audit
+    t =    20.38s     Launch dev.peringer.limen.audit
+2026-10-15 21:42:10.878 xcodebuild[10814:112031] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-15 21:42:10.878 xcodebuild[10814:112031] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =    20.59s         Setting up automation session
+    t =    21.34s         Wait for dev.peringer.limen.audit to idle
+    t =    22.72s Checking existence of `"OPEN · synthetic-grid.png" Button`
+    t =    22.87s Find the "OPEN · synthetic-grid.png" Button
+    t =    22.89s Find the "OPEN · synthetic-grid.png" Button
+    t =    22.92s Find the Target Application 'dev.peringer.limen.audit'
+    t =    22.93s Find the Target Application 'dev.peringer.limen.audit'
+    t =    22.94s Checking existence of `"OPEN · synthetic-grid.png" Button`
+    t =    22.96s Tear Down
+Test Case '-[LimenUITests.PhotoViewerJourneyTests testDraftPhotoOpensZoomsResetsAndClosesWithoutDeletion]' passed (23.199 seconds).
+Test Case '-[LimenUITests.PhotoViewerJourneyTests testExitBaselinePhotoUsesReadOnlyEntryEvidence]' started.
+    t =     0.00s Start Test at 2026-10-15 21:42:13.698
+    t =     0.02s Set Up
+    t =     0.02s     Setting device orientation to Portrait
+    t =     0.03s         Wait for dev.peringer.limen.audit to idle
+    t =     0.03s Open dev.peringer.limen.audit
+    t =     0.03s     Launch dev.peringer.limen.audit
+    t =     0.03s         Terminate dev.peringer.limen.audit:11050
+2026-10-15 21:42:14.806 xcodebuild[10814:112031] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-15 21:42:14.806 xcodebuild[10814:112031] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     1.32s         Setting up automation session
+    t =     2.12s         Wait for dev.peringer.limen.audit to idle
+    t =     3.48s Waiting 20.0s for "Room overview photographs" StaticText to exist
+    t =     4.49s     Checking `Expect predicate `existsNoRetry == 1` for object "Room overview photographs" StaticText`
+    t =     4.49s         Checking existence of `"Room overview photographs" StaticText`
+    t =     4.55s Checking existence of `"At entry" Button`
+    t =     4.58s Find the "At entry" Button
+    t =     4.60s Find the "At entry" Button
+    t =     4.63s Find the Target Application 'dev.peringer.limen.audit'
+    t =     4.64s Find the Target Application 'dev.peringer.limen.audit'
+    t =     4.66s Checking existence of `"At entry" Button`
+    t =     4.68s Tap "At entry" Button
+    t =     4.68s     Wait for dev.peringer.limen.audit to idle
+    t =     4.69s     Find the "At entry" Button
+    t =     4.71s     Check for interrupting elements affecting "At entry" Button
+    t =     4.73s     Synthesize event
+    t =     5.02s     Wait for dev.peringer.limen.audit to idle
+    t =     5.02s Checking existence of `"OPEN · synthetic-grid.png" Button`
+    t =     5.05s Find the "OPEN · synthetic-grid.png" Button
+    t =     5.07s Find the "OPEN · synthetic-grid.png" Button
+    t =     5.10s Find the Target Application 'dev.peringer.limen.audit'
+    t =     5.12s Find the Target Application 'dev.peringer.limen.audit'
+    t =     5.13s Find the Target Application 'dev.peringer.limen.audit'
+    t =     5.15s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =     5.15s     Wait for dev.peringer.limen.audit to idle
+    t =     5.15s     Find the Target Application 'dev.peringer.limen.audit'
+    t =     5.17s     Check for interrupting elements affecting "Limen" Application
+    t =     5.18s     Synthesize event
+    t =     5.67s     Wait for dev.peringer.limen.audit to idle
+    t =     6.24s Checking existence of `"OPEN · synthetic-grid.png" Button`
+    t =     6.26s Find the "OPEN · synthetic-grid.png" Button
+    t =     6.29s Find the "OPEN · synthetic-grid.png" Button
+    t =     6.32s Find the Target Application 'dev.peringer.limen.audit'
+    t =     6.34s Find the Target Application 'dev.peringer.limen.audit'
+    t =     6.35s Checking existence of `"Name of this room" TextField`
+    t =     6.38s Checking existence of `"DELETE" Button`
+    t =     6.40s Find the Target Application 'dev.peringer.limen.audit'
+    t =     6.45s Added attachment named 'photo-exit-baseline-read-only'
+    t =     6.45s Requesting snapshot of accessibility hierarchy for app with pid 11083
+    t =     6.53s Requesting snapshot of accessibility hierarchy for app with pid 11083
+LIMEN_PHOTO_VIEWER_TREE photo-exit-baseline-read-only
+Attributes: Application, 0x116d08500, pid: 11083, label: 'Limen'
+Element subtree:
+ →Application, 0x116d08500, pid: 11083, label: 'Limen'
+    Window (Main), 0x116d08780, {{0.0, 0.0}, {375.0, 667.0}}
+      Other, 0x116d08f00, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116d08640, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116d0bac0, {{0.0, 0.0}, {375.0, 667.0}}
+            Other, 0x116d0bd40, {{0.0, 0.0}, {375.0, 667.0}}
+              Button, 0x116d0a300, {{20.0, 28.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+              Image, 0x116d08b40, {{74.0, 32.5}, {42.0, 42.0}}, label: 'limen-seal'
+              StaticText, 0x116d08c80, {{124.0, 31.0}, {30.0, 16.0}}, label: 'EXIT'
+              StaticText, 0x116d08dc0, {{124.0, 47.0}, {95.5, 29.0}}, label: 'Synthetic photo viewer fixture'
+              Button, 0x116d09040, {{253.0, 31.5}, {44.0, 44.0}}, identifier: 'info.circle', label: 'Go through the flat in your own order. Confirm every listed room after checking it, even when there is no defect.'
+              Switch, 0x116d0a080, {{303.0, 29.5}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dark theme', value: NO
+              ScrollView, 0x116d09e00, {{20.0, 87.0}, {335.0, 572.0}}
+                Other, 0x116d092c0, {{20.0, -178.5}, {335.0, 837.5}}
+                  Button, 0x116d0abc0, {{20.0, -178.5}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+                  StaticText, 0x116d0b980, {{76.0, -165.8}, {240.5, 25.5}}, label: 'SYNTHETIC GRID ROOM'
+                  Other, 0x116d0b340, {{20.0, -117.5}, {335.0, 76.5}}, label: 'Name of this room'
+                    StaticText, 0x116d0b480, {{32.0, -109.5}, {106.5, 14.5}}, label: 'Name of this room'
+                    TextField, 0x116d0b840, {{32.0, -93.0}, {311.0, 44.0}}, identifier: 'Name of this room', label: 'Name of this room', placeholderValue: 'Kitchen', value: Synthetic grid room
+                  Button, 0x116d0b700, {{20.0, -31.0}, {84.0, 48.0}}, label: 'Move up', Disabled
+                  Button, 0x116d0b5c0, {{191.5, -31.0}, {103.0, 48.0}}, label: 'Move down', Disabled
+                  Switch, 0x116d0a940, {{20.0, 27.0}, {335.0, 48.0}}, label: 'ROOM INSPECTED', value: YES
+                  StaticText, 0x116d0a800, {{36.0, 101.0}, {165.5, 14.5}}, label: 'Room overview photographs'
+                  Button, 0x116d0a6c0, {{36.0, 123.5}, {147.5, 51.0}}, identifier: 'camera', label: 'PHOTO'
+                  Button, 0x116d0ad00, {{191.5, 123.5}, {147.5, 51.0}}, identifier: 'photo.on.rectangle', label: 'GALLERY'
+                  ScrollView, 0x116d0bc00, {{36.0, 182.5}, {303.0, 0.0}}
+                    Other, 0x116d0a440, {{36.0, 182.5}, {0.0, 0.0}}
+                    Other, 0x10725b480, {{36.0, 179.5}, {303.0, 0.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x10725b700, {{329.0, 176.5}, {7.0, 3.0}}
+                    Other, 0x10725bac0, {{36.0, 179.5}, {303.0, 0.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x10725b340, {{329.0, 176.5}, {7.0, 3.0}}
+                  StaticText, 0x10725bc00, {{36.0, 224.5}, {46.5, 14.5}}, label: 'At entry'
+                  Button, 0x10725b840, {{36.0, 247.0}, {303.0, 28.5}}, label: 'At entry'
+                    StaticText, 0x10725be80, {{36.0, 247.0}, {303.0, 28.5}}, label: 'At entry'
+                    Image, 0x10725bd40, {{327.8, 258.8}, {12.0, 7.0}}, identifier: 'expanded'
+                  Button, 0x10725b980, {{36.0, 275.5}, {303.0, 48.0}}, label: 'Complete document preview'
+                  ScrollView, 0x10725b200, {{36.0, 331.5}, {303.0, 84.0}}
+                    Other, 0x10725b5c0, {{36.0, 331.5}, {84.0, 84.0}}
+                      Button, 0x116f2c000, {{22.0, 331.5}, {112.0, 84.0}}, label: 'OPEN · synthetic-grid.png'
+                    Other, 0x116f2c140, {{36.0, 382.5}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116f2c280, {{329.0, 409.5}, {7.0, 3.0}}
+                    Other, 0x116f2c3c0, {{36.0, 382.5}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116f2c500, {{329.0, 409.5}, {7.0, 3.0}}
+                  Button, 0x116f2c640, {{20.0, 441.5}, {335.0, 44.0}}, label: 'RECORD A DEFECT'
+                    Button, 0x116f2c780, {{20.0, 441.5}, {335.0, 44.0}}
+                      Image, 0x116f2c8c0, {{36.0, 456.0}, {15.0, 15.0}}, identifier: 'plus', label: 'Add'
+                      StaticText, 0x116f2ca00, {{61.0, 455.5}, {128.5, 16.0}}, label: 'RECORD A DEFECT'
+                      Image, 0x116f2cb40, {{324.5, 459.5}, {14.5, 8.5}}, identifier: 'chevron.down', label: 'Go Down'
+                  StaticText, 0x116f2cc80, {{20.0, 495.5}, {207.5, 18.0}}, label: 'Inspected, no defect recorded'
+                  Button, 0x116f2cdc0, {{20.0, 536.5}, {93.5, 18.0}}, label: 'Room actions'
+                    Button, 0x116f2cf00, {{20.0, 536.5}, {93.5, 18.0}}
+                      StaticText, 0x116f2d040, {{20.0, 536.5}, {93.5, 18.0}}, label: 'Room actions'
+                  Button, 0x116f2d180, {{20.0, 577.5}, {335.0, 59.5}}, label: 'Next room / finish inspection'
+                Other, 0x116f2d2c0, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 100%
+                  Other, 0x116f2d400, {{349.0, 269.5}, {3.0, 386.5}}
+                Other, 0x116f2d540, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 100%
+                  Other, 0x116f2d680, {{349.0, 269.5}, {3.0, 386.5}}
+Path to element:
+ →Application, 0x116d08500, pid: 11083, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x116f2d7c0, pid: 11083, label: 'Limen'
+  }
+
+    t =     6.56s Tap "OPEN · synthetic-grid.png" Button
+    t =     6.56s     Wait for dev.peringer.limen.audit to idle
+    t =     6.56s     Find the "OPEN · synthetic-grid.png" Button
+    t =     6.58s     Check for interrupting elements affecting "OPEN · synthetic-grid.png" Button
+    t =     6.60s     Synthesize event
+    t =     6.90s     Wait for dev.peringer.limen.audit to idle
+    t =     7.28s Waiting 10.0s for "Original evidence" StaticText to exist
+    t =     8.34s     Checking `Expect predicate `existsNoRetry == 1` for object "Original evidence" StaticText`
+    t =     8.34s         Checking existence of `"Original evidence" StaticText`
+    t =     8.38s Waiting 10.0s for Image (First Match) to exist
+    t =     9.44s     Checking `Expect predicate `existsNoRetry == 1` for object Image (First Match)`
+    t =     9.44s         Checking existence of `Image (First Match)`
+    t =     9.45s Find the Image (First Match)
+    t =     9.47s Find the Image at {{16.0, 95.0}, {343.0, 339.0}}
+    t =     9.48s Waiting 10.0s for "100%" Button to exist
+    t =    10.54s     Checking `Expect predicate `existsNoRetry == 1` for object "100%" Button`
+    t =    10.54s         Checking existence of `"100%" Button`
+    t =    10.59s Find the "Decrease" Button
+    t =    10.63s Find the "Increase" Button
+    t =    10.65s Find the "DELETE" Button
+    t =    11.72s     Find the "DELETE" Button (retry 1)
+    t =    12.81s     Find the "DELETE" Button (retry 2)
+    t =    12.88s Find the Target Application 'dev.peringer.limen.audit'
+    t =    12.93s Added attachment named 'photo-baseline-full-image-100'
+    t =    12.93s Requesting snapshot of accessibility hierarchy for app with pid 11083
+    t =    13.06s Requesting snapshot of accessibility hierarchy for app with pid 11083
+LIMEN_PHOTO_VIEWER_TREE photo-baseline-full-image-100
+Attributes: Application, 0x116f2d540, pid: 11083, label: 'Limen'
+Element subtree:
+ →Application, 0x116f2d540, pid: 11083, label: 'Limen'
+    Window (Main), 0x116f2d680, {{0.0, 0.0}, {375.0, 667.0}}
+      Other, 0x116f2d2c0, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116f2d400, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116f2d180, {{0.0, 0.0}, {375.0, 667.0}}
+            Other, 0x116f2cdc0, {{0.0, 0.0}, {375.0, 667.0}}
+              Button, 0x116f2cf00, {{20.0, 28.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+              Image, 0x116f2d040, {{74.0, 32.5}, {42.0, 42.0}}, label: 'limen-seal'
+              StaticText, 0x116f2cc80, {{124.0, 31.0}, {30.0, 16.0}}, label: 'EXIT'
+              StaticText, 0x116f2c640, {{124.0, 47.0}, {95.5, 29.0}}, label: 'Synthetic photo viewer fixture'
+              Button, 0x116f2c780, {{253.0, 31.5}, {44.0, 44.0}}, identifier: 'info.circle', label: 'Go through the flat in your own order. Confirm every listed room after checking it, even when there is no defect.'
+              Switch, 0x116f2cb40, {{303.0, 29.5}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dark theme', value: NO
+              ScrollView, 0x116f2ca00, {{20.0, 87.0}, {335.0, 572.0}}
+                Other, 0x116f2c8c0, {{20.0, -178.5}, {335.0, 837.5}}
+                  Button, 0x116f2c3c0, {{20.0, -178.5}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+                  StaticText, 0x116f2c500, {{76.0, -165.8}, {240.5, 25.5}}, label: 'SYNTHETIC GRID ROOM'
+                  Other, 0x116f2c140, {{20.0, -117.5}, {335.0, 76.5}}, label: 'Name of this room'
+                    StaticText, 0x116f2c280, {{32.0, -109.5}, {106.5, 14.5}}, label: 'Name of this room'
+                    TextField, 0x116f2c000, {{32.0, -93.0}, {311.0, 44.0}}, identifier: 'Name of this room', label: 'Name of this room', placeholderValue: 'Kitchen', value: Synthetic grid room
+                  Button, 0x116f2e1c0, {{20.0, -31.0}, {84.0, 48.0}}, label: 'Move up', Disabled
+                  Button, 0x116f2e080, {{191.5, -31.0}, {103.0, 48.0}}, label: 'Move down', Disabled
+                  Switch, 0x10725b200, {{20.0, 27.0}, {335.0, 48.0}}, label: 'ROOM INSPECTED', value: YES
+                  StaticText, 0x10725b5c0, {{36.0, 101.0}, {165.5, 14.5}}, label: 'Room overview photographs'
+                  Button, 0x10725b980, {{36.0, 123.5}, {147.5, 51.0}}, identifier: 'camera', label: 'PHOTO'
+                  Button, 0x10725b840, {{191.5, 123.5}, {147.5, 51.0}}, identifier: 'photo.on.rectangle', label: 'GALLERY'
+                  ScrollView, 0x10725bd40, {{36.0, 182.5}, {303.0, 0.0}}
+                    Other, 0x10725be80, {{36.0, 182.5}, {0.0, 0.0}}
+                    Other, 0x10725bc00, {{36.0, 179.5}, {303.0, 0.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x10725bac0, {{329.0, 176.5}, {7.0, 3.0}}
+                    Other, 0x10725b340, {{36.0, 179.5}, {303.0, 0.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x10725b480, {{329.0, 176.5}, {7.0, 3.0}}
+                  StaticText, 0x10725b700, {{36.0, 224.5}, {46.5, 14.5}}, label: 'At entry'
+                  Button, 0x116d08500, {{36.0, 247.0}, {303.0, 28.5}}, label: 'At entry'
+                    StaticText, 0x116d08780, {{36.0, 247.0}, {303.0, 28.5}}, label: 'At entry'
+                    Image, 0x116d08f00, {{327.8, 258.8}, {12.0, 7.0}}, identifier: 'expanded'
+                  Button, 0x116d08640, {{36.0, 275.5}, {303.0, 48.0}}, label: 'Complete document preview'
+                  ScrollView, 0x116d0bac0, {{36.0, 331.5}, {303.0, 84.0}}
+                    Other, 0x116d0bd40, {{36.0, 331.5}, {84.0, 84.0}}
+                      Button, 0x116d09e00, {{22.0, 331.5}, {112.0, 84.0}}, label: 'OPEN · synthetic-grid.png'
+                    Other, 0x116d092c0, {{36.0, 382.5}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116d0bc00, {{258.0, 409.5}, {78.0, 3.0}}
+                    Other, 0x116d0a440, {{36.0, 382.5}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116d0ad00, {{258.0, 409.5}, {78.0, 3.0}}
+                  Button, 0x116d0a6c0, {{20.0, 441.5}, {335.0, 44.0}}, label: 'RECORD A DEFECT'
+                    Button, 0x116d0a800, {{20.0, 441.5}, {335.0, 44.0}}
+                      Image, 0x116d0a940, {{36.0, 456.0}, {15.0, 15.0}}, identifier: 'plus', label: 'Add'
+                      StaticText, 0x116d0b5c0, {{61.0, 455.5}, {128.5, 16.0}}, label: 'RECORD A DEFECT'
+                      Image, 0x116d0b700, {{324.5, 459.5}, {14.5, 8.5}}, identifier: 'chevron.down', label: 'Go Down'
+                  StaticText, 0x116d0b340, {{20.0, 495.5}, {207.5, 18.0}}, label: 'Inspected, no defect recorded'
+                  Button, 0x116d0b840, {{20.0, 536.5}, {93.5, 18.0}}, label: 'Room actions'
+                    Button, 0x116d0b480, {{20.0, 536.5}, {93.5, 18.0}}
+                      StaticText, 0x116d0b980, {{20.0, 536.5}, {93.5, 18.0}}, label: 'Room actions'
+                  Button, 0x116d0abc0, {{20.0, 577.5}, {335.0, 59.5}}, label: 'Next room / finish inspection'
+                Other, 0x116d0a080, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 100%
+                  Other, 0x116d09040, {{349.0, 269.5}, {3.0, 386.5}}
+                Other, 0x116d08dc0, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 100%
+                  Other, 0x116d08c80, {{349.0, 269.5}, {3.0, 386.5}}
+      Other, 0x116d08b40, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116d0a300, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116d09680, {{0.0, 0.0}, {375.0, 667.0}}
+            StaticText, 0x116d09a40, {{16.0, 48.8}, {170.5, 25.5}}, label: 'Original evidence'
+            Button, 0x116d09f40, {{311.0, 36.0}, {48.0, 51.0}}, identifier: 'xmark', label: 'DONE'
+            ScrollView, 0x116d0be80, {{16.0, 95.0}, {343.0, 339.0}}, label: 'synthetic-grid.png'
+              Image, 0x116d088c0, {{16.0, 95.0}, {343.0, 339.0}}
+              Other, 0x116d083c0, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116d08000, {{353.0, 424.0}, {3.0, 7.0}}
+              Other, 0x116d09400, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                Other, 0x116d09b80, {{349.0, 428.0}, {7.0, 3.0}}
+              Other, 0x116d097c0, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116d09180, {{353.0, 424.0}, {3.0, 7.0}}
+              Other, 0x116c6c000, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                Other, 0x116c6c140, {{349.0, 428.0}, {7.0, 3.0}}
+            Button, 0x116c6c280, {{98.5, 442.5}, {48.0, 50.0}}, identifier: 'minus', label: 'Decrease', Disabled
+            Button, 0x116c6c3c0, {{154.5, 443.5}, {66.0, 48.0}}, label: '100%'
+            Button, 0x116c6c500, {{228.5, 442.0}, {48.0, 51.0}}, identifier: 'plus', label: 'Increase'
+            ScrollView, 0x116c6c640, {{19.0, 501.0}, {337.5, 150.0}}
+              Other, 0x116c6c780, {{19.0, 501.0}, {337.5, 82.0}}
+                StaticText, 0x116c6c8c0, {{19.0, 501.0}, {53.5, 14.5}}, label: 'GALLERY'
+                StaticText, 0x116c6ca00, {{19.0, 520.5}, {197.0, 14.5}}, label: 'Imported on: 10/13/2026, 12:00 PM'
+                StaticText, 0x116c6cb40, {{19.0, 540.0}, {337.5, 43.0}}, label: 'SHA-256: 84EA555CB3319DB0E3109F9801F5953E8D0C4FB6945C78C491BC00F49600119F'
+              Other, 0x116c6cc80, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116c6cdc0, {{350.5, 641.0}, {3.0, 7.0}}
+              Other, 0x116c6cf00, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116c6d040, {{350.5, 641.0}, {3.0, 7.0}}
+Path to element:
+ →Application, 0x116f2d540, pid: 11083, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x116c6d180, pid: 11083, label: 'Limen'
+  }
+
+    t =    13.09s Tap "plus" Button
+    t =    13.10s     Wait for dev.peringer.limen.audit to idle
+    t =    13.10s     Find the "plus" Button
+    t =    13.13s     Check for interrupting elements affecting "plus" Button
+    t =    13.15s     Synthesize event
+    t =    13.44s     Wait for dev.peringer.limen.audit to idle
+    t =    13.44s Waiting 5.0s for "200%" Button to exist
+    t =    14.51s     Checking `Expect predicate `existsNoRetry == 1` for object "200%" Button`
+    t =    14.51s         Checking existence of `"200%" Button`
+    t =    14.58s Tap "plus" Button
+    t =    14.58s     Wait for dev.peringer.limen.audit to idle
+    t =    14.59s     Find the "plus" Button
+    t =    14.62s     Check for interrupting elements affecting "plus" Button
+    t =    14.65s     Synthesize event
+    t =    14.94s     Wait for dev.peringer.limen.audit to idle
+    t =    14.95s Waiting 5.0s for "400%" Button to exist
+    t =    16.01s     Checking `Expect predicate `existsNoRetry == 1` for object "400%" Button`
+    t =    16.01s         Checking existence of `"400%" Button`
+    t =    16.04s Tap "plus" Button
+    t =    16.04s     Wait for dev.peringer.limen.audit to idle
+    t =    16.04s     Find the "plus" Button
+    t =    16.07s     Check for interrupting elements affecting "plus" Button
+    t =    16.10s     Synthesize event
+    t =    16.39s     Wait for dev.peringer.limen.audit to idle
+    t =    16.40s Waiting 5.0s for "800%" Button to exist
+    t =    17.42s     Checking `Expect predicate `existsNoRetry == 1` for object "800%" Button`
+    t =    17.42s         Checking existence of `"800%" Button`
+    t =    17.46s Find the "plus" Button
+    t =    17.49s Find the "minus" Button
+    t =    17.52s Find the Target Application 'dev.peringer.limen.audit'
+    t =    17.57s Added attachment named 'photo-baseline-zoom-800'
+    t =    17.57s Requesting snapshot of accessibility hierarchy for app with pid 11083
+    t =    17.69s Requesting snapshot of accessibility hierarchy for app with pid 11083
+LIMEN_PHOTO_VIEWER_TREE photo-baseline-zoom-800
+Attributes: Application, 0x116c6c640, pid: 11083, label: 'Limen'
+Element subtree:
+ →Application, 0x116c6c640, pid: 11083, label: 'Limen'
+    Window (Main), 0x116c6cf00, {{0.0, 0.0}, {375.0, 667.0}}
+      Other, 0x116c6d040, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116c6cc80, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116c6cdc0, {{0.0, 0.0}, {375.0, 667.0}}
+            Other, 0x116c6c780, {{0.0, 0.0}, {375.0, 667.0}}
+              Button, 0x116c6cb40, {{20.0, 28.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+              Image, 0x116c6ca00, {{74.0, 32.5}, {42.0, 42.0}}, label: 'limen-seal'
+              StaticText, 0x116c6c8c0, {{124.0, 31.0}, {30.0, 16.0}}, label: 'EXIT'
+              StaticText, 0x116c6c500, {{124.0, 47.0}, {95.5, 29.0}}, label: 'Synthetic photo viewer fixture'
+              Button, 0x116c6c3c0, {{253.0, 31.5}, {44.0, 44.0}}, identifier: 'info.circle', label: 'Go through the flat in your own order. Confirm every listed room after checking it, even when there is no defect.'
+              Switch, 0x116c6c280, {{303.0, 29.5}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dark theme', value: NO
+              ScrollView, 0x116c6c000, {{20.0, 87.0}, {335.0, 572.0}}
+                Other, 0x116c6c140, {{20.0, -178.5}, {335.0, 837.5}}
+                  Button, 0x116c6f840, {{20.0, -178.5}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+                  StaticText, 0x116c6f0c0, {{76.0, -165.8}, {240.5, 25.5}}, label: 'SYNTHETIC GRID ROOM'
+                  Other, 0x116c6f5c0, {{20.0, -117.5}, {335.0, 76.5}}, label: 'Name of this room'
+                    StaticText, 0x116c6f700, {{32.0, -109.5}, {106.5, 14.5}}, label: 'Name of this room'
+                    TextField, 0x116c6f340, {{32.0, -93.0}, {311.0, 44.0}}, identifier: 'Name of this room', label: 'Name of this room', placeholderValue: 'Kitchen', value: Synthetic grid room
+                  Button, 0x116c6f480, {{20.0, -31.0}, {84.0, 48.0}}, label: 'Move up', Disabled
+                  Button, 0x116c6f200, {{191.5, -31.0}, {103.0, 48.0}}, label: 'Move down', Disabled
+                  Switch, 0x116c6ef80, {{20.0, 27.0}, {335.0, 48.0}}, label: 'ROOM INSPECTED', value: YES
+                  StaticText, 0x116c6ee40, {{36.0, 101.0}, {165.5, 14.5}}, label: 'Room overview photographs'
+                  Button, 0x116c6ed00, {{36.0, 123.5}, {147.5, 51.0}}, identifier: 'camera', label: 'PHOTO'
+                  Button, 0x116c6ebc0, {{191.5, 123.5}, {147.5, 51.0}}, identifier: 'photo.on.rectangle', label: 'GALLERY'
+                  ScrollView, 0x116c6ea80, {{36.0, 182.5}, {303.0, 0.0}}
+                    Other, 0x116c6e940, {{36.0, 182.5}, {0.0, 0.0}}
+                    Other, 0x116c6e580, {{36.0, 179.5}, {303.0, 0.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116c6e800, {{329.0, 176.5}, {7.0, 3.0}}
+                    Other, 0x116c6e6c0, {{36.0, 179.5}, {303.0, 0.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116c6e440, {{329.0, 176.5}, {7.0, 3.0}}
+                  StaticText, 0x116c6e300, {{36.0, 224.5}, {46.5, 14.5}}, label: 'At entry'
+                  Button, 0x116c6df40, {{36.0, 247.0}, {303.0, 28.5}}, label: 'At entry'
+                    StaticText, 0x116c6de00, {{36.0, 247.0}, {303.0, 28.5}}, label: 'At entry'
+                    Image, 0x116c6dcc0, {{327.8, 258.8}, {12.0, 7.0}}, identifier: 'expanded'
+                  Button, 0x116c6db80, {{36.0, 275.5}, {303.0, 48.0}}, label: 'Complete document preview'
+                  ScrollView, 0x116c6da40, {{36.0, 331.5}, {303.0, 84.0}}
+                    Other, 0x116c6d900, {{36.0, 331.5}, {84.0, 84.0}}
+                      Button, 0x116d08b40, {{22.0, 331.5}, {112.0, 84.0}}, label: 'OPEN · synthetic-grid.png'
+                    Other, 0x116d0a300, {{36.0, 382.5}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116d09680, {{258.0, 409.5}, {78.0, 3.0}}
+                    Other, 0x116d0be80, {{36.0, 382.5}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116d097c0, {{258.0, 409.5}, {78.0, 3.0}}
+                  Button, 0x116d09180, {{20.0, 441.5}, {335.0, 44.0}}, label: 'RECORD A DEFECT'
+                    Button, 0x116d09400, {{20.0, 441.5}, {335.0, 44.0}}
+                      Image, 0x116d09b80, {{36.0, 456.0}, {15.0, 15.0}}, identifier: 'plus', label: 'Add'
+                      StaticText, 0x116d083c0, {{61.0, 455.5}, {128.5, 16.0}}, label: 'RECORD A DEFECT'
+                      Image, 0x116d08000, {{324.5, 459.5}, {14.5, 8.5}}, identifier: 'chevron.down', label: 'Go Down'
+                  StaticText, 0x116d088c0, {{20.0, 495.5}, {207.5, 18.0}}, label: 'Inspected, no defect recorded'
+                  Button, 0x116d09f40, {{20.0, 536.5}, {93.5, 18.0}}, label: 'Room actions'
+                    Button, 0x116d09a40, {{20.0, 536.5}, {93.5, 18.0}}
+                      StaticText, 0x116d08dc0, {{20.0, 536.5}, {93.5, 18.0}}, label: 'Room actions'
+                  Button, 0x116d08c80, {{20.0, 577.5}, {335.0, 59.5}}, label: 'Next room / finish inspection'
+                Other, 0x116d0a080, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 100%
+                  Other, 0x116d09040, {{349.0, 269.5}, {3.0, 386.5}}
+                Other, 0x116d0abc0, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 100%
+                  Other, 0x116d0b840, {{349.0, 269.5}, {3.0, 386.5}}
+      Other, 0x116d0b480, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116d0b980, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116d0b340, {{0.0, 0.0}, {375.0, 667.0}}
+            StaticText, 0x116d0a6c0, {{16.0, 48.8}, {170.5, 25.5}}, label: 'Original evidence'
+            Button, 0x116d0a800, {{311.0, 36.0}, {48.0, 51.0}}, identifier: 'xmark', label: 'DONE'
+            ScrollView, 0x116d0b700, {{16.0, 95.0}, {343.0, 339.0}}, label: 'synthetic-grid.png'
+              Image, 0x116d0b5c0, {{-1184.5, -1091.5}, {2744.0, 2712.0}}
+              Other, 0x116d0a940, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 8 pages', value: 50%
+                Other, 0x116d0bac0, {{353.0, 244.0}, {3.0, 41.5}}
+              Other, 0x116d0a440, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 8 pages', value: 50%
+                Other, 0x116d0ad00, {{165.0, 428.0}, {42.0, 3.0}}
+              Other, 0x116d092c0, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 8 pages', value: 50%
+                Other, 0x116d0bc00, {{353.0, 244.0}, {3.0, 41.5}}
+              Other, 0x116d0bd40, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 8 pages', value: 50%
+                Other, 0x116d09e00, {{165.0, 428.0}, {42.0, 3.0}}
+            Button, 0x116d08640, {{97.5, 442.0}, {48.0, 51.0}}, identifier: 'minus', label: 'Decrease'
+            Button, 0x116d08500, {{153.5, 443.5}, {68.5, 48.0}}, label: '800%'
+            Button, 0x116d08f00, {{230.0, 442.5}, {48.0, 50.0}}, identifier: 'plus', label: 'Increase', Disabled
+            ScrollView, 0x116d08780, {{19.0, 501.0}, {337.5, 150.0}}
+              Other, 0x10725b700, {{19.0, 501.0}, {337.5, 82.0}}
+                StaticText, 0x10725bd40, {{19.0, 501.0}, {53.5, 14.5}}, label: 'GALLERY'
+                StaticText, 0x10725b340, {{19.0, 520.5}, {197.0, 14.5}}, label: 'Imported on: 10/13/2026, 12:00 PM'
+                StaticText, 0x10725b480, {{19.0, 540.0}, {337.5, 43.0}}, label: 'SHA-256: 84EA555CB3319DB0E3109F9801F5953E8D0C4FB6945C78C491BC00F49600119F'
+              Other, 0x10725bc00, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x10725bac0, {{350.5, 641.0}, {3.0, 7.0}}
+              Other, 0x10725be80, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x10725b840, {{350.5, 641.0}, {3.0, 7.0}}
+Path to element:
+ →Application, 0x116c6c640, pid: 11083, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x10725b980, pid: 11083, label: 'Limen'
+  }
+
+    t =    17.74s Tap "minus" Button
+    t =    17.74s     Wait for dev.peringer.limen.audit to idle
+    t =    17.74s     Find the "minus" Button
+    t =    17.77s     Check for interrupting elements affecting "minus" Button
+    t =    17.79s     Synthesize event
+    t =    18.09s     Wait for dev.peringer.limen.audit to idle
+    t =    18.10s Waiting 5.0s for "400%" Button to exist
+    t =    19.14s     Checking `Expect predicate `existsNoRetry == 1` for object "400%" Button`
+    t =    19.14s         Checking existence of `"400%" Button`
+    t =    19.19s Tap "400%" Button
+    t =    19.19s     Wait for dev.peringer.limen.audit to idle
+    t =    19.20s     Find the "400%" Button
+    t =    19.23s     Check for interrupting elements affecting "400%" Button
+    t =    19.26s     Synthesize event
+    t =    19.55s     Wait for dev.peringer.limen.audit to idle
+    t =    19.56s Waiting 5.0s for "100%" Button to exist
+    t =    20.59s     Checking `Expect predicate `existsNoRetry == 1` for object "100%" Button`
+    t =    20.59s         Checking existence of `"100%" Button`
+    t =    20.63s Find the "minus" Button
+    t =    20.65s Find the Target Application 'dev.peringer.limen.audit'
+    t =    20.71s Added attachment named 'photo-baseline-reset-100'
+    t =    20.71s Requesting snapshot of accessibility hierarchy for app with pid 11083
+    t =    20.83s Requesting snapshot of accessibility hierarchy for app with pid 11083
+LIMEN_PHOTO_VIEWER_TREE photo-baseline-reset-100
+Attributes: Application, 0x116f2d540, pid: 11083, label: 'Limen'
+Element subtree:
+ →Application, 0x116f2d540, pid: 11083, label: 'Limen'
+    Window (Main), 0x116f2ea80, {{0.0, 0.0}, {375.0, 667.0}}
+      Other, 0x116f2ee40, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116f2df40, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116f2ebc0, {{0.0, 0.0}, {375.0, 667.0}}
+            Other, 0x116f2f0c0, {{0.0, 0.0}, {375.0, 667.0}}
+              Button, 0x116f2ef80, {{20.0, 28.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+              Image, 0x116f2f340, {{74.0, 32.5}, {42.0, 42.0}}, label: 'limen-seal'
+              StaticText, 0x116f2f200, {{124.0, 31.0}, {30.0, 16.0}}, label: 'EXIT'
+              StaticText, 0x116f2ed00, {{124.0, 47.0}, {95.5, 29.0}}, label: 'Synthetic photo viewer fixture'
+              Button, 0x116f2cf00, {{253.0, 31.5}, {44.0, 44.0}}, identifier: 'info.circle', label: 'Go through the flat in your own order. Confirm every listed room after checking it, even when there is no defect.'
+              Switch, 0x116f2d040, {{303.0, 29.5}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dark theme', value: NO
+              ScrollView, 0x116f2cc80, {{20.0, 87.0}, {335.0, 572.0}}
+                Other, 0x116f2c640, {{20.0, -178.5}, {335.0, 837.5}}
+                  Button, 0x116f2c780, {{20.0, -178.5}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+                  StaticText, 0x116f2cb40, {{76.0, -165.8}, {240.5, 25.5}}, label: 'SYNTHETIC GRID ROOM'
+                  Other, 0x116f2c280, {{20.0, -117.5}, {335.0, 76.5}}, label: 'Name of this room'
+                    StaticText, 0x116f2c3c0, {{32.0, -109.5}, {106.5, 14.5}}, label: 'Name of this room'
+                    TextField, 0x116f2c500, {{32.0, -93.0}, {311.0, 44.0}}, identifier: 'Name of this room', label: 'Name of this room', placeholderValue: 'Kitchen', value: Synthetic grid room
+                  Button, 0x116f2c000, {{20.0, -31.0}, {84.0, 48.0}}, label: 'Move up', Disabled
+                  Button, 0x116f2c140, {{191.5, -31.0}, {103.0, 48.0}}, label: 'Move down', Disabled
+                  Switch, 0x116f2c8c0, {{20.0, 27.0}, {335.0, 48.0}}, label: 'ROOM INSPECTED', value: YES
+                  StaticText, 0x116f2ca00, {{36.0, 101.0}, {165.5, 14.5}}, label: 'Room overview photographs'
+                  Button, 0x116f2cdc0, {{36.0, 123.5}, {147.5, 51.0}}, identifier: 'camera', label: 'PHOTO'
+                  Button, 0x116f2d180, {{191.5, 123.5}, {147.5, 51.0}}, identifier: 'photo.on.rectangle', label: 'GALLERY'
+                  ScrollView, 0x116f2d400, {{36.0, 182.5}, {303.0, 0.0}}
+                    Other, 0x116f2d2c0, {{36.0, 182.5}, {0.0, 0.0}}
+                    Other, 0x116d0b480, {{36.0, 179.5}, {303.0, 0.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116d0b980, {{329.0, 176.5}, {7.0, 3.0}}
+                    Other, 0x116d0b340, {{36.0, 179.5}, {303.0, 0.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116d08780, {{329.0, 176.5}, {7.0, 3.0}}
+                  StaticText, 0x116d08f00, {{36.0, 224.5}, {46.5, 14.5}}, label: 'At entry'
+                  Button, 0x116d08500, {{36.0, 247.0}, {303.0, 28.5}}, label: 'At entry'
+                    StaticText, 0x116d08640, {{36.0, 247.0}, {303.0, 28.5}}, label: 'At entry'
+                    Image, 0x116d0b700, {{327.8, 258.8}, {12.0, 7.0}}, identifier: 'expanded'
+                  Button, 0x116d0bd40, {{36.0, 275.5}, {303.0, 48.0}}, label: 'Complete document preview'
+                  ScrollView, 0x116d09e00, {{36.0, 331.5}, {303.0, 84.0}}
+                    Other, 0x116d092c0, {{36.0, 331.5}, {84.0, 84.0}}
+                      Button, 0x116d0bc00, {{22.0, 331.5}, {112.0, 84.0}}, label: 'OPEN · synthetic-grid.png'
+                    Other, 0x116d0a440, {{36.0, 382.5}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116d0ad00, {{258.0, 409.5}, {78.0, 3.0}}
+                    Other, 0x116d0a940, {{36.0, 382.5}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116d0bac0, {{258.0, 409.5}, {78.0, 3.0}}
+                  Button, 0x116d0b5c0, {{20.0, 441.5}, {335.0, 44.0}}, label: 'RECORD A DEFECT'
+                    Button, 0x116d0a800, {{20.0, 441.5}, {335.0, 44.0}}
+                      Image, 0x116d0a6c0, {{36.0, 456.0}, {15.0, 15.0}}, identifier: 'plus', label: 'Add'
+                      StaticText, 0x116d0abc0, {{61.0, 455.5}, {128.5, 16.0}}, label: 'RECORD A DEFECT'
+                      Image, 0x116d0b840, {{324.5, 459.5}, {14.5, 8.5}}, identifier: 'chevron.down', label: 'Go Down'
+                  StaticText, 0x116d0a080, {{20.0, 495.5}, {207.5, 18.0}}, label: 'Inspected, no defect recorded'
+                  Button, 0x116d09040, {{20.0, 536.5}, {93.5, 18.0}}, label: 'Room actions'
+                    Button, 0x116d08c80, {{20.0, 536.5}, {93.5, 18.0}}
+                      StaticText, 0x116d09f40, {{20.0, 536.5}, {93.5, 18.0}}, label: 'Room actions'
+                  Button, 0x116d09a40, {{20.0, 577.5}, {335.0, 59.5}}, label: 'Next room / finish inspection'
+                Other, 0x116d08dc0, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 100%
+                  Other, 0x116d088c0, {{349.0, 269.5}, {3.0, 386.5}}
+                Other, 0x116d09180, {{322.0, 87.0}, {30.0, 572.0}}, label: 'Vertical scroll bar, 2 pages', value: 100%
+                  Other, 0x116d09400, {{349.0, 269.5}, {3.0, 386.5}}
+      Other, 0x116d08000, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116d083c0, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116d09b80, {{0.0, 0.0}, {375.0, 667.0}}
+            StaticText, 0x116d0be80, {{16.0, 48.8}, {170.5, 25.5}}, label: 'Original evidence'
+            Button, 0x116d097c0, {{311.0, 36.0}, {48.0, 51.0}}, identifier: 'xmark', label: 'DONE'
+            ScrollView, 0x116d0a300, {{16.0, 95.0}, {343.0, 339.0}}, label: 'synthetic-grid.png'
+              Image, 0x116d09680, {{16.0, 95.0}, {343.0, 339.0}}
+              Other, 0x116d08b40, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x10725be80, {{353.0, 98.0}, {3.0, 333.0}}
+              Other, 0x10725b840, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                Other, 0x10725bc00, {{19.0, 428.0}, {337.0, 3.0}}
+              Other, 0x10725bac0, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x10725b700, {{353.0, 98.0}, {3.0, 333.0}}
+              Other, 0x10725b480, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                Other, 0x10725b340, {{19.0, 428.0}, {337.0, 3.0}}
+            Button, 0x10725bd40, {{98.5, 442.5}, {48.0, 50.0}}, identifier: 'minus', label: 'Decrease', Disabled
+            Button, 0x10725b980, {{154.5, 443.5}, {66.0, 48.0}}, label: '100%'
+            Button, 0x10725b5c0, {{228.5, 442.0}, {48.0, 51.0}}, identifier: 'plus', label: 'Increase'
+            ScrollView, 0x10725b200, {{19.0, 501.0}, {337.5, 150.0}}
+              Other, 0x116c6c640, {{19.0, 501.0}, {337.5, 82.0}}
+                StaticText, 0x116c6cf00, {{19.0, 501.0}, {53.5, 14.5}}, label: 'GALLERY'
+                StaticText, 0x116c6d040, {{19.0, 520.5}, {197.0, 14.5}}, label: 'Imported on: 10/13/2026, 12:00 PM'
+                StaticText, 0x116c6cc80, {{19.0, 540.0}, {337.5, 43.0}}, label: 'SHA-256: 84EA555CB3319DB0E3109F9801F5953E8D0C4FB6945C78C491BC00F49600119F'
+              Other, 0x116c6cdc0, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116c6c780, {{350.5, 641.0}, {3.0, 7.0}}
+              Other, 0x116c6c000, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116c6c140, {{350.5, 641.0}, {3.0, 7.0}}
+Path to element:
+ →Application, 0x116f2d540, pid: 11083, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x116c6da40, pid: 11083, label: 'Limen'
+  }
+
+    t =    20.87s Tap "DONE" Button
+    t =    20.87s     Wait for dev.peringer.limen.audit to idle
+    t =    20.88s     Find the "DONE" Button
+    t =    20.91s     Check for interrupting elements affecting "xmark" Button
+    t =    20.93s     Synthesize event
+    t =    21.23s     Wait for dev.peringer.limen.audit to idle
+    t =    21.56s Waiting 10.0s for "OPEN · synthetic-grid.png" Button to exist
+    t =    22.62s     Checking `Expect predicate `existsNoRetry == 1` for object "OPEN · synthetic-grid.png" Button`
+    t =    22.62s         Checking existence of `"OPEN · synthetic-grid.png" Button`
+    t =    22.64s Checking existence of `"DELETE" Button`
+    t =    22.66s Tear Down
+Test Case '-[LimenUITests.PhotoViewerJourneyTests testExitBaselinePhotoUsesReadOnlyEntryEvidence]' passed (22.894 seconds).
+Test Case '-[LimenUITests.PhotoViewerJourneyTests testFinalizedPhotoIsViewableWithoutEditingOrDeletion]' started.
+    t =     0.00s Start Test at 2026-10-15 21:42:36.593
+    t =     0.02s Set Up
+    t =     0.02s     Setting device orientation to Portrait
+    t =     0.02s         Wait for dev.peringer.limen.audit to idle
+    t =     0.02s Open dev.peringer.limen.audit
+    t =     0.03s     Launch dev.peringer.limen.audit
+    t =     0.03s         Terminate dev.peringer.limen.audit:11083
+2026-10-15 21:42:37.696 xcodebuild[10814:112031] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-15 21:42:37.696 xcodebuild[10814:112031] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     1.31s         Setting up automation session
+    t =     2.12s         Wait for dev.peringer.limen.audit to idle
+    t =     3.42s Waiting 20.0s for "Room overview photographs" StaticText to exist
+    t =     4.48s     Checking `Expect predicate `existsNoRetry == 1` for object "Room overview photographs" StaticText`
+    t =     4.49s         Checking existence of `"Room overview photographs" StaticText`
+    t =     4.53s Checking existence of `"OPEN · synthetic-grid.png" Button`
+    t =     4.55s Find the "OPEN · synthetic-grid.png" Button
+    t =     4.56s Find the "OPEN · synthetic-grid.png" Button
+    t =     4.58s Find the Target Application 'dev.peringer.limen.audit'
+    t =     4.59s Find the Target Application 'dev.peringer.limen.audit'
+    t =     4.60s Checking existence of `"Name of this room" TextField`
+    t =     4.62s Checking existence of `"DELETE" Button`
+    t =     4.63s Checking existence of `"GALLERY" Button`
+    t =     4.64s Find the Target Application 'dev.peringer.limen.audit'
+    t =     4.69s Added attachment named 'photo-finalized-read-only'
+    t =     4.69s Requesting snapshot of accessibility hierarchy for app with pid 11254
+    t =     4.76s Requesting snapshot of accessibility hierarchy for app with pid 11254
+LIMEN_PHOTO_VIEWER_TREE photo-finalized-read-only
+Attributes: Application, 0x116d083c0, pid: 11254, label: 'Limen'
+Element subtree:
+ →Application, 0x116d083c0, pid: 11254, label: 'Limen'
+    Window (Main), 0x116d09b80, {{0.0, 0.0}, {375.0, 667.0}}
+      Other, 0x116d0a300, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116d08b40, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116d09680, {{0.0, 0.0}, {375.0, 667.0}}
+            Other, 0x116d097c0, {{0.0, 0.0}, {375.0, 667.0}}
+              Button, 0x116d0be80, {{20.0, 28.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+              Image, 0x116d09180, {{74.0, 32.5}, {42.0, 42.0}}, label: 'limen-seal'
+              StaticText, 0x116d09400, {{124.0, 31.0}, {44.5, 16.0}}, label: 'ENTRY'
+              StaticText, 0x116d08dc0, {{124.0, 47.0}, {95.5, 29.0}}, label: 'Synthetic photo viewer fixture'
+              Button, 0x116d09e00, {{253.0, 31.5}, {44.0, 44.0}}, identifier: 'info.circle', label: 'Go through the flat in your own order. Confirm every listed room after checking it, even when there is no defect.'
+              Switch, 0x116d0a940, {{303.0, 29.5}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dark theme', value: NO
+              StaticText, 0x116d0bac0, {{34.0, 108.0}, {144.5, 14.0}}, label: 'FINALIZED, READ ONLY'
+              Button, 0x116d0a440, {{217.5, 93.0}, {44.0, 44.0}}, identifier: 'info.circle', label: 'This record is signed. Everything in it can be read; nothing in it can be changed.'
+              Button, 0x116d0ad00, {{265.5, 91.0}, {83.5, 48.0}}, label: 'EXPORT'
+              ScrollView, 0x116d092c0, {{20.0, 151.0}, {335.0, 508.0}}
+                Other, 0x116d0bc00, {{20.0, 151.0}, {335.0, 437.5}}
+                  Button, 0x116d0bd40, {{20.0, 151.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+                  StaticText, 0x116d08500, {{76.0, 163.8}, {240.5, 25.5}}, label: 'SYNTHETIC GRID ROOM'
+                  Other, 0x116d0b700, {{20.0, 212.0}, {335.0, 50.5}}, label: 'Name of this room'
+                    StaticText, 0x116d08640, {{32.0, 220.0}, {106.5, 14.5}}, label: 'Name of this room'
+                    StaticText, 0x116d08f00, {{32.0, 236.5}, {135.0, 18.0}}, label: 'Synthetic grid room'
+                  Switch, 0x116d0b340, {{20.0, 272.5}, {335.0, 48.0}}, label: 'ROOM INSPECTED', value: YES, Disabled
+                  StaticText, 0x116d08780, {{36.0, 346.5}, {165.5, 14.5}}, label: 'Room overview photographs'
+                  ScrollView, 0x116d0b480, {{36.0, 369.0}, {303.0, 84.0}}
+                    Other, 0x116d0b980, {{36.0, 369.0}, {84.0, 84.0}}
+                      Button, 0x116d0af80, {{22.0, 369.0}, {112.0, 84.0}}, label: 'OPEN · synthetic-grid.png'
+                    Other, 0x116d0ae40, {{36.0, 420.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116d08140, {{329.0, 447.0}, {7.0, 3.0}}
+                    Other, 0x116d0aa80, {{36.0, 420.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116d0b200, {{329.0, 447.0}, {7.0, 3.0}}
+                  StaticText, 0x116d0b0c0, {{20.0, 479.0}, {207.5, 18.0}}, label: 'Inspected, no defect recorded'
+                  Button, 0x116d09540, {{20.0, 507.0}, {335.0, 59.5}}, label: 'Next room / finish inspection'
+                Other, 0x116d09cc0, {{322.0, 151.0}, {30.0, 508.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                  Other, 0x116d09900, {{349.0, 649.0}, {3.0, 7.0}}
+                Other, 0x116d08280, {{322.0, 151.0}, {30.0, 508.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                  Other, 0x10725b5c0, {{349.0, 649.0}, {3.0, 7.0}}
+Path to element:
+ →Application, 0x116d083c0, pid: 11254, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x10725b980, pid: 11254, label: 'Limen'
+  }
+
+    t =     4.78s Tap "OPEN · synthetic-grid.png" Button
+    t =     4.78s     Wait for dev.peringer.limen.audit to idle
+    t =     4.79s     Find the "OPEN · synthetic-grid.png" Button
+    t =     4.80s     Check for interrupting elements affecting "OPEN · synthetic-grid.png" Button
+    t =     4.82s     Synthesize event
+    t =     5.12s     Wait for dev.peringer.limen.audit to idle
+    t =     5.48s Waiting 10.0s for "Original evidence" StaticText to exist
+    t =     6.53s     Checking `Expect predicate `existsNoRetry == 1` for object "Original evidence" StaticText`
+    t =     6.53s         Checking existence of `"Original evidence" StaticText`
+    t =     6.56s Waiting 10.0s for Image (First Match) to exist
+    t =     7.60s     Checking `Expect predicate `existsNoRetry == 1` for object Image (First Match)`
+    t =     7.60s         Checking existence of `Image (First Match)`
+    t =     7.62s Find the Image (First Match)
+    t =     7.63s Find the Image at {{16.0, 95.0}, {343.0, 339.0}}
+    t =     7.65s Waiting 10.0s for "100%" Button to exist
+    t =     8.72s     Checking `Expect predicate `existsNoRetry == 1` for object "100%" Button`
+    t =     8.72s         Checking existence of `"100%" Button`
+    t =     8.75s Find the "Decrease" Button
+    t =     8.77s Find the "Increase" Button
+    t =     8.80s Find the "DELETE" Button
+    t =     9.85s     Find the "DELETE" Button (retry 1)
+    t =    10.92s     Find the "DELETE" Button (retry 2)
+    t =    10.96s Find the Target Application 'dev.peringer.limen.audit'
+    t =    11.01s Added attachment named 'photo-finalized-full-image-100'
+    t =    11.01s Requesting snapshot of accessibility hierarchy for app with pid 11254
+    t =    11.13s Requesting snapshot of accessibility hierarchy for app with pid 11254
+LIMEN_PHOTO_VIEWER_TREE photo-finalized-full-image-100
+Attributes: Application, 0x116f2d900, pid: 11254, label: 'Limen'
+Element subtree:
+ →Application, 0x116f2d900, pid: 11254, label: 'Limen'
+    Window (Main), 0x116f2da40, {{0.0, 0.0}, {375.0, 667.0}}
+      Other, 0x116f2dcc0, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116f2de00, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116f2df40, {{0.0, 0.0}, {375.0, 667.0}}
+            Other, 0x116f2e080, {{0.0, 0.0}, {375.0, 667.0}}
+              Button, 0x116f2e1c0, {{20.0, 28.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+              Image, 0x116f2e300, {{74.0, 32.5}, {42.0, 42.0}}, label: 'limen-seal'
+              StaticText, 0x116f2e440, {{124.0, 31.0}, {44.5, 16.0}}, label: 'ENTRY'
+              StaticText, 0x116f2e580, {{124.0, 47.0}, {95.5, 29.0}}, label: 'Synthetic photo viewer fixture'
+              Button, 0x116f2e6c0, {{253.0, 31.5}, {44.0, 44.0}}, identifier: 'info.circle', label: 'Go through the flat in your own order. Confirm every listed room after checking it, even when there is no defect.'
+              Switch, 0x116f2e800, {{303.0, 29.5}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dark theme', value: NO
+              StaticText, 0x116f2e940, {{34.0, 108.0}, {144.5, 14.0}}, label: 'FINALIZED, READ ONLY'
+              Button, 0x116f2ea80, {{217.5, 93.0}, {44.0, 44.0}}, identifier: 'info.circle', label: 'This record is signed. Everything in it can be read; nothing in it can be changed.'
+              Button, 0x116f2ebc0, {{265.5, 91.0}, {83.5, 48.0}}, label: 'EXPORT'
+              ScrollView, 0x116f2ed00, {{20.0, 151.0}, {335.0, 508.0}}
+                Other, 0x116f2ee40, {{20.0, 151.0}, {335.0, 437.5}}
+                  Button, 0x116f2ef80, {{20.0, 151.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+                  StaticText, 0x116f2f0c0, {{76.0, 163.8}, {240.5, 25.5}}, label: 'SYNTHETIC GRID ROOM'
+                  Other, 0x116f2f200, {{20.0, 212.0}, {335.0, 50.5}}, label: 'Name of this room'
+                    StaticText, 0x116f2f340, {{32.0, 220.0}, {106.5, 14.5}}, label: 'Name of this room'
+                    StaticText, 0x116f2f480, {{32.0, 236.5}, {135.0, 18.0}}, label: 'Synthetic grid room'
+                  Switch, 0x116f2f5c0, {{20.0, 272.5}, {335.0, 48.0}}, label: 'ROOM INSPECTED', value: YES, Disabled
+                  StaticText, 0x116f2f700, {{36.0, 346.5}, {165.5, 14.5}}, label: 'Room overview photographs'
+                  ScrollView, 0x116f2f840, {{36.0, 369.0}, {303.0, 84.0}}
+                    Other, 0x116f2f980, {{36.0, 369.0}, {84.0, 84.0}}
+                      Button, 0x116f2fac0, {{22.0, 369.0}, {112.0, 84.0}}, label: 'OPEN · synthetic-grid.png'
+                    Other, 0x116f2fc00, {{36.0, 420.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116f2fd40, {{258.0, 447.0}, {78.0, 3.0}}
+                    Other, 0x116f2fe80, {{36.0, 420.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x10725b5c0, {{258.0, 447.0}, {78.0, 3.0}}
+                  StaticText, 0x116d083c0, {{20.0, 479.0}, {207.5, 18.0}}, label: 'Inspected, no defect recorded'
+                  Button, 0x116d09b80, {{20.0, 507.0}, {335.0, 59.5}}, label: 'Next room / finish inspection'
+                Other, 0x116d0a300, {{322.0, 151.0}, {30.0, 508.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                  Other, 0x116d08b40, {{349.0, 224.5}, {3.0, 431.5}}
+                Other, 0x116d09680, {{322.0, 151.0}, {30.0, 508.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                  Other, 0x116d097c0, {{349.0, 224.5}, {3.0, 431.5}}
+      Other, 0x116d092c0, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116d08280, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116d09cc0, {{0.0, 0.0}, {375.0, 667.0}}
+            StaticText, 0x116d09900, {{16.0, 48.8}, {170.5, 25.5}}, label: 'Original evidence'
+            Button, 0x116d0bc00, {{311.0, 36.0}, {48.0, 51.0}}, identifier: 'xmark', label: 'DONE'
+            ScrollView, 0x116d09540, {{16.0, 95.0}, {343.0, 339.0}}, label: 'synthetic-grid.png'
+              Image, 0x116d0b0c0, {{16.0, 95.0}, {343.0, 339.0}}
+              Other, 0x116d0b480, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116d0aa80, {{353.0, 424.0}, {3.0, 7.0}}
+              Other, 0x116d0b200, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                Other, 0x116d0ae40, {{349.0, 428.0}, {7.0, 3.0}}
+              Other, 0x116d08140, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116d0b980, {{353.0, 424.0}, {3.0, 7.0}}
+              Other, 0x116d0af80, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                Other, 0x116d08780, {{349.0, 428.0}, {7.0, 3.0}}
+            Button, 0x116d0b340, {{98.5, 442.5}, {48.0, 50.0}}, identifier: 'minus', label: 'Decrease', Disabled
+            Button, 0x116d0b700, {{154.5, 443.5}, {66.0, 48.0}}, label: '100%'
+            Button, 0x116d08f00, {{228.5, 442.0}, {48.0, 51.0}}, identifier: 'plus', label: 'Increase'
+            ScrollView, 0x116d08640, {{19.0, 501.0}, {337.5, 150.0}}
+              Other, 0x116d08500, {{19.0, 501.0}, {337.5, 82.0}}
+                StaticText, 0x116d0bd40, {{19.0, 501.0}, {53.5, 14.5}}, label: 'GALLERY'
+                StaticText, 0x116d0ad00, {{19.0, 520.5}, {197.0, 14.5}}, label: 'Imported on: 10/13/2026, 12:00 PM'
+                StaticText, 0x116d0a440, {{19.0, 540.0}, {337.5, 43.0}}, label: 'SHA-256: 84EA555CB3319DB0E3109F9801F5953E8D0C4FB6945C78C491BC00F49600119F'
+              Other, 0x116d0bac0, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116d0a940, {{350.5, 641.0}, {3.0, 7.0}}
+              Other, 0x116d09e00, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116d08dc0, {{350.5, 641.0}, {3.0, 7.0}}
+Path to element:
+ →Application, 0x116f2d900, pid: 11254, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x116d09400, pid: 11254, label: 'Limen'
+  }
+
+    t =    11.16s Tap "plus" Button
+    t =    11.16s     Wait for dev.peringer.limen.audit to idle
+    t =    11.16s     Find the "plus" Button
+    t =    11.18s     Check for interrupting elements affecting "plus" Button
+    t =    11.20s     Synthesize event
+    t =    11.50s     Wait for dev.peringer.limen.audit to idle
+    t =    11.50s Waiting 5.0s for "200%" Button to exist
+    t =    12.54s     Checking `Expect predicate `existsNoRetry == 1` for object "200%" Button`
+    t =    12.54s         Checking existence of `"200%" Button`
+    t =    12.58s Tap "plus" Button
+    t =    12.58s     Wait for dev.peringer.limen.audit to idle
+    t =    12.58s     Find the "plus" Button
+    t =    12.61s     Check for interrupting elements affecting "plus" Button
+    t =    12.64s     Synthesize event
+    t =    12.94s     Wait for dev.peringer.limen.audit to idle
+    t =    12.94s Waiting 5.0s for "400%" Button to exist
+    t =    13.98s     Checking `Expect predicate `existsNoRetry == 1` for object "400%" Button`
+    t =    13.98s         Checking existence of `"400%" Button`
+    t =    14.02s Tap "plus" Button
+    t =    14.02s     Wait for dev.peringer.limen.audit to idle
+    t =    14.02s     Find the "plus" Button
+    t =    14.05s     Check for interrupting elements affecting "plus" Button
+    t =    14.08s     Synthesize event
+    t =    14.37s     Wait for dev.peringer.limen.audit to idle
+    t =    14.38s Waiting 5.0s for "800%" Button to exist
+    t =    15.41s     Checking `Expect predicate `existsNoRetry == 1` for object "800%" Button`
+    t =    15.41s         Checking existence of `"800%" Button`
+    t =    15.44s Find the "plus" Button
+    t =    15.46s Find the "minus" Button
+    t =    15.48s Find the Target Application 'dev.peringer.limen.audit'
+    t =    15.53s Added attachment named 'photo-finalized-zoom-800'
+    t =    15.53s Requesting snapshot of accessibility hierarchy for app with pid 11254
+    t =    15.63s Requesting snapshot of accessibility hierarchy for app with pid 11254
+LIMEN_PHOTO_VIEWER_TREE photo-finalized-zoom-800
+Attributes: Application, 0x116d092c0, pid: 11254, label: 'Limen'
+Element subtree:
+ →Application, 0x116d092c0, pid: 11254, label: 'Limen'
+    Window (Main), 0x116d08280, {{0.0, 0.0}, {375.0, 667.0}}
+      Other, 0x116d09cc0, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116d08640, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116d09e00, {{0.0, 0.0}, {375.0, 667.0}}
+            Other, 0x116d08dc0, {{0.0, 0.0}, {375.0, 667.0}}
+              Button, 0x116d0bac0, {{20.0, 28.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+              Image, 0x116d0a940, {{74.0, 32.5}, {42.0, 42.0}}, label: 'limen-seal'
+              StaticText, 0x116d08500, {{124.0, 31.0}, {44.5, 16.0}}, label: 'ENTRY'
+              StaticText, 0x116d0a440, {{124.0, 47.0}, {95.5, 29.0}}, label: 'Synthetic photo viewer fixture'
+              Button, 0x116d0ad00, {{253.0, 31.5}, {44.0, 44.0}}, identifier: 'info.circle', label: 'Go through the flat in your own order. Confirm every listed room after checking it, even when there is no defect.'
+              Switch, 0x116d0bd40, {{303.0, 29.5}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dark theme', value: NO
+              StaticText, 0x116d08f00, {{34.0, 108.0}, {144.5, 14.0}}, label: 'FINALIZED, READ ONLY'
+              Button, 0x116d0b700, {{217.5, 93.0}, {44.0, 44.0}}, identifier: 'info.circle', label: 'This record is signed. Everything in it can be read; nothing in it can be changed.'
+              Button, 0x116d0b340, {{265.5, 91.0}, {83.5, 48.0}}, label: 'EXPORT'
+              ScrollView, 0x116d09540, {{20.0, 151.0}, {335.0, 508.0}}
+                Other, 0x116d0af80, {{20.0, 151.0}, {335.0, 437.5}}
+                  Button, 0x116d08780, {{20.0, 151.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+                  StaticText, 0x116d08140, {{76.0, 163.8}, {240.5, 25.5}}, label: 'SYNTHETIC GRID ROOM'
+                  Other, 0x116d0b980, {{20.0, 212.0}, {335.0, 50.5}}, label: 'Name of this room'
+                    StaticText, 0x116d0b200, {{32.0, 220.0}, {106.5, 14.5}}, label: 'Name of this room'
+                    StaticText, 0x116d0ae40, {{32.0, 236.5}, {135.0, 18.0}}, label: 'Synthetic grid room'
+                  Switch, 0x116d0b480, {{20.0, 272.5}, {335.0, 48.0}}, label: 'ROOM INSPECTED', value: YES, Disabled
+                  StaticText, 0x116d0aa80, {{36.0, 346.5}, {165.5, 14.5}}, label: 'Room overview photographs'
+                  ScrollView, 0x116d0b0c0, {{36.0, 369.0}, {303.0, 84.0}}
+                    Other, 0x116d0bc00, {{36.0, 369.0}, {84.0, 84.0}}
+                      Button, 0x116d09900, {{22.0, 369.0}, {112.0, 84.0}}, label: 'OPEN · synthetic-grid.png'
+                    Other, 0x116d09680, {{36.0, 420.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116d097c0, {{258.0, 447.0}, {78.0, 3.0}}
+                    Other, 0x116d0a300, {{36.0, 420.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116d08b40, {{258.0, 447.0}, {78.0, 3.0}}
+                  StaticText, 0x116d09b80, {{20.0, 479.0}, {207.5, 18.0}}, label: 'Inspected, no defect recorded'
+                  Button, 0x116d083c0, {{20.0, 507.0}, {335.0, 59.5}}, label: 'Next room / finish inspection'
+                Other, 0x116d09040, {{322.0, 151.0}, {30.0, 508.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                  Other, 0x10725b5c0, {{349.0, 224.5}, {3.0, 431.5}}
+                Other, 0x116f2d900, {{322.0, 151.0}, {30.0, 508.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                  Other, 0x116f2da40, {{349.0, 224.5}, {3.0, 431.5}}
+      Other, 0x116f2dcc0, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116f2de00, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116f2df40, {{0.0, 0.0}, {375.0, 667.0}}
+            StaticText, 0x116f2e080, {{16.0, 48.8}, {170.5, 25.5}}, label: 'Original evidence'
+            Button, 0x116f2ed00, {{311.0, 36.0}, {48.0, 51.0}}, identifier: 'xmark', label: 'DONE'
+            ScrollView, 0x116f2ee40, {{16.0, 95.0}, {343.0, 339.0}}, label: 'synthetic-grid.png'
+              Image, 0x116f2f840, {{-1184.5, -1091.5}, {2744.0, 2712.0}}
+              Other, 0x116f2fe80, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 8 pages', value: 50%
+                Other, 0x116f2fc00, {{353.0, 244.0}, {3.0, 41.5}}
+              Other, 0x116f2fd40, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 8 pages', value: 50%
+                Other, 0x116f2f980, {{165.0, 428.0}, {42.0, 3.0}}
+              Other, 0x116f2fac0, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 8 pages', value: 50%
+                Other, 0x116f2f700, {{353.0, 244.0}, {3.0, 41.5}}
+              Other, 0x116f2f5c0, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 8 pages', value: 50%
+                Other, 0x116f2f200, {{165.0, 428.0}, {42.0, 3.0}}
+            Button, 0x116f2f480, {{97.5, 442.0}, {48.0, 51.0}}, identifier: 'minus', label: 'Decrease'
+            Button, 0x116f2f340, {{153.5, 443.5}, {68.5, 48.0}}, label: '800%'
+            Button, 0x116f2f0c0, {{230.0, 442.5}, {48.0, 50.0}}, identifier: 'plus', label: 'Increase', Disabled
+            ScrollView, 0x116f2ef80, {{19.0, 501.0}, {337.5, 150.0}}
+              Other, 0x116f2ebc0, {{19.0, 501.0}, {337.5, 82.0}}
+                StaticText, 0x116f2ea80, {{19.0, 501.0}, {53.5, 14.5}}, label: 'GALLERY'
+                StaticText, 0x116f2e940, {{19.0, 520.5}, {197.0, 14.5}}, label: 'Imported on: 10/13/2026, 12:00 PM'
+                StaticText, 0x116f2e800, {{19.0, 540.0}, {337.5, 43.0}}, label: 'SHA-256: 84EA555CB3319DB0E3109F9801F5953E8D0C4FB6945C78C491BC00F49600119F'
+              Other, 0x116f2e6c0, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116f2e580, {{350.5, 641.0}, {3.0, 7.0}}
+              Other, 0x116f2e440, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116f2e300, {{350.5, 641.0}, {3.0, 7.0}}
+Path to element:
+ →Application, 0x116d092c0, pid: 11254, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x116f2e1c0, pid: 11254, label: 'Limen'
+  }
+
+    t =    15.67s Tap "minus" Button
+    t =    15.67s     Wait for dev.peringer.limen.audit to idle
+    t =    15.67s     Find the "minus" Button
+    t =    15.69s     Check for interrupting elements affecting "minus" Button
+    t =    15.71s     Synthesize event
+    t =    16.01s     Wait for dev.peringer.limen.audit to idle
+    t =    16.02s Waiting 5.0s for "400%" Button to exist
+    t =    17.06s     Checking `Expect predicate `existsNoRetry == 1` for object "400%" Button`
+    t =    17.06s         Checking existence of `"400%" Button`
+    t =    17.08s Tap "400%" Button
+    t =    17.08s     Wait for dev.peringer.limen.audit to idle
+    t =    17.08s     Find the "400%" Button
+    t =    17.11s     Check for interrupting elements affecting "400%" Button
+    t =    17.13s     Synthesize event
+    t =    17.42s     Wait for dev.peringer.limen.audit to idle
+    t =    17.43s Waiting 5.0s for "100%" Button to exist
+    t =    18.47s     Checking `Expect predicate `existsNoRetry == 1` for object "100%" Button`
+    t =    18.47s         Checking existence of `"100%" Button`
+    t =    18.50s Find the "minus" Button
+    t =    18.52s Find the Target Application 'dev.peringer.limen.audit'
+    t =    18.58s Added attachment named 'photo-finalized-reset-100'
+    t =    18.58s Requesting snapshot of accessibility hierarchy for app with pid 11254
+    t =    18.68s Requesting snapshot of accessibility hierarchy for app with pid 11254
+LIMEN_PHOTO_VIEWER_TREE photo-finalized-reset-100
+Attributes: Application, 0x116f2dcc0, pid: 11254, label: 'Limen'
+Element subtree:
+ →Application, 0x116f2dcc0, pid: 11254, label: 'Limen'
+    Window (Main), 0x116f2de00, {{0.0, 0.0}, {375.0, 667.0}}
+      Other, 0x116f2df40, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116f2ef80, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116f2e440, {{0.0, 0.0}, {375.0, 667.0}}
+            Other, 0x116f2e300, {{0.0, 0.0}, {375.0, 667.0}}
+              Button, 0x116f2e6c0, {{20.0, 28.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+              Image, 0x116f2e580, {{74.0, 32.5}, {42.0, 42.0}}, label: 'limen-seal'
+              StaticText, 0x116f2ebc0, {{124.0, 31.0}, {44.5, 16.0}}, label: 'ENTRY'
+              StaticText, 0x116f2e800, {{124.0, 47.0}, {95.5, 29.0}}, label: 'Synthetic photo viewer fixture'
+              Button, 0x116f2e940, {{253.0, 31.5}, {44.0, 44.0}}, identifier: 'info.circle', label: 'Go through the flat in your own order. Confirm every listed room after checking it, even when there is no defect.'
+              Switch, 0x116f2ea80, {{303.0, 29.5}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dark theme', value: NO
+              StaticText, 0x116f2f0c0, {{34.0, 108.0}, {144.5, 14.0}}, label: 'FINALIZED, READ ONLY'
+              Button, 0x116f2f340, {{217.5, 93.0}, {44.0, 44.0}}, identifier: 'info.circle', label: 'This record is signed. Everything in it can be read; nothing in it can be changed.'
+              Button, 0x116f2f480, {{265.5, 91.0}, {83.5, 48.0}}, label: 'EXPORT'
+              ScrollView, 0x116f2ee40, {{20.0, 151.0}, {335.0, 508.0}}
+                Other, 0x116f2f5c0, {{20.0, 151.0}, {335.0, 437.5}}
+                  Button, 0x116f2f200, {{20.0, 151.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+                  StaticText, 0x116f2fac0, {{76.0, 163.8}, {240.5, 25.5}}, label: 'SYNTHETIC GRID ROOM'
+                  Other, 0x116f2f700, {{20.0, 212.0}, {335.0, 50.5}}, label: 'Name of this room'
+                    StaticText, 0x116f2fd40, {{32.0, 220.0}, {106.5, 14.5}}, label: 'Name of this room'
+                    StaticText, 0x116f2f980, {{32.0, 236.5}, {135.0, 18.0}}, label: 'Synthetic grid room'
+                  Switch, 0x116f2fe80, {{20.0, 272.5}, {335.0, 48.0}}, label: 'ROOM INSPECTED', value: YES, Disabled
+                  StaticText, 0x116f2fc00, {{36.0, 346.5}, {165.5, 14.5}}, label: 'Room overview photographs'
+                  ScrollView, 0x116f2f840, {{36.0, 369.0}, {303.0, 84.0}}
+                    Other, 0x116f2ed00, {{36.0, 369.0}, {84.0, 84.0}}
+                      Button, 0x116f2e080, {{22.0, 369.0}, {112.0, 84.0}}, label: 'OPEN · synthetic-grid.png'
+                    Other, 0x116f2d900, {{36.0, 420.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116f2da40, {{258.0, 447.0}, {78.0, 3.0}}
+                    Other, 0x116f2e1c0, {{36.0, 420.0}, {303.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x116f2cf00, {{258.0, 447.0}, {78.0, 3.0}}
+                  StaticText, 0x116f2d180, {{20.0, 479.0}, {207.5, 18.0}}, label: 'Inspected, no defect recorded'
+                  Button, 0x116f2ca00, {{20.0, 507.0}, {335.0, 59.5}}, label: 'Next room / finish inspection'
+                Other, 0x116f2d7c0, {{322.0, 151.0}, {30.0, 508.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                  Other, 0x116f2db80, {{349.0, 224.5}, {3.0, 431.5}}
+                Other, 0x116f2cdc0, {{322.0, 151.0}, {30.0, 508.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                  Other, 0x10725b5c0, {{349.0, 224.5}, {3.0, 431.5}}
+      Other, 0x116d092c0, {{0.0, 0.0}, {375.0, 667.0}}
+        Other, 0x116d08280, {{0.0, 0.0}, {375.0, 667.0}}
+          Other, 0x116d09cc0, {{0.0, 0.0}, {375.0, 667.0}}
+            StaticText, 0x116d08640, {{16.0, 48.8}, {170.5, 25.5}}, label: 'Original evidence'
+            Button, 0x116d09e00, {{311.0, 36.0}, {48.0, 51.0}}, identifier: 'xmark', label: 'DONE'
+            ScrollView, 0x116d08dc0, {{16.0, 95.0}, {343.0, 339.0}}, label: 'synthetic-grid.png'
+              Image, 0x116d09540, {{16.0, 95.0}, {343.0, 339.0}}
+              Other, 0x116d09040, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116d0af80, {{353.0, 98.0}, {3.0, 333.0}}
+              Other, 0x116d083c0, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                Other, 0x116d09b80, {{19.0, 428.0}, {337.0, 3.0}}
+              Other, 0x116d0b0c0, {{326.0, 95.0}, {30.0, 339.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116d0a300, {{353.0, 98.0}, {3.0, 333.0}}
+              Other, 0x116d08b40, {{16.0, 401.0}, {343.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                Other, 0x116d09680, {{19.0, 428.0}, {337.0, 3.0}}
+            Button, 0x116d097c0, {{98.5, 442.5}, {48.0, 50.0}}, identifier: 'minus', label: 'Decrease', Disabled
+            Button, 0x116d0bc00, {{154.5, 443.5}, {66.0, 48.0}}, label: '100%'
+            Button, 0x116d09900, {{228.5, 442.0}, {48.0, 51.0}}, identifier: 'plus', label: 'Increase'
+            ScrollView, 0x116d0aa80, {{19.0, 501.0}, {337.5, 150.0}}
+              Other, 0x116d0b480, {{19.0, 501.0}, {337.5, 82.0}}
+                StaticText, 0x116d0b980, {{19.0, 501.0}, {53.5, 14.5}}, label: 'GALLERY'
+                StaticText, 0x116d0ae40, {{19.0, 520.5}, {197.0, 14.5}}, label: 'Imported on: 10/13/2026, 12:00 PM'
+                StaticText, 0x116d0b200, {{19.0, 540.0}, {337.5, 43.0}}, label: 'SHA-256: 84EA555CB3319DB0E3109F9801F5953E8D0C4FB6945C78C491BC00F49600119F'
+              Other, 0x116d08140, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116d08780, {{350.5, 641.0}, {3.0, 7.0}}
+              Other, 0x116d0b340, {{323.5, 501.0}, {30.0, 150.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                Other, 0x116d0b700, {{350.5, 641.0}, {3.0, 7.0}}
+Path to element:
+ →Application, 0x116f2dcc0, pid: 11254, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x116d08f00, pid: 11254, label: 'Limen'
+  }
+
+    t =    18.71s Tap "DONE" Button
+    t =    18.71s     Wait for dev.peringer.limen.audit to idle
+    t =    18.71s     Find the "DONE" Button
+    t =    18.74s     Check for interrupting elements affecting "xmark" Button
+    t =    18.75s     Synthesize event
+    t =    19.05s     Wait for dev.peringer.limen.audit to idle
+    t =    19.39s Waiting 10.0s for "OPEN · synthetic-grid.png" Button to exist
+    t =    20.42s     Checking `Expect predicate `existsNoRetry == 1` for object "OPEN · synthetic-grid.png" Button`
+    t =    20.42s         Checking existence of `"OPEN · synthetic-grid.png" Button`
+    t =    20.45s Checking existence of `"DELETE" Button`
+    t =    20.47s Tear Down
+Test Case '-[LimenUITests.PhotoViewerJourneyTests testFinalizedPhotoIsViewableWithoutEditingOrDeletion]' passed (20.700 seconds).
+Test Suite 'PhotoViewerJourneyTests' passed at 2026-10-15 21:42:57.293.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 66.793 (66.796) seconds
+Test Suite 'LimenUITests.xctest' passed at 2026-10-15 21:42:57.294.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 66.793 (66.797) seconds
+Test Suite 'Selected tests' passed at 2026-10-15 21:42:57.295.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 66.793 (66.798) seconds
+2026-10-15 21:42:57.649 xcodebuild[10814:112031] [MT] IDETestOperationsObserverDebug: 68.463 elapsed -- Testing started completed.
+2026-10-15 21:42:57.649 xcodebuild[10814:112031] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-15 21:42:57.649 xcodebuild[10814:112031] [MT] IDETestOperationsObserverDebug: 68.463 sec, +68.463 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/verify/photo-small.xcresult
+
+** TEST SUCCEEDED **
+
+Testing started

@@ -1,0 +1,2 @@
+"NSCameraUsageDescription" = "Limen usa la fotocamera per documentare difetti e oggetti forniti. Gli originali restano nell’app fino all’esportazione o eliminazione del verbale.";
+"NSFaceIDUsageDescription" = "Usare Face ID per aprire verbali salvati e impostazioni quando si attiva questa opzione. Il verbale condiviso resta accessibile.";

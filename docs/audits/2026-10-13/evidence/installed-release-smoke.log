@@ -1,0 +1,104 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -xctestrun ./DD-device-tests/Build/Products/InstalledReleaseSmoke.xctestrun -destination id=00008150-001074183A7B401C -parallel-testing-enabled NO "-only-testing:LimenUITests/InstalledReleaseSmokeTest/testInstalledReleaseReadOnlyFlow" -resultBundlePath /tmp/limen-installed-release-smoke.xcresult
+
+Writing result bundle at path:
+	/tmp/limen-installed-release-smoke.xcresult
+
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS, arch:arm64e, id:00008150-001074183A7B401C, name:Alexis’s iPhone }
+{ platform:iOS, arch:arm64, id:00008150-001074183A7B401C, name:Alexis’s iPhone }
+2026-10-14 01:06:09.989365+0200 LimenUITests-Runner[19025:4557037] [Default] Running tests...
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'Selected tests' started at 2026-10-14 01:06:10.412.
+Test Suite 'LimenUITests.xctest' started at 2026-10-14 01:06:10.413.
+Test Suite 'InstalledReleaseSmokeTest' started at 2026-10-14 01:06:10.413.
+Test Case '-[LimenUITests.InstalledReleaseSmokeTest testInstalledReleaseReadOnlyFlow]' started.
+    t =     0.00s Start Test at 2026-10-14 01:06:10.414
+    t =     0.02s Set Up
+    t =     0.03s Open dev.peringer.limen
+    t =     0.03s     Activate dev.peringer.limen
+    t =     0.05s         Wait for dev.peringer.limen to idle
+    t =     0.07s Waiting 20.0s for Button (First Match) to exist
+    t =     1.08s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =     1.08s         Checking existence of `Button (First Match)`
+    t =     1.09s             Requesting snapshot of accessibility hierarchy for app with pid 19024
+    t =     1.14s Find the Button (First Match)
+    t =     1.15s     Requesting snapshot of accessibility hierarchy for app with pid 19024
+    t =     1.18s Find the "NEW HANDOVER" Button
+    t =     1.18s     Requesting snapshot of accessibility hierarchy for app with pid 19024
+    t =     1.30s Added attachment named 'release-landing'
+    t =     1.31s Tap "NEW HANDOVER" Button
+    t =     1.31s     Wait for dev.peringer.limen to idle
+    t =     1.31s     Find the "NEW HANDOVER" Button
+    t =     1.31s         Requesting snapshot of accessibility hierarchy for app with pid 19024
+    t =     1.33s     Check for interrupting elements affecting "NEW HANDOVER" Button
+    t =     1.34s         Requesting snapshot of accessibility hierarchy for app with pid 19024
+    t =     1.36s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     1.36s     Synthesize event
+    t =     1.65s     Wait for dev.peringer.limen to idle
+    t =     1.66s Waiting 10.0s for "First name" TextField to exist
+    t =     2.66s     Checking `Expect predicate `existsNoRetry == 1` for object "First name" TextField`
+    t =     2.66s         Checking existence of `"First name" TextField`
+    t =     2.67s             Requesting snapshot of accessibility hierarchy for app with pid 19024
+    t =     2.72s             Find: Descendants matching type TextField
+    t =     2.72s             Find: Elements matching predicate '"First name" IN identifiers'
+    t =     2.82s Added attachment named 'release-empty-form'
+    t =     2.82s Tap "BACK" Button
+    t =     2.82s     Wait for dev.peringer.limen to idle
+    t =     2.82s     Find the "BACK" Button
+    t =     2.82s         Requesting snapshot of accessibility hierarchy for app with pid 19024
+    t =     2.85s     Check for interrupting elements affecting "arrow.backward" Button
+    t =     2.86s         Requesting snapshot of accessibility hierarchy for app with pid 19024
+    t =     2.88s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     2.88s     Synthesize event
+    t =     3.17s     Wait for dev.peringer.limen to idle
+    t =     3.18s Tap "DATA, BACKUP & PRIVACY" Button
+    t =     3.18s     Wait for dev.peringer.limen to idle
+    t =     3.18s     Find the "DATA, BACKUP & PRIVACY" Button
+    t =     3.19s         Requesting snapshot of accessibility hierarchy for app with pid 19024
+    t =     3.21s         Find: Descendants matching type Button
+    t =     3.21s         Find: Elements matching predicate '"DATA, BACKUP & PRIVACY" IN identifiers'
+    t =     3.21s     Check for interrupting elements affecting "DATA, BACKUP & PRIVACY" Button
+    t =     3.23s         Requesting snapshot of accessibility hierarchy for app with pid 19024
+    t =     3.25s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     3.26s     Synthesize event
+    t =     3.56s     Wait for dev.peringer.limen to idle
+    t =     3.57s Waiting 10.0s for ScrollView (First Match) to exist
+    t =     4.59s     Checking `Expect predicate `existsNoRetry == 1` for object ScrollView (First Match)`
+    t =     4.59s         Checking existence of `ScrollView (First Match)`
+    t =     4.60s             Requesting snapshot of accessibility hierarchy for app with pid 19024
+    t =     4.75s Added attachment named 'release-privacy'
+    t =     4.75s Tap "BACK" Button
+    t =     4.75s     Wait for dev.peringer.limen to idle
+    t =     4.75s     Find the "BACK" Button
+    t =     4.75s         Requesting snapshot of accessibility hierarchy for app with pid 19024
+    t =     4.80s     Check for interrupting elements affecting "arrow.backward" Button
+    t =     4.81s         Requesting snapshot of accessibility hierarchy for app with pid 19024
+    t =     4.84s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     4.84s     Synthesize event
+    t =     5.13s     Wait for dev.peringer.limen to idle
+    t =     5.13s Waiting 10.0s for "SAVED HANDOVERS" Button to exist
+    t =     6.17s     Checking `Expect predicate `existsNoRetry == 1` for object "SAVED HANDOVERS" Button`
+    t =     6.17s         Checking existence of `"SAVED HANDOVERS" Button`
+    t =     6.17s             Requesting snapshot of accessibility hierarchy for app with pid 19024
+    t =     6.20s             Find: Descendants matching type Button
+    t =     6.20s             Find: Elements matching predicate '"SAVED HANDOVERS" IN identifiers'
+    t =     6.30s Added attachment named 'release-returned-home'
+    t =     6.30s Tear Down
+Test Case '-[LimenUITests.InstalledReleaseSmokeTest testInstalledReleaseReadOnlyFlow]' passed (6.316 seconds).
+Test Suite 'InstalledReleaseSmokeTest' passed at 2026-10-14 01:06:16.730.
+	 Executed 1 test, with 0 failures (0 unexpected) in 6.316 (6.317) seconds
+Test Suite 'LimenUITests.xctest' passed at 2026-10-14 01:06:16.730.
+	 Executed 1 test, with 0 failures (0 unexpected) in 6.316 (6.318) seconds
+Test Suite 'Selected tests' passed at 2026-10-14 01:06:16.731.
+	 Executed 1 test, with 0 failures (0 unexpected) in 6.316 (6.319) seconds
+2026-10-14 01:06:17.053 xcodebuild[39296:324917] [MT] IDETestOperationsObserverDebug: 8.964 elapsed -- Testing started completed.
+2026-10-14 01:06:17.053 xcodebuild[39296:324917] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-14 01:06:17.053 xcodebuild[39296:324917] [MT] IDETestOperationsObserverDebug: 8.964 sec, +8.964 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/limen-installed-release-smoke.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

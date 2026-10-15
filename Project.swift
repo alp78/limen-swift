@@ -21,8 +21,8 @@ let baseSettings: SettingsDictionary = [
     // cited the Vaud RULV in every canton. (An earlier comment here said 1.1.1 was pinned by the
     // published privacy page naming the version its claims were checked against; none of the
     // five notices names a version, so nothing holds the name back.)
-    "MARKETING_VERSION": "1.1.2",
-    "CURRENT_PROJECT_VERSION": "4",
+    "MARKETING_VERSION": "1.2.0",
+    "CURRENT_PROJECT_VERSION": "5",
     // The owner's own Apple Account (aperinger@proton.me), which is the one that will hold the
     // paid membership: an Individual enrollment needs no company, and Apple publishes the
     // enrolled legal name rather than any trade name. Pinning the team keeps a build from being
@@ -62,6 +62,8 @@ let project = Project(
             deploymentTargets: deployment,
             infoPlist: .extendingDefault(with: [
                 "CFBundleDisplayName": "Limen",
+                "CFBundleLocalizations": ["en", "fr", "de", "it", "rm"],
+                "NSFaceIDUsageDescription": "Limen uses Face ID only when you enable protection for the saved-record library and settings.",
                 // Tuist's default Info.plist carries 1.0 and 1, which is what the built bundle
                 // showed while the two settings above said 1.1.2 and 4. The phone's Settings pane
                 // and the crash reports read the bundle, so the bundle has to be told.
@@ -98,7 +100,10 @@ let project = Project(
             // apart.
             resources: ["Limen/Resources/**", "NOTICE"],
             dependencies: [.target(name: "LimenKit")],
-            settings: .settings(base: baseSettings)
+            settings: .settings(base: baseSettings, configurations: [
+                .debug(name: "Debug", settings: ["PRODUCT_BUNDLE_IDENTIFIER": "dev.peringer.limen.audit"]),
+                .release(name: "Release", settings: ["PRODUCT_BUNDLE_IDENTIFIER": "dev.peringer.limen"]),
+            ])
         ),
 
         .target(
@@ -108,6 +113,7 @@ let project = Project(
             bundleId: "dev.peringer.limen.kit.tests",
             deploymentTargets: deployment,
             sources: ["LimenKitTests/Sources/**"],
+            resources: [.folderReference(path: "LimenKitTests/Fixtures/Compatibility")],
             dependencies: [.target(name: "LimenKit")],
             settings: .settings(base: baseSettings)
         ),

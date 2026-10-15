@@ -1,0 +1,1421 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination id=00008150-001074183A7B401C -derivedDataPath ./DD-device-tests -allowProvisioningUpdates -parallel-testing-enabled NO -collect-test-diagnostics never "-only-testing:LimenUITests/RuntimeBoundaryTests" -resultBundlePath /tmp/limen-physical-interruption.xcresult test
+
+Writing result bundle at path:
+	/tmp/limen-physical-interruption.xcresult
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (5 targets)
+    Target 'LimenUITests' in project 'Limen'
+        ➜ Explicit dependency on target 'Limen' in project 'Limen'
+        ➜ Explicit dependency on target 'LimenKit' in project 'Limen'
+    Target 'LimenTests' in project 'Limen'
+        ➜ Explicit dependency on target 'Limen' in project 'Limen'
+    Target 'LimenKitTests' in project 'Limen'
+        ➜ Explicit dependency on target 'LimenKit' in project 'Limen'
+    Target 'Limen' in project 'Limen'
+        ➜ Explicit dependency on target 'LimenKit' in project 'Limen'
+    Target 'LimenKit' in project 'Limen' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.0.sdk /Users/aperi/DEV/SWIFT/limen/DD-device-tests/SDKStatCaches.noindex/iphoneos27.0-24A430-6c78b3cbc238196c85e1bf6c792c5915.sdkstatcache
+    cd /Users/aperi/DEV/SWIFT/limen
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.0.sdk -o /Users/aperi/DEV/SWIFT/limen/DD-device-tests/SDKStatCaches.noindex/iphoneos27.0-24A430-6c78b3cbc238196c85e1bf6c792c5915.sdkstatcache
+
+SwiftDriver LimenUITests normal arm64 com.apple.xcode.tools.swift.compiler (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name LimenUITests -Onone @/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.SwiftFileList -DDEBUG -module-alias Testing\=_Testing_Unavailable -plugin-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.0.sdk -target arm64-apple-ios17.0 -g -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 6 -I /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos -Isystem /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib -F /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Frameworks -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.0.sdk/Developer/Library/Frameworks -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/aperi/DEV/SWIFT/limen/DD-device-tests/SDKStatCaches.noindex/iphoneos27.0-24A430-6c78b3cbc238196c85e1bf6c792c5915.sdkstatcache -output-file-map /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests-OutputFileMap.json -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/ModuleCache.noindex -sdk-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/SDKExplicitPrecompiledModules -emit-dependencies -emit-module -emit-module-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule -serialize-diagnostics -dependency-scan-serialize-diagnostics-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests-dependency-scan.dia -validate-clang-modules-once -clang-build-session-file /Users/aperi/DEV/SWIFT/limen/DD-device-tests/ModuleCache.noindex/Session.modulevalidation -Xcc -fmodules-prune-interval\=86400 -Xcc -fmodules-prune-after\=345600 -emit-const-values -const-gather-protocols-list /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests_const_extract_protocols.json -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests-generated-files.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests-own-target-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/Limen-fa68bf1a78b3328b1edd5d0c0aaec809-VFS-iphoneos/all-product-headers.yaml -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests-project-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/include -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/DerivedSources-normal/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/DerivedSources/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests-Swift.h -working-directory /Users/aperi/DEV/SWIFT/limen -experimental-emit-module-separately -disable-cmo
+
+SwiftCompile normal arm64 Compiling\ RuntimeBoundaryTests.swift /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/RuntimeBoundaryTests.swift (in target 'LimenUITests' from project 'Limen')
+
+SwiftCompile normal arm64 /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/RuntimeBoundaryTests.swift (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-SwiftPerFileCompile RuntimeBoundaryTests.swift
+
+SwiftEmitModule normal arm64 Emitting\ module\ for\ LimenUITests (in target 'LimenUITests' from project 'Limen')
+
+SwiftCompile normal arm64 (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+
+SwiftDriverJobDiscovery normal arm64 Emitting module for LimenUITests (in target 'LimenUITests' from project 'Limen')
+
+SwiftDriver\ Compilation\ Requirements LimenUITests normal arm64 com.apple.xcode.tools.swift.compiler (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name LimenUITests -Onone @/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.SwiftFileList -DDEBUG -module-alias Testing\=_Testing_Unavailable -plugin-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.0.sdk -target arm64-apple-ios17.0 -g -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 6 -I /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos -Isystem /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib -F /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Frameworks -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.0.sdk/Developer/Library/Frameworks -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/aperi/DEV/SWIFT/limen/DD-device-tests/SDKStatCaches.noindex/iphoneos27.0-24A430-6c78b3cbc238196c85e1bf6c792c5915.sdkstatcache -output-file-map /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests-OutputFileMap.json -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/ModuleCache.noindex -sdk-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/SDKExplicitPrecompiledModules -emit-dependencies -emit-module -emit-module-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule -serialize-diagnostics -dependency-scan-serialize-diagnostics-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests-dependency-scan.dia -validate-clang-modules-once -clang-build-session-file /Users/aperi/DEV/SWIFT/limen/DD-device-tests/ModuleCache.noindex/Session.modulevalidation -Xcc -fmodules-prune-interval\=86400 -Xcc -fmodules-prune-after\=345600 -emit-const-values -const-gather-protocols-list /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests_const_extract_protocols.json -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests-generated-files.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests-own-target-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/Limen-fa68bf1a78b3328b1edd5d0c0aaec809-VFS-iphoneos/all-product-headers.yaml -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests-project-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/include -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/DerivedSources-normal/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/DerivedSources/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests-Swift.h -working-directory /Users/aperi/DEV/SWIFT/limen -experimental-emit-module-separately -disable-cmo
+
+Copy /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftsourceinfo (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftsourceinfo /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo
+
+Copy /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests.swiftmodule/arm64-apple-ios.swiftmodule /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests.swiftmodule/arm64-apple-ios.swiftmodule
+
+Copy /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests.swiftmodule/arm64-apple-ios.swiftdoc /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftdoc (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftdoc /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests.swiftmodule/arm64-apple-ios.swiftdoc
+
+Copy /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests.swiftmodule/arm64-apple-ios.abi.json /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.abi.json (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.abi.json /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests.swiftmodule/arm64-apple-ios.abi.json
+
+SwiftDriverJobDiscovery normal arm64 Compiling RuntimeBoundaryTests.swift (in target 'LimenUITests' from project 'Limen')
+
+SwiftDriver\ Compilation LimenUITests normal arm64 com.apple.xcode.tools.swift.compiler (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-Swift-Compilation -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name LimenUITests -Onone @/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.SwiftFileList -DDEBUG -module-alias Testing\=_Testing_Unavailable -plugin-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.0.sdk -target arm64-apple-ios17.0 -g -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 6 -I /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos -Isystem /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib -F /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Frameworks -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.0.sdk/Developer/Library/Frameworks -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/aperi/DEV/SWIFT/limen/DD-device-tests/SDKStatCaches.noindex/iphoneos27.0-24A430-6c78b3cbc238196c85e1bf6c792c5915.sdkstatcache -output-file-map /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests-OutputFileMap.json -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/ModuleCache.noindex -sdk-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/SDKExplicitPrecompiledModules -emit-dependencies -emit-module -emit-module-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule -serialize-diagnostics -dependency-scan-serialize-diagnostics-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests-dependency-scan.dia -validate-clang-modules-once -clang-build-session-file /Users/aperi/DEV/SWIFT/limen/DD-device-tests/ModuleCache.noindex/Session.modulevalidation -Xcc -fmodules-prune-interval\=86400 -Xcc -fmodules-prune-after\=345600 -emit-const-values -const-gather-protocols-list /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests_const_extract_protocols.json -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests-generated-files.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests-own-target-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/Limen-fa68bf1a78b3328b1edd5d0c0aaec809-VFS-iphoneos/all-product-headers.yaml -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests-project-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/include -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/DerivedSources-normal/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/DerivedSources/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests-Swift.h -working-directory /Users/aperi/DEV/SWIFT/limen -experimental-emit-module-separately -disable-cmo
+
+Ld /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/LimenUITests normal (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios17.0 -bundle -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.0.sdk -O0 -Xlinker -no_warn_duplicate_libraries -L/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphoneos -L/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos -L/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib -F/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphoneos -F/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos -iframework /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Frameworks -iframework /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.0.sdk/Developer/Library/Frameworks -filelist /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.LinkFileList -Xlinker -rpath -Xlinker /usr/lib/swift -Xlinker -rpath -Xlinker @loader_path/Frameworks -Xlinker -rpath -Xlinker @executable_path/Frameworks -Xlinker -dead_strip -Xlinker -object_path_lto -Xlinker /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests_lto.o -rdynamic -Xlinker -no_deduplicate -Xlinker -debug_variant -Xlinker -dependency_info -Xlinker /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests_dependency_info.dat -fobjc-link-runtime -fprofile-instr-generate -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos -Xlinker -needed_framework -Xlinker XCTest -framework XCTest -Xlinker -needed-lXCTestSwiftSupport -lXCTestSwiftSupport -framework LimenKit -Xlinker -no_adhoc_codesign -o /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/LimenUITests
+
+GenerateDSYMFile /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest.dSYM /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/LimenUITests (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    export PATH\=/Applications/Xcode.app/Contents/SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/SWBUniversalPlatformPlugin.bundle/Contents/Frameworks/SWBUniversalPlatform.framework/Resources:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/libexec:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/local/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/local/bin:/Users/aperi/.pyenv/shims:/Users/aperi/.local/bin:/Users/aperi/Library/Android/sdk/cmdline-tools/latest/bin:/Users/aperi/Library/Android/sdk/platform-tools:/Users/aperi/Library/Android/sdk/emulator:/opt/homebrew/opt/openjdk@21/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/Users/aperi/.codex/tmp/arg0/codex-arg03uRCGp:/Users/aperi/.vscode/extensions/openai.chatgpt-26.1007.21434-darwin-arm64/bin/macos-aarch64
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/dsymutil /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/LimenUITests -o /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest.dSYM
+
+CopySwiftLibs /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-swiftStdLibTool --copy --verbose --sign 620A35BD50F738DDCDE479E38A864D508888AEAD --scan-executable /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/LimenUITests --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Frameworks --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/PlugIns --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/SystemExtensions --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Extensions --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenKit.framework --platform iphoneos --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+ExtractAppIntentsMetadata (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsmetadataprocessor --toolchain-dir /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --module-name LimenUITests --sdk-root /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.0.sdk --xcode-version 27A266a --platform-family iOS --deployment-target 17.0 --bundle-identifier dev.peringer.limen.uitests --output /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest --target-triple arm64-apple-ios17.0 --binary-file /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/LimenUITests --dependency-file /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests_dependency_info.dat --stringsdata-file /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/ExtractedAppShortcutsMetadata.stringsdata --source-file-list /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.SwiftFileList --metadata-file-list /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests.DependencyMetadataFileList --static-metadata-file-list /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests.DependencyStaticMetadataFileList --swift-const-vals-list /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/Objects-normal/arm64/LimenUITests.SwiftConstValuesFileList --compile-time-extraction --deployment-aware-processing --no-app-shortcuts-localization
+2026-10-14 01:04:03.089 appintentsmetadataprocessor[38535:315780] Starting appintentsmetadataprocessor export
+2026-10-14 01:04:03.091 appintentsmetadataprocessor[38535:315780] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+
+CodeSign /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+    Signing Identity:     "Apple Development: aperinger@proton.me (PGK4SBCT22)"
+    Provisioning Profile: "iOS Team Provisioning Profile: *"
+                          (a395a434-2dae-49c5-ac2f-68ce07001af8)
+    
+    /usr/bin/codesign --force --sign 620A35BD50F738DDCDE479E38A864D508888AEAD --entitlements /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests.xctest.xcent --timestamp\=none --generate-entitlement-der /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest
+
+CodeSign /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+    Signing Identity:     "Apple Development: aperinger@proton.me (PGK4SBCT22)"
+    Provisioning Profile: "iOS Team Provisioning Profile: *"
+                          (a395a434-2dae-49c5-ac2f-68ce07001af8)
+    
+    /usr/bin/codesign --force --sign 620A35BD50F738DDCDE479E38A864D508888AEAD --entitlements /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/Limen.build/Debug-iphoneos/LimenUITests.build/LimenUITests.xctest.xcent --timestamp\=none --generate-entitlement-der /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app
+/Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Products/Debug-iphoneos/LimenUITests-Runner.app: replacing existing signature
+
+PruneExplicitPrecompiledModules /Users/aperi/DEV/SWIFT/limen/DD-device-tests/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/aperi/DEV/SWIFT/limen/DD-device-tests/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+2026-10-14 01:04:05.284881+0200 LimenUITests-Runner[19010:4554957] [Default] Running tests...
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'Selected tests' started at 2026-10-14 01:04:05.703.
+Test Suite 'LimenUITests.xctest' started at 2026-10-14 01:04:05.704.
+Test Suite 'RuntimeBoundaryTests' started at 2026-10-14 01:04:05.704.
+Test Case '-[LimenUITests.RuntimeBoundaryTests testCameraPermissionDenialOffersSettingsAndPreservesDraft]' started.
+    t =     0.00s Start Test at 2026-10-14 01:04:05.705
+    t =     0.02s Set Up
+    t =     0.03s Open dev.peringer.limen.audit
+2026-10-14 01:04:05.784 xcodebuild[38509:314907] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-14 01:04:05.784 xcodebuild[38509:314907] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     0.04s     Launch dev.peringer.limen.audit
+    t =     1.79s         Setting up automation session
+    t =     1.87s         Wait for dev.peringer.limen.audit to idle
+    t =     2.93s Waiting 30.0s for Button (First Match) to exist
+    t =     3.96s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =     3.96s         Checking existence of `Button (First Match)`
+    t =     3.97s             Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.05s Checking existence of `Button (First Match)`
+    t =     4.05s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.08s Find the Button (First Match)
+    t =     4.08s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.12s Find the Target Application 'dev.peringer.limen.audit'
+    t =     4.12s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.15s Find the Target Application 'dev.peringer.limen.audit'
+    t =     4.15s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.18s Find the "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 1 · OBJECTS 0" Button
+    t =     4.18s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.24s Checking existence of `"INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 1 · OBJECTS 0" Button`
+    t =     4.24s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.27s Tap "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 1 · OBJECTS 0" Button
+    t =     4.27s     Wait for dev.peringer.limen.audit to idle
+    t =     4.27s     Find the "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 1 · OBJECTS 0" Button
+    t =     4.28s         Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.31s     Check for interrupting elements affecting "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 1 · OBJECTS 0" Button
+    t =     4.32s         Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.34s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     4.34s     Synthesize event
+    t =     4.64s     Wait for dev.peringer.limen.audit to idle
+    t =     4.65s Checking existence of `"Room" Button`
+    t =     4.65s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.68s     Find: Descendants matching type Button
+    t =     4.69s     Find: Elements matching predicate '"Room" IN identifiers'
+    t =     4.69s Find the "Room" Button
+    t =     4.69s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.71s     Find: Descendants matching type Button
+    t =     4.72s     Find: Elements matching predicate '"Room" IN identifiers'
+    t =     4.72s Find the Target Application 'dev.peringer.limen.audit'
+    t =     4.73s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.75s Find the Target Application 'dev.peringer.limen.audit'
+    t =     4.75s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.78s Find the "Room" Button
+    t =     4.78s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.80s     Find: Descendants matching type Button
+    t =     4.80s     Find: Elements matching predicate '"Room" IN identifiers'
+    t =     4.82s Checking existence of `"Room" Button`
+    t =     4.82s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.85s     Find: Descendants matching type Button
+    t =     4.85s     Find: Elements matching predicate '"Room" IN identifiers'
+    t =     4.85s Tap "Room" Button
+    t =     4.85s     Wait for dev.peringer.limen.audit to idle
+    t =     4.86s     Find the "Room" Button
+    t =     4.86s         Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.88s         Find: Descendants matching type Button
+    t =     4.88s         Find: Elements matching predicate '"Room" IN identifiers'
+    t =     4.89s     Check for interrupting elements affecting "Room" Button
+    t =     4.90s         Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     4.92s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     4.93s     Synthesize event
+    t =     5.23s     Wait for dev.peringer.limen.audit to idle
+    t =     5.24s Checking existence of `"Name of this room" TextField`
+    t =     5.25s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     5.30s Find the "Name of this room" TextField
+    t =     5.30s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     5.35s Find the Target Application 'dev.peringer.limen.audit'
+    t =     5.36s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     5.39s Find the Target Application 'dev.peringer.limen.audit'
+    t =     5.40s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     5.43s Find the "Name of this room" TextField
+    t =     5.44s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     5.50s Checking existence of `"Name of this room" TextField`
+    t =     5.50s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     5.54s Tap "Name of this room" TextField
+    t =     5.54s     Wait for dev.peringer.limen.audit to idle
+    t =     5.55s     Find the "Name of this room" TextField
+    t =     5.55s         Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     5.59s     Check for interrupting elements affecting "Name of this room" TextField
+    t =     5.61s         Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     5.64s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     5.65s     Synthesize event
+    t =     5.95s     Wait for dev.peringer.limen.audit to idle
+    t =     6.30s Find the "Name of this room" TextField
+    t =     6.31s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     6.39s Type 'Camera boundary ro...' into "Name of this room" TextField
+    t =     6.39s     Wait for dev.peringer.limen.audit to idle
+    t =     6.40s     Find the "Name of this room" TextField
+    t =     6.40s         Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     6.46s     Check for interrupting elements affecting "Name of this room" TextField
+    t =     6.48s         Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     6.52s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     6.52s     Synthesize event
+2026-10-14 01:04:12.263709+0200 LimenUITests-Runner[19010:4554957] [MC] Reading from public effective user settings.
+    t =     7.08s     Wait for dev.peringer.limen.audit to idle
+    t =     7.10s Checking existence of `"Done" Button`
+    t =     7.10s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     7.18s     Find: Descendants matching type Keyboard
+    t =     7.18s     Find: Descendants matching type Button
+    t =     7.18s     Find: Elements matching predicate '"Done" IN identifiers'
+    t =     7.19s Find the "Done" Button
+    t =     7.19s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     7.24s     Find: Descendants matching type Keyboard
+    t =     7.25s     Find: Descendants matching type Button
+    t =     7.25s     Find: Elements matching predicate '"Done" IN identifiers'
+    t =     7.27s Tap "Done" Button
+    t =     7.27s     Wait for dev.peringer.limen.audit to idle
+    t =     7.27s     Find the "Done" Button
+    t =     7.28s         Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     7.34s         Find: Descendants matching type Keyboard
+    t =     7.35s         Find: Descendants matching type Button
+    t =     7.35s         Find: Elements matching predicate '"Done" IN identifiers'
+    t =     7.35s     Check for interrupting elements affecting "Done" Button
+    t =     7.37s         Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     7.41s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     7.41s     Synthesize event
+    t =     7.71s     Wait for dev.peringer.limen.audit to idle
+    t =     7.98s Checking existence of `Button (First Match)`
+    t =     7.98s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     8.03s Find the Button (First Match)
+    t =     8.03s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     8.08s Find the Target Application 'dev.peringer.limen.audit'
+    t =     8.08s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     8.12s Find the Target Application 'dev.peringer.limen.audit'
+    t =     8.12s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     8.17s Find the "camera" Button
+    t =     8.17s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     8.25s Checking existence of `"camera" Button`
+    t =     8.25s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     8.30s Tap "camera" Button
+    t =     8.30s     Wait for dev.peringer.limen.audit to idle
+    t =     8.30s     Find the "camera" Button
+    t =     8.31s         Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     8.36s     Check for interrupting elements affecting "camera" Button
+    t =     8.37s         Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =     8.41s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     8.41s     Synthesize event
+    t =     8.72s     Wait for dev.peringer.limen.audit to idle
+    t =     8.73s Waiting 15.0s for Button (First Match) to exist
+    t =     9.75s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =     9.75s         Checking existence of `Button (First Match)`
+    t =     9.76s             Requesting snapshot of accessibility hierarchy for app with pid 37
+    t =     9.86s Tap Button (First Match)
+    t =     9.86s     Wait for com.apple.springboard to idle
+    t =     9.86s     Find the Button (First Match)
+    t =     9.86s         Requesting snapshot of accessibility hierarchy for app with pid 37
+    t =     9.97s     Check for interrupting elements affecting "Don’t Allow" Button
+    t =     9.98s         Requesting snapshot of accessibility hierarchy for app with pid 37
+    t =    10.07s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    10.07s Failed to construct element query matching interruption. Interrupting element Alert, foreground application Application 'com.apple.springboard', element application: (null). If your test failed after this unhandled interruption, please file a bug and attach your .xcresult bundle.
+    t =    10.08s     Synthesize event
+    t =    10.38s     Wait for com.apple.springboard to idle
+    t =    10.63s Waiting 10.0s for "Open Settings" Button to exist
+    t =    11.64s     Checking `Expect predicate `existsNoRetry == 1` for object "Open Settings" Button`
+    t =    11.64s         Checking existence of `"Open Settings" Button`
+    t =    11.65s             Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =    11.72s             Find: Descendants matching type Button
+    t =    11.72s             Find: Elements matching predicate '"Open Settings" IN identifiers'
+    t =    11.73s Checking existence of `"Camera access is off. Allow it in Settings to take a photo, or choose a picture from Photos." StaticText`
+    t =    11.73s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =    11.79s     Find: Descendants matching type StaticText
+    t =    11.79s     Find: Elements matching predicate '"Camera access is off. Allow it in Settings to take a photo, or choose a picture from Photos." IN identifiers'
+    t =    11.80s Find the Target Application 'dev.peringer.limen.audit'
+    t =    11.80s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =    11.96s Added attachment named 'runtime-camera-denied-physical'
+    t =    11.96s Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =    12.09s Requesting snapshot of accessibility hierarchy for app with pid 19011
+LIMEN_RUNTIME_TREE runtime-camera-denied-physical
+Attributes: Application, 0x12cea7ac0, pid: 19011, label: 'Limen'
+Element subtree:
+ →Application, 0x12cea7ac0, pid: 19011, label: 'Limen'
+    Window (Main), 0x12cea6f80, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x12cea7700, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x12cea6e40, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x12cea7980, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x12cea7d40, {{0.0, 0.0}, {402.0, 874.0}}
+              Button, 0x12cea7c00, {{20.0, 70.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+              Image, 0x12cea7200, {{74.0, 74.7}, {42.0, 42.0}}, label: 'limen-seal'
+              StaticText, 0x12cea43c0, {{124.0, 80.5}, {44.3, 15.7}}, label: 'ENTRY'
+              StaticText, 0x12cea4280, {{124.0, 96.2}, {71.3, 14.3}}, label: 'Test street 1'
+              Button, 0x12cea70c0, {{280.0, 73.7}, {44.0, 44.0}}, identifier: 'info.circle', label: 'Go through the flat in your own order. Confirm every listed room after checking it, even when there is no defect.'
+              Switch, 0x12cea4140, {{330.0, 71.7}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dark theme', value: NO
+              ScrollView, 0x12cea4780, {{20.0, 129.0}, {362.0, 703.0}}
+                Other, 0x12cea5540, {{20.0, 129.0}, {362.0, 705.0}}
+                  Button, 0x12cea6440, {{20.0, 129.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+                  StaticText, 0x12cea75c0, {{76.0, 141.8}, {278.0, 25.3}}, label: 'CAMERA BOUNDARY ROOM'
+                  Other, 0x12cea7340, {{20.0, 190.0}, {362.0, 76.3}}, label: 'Name of this room'
+                    StaticText, 0x12cea5680, {{32.0, 198.0}, {106.3, 14.3}}, label: 'Name of this room'
+                    TextField, 0x12cea5900, {{32.0, 214.3}, {338.0, 44.0}}, identifier: 'Name of this room', label: 'Name of this room', placeholderValue: 'Room', value: Camera boundary room
+                  Button, 0x12cea7840, {{20.0, 276.3}, {84.0, 48.0}}, label: 'Move up', Disabled
+                  Button, 0x12cea5e00, {{205.0, 276.3}, {103.0, 48.0}}, label: 'Move down', Disabled
+                  Switch, 0x12cea6940, {{20.0, 334.3}, {362.0, 48.0}}, label: 'ROOM INSPECTED', value: NO
+                  Other, 0x12cea5180, {{20.0, 392.3}, {362.0, 90.7}}, label: 'Not inspected / not available / not applicable: specify reason'
+                    StaticText, 0x12cea4dc0, {{32.0, 400.3}, {264.0, 28.7}}, label: 'Not inspected / not available / not applicable: specify reason'
+                    TextField, 0x12cea7480, {{32.0, 444.0}, {338.0, 18.0}}, identifier: 'Not inspected / not available / not applicable: specify reason', label: 'Not inspected / not available / not applicable: specify reason'
+                      Other, 0x12cea4640, {{32.0, 450.0}, {338.0, 9.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                        Other, 0x12cff03c0, {{35.0, 456.0}, {332.0, 3.0}}
+                  StaticText, 0x12cff0500, {{36.0, 509.0}, {165.3, 14.3}}, label: 'Room overview photographs'
+                  Button, 0x12cff0000, {{36.0, 531.3}, {161.0, 51.0}}, identifier: 'camera', label: 'PHOTO'
+                  Button, 0x12cff0140, {{205.0, 531.3}, {161.0, 51.0}}, identifier: 'photo.on.rectangle', label: 'GALLERY'
+                  ScrollView, 0x12cff0a00, {{36.0, 590.3}, {330.0, 0.0}}
+                    Other, 0x12cff0640, {{36.0, 590.3}, {0.0, 0.0}}
+                    Other, 0x12cff0280, {{36.0, 587.3}, {330.0, 0.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x12cff0780, {{356.0, 584.3}, {7.0, 3.0}}
+                    Other, 0x12cff08c0, {{36.0, 587.3}, {330.0, 0.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                      Other, 0x12cff0b40, {{356.0, 584.3}, {7.0, 3.0}}
+                  Button, 0x12ced8f00, {{20.0, 616.3}, {362.0, 44.3}}, label: 'RECORD A DEFECT'
+                    Button, 0x12ced8c80, {{20.0, 616.3}, {362.0, 44.3}}
+                      Image, 0x12ced92c0, {{36.3, 631.0}, {15.0, 15.0}}, identifier: 'plus', label: 'Add'
+                      StaticText, 0x12ced9180, {{61.7, 630.7}, {128.7, 15.7}}, label: 'RECORD A DEFECT'
+                      Image, 0x12ced83c0, {{351.3, 634.3}, {14.7, 8.3}}, identifier: 'chevron.down', label: 'Go Down'
+                  StaticText, 0x12ced88c0, {{20.0, 670.7}, {217.7, 18.0}}, label: 'No defect recorded in this room'
+                  Button, 0x12ced8140, {{20.0, 711.7}, {93.3, 18.0}}, label: 'Room actions'
+                    Button, 0x12ceda080, {{20.0, 711.7}, {93.3, 18.0}}
+                      StaticText, 0x12ceda800, {{20.0, 711.7}, {93.3, 18.0}}, label: 'Room actions'
+                  Button, 0x12cedaf80, {{20.0, 752.7}, {362.0, 59.3}}, label: 'Next room / finish inspection'
+                Other, 0x12cedaa80, {{349.0, 129.0}, {30.0, 683.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                  Other, 0x12ced9680, {{376.0, 132.0}, {3.0, 673.3}}
+                Other, 0x12ced97c0, {{349.0, 129.0}, {30.0, 683.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                  Other, 0x12ced9e00, {{376.0, 132.0}, {3.0, 673.3}}
+      Other, 0x12ceda440, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x12ced9540, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x12ced9900, {{0.0, 0.0}, {402.0, 874.0}}
+        Alert, 0x12ced9400, {{41.0, 355.0}, {320.0, 192.0}}, label: 'PHOTO'
+          Other, 0x12ced9040, {{41.0, 355.0}, {320.0, 192.0}}
+            Other, 0x12ced8a00, {{41.0, 355.0}, {320.0, 192.0}}
+              Other, 0x12ced8b40, {{41.0, 355.0}, {320.0, 192.0}}
+              Other, 0x12cedbd40, {{41.0, 355.0}, {320.0, 192.0}}
+                ScrollView, 0x12cedb840, {{41.0, 355.0}, {320.0, 112.0}}
+                  Other, 0x12ceda580, {{41.0, 355.0}, {320.0, 112.0}}
+                    StaticText, 0x12ced8500, {{71.0, 377.0}, {260.0, 20.3}}, label: 'PHOTO'
+                    StaticText, 0x12ced8280, {{71.0, 404.7}, {260.0, 58.0}}, label: 'Camera access is off. Allow it in Settings to take a photo, or choose a picture from Photos.'
+                  Other, 0x12ced8780, {{41.0, 465.0}, {320.0, 2.0}}
+                  Other, 0x12ced8000, {{328.0, 355.0}, {30.0, 112.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                    Other, 0x12ced8640, {{355.0, 316.0}, {3.0, 36.0}}
+                  Other, 0x12ced8dc0, {{41.0, 434.0}, {320.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                    Other, 0x12cecd900, {{2.0, 461.0}, {36.0, 3.0}}
+                  Other, 0x12cecc280, {{328.0, 355.0}, {30.0, 112.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                    Other, 0x12cecd040, {{355.0, 316.0}, {3.0, 36.0}}
+                  Other, 0x12cecd180, {{41.0, 434.0}, {320.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                    Other, 0x12ceccdc0, {{2.0, 461.0}, {36.0, 3.0}}
+                ScrollView, 0x12ceccb40, {{41.0, 467.0}, {320.0, 80.0}}
+                  Other, 0x12cecc3c0, {{41.0, 467.0}, {320.0, 80.0}}
+                    Other, 0x12cecc500, {{57.0, 483.0}, {288.0, 48.0}}
+                      Button, 0x12cecc780, {{57.0, 483.0}, {140.0, 48.0}}, label: 'CANCEL'
+                      Button, 0x12cecc640, {{205.0, 483.0}, {140.0, 48.0}}, label: 'Open Settings'
+                  Other, 0x12cecc000, {{328.0, 467.0}, {30.0, 80.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                    Other, 0x12cecc140, {{355.0, 557.0}, {3.0, 7.0}}
+                  Other, 0x12ceccc80, {{41.0, 514.0}, {320.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                    Other, 0x12cecc8c0, {{131.0, 541.0}, {7.0, 3.0}}
+                  Other, 0x12cecca00, {{328.0, 467.0}, {30.0, 80.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                    Other, 0x12ceccf00, {{355.0, 557.0}, {3.0, 7.0}}
+                  Other, 0x12cecd680, {{41.0, 514.0}, {320.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                    Other, 0x12cecd7c0, {{131.0, 541.0}, {7.0, 3.0}}
+          Other, 0x12cecd2c0, {{41.0, 355.0}, {320.0, 192.0}}
+            Other, 0x12cecd400, {{41.0, 355.0}, {320.0, 192.0}}
+              Other, 0x12cecd540, {{41.0, 355.0}, {320.0, 192.0}}
+                Other, 0x12cecdb80, {{41.0, 355.0}, {320.0, 192.0}}
+                  Other, 0x12cecda40, {{41.0, 355.0}, {320.0, 192.0}}
+                    Other, 0x12d0a8280, {{41.0, 355.0}, {320.0, 192.0}}
+                Other, 0x12d0aa1c0, {{41.0, 355.0}, {320.0, 192.0}}
+                  Other, 0x12d0aa300, {{41.0, 355.0}, {320.0, 192.0}}
+    Window, 0x12d0ab980, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x12d0abac0, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x12d0abc00, {{0.0, 0.0}, {402.0, 874.0}}
+Path to element:
+ →Application, 0x12cea7ac0, pid: 19011, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x12d0abe80, pid: 19011, label: 'Limen'
+  }
+
+    t =    12.15s Tap "CANCEL" Button
+    t =    12.15s     Wait for dev.peringer.limen.audit to idle
+    t =    12.15s     Find the "CANCEL" Button
+    t =    12.15s         Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =    12.19s         Find: Descendants matching type Button
+    t =    12.19s         Find: Elements matching predicate '"CANCEL" IN identifiers'
+    t =    12.19s     Check for interrupting elements affecting "CANCEL" Button
+    t =    12.20s         Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =    12.22s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    12.23s Failed to construct element query matching interruption. Interrupting element Alert, foreground application Target Application 'dev.peringer.limen.audit', element application: (null). If your test failed after this unhandled interruption, please file a bug and attach your .xcresult bundle.
+    t =    12.23s     Synthesize event
+    t =    12.51s     Wait for dev.peringer.limen.audit to idle
+    t =    12.78s Checking existence of `"GALLERY" Button`
+    t =    12.78s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =    12.83s     Find: Descendants matching type Button
+    t =    12.83s     Find: Elements matching predicate '"GALLERY" IN identifiers'
+    t =    12.83s Find the "Name of this room" TextField
+    t =    12.83s     Requesting snapshot of accessibility hierarchy for app with pid 19011
+    t =    12.87s     Find: Descendants matching type TextField
+    t =    12.87s     Find: Elements matching predicate '"Name of this room" IN identifiers'
+    t =    12.88s Open com.apple.Preferences
+    t =    12.88s     Activate com.apple.Preferences
+    t =    12.93s         Wait for com.apple.Preferences to idle
+    t =    13.23s Waiting 10.0s for NavigationBar (First Match) to exist
+    t =    14.30s     Checking `Expect predicate `existsNoRetry == 1` for object NavigationBar (First Match)`
+    t =    14.30s         Checking existence of `NavigationBar (First Match)`
+    t =    14.30s             Requesting snapshot of accessibility hierarchy for app with pid 16655
+LIMEN_BACKGROUND_STATE audit=3 settings=4
+    t =    14.37s Terminate dev.peringer.limen.audit:19011
+    t =    15.44s Open dev.peringer.limen.audit
+    t =    15.44s     Launch dev.peringer.limen.audit
+2026-10-14 01:04:21.142 xcodebuild[38509:314907] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-14 01:04:21.142 xcodebuild[38509:314907] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =    15.92s         Setting up automation session
+    t =    15.93s         Wait for dev.peringer.limen.audit to idle
+    t =    17.02s Wait for dev.peringer.limen.audit to become Running Foreground
+    t =    17.02s Find the "Name of this room" TextField
+    t =    17.02s     Requesting snapshot of accessibility hierarchy for app with pid 19019
+    t =    17.10s     Find: Descendants matching type TextField
+    t =    17.10s     Find: Elements matching predicate '"Name of this room" IN identifiers'
+    t =    17.10s Tear Down
+Test Case '-[LimenUITests.RuntimeBoundaryTests testCameraPermissionDenialOffersSettingsAndPreservesDraft]' passed (17.154 seconds).
+Test Case '-[LimenUITests.RuntimeBoundaryTests testSupportingDocumentPickerCancellationPreservesDraft]' started.
+    t =     0.00s Start Test at 2026-10-14 01:04:22.861
+    t =     0.03s Set Up
+    t =     0.03s Open dev.peringer.limen.audit
+    t =     0.03s     Launch dev.peringer.limen.audit
+    t =     0.03s         Terminate dev.peringer.limen.audit:19019
+2026-10-14 01:04:23.882 xcodebuild[38509:314907] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-14 01:04:23.882 xcodebuild[38509:314907] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     1.52s         Setting up automation session
+    t =     1.53s         Wait for dev.peringer.limen.audit to idle
+    t =     2.54s Waiting 30.0s for Button (First Match) to exist
+    t =     3.55s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =     3.55s         Checking existence of `Button (First Match)`
+    t =     3.55s             Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     3.62s Checking existence of `Button (First Match)`
+    t =     3.63s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     3.66s Find the Button (First Match)
+    t =     3.66s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     3.70s Find the Target Application 'dev.peringer.limen.audit'
+    t =     3.70s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     3.72s Find the Target Application 'dev.peringer.limen.audit'
+    t =     3.73s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     3.76s Find the "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =     3.76s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     3.81s Checking existence of `"DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button`
+    t =     3.82s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     3.85s Tap "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =     3.85s     Wait for dev.peringer.limen.audit to idle
+    t =     3.85s     Find the "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =     3.86s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     3.89s     Check for interrupting elements affecting "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =     3.91s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     3.93s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     3.94s     Synthesize event
+    t =     4.24s     Wait for dev.peringer.limen.audit to idle
+    t =     4.25s Checking existence of `"Street and number" TextField`
+    t =     4.26s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     4.32s Find the "Street and number" TextField
+    t =     4.32s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     4.38s Find the Target Application 'dev.peringer.limen.audit'
+    t =     4.38s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     4.42s Find the Target Application 'dev.peringer.limen.audit'
+    t =     4.42s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     4.46s Find the "Street and number" TextField
+    t =     4.47s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     4.54s Checking existence of `"Street and number" TextField`
+    t =     4.54s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     4.60s Tap "Street and number" TextField
+    t =     4.60s     Wait for dev.peringer.limen.audit to idle
+    t =     4.60s     Find the "Street and number" TextField
+    t =     4.60s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     4.66s     Check for interrupting elements affecting "Street and number" TextField
+    t =     4.67s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     4.71s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     4.72s     Synthesize event
+    t =     5.02s     Wait for dev.peringer.limen.audit to idle
+    t =     5.38s Find the "Street and number" TextField
+    t =     5.39s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     5.49s Type 'Files...' into "Street and number" TextField
+    t =     5.49s     Wait for dev.peringer.limen.audit to idle
+    t =     5.50s     Find the "Street and number" TextField
+    t =     5.50s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     5.57s     Check for interrupting elements affecting "Street and number" TextField
+    t =     5.59s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     5.64s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     5.64s     Synthesize event
+    t =     6.45s     Wait for dev.peringer.limen.audit to idle
+    t =     6.46s Checking existence of `"Done" Button`
+    t =     6.46s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     6.57s     Find: Descendants matching type Keyboard
+    t =     6.57s     Find: Descendants matching type Button
+    t =     6.57s     Find: Elements matching predicate '"Done" IN identifiers'
+    t =     6.58s Find the "Done" Button
+    t =     6.58s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     6.66s     Find: Descendants matching type Keyboard
+    t =     6.66s     Find: Descendants matching type Button
+    t =     6.66s     Find: Elements matching predicate '"Done" IN identifiers'
+    t =     6.70s Tap "Done" Button
+    t =     6.71s     Wait for dev.peringer.limen.audit to idle
+    t =     6.71s     Find the "Done" Button
+    t =     6.72s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     6.78s         Find: Descendants matching type Keyboard
+    t =     6.78s         Find: Descendants matching type Button
+    t =     6.78s         Find: Elements matching predicate '"Done" IN identifiers'
+    t =     6.79s     Check for interrupting elements affecting "Done" Button
+    t =     6.80s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     6.86s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     6.86s     Synthesize event
+    t =     7.16s     Wait for dev.peringer.limen.audit to idle
+    t =     7.44s Checking existence of `"Supporting documents (0)" Button`
+    t =     7.44s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     7.52s     Find: Descendants matching type Button
+    t =     7.52s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =     7.52s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =     7.52s     Wait for dev.peringer.limen.audit to idle
+    t =     7.53s     Find the Target Application 'dev.peringer.limen.audit'
+    t =     7.53s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     7.59s     Check for interrupting elements affecting "Limen" Application
+    t =     7.60s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =     7.65s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     7.65s     Synthesize event
+    t =     8.17s     Wait for dev.peringer.limen.audit to idle
+    t =    10.03s Checking existence of `"Supporting documents (0)" Button`
+    t =    10.03s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    10.12s     Find: Descendants matching type Button
+    t =    10.12s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    10.12s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    10.13s     Wait for dev.peringer.limen.audit to idle
+    t =    10.13s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    10.13s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    10.20s     Check for interrupting elements affecting "Limen" Application
+    t =    10.21s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    10.27s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    10.28s     Synthesize event
+    t =    10.79s     Wait for dev.peringer.limen.audit to idle
+    t =    12.65s Checking existence of `"Supporting documents (0)" Button`
+    t =    12.65s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    12.75s     Find: Descendants matching type Button
+    t =    12.76s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    12.76s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    12.76s     Wait for dev.peringer.limen.audit to idle
+    t =    12.77s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    12.77s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    12.84s     Check for interrupting elements affecting "Limen" Application
+    t =    12.85s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    12.91s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    12.92s     Synthesize event
+    t =    13.43s     Wait for dev.peringer.limen.audit to idle
+    t =    15.30s Checking existence of `"Supporting documents (0)" Button`
+    t =    15.30s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    15.40s     Find: Descendants matching type Button
+    t =    15.40s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    15.41s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    15.41s     Wait for dev.peringer.limen.audit to idle
+    t =    15.41s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    15.41s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    15.49s     Check for interrupting elements affecting "Limen" Application
+    t =    15.50s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    15.55s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    15.56s     Synthesize event
+    t =    16.06s     Wait for dev.peringer.limen.audit to idle
+    t =    17.91s Checking existence of `"Supporting documents (0)" Button`
+    t =    17.92s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    18.02s     Find: Descendants matching type Button
+    t =    18.03s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    18.03s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    18.03s     Wait for dev.peringer.limen.audit to idle
+    t =    18.04s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    18.04s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    18.11s     Check for interrupting elements affecting "Limen" Application
+    t =    18.12s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    18.19s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    18.19s     Synthesize event
+    t =    18.70s     Wait for dev.peringer.limen.audit to idle
+    t =    20.53s Checking existence of `"Supporting documents (0)" Button`
+    t =    20.54s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    20.65s     Find: Descendants matching type Button
+    t =    20.66s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    20.66s Find the "Supporting documents (0)" Button
+    t =    20.67s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    20.75s     Find: Descendants matching type Button
+    t =    20.75s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    20.76s Find the Target Application 'dev.peringer.limen.audit'
+    t =    20.76s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    20.82s Find the Target Application 'dev.peringer.limen.audit'
+    t =    20.83s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    20.89s Find the "Supporting documents (0)" Button
+    t =    20.89s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    20.97s     Find: Descendants matching type Button
+    t =    20.97s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    20.99s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    20.99s     Wait for dev.peringer.limen.audit to idle
+    t =    21.00s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    21.00s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    21.07s     Check for interrupting elements affecting "Limen" Application
+    t =    21.08s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    21.14s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    21.15s     Synthesize event
+    t =    21.66s     Wait for dev.peringer.limen.audit to idle
+    t =    23.53s Checking existence of `"Supporting documents (0)" Button`
+    t =    23.54s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    23.65s     Find: Descendants matching type Button
+    t =    23.65s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    23.66s Find the "Supporting documents (0)" Button
+    t =    23.66s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    23.74s     Find: Descendants matching type Button
+    t =    23.75s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    23.76s Find the Target Application 'dev.peringer.limen.audit'
+    t =    23.76s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    23.82s Find the Target Application 'dev.peringer.limen.audit'
+    t =    23.83s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    23.89s Find the "Supporting documents (0)" Button
+    t =    23.89s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    23.97s     Find: Descendants matching type Button
+    t =    23.97s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    23.99s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    23.99s     Wait for dev.peringer.limen.audit to idle
+    t =    24.00s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    24.00s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    24.07s     Check for interrupting elements affecting "Limen" Application
+    t =    24.08s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    24.14s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    24.14s     Synthesize event
+    t =    24.65s     Wait for dev.peringer.limen.audit to idle
+    t =    26.50s Checking existence of `"Supporting documents (0)" Button`
+    t =    26.50s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    26.58s     Find: Descendants matching type Button
+    t =    26.59s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    26.59s Find the "Supporting documents (0)" Button
+    t =    26.59s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    26.67s     Find: Descendants matching type Button
+    t =    26.67s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    26.68s Find the Target Application 'dev.peringer.limen.audit'
+    t =    26.68s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    26.73s Find the Target Application 'dev.peringer.limen.audit'
+    t =    26.73s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    26.78s Find the "Supporting documents (0)" Button
+    t =    26.78s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    26.83s     Find: Descendants matching type Button
+    t =    26.84s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    26.86s Checking existence of `"Supporting documents (0)" Button`
+    t =    26.86s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    26.91s     Find: Descendants matching type Button
+    t =    26.91s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    26.92s Tap "Supporting documents (0)" Button
+    t =    26.92s     Wait for dev.peringer.limen.audit to idle
+    t =    26.92s     Find the "Supporting documents (0)" Button
+    t =    26.93s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    26.98s         Find: Descendants matching type Button
+    t =    26.98s         Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    26.98s     Check for interrupting elements affecting "Supporting documents (0)" Button
+    t =    27.00s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    27.04s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    27.04s     Synthesize event
+    t =    27.35s     Wait for dev.peringer.limen.audit to idle
+    t =    27.36s Checking existence of `"Document title" TextField`
+    t =    27.37s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    27.45s Find the "Document title" TextField
+    t =    27.45s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    27.52s Find the Target Application 'dev.peringer.limen.audit'
+    t =    27.52s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    27.56s Find the Target Application 'dev.peringer.limen.audit'
+    t =    27.57s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    27.61s Find the "Document title" TextField
+    t =    27.61s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    27.69s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    27.69s     Wait for dev.peringer.limen.audit to idle
+    t =    27.69s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    27.70s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    27.74s     Check for interrupting elements affecting "Limen" Application
+    t =    27.75s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    27.79s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    27.80s     Synthesize event
+    t =    28.31s     Wait for dev.peringer.limen.audit to idle
+    t =    30.17s Checking existence of `"Document title" TextField`
+    t =    30.17s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    30.25s Find the "Document title" TextField
+    t =    30.26s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    30.33s Find the Target Application 'dev.peringer.limen.audit'
+    t =    30.33s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    30.37s Find the Target Application 'dev.peringer.limen.audit'
+    t =    30.37s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    30.42s Find the "Document title" TextField
+    t =    30.42s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    30.49s Checking existence of `"Document title" TextField`
+    t =    30.49s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    30.54s Tap "Document title" TextField
+    t =    30.54s     Wait for dev.peringer.limen.audit to idle
+    t =    30.54s     Find the "Document title" TextField
+    t =    30.55s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    30.59s     Check for interrupting elements affecting "Document title" TextField
+    t =    30.61s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    30.64s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    30.65s     Synthesize event
+    t =    30.94s     Wait for dev.peringer.limen.audit to idle
+    t =    31.25s Find the "Document title" TextField
+    t =    31.25s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    31.35s Type 'Cancelled document...' into "Document title" TextField
+    t =    31.35s     Wait for dev.peringer.limen.audit to idle
+    t =    31.36s     Find the "Document title" TextField
+    t =    31.36s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    31.43s     Check for interrupting elements affecting "Document title" TextField
+    t =    31.45s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    31.50s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    31.51s     Synthesize event
+    t =    32.12s     Wait for dev.peringer.limen.audit to idle
+    t =    32.13s Checking existence of `"Done" Button`
+    t =    32.14s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    32.23s     Find: Descendants matching type Keyboard
+    t =    32.23s     Find: Descendants matching type Button
+    t =    32.23s     Find: Elements matching predicate '"Done" IN identifiers'
+    t =    32.24s Find the "Done" Button
+    t =    32.24s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    32.31s     Find: Descendants matching type Keyboard
+    t =    32.31s     Find: Descendants matching type Button
+    t =    32.31s     Find: Elements matching predicate '"Done" IN identifiers'
+    t =    32.33s Tap "Done" Button
+    t =    32.33s     Wait for dev.peringer.limen.audit to idle
+    t =    32.34s     Find the "Done" Button
+    t =    32.34s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    32.41s         Find: Descendants matching type Keyboard
+    t =    32.41s         Find: Descendants matching type Button
+    t =    32.41s         Find: Elements matching predicate '"Done" IN identifiers'
+    t =    32.41s     Check for interrupting elements affecting "Done" Button
+    t =    32.43s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    32.47s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    32.48s     Synthesize event
+    t =    32.78s     Wait for dev.peringer.limen.audit to idle
+    t =    33.06s Checking existence of `Button (First Match)`
+    t =    33.06s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    33.13s Find the Button (First Match)
+    t =    33.14s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    33.20s Find the Target Application 'dev.peringer.limen.audit'
+    t =    33.20s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    33.24s Find the Target Application 'dev.peringer.limen.audit'
+    t =    33.24s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    33.29s Find the "Attach a document" Button
+    t =    33.29s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    33.37s Checking existence of `"Attach a document" Button`
+    t =    33.37s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    33.42s Tap "Attach a document" Button
+    t =    33.42s     Wait for dev.peringer.limen.audit to idle
+    t =    33.43s     Find the "Attach a document" Button
+    t =    33.43s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    33.49s     Check for interrupting elements affecting "Attach a document" Button
+    t =    33.50s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    33.54s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    33.54s     Synthesize event
+    t =    33.85s     Wait for dev.peringer.limen.audit to idle
+    t =    33.87s Waiting 15.0s for Button (First Match) to exist
+    t =    34.88s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =    34.88s         Checking existence of `Button (First Match)`
+    t =    34.89s             Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    35.05s Find the Target Application 'dev.peringer.limen.audit'
+    t =    35.05s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    35.20s Added attachment named 'runtime-files-picker-before-cancel'
+    t =    35.20s Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    35.51s Requesting snapshot of accessibility hierarchy for app with pid 19020
+LIMEN_RUNTIME_TREE runtime-files-picker-before-cancel
+Attributes: Application, 0x12d6da940, pid: 19020, label: 'Limen'
+Element subtree:
+ →Application, 0x12d6da940, pid: 19020, label: 'Limen'
+    Window (Main), 0x12d6daa80, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x12d6dabc0, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x12d6dad00, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x12d6dae40, {{-402.0, -874.0}, {1206.0, 2622.0}}
+          Other, 0x12d6daf80, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x12d6db0c0, {{0.0, 0.0}, {402.0, 874.0}}
+              Button, 0x12d6db200, {{20.0, 70.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+              Image, 0x12d6db340, {{74.0, 74.7}, {42.0, 42.0}}, label: 'limen-seal'
+              StaticText, 0x12d6db480, {{124.0, 80.5}, {44.3, 15.7}}, label: 'ENTRY'
+              StaticText, 0x12d6db5c0, {{124.0, 96.2}, {135.0, 14.3}}, label: 'Files boundary address'
+              Button, 0x12d6db700, {{280.0, 73.7}, {44.0, 44.0}}, identifier: 'info.circle', label: 'The paperwork around the handover. Add a component only when this handover has it.'
+              Switch, 0x12d6db840, {{330.0, 71.7}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dark theme', value: NO
+              ScrollView, 0x12d6db980, {{20.0, 129.0}, {362.0, 703.0}}
+                Other, 0x12d6dbac0, {{20.0, -3582.0}, {362.0, 5575.0}}
+                  Other, 0x12d6dbc00, {{20.0, -581.7}, {362.0, 1643.0}}
+                    StaticText, 0x12d6dbd40, {{36.0, -581.7}, {27.7, 14.3}}, label: 'Keys'
+                    Button, 0x12d6dbe80, {{318.0, -559.3}, {48.0, 51.0}}, identifier: 'trash', label: 'DELETE'
+                    StaticText, 0x12d653200, {{36.0, -500.3}, {70.7, 14.3}}, label: 'Key transfer'
+                    Button, 0x12d653340, {{36.0, -478.0}, {104.3, 48.0}}, label: 'Not recorded'
+                    Button, 0x12d0aa080, {{146.3, -478.0}, {212.3, 48.0}}, label: 'All keys and copies transferred'
+                    Button, 0x12d0aad00, {{36.0, -424.0}, {125.7, 48.0}}, label: 'No physical keys', Selected, Disabled
+                    Button, 0x12d0ab200, {{167.7, -424.0}, {164.7, 48.0}}, label: 'Incomplete or disputed'
+                    StaticText, 0x12d0ab0c0, {{36.0, -334.0}, {102.0, 14.3}}, label: 'Add a component'
+                    Button, 0x12d0a8c80, {{36.0, -311.7}, {89.0, 48.0}}, label: '+ Contract'
+                    Button, 0x12d0a8000, {{131.0, -311.7}, {112.7, 48.0}}, label: '+ Rent deposit'
+                    Button, 0x12d0ab840, {{36.0, -257.7}, {127.3, 48.0}}, label: '+ Meter readings'
+                    Button, 0x12d0a9040, {{169.3, -257.7}, {71.3, 48.0}}, label: '+ Notes'
+                    StaticText, 0x12d0a8280, {{36.0, -167.7}, {206.0, 14.3}}, label: 'Actual transfer of possession / keys'
+                    Button, 0x12d0a92c0, {{36.0, -145.3}, {330.0, 28.3}}, label: 'Actual transfer of possession / keys'
+                      StaticText, 0x12d0a88c0, {{36.0, -145.3}, {330.0, 28.3}}, label: 'Actual transfer of possession / keys'
+                      Image, 0x12d0aa1c0, {{358.3, -137.0}, {7.0, 12.0}}, identifier: 'collapsed'
+                    StaticText, 0x12d0a9680, {{36.0, -75.0}, {264.0, 28.7}}, label: 'Not inspected / not available / not applicable: specify reason'
+                    Button, 0x12d0a8500, {{36.0, -38.3}, {330.0, 50.3}}, label: 'Not inspected / not available / not applicable: specify reason'
+                      StaticText, 0x12d0a8640, {{36.0, -38.3}, {330.0, 50.3}}, label: 'Not inspected / not available / not applicable: specify reason'
+                      Image, 0x12d0a9900, {{358.3, -19.0}, {7.0, 12.0}}, identifier: 'collapsed'
+                    StaticText, 0x12d0a8f00, {{36.0, 54.0}, {87.7, 14.3}}, label: 'Meter readings'
+                    Button, 0x12d0a9cc0, {{36.0, 76.3}, {330.0, 28.3}}, label: 'Meter readings (0)'
+                      StaticText, 0x12d0aae40, {{36.0, 76.3}, {330.0, 28.3}}, label: 'Meter readings (0)'
+                      Image, 0x12d0abe80, {{358.3, 84.7}, {7.0, 12.0}}, identifier: 'collapsed'
+                    StaticText, 0x12d0aabc0, {{36.0, 146.7}, {175.3, 14.3}}, label: 'Keys, fobs, cards and remotes'
+                    Button, 0x12d0ab480, {{36.0, 169.0}, {330.0, 28.3}}, label: 'Keys, fobs, cards and remotes (0)'
+                      StaticText, 0x12d0aa580, {{36.0, 169.0}, {330.0, 28.3}}, label: 'Keys, fobs, cards and remotes (0)'
+                      Image, 0x12d0a8780, {{358.3, 177.3}, {7.0, 12.0}}, identifier: 'collapsed'
+                    StaticText, 0x12d0ab980, {{36.0, 239.3}, {132.7, 14.3}}, label: 'Supporting documents'
+                    Button, 0x12d07e1c0, {{36.0, 261.7}, {330.0, 28.3}}, label: 'Supporting documents (0)'
+                      StaticText, 0x12d07e300, {{36.0, 261.7}, {330.0, 28.3}}, label: 'Supporting documents (0)'
+                      Image, 0x12d07e080, {{354.8, 273.5}, {12.0, 7.0}}, identifier: 'expanded'
+                    Other, 0x12d07df40, {{36.0, 298.0}, {330.0, 76.3}}, label: 'Document title'
+                      StaticText, 0x12d07db80, {{48.0, 306.0}, {85.3, 14.3}}, label: 'Document title'
+                      TextField, 0x12d07de00, {{48.0, 322.3}, {306.0, 44.0}}, identifier: 'Document title', label: 'Document title', value: Cancelled document...
+                    Button, 0x12d07d180, {{36.0, 382.3}, {77.3, 48.0}}, label: 'Contract'
+                    Button, 0x12d07ed00, {{119.3, 382.3}, {167.7, 48.0}}, label: 'Official initial-rent form'
+                    Button, 0x12d07d400, {{36.0, 436.3}, {248.7, 48.0}}, label: 'Representative's authority / mandate'
+                    Button, 0x12d07d2c0, {{36.0, 490.3}, {201.7, 48.0}}, label: 'Date of the previous protocol'
+                    Button, 0x12d07ee40, {{243.7, 490.3}, {101.0, 48.0}}, label: 'Rent deposit'
+                    Button, 0x12d07ebc0, {{36.0, 544.3}, {125.7, 48.0}}, label: 'Copies delivered'
+                    Button, 0x12d07f0c0, {{167.7, 544.3}, {123.0, 48.0}}, label: 'Other document', Selected, Disabled
+                    Button, 0x12d07ef80, {{36.0, 600.3}, {330.0, 48.0}}, label: 'Attach a document'
+                    Other, 0x12d07f200, {{36.0, 656.3}, {330.0, 78.3}}, label: 'Document reference / location'
+                      StaticText, 0x12d07c140, {{48.0, 664.3}, {175.0, 14.3}}, label: 'Document reference / location'
+                      TextField, 0x12d07f700, {{48.0, 680.7}, {306.0, 46.0}}, identifier: 'Document reference / location', label: 'Document reference / location'
+                    Button, 0x12d07c000, {{36.0, 742.7}, {57.7, 48.0}}, label: 'ADD', Disabled
+                    StaticText, 0x12d07c640, {{36.0, 832.7}, {162.0, 14.3}}, label: 'Follow-up and later findings'
+                    Button, 0x12d07c500, {{36.0, 855.0}, {330.0, 28.3}}, label: 'Follow-up and later findings (0)'
+                      StaticText, 0x12d07c3c0, {{36.0, 855.0}, {330.0, 28.3}}, label: 'Follow-up and later findings (0)'
+                      Image, 0x12d07c280, {{358.3, 863.3}, {7.0, 12.0}}, identifier: 'collapsed'
+                    StaticText, 0x12d07ca00, {{36.0, 925.3}, {112.3, 14.3}}, label: 'Privacy information'
+                    Button, 0x12d07c780, {{36.0, 947.7}, {330.0, 28.3}}, label: 'Privacy information'
+                      StaticText, 0x12d07cdc0, {{36.0, 947.7}, {330.0, 28.3}}, label: 'Privacy information'
+                      Image, 0x12d07c8c0, {{358.3, 956.0}, {7.0, 12.0}}, identifier: 'collapsed'
+                    Button, 0x12d07d7c0, {{20.0, 1002.0}, {362.0, 59.3}}, label: 'REVIEW THE RECORD'
+                    ScrollView, 0x12d07cc80, {{20.0, 129.0}, {362.0, 60.0}}
+                      Other, 0x12d07d040, {{20.0, 129.0}, {240.3, 60.0}}
+                        Button, 0x12d07cf00, {{20.0, 135.0}, {79.7, 48.0}}, label: '○ Object', Selected
+                        Button, 0x12d07cb40, {{105.7, 135.0}, {81.3, 48.0}}, label: '✓ Parties'
+                        Button, 0x12d07da40, {{193.0, 135.0}, {67.3, 48.0}}, label: '✓ Keys'
+                Other, 0x12d07d900, {{349.0, 129.0}, {30.0, 683.0}}, label: 'Vertical scroll bar, 8 pages', value: 76%
+                  Other, 0x12d07d540, {{376.0, 620.3}, {3.0, 92.3}}
+                Other, 0x12d07d680, {{349.0, 129.0}, {30.0, 683.0}}, label: 'Vertical scroll bar, 8 pages', value: 76%
+                  Other, 0x12d07dcc0, {{376.0, 620.3}, {3.0, 92.3}}
+      Other, 0x12d65e940, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x12d65e6c0, {{-402.0, -874.0}, {1206.0, 2622.0}}
+        Other, 0x12d65e800, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x12d65ef80, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x12d65fd40, {{0.0, 0.0}, {402.0, 874.0}}
+              Other, 0x12d65f0c0, {{0.0, 0.0}, {402.0, 874.0}}
+                Other, 0x12cff3c00, {{0.0, 0.0}, {402.0, 874.0}}
+                  Other, 0x12cff3d40, {{0.0, 0.0}, {402.0, 874.0}}
+                    Other, 0x12cff2a80, {{293.3, 92.0}, {36.7, 36.0}}, label: 'Cancel'
+                  Other, 0x12cff2bc0, {{0.0, 0.0}, {402.0, 874.0}}
+                    Other, 0x12cff2d00, {{0.0, 0.0}, {402.0, 874.0}}
+                      Other, 0x12cff3200, {{0.0, 0.0}, {402.0, 874.0}}
+                        Other, 0x12cff3700, {{0.0, 0.0}, {402.0, 874.0}}
+                          Other, 0x12cff1680, {{0.0, 0.0}, {402.0, 874.0}}
+                            Other, 0x12cff3840, {{0.0, 0.0}, {402.0, 874.0}}
+                              Other, 0x12cff26c0, {{0.0, 72.0}, {402.0, 802.0}}
+                                Image, 0x12cff2440, {{-150.0, -78.0}, {702.0, 1102.0}}
+                                Other, 0x12cff0280, {{0.0, 72.0}, {402.0, 802.0}}
+                                  Other, 0x12cff21c0, {{0.0, 72.0}, {402.0, 802.0}}
+                                    Other, 0x12d6e4000, {{0.0, 72.0}, {402.0, 802.0}}
+                                      Other, 0x12d6e4140, {{0.0, 72.0}, {402.0, 802.0}}
+                                        Other, 0x12d6e4280, {{0.0, 72.0}, {402.0, 802.0}}
+                                          Other, 0x12d6e43c0, {{0.0, 72.0}, {402.0, 802.0}}
+                                          Other, 0x12d6e4500, {{0.0, 72.0}, {402.0, 802.0}}
+                                            Other, 0x12d6e4640, {{0.0, 72.0}, {402.0, 802.0}}
+                                              Other, 0x12d6e4780, {{0.0, 72.0}, {402.0, 802.0}}
+                                                Other, 0x12d6e48c0, {{0.0, 72.0}, {402.0, 802.0}}
+                                                  Other, 0x12d6e4a00, {{0.0, 72.0}, {402.0, 802.0}}
+                                                  Other, 0x12d6e4b40, {{0.0, 72.0}, {402.0, 802.0}}, identifier: 'DOC.browsingRoot Source: com.apple.DocumentManager.RecentDocuments, Title: Recents'
+                                                    NavigationBar, 0x12d6e4c80, {{0.0, 88.0}, {402.0, 114.0}}, identifier: 'FullDocumentManagerViewControllerNavigationBar'
+                                                      StaticText, 0x12d6e4dc0, {{168.7, 99.7}, {64.7, 20.7}}, label: 'Recents'
+                                                      Button, 0x12d6e4f00, {{291.3, 92.0}, {36.7, 36.0}}, label: 'Cancel'
+                                                      Button, 0x12d6e5040, {{344.0, 92.0}, {38.0, 36.0}}, identifier: 'OverflowBarButtonItem', label: 'More'
+                                                      SearchField, 0x12d6e5180, {{16.0, 143.0}, {370.0, 44.0}}, label: 'Search', placeholderValue: 'Search'
+                                                        Image, 0x12d6e52c0, {{28.0, 155.0}, {20.7, 19.3}}, identifier: 'magnifyingglass', label: 'Search'
+                                                    Other, 0x12d6e5400, {{0.0, 72.0}, {402.0, 802.0}}
+                                                      Other, 0x12d6e5540, {{0.0, 72.0}, {402.0, 802.0}}
+                                                        Other, 0x12d6e5680, {{0.0, 72.0}, {402.0, 802.0}}
+                                                          Other, 0x12d6e57c0, {{0.0, 72.0}, {402.0, 802.0}}
+                                                            ScrollView, 0x12d6e5900, {{0.0, 72.0}, {402.0, 802.0}}
+                                                              Other, 0x12d6e5a40, {{0.0, 72.0}, {402.0, 802.0}}
+                                                                Other, 0x12d6e5b80, {{0.0, 72.0}, {402.0, 179.8}}
+                                                                Other, 0x12d6e5cc0, {{0.0, 726.2}, {402.0, 147.8}}
+                                                              Other, 0x12d6e5e00, {{0.0, 72.0}, {402.0, 802.0}}
+                                                                Other, 0x12d6e5f40, {{0.0, 72.0}, {402.0, 179.8}}
+                                                                  Image, 0x12d6e6080, {{-120.0, -103.0}, {642.0, 350.0}}, identifier: 'AdditionalDimmingOverlay'
+                                                                  Other, 0x12d6e61c0, {{0.0, 72.0}, {402.0, 115.0}}
+                                                                  Other, 0x12d6e6300, {{0.0, 72.0}, {402.0, 179.8}}
+                                                                    Other, 0x12d6e6440, {{0.0, 72.0}, {402.0, 179.8}}
+                                                                  Other, 0x12d6e6580, {{0.0, 72.0}, {402.0, 179.8}}
+                                                                    Other, 0x12d6e66c0, {{0.0, 72.0}, {402.0, 179.8}}
+                                                                  Other, 0x12d6e6800, {{0.0, 72.0}, {402.0, 179.8}}
+                                                                    Other, 0x12d6e6940, {{0.0, 72.0}, {402.0, 179.8}}
+                                                                    Other, 0x12d6e6a80, {{0.0, 72.0}, {402.0, 179.8}}
+                                                                Other, 0x12d6e6bc0, {{0.0, 726.2}, {402.0, 147.8}}
+                                                                  Image, 0x12d6e6d00, {{-120.0, 731.0}, {642.0, 286.0}}, identifier: 'AdditionalDimmingOverlay'
+                                                                  Other, 0x12d6e6e40, {{0.0, 726.2}, {402.0, 147.8}}
+                                                                    Other, 0x12d6e6f80, {{0.0, 726.2}, {402.0, 147.8}}
+                                                                  Other, 0x12d6e70c0, {{0.0, 726.2}, {402.0, 147.8}}
+                                                                    Other, 0x12d6e7200, {{0.0, 726.2}, {402.0, 147.8}}
+                                                                    Other, 0x12d6e7340, {{0.0, 726.2}, {402.0, 147.8}}
+                                                              CollectionView, 0x12d6e7480, {{0.0, 72.0}, {402.0, 802.0}}, identifier: 'File View', value: Icon Mode
+                                                                Cell, 0x12d6e75c0, {{10.0, 212.0}, {122.0, 189.7}}, identifier: '00-INTRODUCTION-DOSSIER-FBG-2026-10-05.pdf, pdf', label: '00-INTRODUCTION-DOSSIER-FBG-2026-10-05.pdf, pdf, 05.10.2026, iCloud Drive'
+                                                                  Other, 0x12d6e7700, {{10.0, 212.0}, {122.0, 189.7}}
+                                                                  Other, 0x12d6e7840, {{10.0, 212.0}, {122.0, 189.7}}
+                                                                    Other, 0x12d6e7980, {{29.0, 216.0}, {84.0, 84.0}}
+                                                                      Image, 0x12d6e7ac0, {{41.3, 216.0}, {59.7, 84.0}}
+                                                                      Other, 0x12d6e7c00, {{41.3, 216.0}, {59.7, 84.0}}
+                                                                    Other, 0x12d6e7d40, {{13.0, 305.0}, {116.0, 75.7}}
+                                                                      StaticText, 0x12d6e7e80, {{13.0, 305.0}, {116.0, 40.0}}, label: '00-INTRODUCTION-DOSSIER-FBG-2026-10-05.pdf'
+                                                                      StaticText, 0x12d6f0000, {{13.0, 348.0}, {116.0, 14.3}}, label: '05.10.2026'
+                                                                      StaticText, 0x12d6f0140, {{13.0, 366.3}, {116.0, 14.3}}, label: 'iCloud Drive'
+                                                                Cell, 0x12d6f0280, {{140.0, 212.0}, {122.0, 189.7}}, identifier: 'ANNEXE-ARCHITECTURE-FBG-2026-10-05.pdf, pdf', label: 'ANNEXE-ARCHITECTURE-FBG-2026-10-05.pdf, pdf, 05.10.2026, iCloud Drive'
+                                                                  Other, 0x12d6f03c0, {{140.0, 212.0}, {122.0, 189.7}}
+                                                                  Other, 0x12d6f0500, {{140.0, 212.0}, {122.0, 189.7}}
+                                                                    Other, 0x12d6f0640, {{159.0, 216.0}, {84.0, 84.0}}
+                                                                      Image, 0x12d6f0780, {{159.0, 228.3}, {84.0, 59.7}}
+                                                                      Other, 0x12d6f08c0, {{159.0, 228.3}, {84.0, 59.7}}
+                                                                    Other, 0x12d6f0a00, {{143.0, 305.0}, {116.0, 75.7}}
+                                                                      StaticText, 0x12d6f0b40, {{143.0, 305.0}, {116.0, 40.0}}, label: 'ANNEXE-ARCHITECTURE-FBG-2026-10-05.pdf'
+                                                                      StaticText, 0x12d6f0c80, {{143.0, 348.0}, {116.0, 14.3}}, label: '05.10.2026'
+                                                                      StaticText, 0x12d6f0dc0, {{143.0, 366.3}, {116.0, 14.3}}, label: 'iCloud Drive'
+                                                                Cell, 0x12d6f0f00, {{270.0, 212.0}, {122.0, 189.7}}, identifier: 'AP_Atupri_carte.HEIC, HEIC', label: 'AP_Atupri_carte.HEIC, HEIC, 05.10.2026, iCloud Drive'
+                                                                  Other, 0x12d6f1040, {{270.0, 212.0}, {122.0, 189.7}}
+                                                                  Other, 0x12d6f1180, {{270.0, 212.0}, {122.0, 189.7}}
+                                                                    Other, 0x12d6f12c0, {{289.0, 216.0}, {84.0, 84.0}}
+                                                                      Image, 0x12d6f1400, {{299.7, 216.0}, {63.0, 84.0}}
+                                                                      Other, 0x12d6f1540, {{299.7, 216.0}, {63.0, 84.0}}
+                                                                    Other, 0x12d6f1680, {{273.0, 305.0}, {116.0, 75.7}}
+                                                                      StaticText, 0x12d6f17c0, {{273.0, 305.0}, {116.0, 40.0}}, label: 'AP_Atupri_carte.HEIC'
+                                                                      StaticText, 0x12d6f1900, {{273.0, 348.0}, {116.0, 14.3}}, label: '05.10.2026'
+                                                                      StaticText, 0x12d6f1a40, {{273.0, 366.3}, {116.0, 14.3}}, label: 'iCloud Drive'
+                                                                Cell, 0x12d6f1b80, {{10.0, 409.7}, {122.0, 189.7}}, identifier: 'CHE-SLS-L3-0056_Account_Manager_Sales_1000.pdf, pdf', label: 'CHE-SLS-L3-0056_Account_Manager_Sales_1000.pdf, pdf, 02.10.2026, iCloud Drive'
+                                                                  Other, 0x12d6f1cc0, {{10.0, 409.7}, {122.0, 189.7}}
+                                                                  Other, 0x12d6f1e00, {{10.0, 409.7}, {122.0, 189.7}}
+                                                                    Other, 0x12d6f1f40, {{29.0, 413.7}, {84.0, 84.0}}
+                                                                      Image, 0x12d6f2080, {{41.3, 413.7}, {59.7, 84.0}}
+                                                                      Other, 0x12d6f21c0, {{41.3, 413.7}, {59.7, 84.0}}
+                                                                    Other, 0x12d6f2300, {{13.0, 502.7}, {116.0, 75.7}}
+                                                                      StaticText, 0x12d6f2440, {{13.0, 502.7}, {116.0, 40.0}}, label: 'CHE-SLS-L3-0056_Account_Manager_Sales_1000.pdf'
+                                                                      StaticText, 0x12d6f2580, {{13.0, 545.7}, {116.0, 14.3}}, label: '02.10.2026'
+                                                                      StaticText, 0x12d6f26c0, {{13.0, 564.0}, {116.0, 14.3}}, label: 'iCloud Drive'
+                                                                Cell, 0x12d6f2800, {{140.0, 409.7}, {122.0, 189.7}}, identifier: 'Task-Details_v102.pdf, pdf', label: 'Task-Details_v102.pdf, pdf, 02.10.2026, iCloud Drive'
+                                                                  Other, 0x12d6f2940, {{140.0, 409.7}, {122.0, 189.7}}
+                                                                  Other, 0x12d6f2a80, {{140.0, 409.7}, {122.0, 189.7}}
+                                                                    Other, 0x12d6f2bc0, {{159.0, 413.7}, {84.0, 84.0}}
+                                                                      Image, 0x12d6f2d00, {{171.3, 413.7}, {59.7, 84.0}}
+                                                                      Other, 0x12d6f2e40, {{171.3, 413.7}, {59.7, 84.0}}
+                                                                    Other, 0x12d6f2f80, {{143.0, 502.7}, {116.0, 75.7}}
+                                                                      StaticText, 0x12d6f30c0, {{143.0, 502.7}, {116.0, 40.0}}, label: 'Task-Details_v102.pdf'
+                                                                      StaticText, 0x12d6f3200, {{143.0, 545.7}, {116.0, 14.3}}, label: '02.10.2026'
+                                                                      StaticText, 0x12d6f3340, {{143.0, 564.0}, {116.0, 14.3}}, label: 'iCloud Drive'
+                                                                Cell, 0x12d6f3480, {{270.0, 409.7}, {122.0, 189.7}}, identifier: 'Communication Policy - Use of Official Accounts Only 1 (1).pdf, pdf', label: 'Communication Policy - Use of Official Accounts Only 1 (1).pdf, pdf, 30.09.2026, iCloud Drive'
+                                                                  Other, 0x12d6f35c0, {{270.0, 409.7}, {122.0, 189.7}}
+                                                                  Other, 0x12d6f3700, {{270.0, 409.7}, {122.0, 189.7}}
+                                                                    Other, 0x12d6f3840, {{289.0, 413.7}, {84.0, 84.0}}
+                                                                      Image, 0x12d6f3980, {{301.3, 413.7}, {59.7, 84.0}}
+                                                                      Other, 0x12d6f3ac0, {{301.3, 413.7}, {59.7, 84.0}}
+                                                                    Other, 0x12d6f3c00, {{273.0, 502.7}, {116.0, 75.7}}
+                                                                      StaticText, 0x12d6f3d40, {{273.0, 502.7}, {116.0, 40.0}}, label: 'Communication Policy - Use of Official Accounts Only 1 (1).pdf'
+                                                                      StaticText, 0x12d6f3e80, {{273.0, 545.7}, {116.0, 14.3}}, label: '30.09.2026'
+                                                                      StaticText, 0x12d6f8000, {{273.0, 564.0}, {116.0, 14.3}}, label: 'iCloud Drive'
+                                                                Cell, 0x12d6f8140, {{10.0, 607.3}, {122.0, 189.7}}, identifier: 'Personalstammblatt_BDO DNL_2026.pdf, pdf', label: 'Personalstammblatt_BDO DNL_2026.pdf, pdf, 29.09.2026, iCloud Drive'
+                                                                  Other, 0x12d6f8280, {{10.0, 607.3}, {122.0, 189.7}}
+                                                                  Other, 0x12d6f83c0, {{10.0, 607.3}, {122.0, 189.7}}
+                                                                    Other, 0x12d6f8500, {{29.0, 611.3}, {84.0, 84.0}}
+                                                                      Image, 0x12d6f8640, {{41.3, 611.3}, {59.7, 84.0}}
+                                                                      Other, 0x12d6f8780, {{41.3, 611.3}, {59.7, 84.0}}
+                                                                    Other, 0x12d6f88c0, {{13.0, 700.3}, {116.0, 75.7}}
+                                                                      StaticText, 0x12d6f8a00, {{13.0, 700.3}, {116.0, 40.0}}, label: 'Personalstammblatt_BDO DNL_2026.pdf'
+                                                                      StaticText, 0x12d6f8b40, {{13.0, 743.3}, {116.0, 14.3}}, label: '29.09.2026'
+                                                                      StaticText, 0x12d6f8c80, {{13.0, 761.7}, {116.0, 14.3}}, label: 'iCloud Drive'
+                                                                Cell, 0x12d6f8dc0, {{140.0, 607.3}, {122.0, 189.7}}, identifier: 'Infomaniak Mail.pdf, pdf', label: 'Infomaniak Mail.pdf, pdf, 28.09.2026, iCloud Drive'
+                                                                  Other, 0x12d6f8f00, {{140.0, 607.3}, {122.0, 189.7}}
+                                                                  Other, 0x12d6f9040, {{140.0, 607.3}, {122.0, 189.7}}
+                                                                    Other, 0x12d6f9180, {{159.0, 611.3}, {84.0, 84.0}}
+                                                                      Image, 0x12d6f92c0, {{171.3, 611.3}, {59.7, 84.0}}
+                                                                      Other, 0x12d6f9400, {{171.3, 611.3}, {59.7, 84.0}}
+                                                                    Other, 0x12d6f9540, {{143.0, 700.3}, {116.0, 75.7}}
+                                                                      StaticText, 0x12d6f9680, {{143.0, 700.3}, {116.0, 40.0}}, label: 'Infomaniak Mail.pdf'
+                                                                      StaticText, 0x12d6f97c0, {{143.0, 743.3}, {116.0, 14.3}}, label: '28.09.2026'
+                                                                      StaticText, 0x12d6f9900, {{143.0, 761.7}, {116.0, 14.3}}, label: 'iCloud Drive'
+                                                                Cell, 0x12d6f9a40, {{270.0, 607.3}, {122.0, 189.7}}, identifier: 'FBG_Cahier_des_Charges_Expert_AMO_NDA.pdf, pdf', label: 'FBG_Cahier_des_Charges_Expert_AMO_NDA.pdf, pdf, 08.09.2026, iCloud Drive'
+                                                                  Other, 0x12d6f9b80, {{270.0, 607.3}, {122.0, 189.7}}
+                                                                  Other, 0x12d6f9cc0, {{270.0, 607.3}, {122.0, 189.7}}
+                                                                    Other, 0x12d6f9e00, {{289.0, 611.3}, {84.0, 84.0}}
+                                                                      Image, 0x12d6f9f40, {{301.3, 611.3}, {59.7, 84.0}}
+                                                                      Other, 0x12d6fa080, {{301.3, 611.3}, {59.7, 84.0}}
+                                                                    Other, 0x12d6fa1c0, {{273.0, 700.3}, {116.0, 75.7}}
+                                                                      StaticText, 0x12d6fa300, {{273.0, 700.3}, {116.0, 40.0}}, label: 'FBG_Cahier_des_Charges_Expert_AMO_NDA.pdf'
+                                                                      StaticText, 0x12d6fa440, {{273.0, 743.3}, {116.0, 14.3}}, label: '08.09.2026'
+                                                                      StaticText, 0x12d6fa580, {{273.0, 761.7}, {116.0, 14.3}}, label: 'iCloud Drive'
+                                                                Cell, 0x12d6fa6c0, {{10.0, 805.0}, {122.0, 189.7}}, identifier: '2H9R3Q-QI5D84.pdf, pdf', label: '2H9R3Q-QI5D84.pdf, pdf, 08.09.2026, On My iPhone'
+                                                                  Other, 0x12d6fa800, {{10.0, 805.0}, {122.0, 189.7}}
+                                                                  Other, 0x12d6fa940, {{10.0, 805.0}, {122.0, 189.7}}
+                                                                    Other, 0x12d6faa80, {{29.0, 809.0}, {84.0, 84.0}}
+                                                                      Image, 0x12d6fabc0, {{41.3, 809.0}, {59.7, 84.0}}
+                                                                      Other, 0x12d6fad00, {{41.3, 809.0}, {59.7, 84.0}}
+                                                                    Other, 0x12d6fae40, {{13.0, 898.0}, {116.0, 75.7}}
+                                                                      StaticText, 0x12d6faf80, {{13.0, 898.0}, {116.0, 40.0}}, label: '2H9R3Q-QI5D84.pdf'
+                                                                      StaticText, 0x12d6fb0c0, {{13.0, 941.0}, {116.0, 14.3}}, label: '08.09.2026'
+                                                                      StaticText, 0x12d6fb200, {{13.0, 959.3}, {116.0, 14.3}}, label: 'On My iPhone'
+                                                                Cell, 0x12d6fb340, {{140.0, 805.0}, {122.0, 189.7}}, identifier: 'shifaaz-shamoon-4mQbBC6Do0Y-unsplash.jpg, jpg', label: 'shifaaz-shamoon-4mQbBC6Do0Y-unsplash.jpg, jpg, 26.08.2026, On My iPhone'
+                                                                  Other, 0x12d6fb480, {{140.0, 805.0}, {122.0, 189.7}}
+                                                                  Other, 0x12d6fb5c0, {{140.0, 805.0}, {122.0, 189.7}}
+                                                                    Other, 0x12d6fb700, {{159.0, 809.0}, {84.0, 84.0}}
+                                                                      Image, 0x12d6fb840, {{177.7, 809.0}, {47.0, 84.0}}
+                                                                      Other, 0x12d6fb980, {{177.7, 809.0}, {47.0, 84.0}}
+                                                                    Other, 0x12d6fbac0, {{143.0, 898.0}, {116.0, 75.7}}
+                                                                      StaticText, 0x12d6fbc00, {{143.0, 898.0}, {116.0, 40.0}}, label: 'shifaaz-shamoon-4mQbBC6Do0Y-unsplash.jpg'
+                                                                      StaticText, 0x12d6fbd40, {{143.0, 941.0}, {116.0, 14.3}}, label: '26.08.2026'
+                                                                      StaticText, 0x12d6fbe80, {{143.0, 959.3}, {116.0, 14.3}}, label: 'On My iPhone'
+                                                                Cell, 0x12d704000, {{270.0, 805.0}, {122.0, 189.7}}, identifier: 'sam-ferrara-dKJXkKCF2D8-unsplash.jpg, jpg', label: 'sam-ferrara-dKJXkKCF2D8-unsplash.jpg, jpg, 26.08.2026, On My iPhone'
+                                                                  Other, 0x12d704140, {{270.0, 805.0}, {122.0, 189.7}}
+                                                                  Other, 0x12d704280, {{270.0, 805.0}, {122.0, 189.7}}
+                                                                    Other, 0x12d7043c0, {{289.0, 809.0}, {84.0, 84.0}}
+                                                                      Image, 0x12d704500, {{303.0, 809.0}, {56.3, 84.0}}
+                                                                      Other, 0x12d704640, {{303.0, 809.0}, {56.3, 84.0}}
+                                                                    Other, 0x12d704780, {{273.0, 898.0}, {116.0, 75.7}}
+                                                                      StaticText, 0x12d7048c0, {{273.0, 898.0}, {116.0, 40.0}}, label: 'sam-ferrara-dKJXkKCF2D8-unsplash.jpg'
+                                                                      StaticText, 0x12d704a00, {{273.0, 941.0}, {116.0, 14.3}}, label: '26.08.2026'
+                                                                      StaticText, 0x12d704b40, {{273.0, 959.3}, {116.0, 14.3}}, label: 'On My iPhone'
+                                                                Other, 0x12d704c80, {{369.0, 202.0}, {30.0, 589.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                                                                  Other, 0x12d704dc0, {{396.0, 205.0}, {3.0, 369.0}}
+                                                                Other, 0x12d704f00, {{369.0, 202.0}, {30.0, 589.0}}, label: 'Vertical scroll bar, 2 pages', value: 0%
+                                                                  Other, 0x12d705040, {{396.0, 205.0}, {3.0, 369.0}}
+                                                              Other, 0x12d705180, {{369.0, 202.0}, {30.0, 589.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                                                                Other, 0x12d7052c0, {{396.0, 781.0}, {3.0, 7.0}}
+                                                              Other, 0x12d705400, {{56.0, 758.0}, {290.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                                                                Other, 0x12d705540, {{336.0, 785.0}, {7.0, 3.0}}
+                                                              Other, 0x12d705680, {{369.0, 202.0}, {30.0, 589.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                                                                Other, 0x12d7057c0, {{396.0, 781.0}, {3.0, 7.0}}
+                                                              Other, 0x12d705900, {{56.0, 758.0}, {290.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                                                                Other, 0x12d705a40, {{336.0, 785.0}, {7.0, 3.0}}
+                                                    Other, 0x12d705b80, {{0.0, 72.0}, {402.0, 802.0}}
+                                                      Other, 0x12d705cc0, {{0.0, 72.0}, {402.0, 802.0}}
+                                            Other, 0x12d705e00, {{0.0, 791.0}, {402.0, 83.0}}
+                                              Other, 0x12d705f40, {{0.0, 72.0}, {402.0, 802.0}}
+                                                TabBar, 0x12d706080, {{0.0, 791.0}, {402.0, 83.0}}, identifier: 'DOC.browsingModeTabBar', label: 'Tab Bar'
+                                                  Other, 0x12d7061c0, {{64.0, 791.0}, {274.0, 62.0}}
+                                                    Other, 0x12d706300, {{64.0, 791.0}, {94.0, 54.0}}
+                                                    Other, 0x12d706440, {{64.0, 791.0}, {274.0, 62.0}}
+                                                      Button, 0x12d706580, {{68.0, 795.0}, {94.0, 54.0}}, label: 'Recents', Selected
+                                                        Image, 0x12d7066c0, {{101.0, 801.3}, {27.3, 27.3}}, identifier: 'clock.fill', label: 'clock'
+                                                      Button, 0x12d706800, {{154.0, 795.0}, {94.0, 54.0}}, label: 'Shared'
+                                                        Image, 0x12d706940, {{185.0, 800.3}, {35.0, 27.0}}, identifier: 'folder.fill.badge.person.crop', label: 'Shared Folder'
+                                                      Button, 0x12d706a80, {{240.0, 795.0}, {94.0, 54.0}}, label: 'Browse'
+                                                        Image, 0x12d706bc0, {{271.0, 802.3}, {32.0, 25.0}}, identifier: 'folder.fill', label: 'move'
+                                                    Other, 0x12d706d00, {{68.0, 795.0}, {94.0, 54.0}}
+                                                      Other, 0x12d706e40, {{68.0, 795.0}, {94.0, 54.0}}
+                                                        Other, 0x12d706f80, {{68.0, 795.0}, {94.0, 54.0}}
+                                                        Other, 0x12d7070c0, {{68.0, 795.0}, {94.0, 54.0}}
+                                                          Other, 0x12d707200, {{68.0, 795.0}, {94.0, 54.0}}
+                                                            Other, 0x12d707340, {{68.0, 795.0}, {94.0, 54.0}}
+                                                              Other, 0x12d707480, {{68.0, 795.0}, {94.0, 54.0}}
+                                                            Other, 0x12d7075c0, {{68.0, 795.0}, {94.0, 54.0}}
+                                                          Other, 0x12d707700, {{68.0, 795.0}, {94.0, 54.0}}
+                                              Other, 0x12d707840, {{0.0, 791.0}, {402.0, 83.0}}
+                                                Other, 0x12d707980, {{0.0, 791.0}, {402.0, 83.0}}
+                                                  Other, 0x12d707ac0, {{0.0, 791.0}, {402.0, 83.0}}
+                                                    Other, 0x12d707c00, {{0.0, 791.0}, {402.0, 83.0}}
+                                                      Other, 0x12d707d40, {{0.0, 791.0}, {402.0, 83.0}}
+                                                        Other, 0x12d707e80, {{0.0, 791.0}, {402.0, 83.0}}
+                                                    Other, 0x12d710000, {{0.0, 791.0}, {402.0, 83.0}}
+                                                      Other, 0x12d710140, {{0.0, 791.0}, {402.0, 83.0}}
+    Window, 0x12d710280, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x12d7103c0, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x12d710500, {{0.0, 0.0}, {402.0, 874.0}}
+Path to element:
+ →Application, 0x12d6da940, pid: 19020, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x12d710640, pid: 19020, label: 'Limen'
+  }
+
+    t =    35.66s Tap Button (First Match)
+    t =    35.66s     Wait for dev.peringer.limen.audit to idle
+    t =    35.67s     Find the Button (First Match)
+    t =    35.67s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    35.73s     Check for interrupting elements affecting "Cancel" Button
+    t =    35.74s         Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    35.79s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    35.79s     Synthesize event
+    t =    36.09s     Wait for dev.peringer.limen.audit to idle
+    t =    36.46s Waiting 10.0s for "Attach a document" Button to exist
+    t =    37.47s     Checking `Expect predicate `existsNoRetry == 1` for object "Attach a document" Button`
+    t =    37.47s         Checking existence of `"Attach a document" Button`
+    t =    37.47s             Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    37.54s             Find: Descendants matching type Button
+    t =    37.54s             Find: Elements matching predicate '"Attach a document" IN identifiers'
+    t =    37.55s Find the "Document title" TextField
+    t =    37.55s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    37.61s     Find: Descendants matching type TextField
+    t =    37.61s     Find: Elements matching predicate '"Document title" IN identifiers'
+    t =    37.62s Checking existence of `"Supporting documents (0)" Button`
+    t =    37.62s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    37.67s     Find: Descendants matching type Button
+    t =    37.67s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    37.67s Checking existence of `"DONE" Button`
+    t =    37.68s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    37.72s     Find: Descendants matching type Button
+    t =    37.72s     Find: Elements matching predicate '"DONE" IN identifiers'
+    t =    37.73s Find the Target Application 'dev.peringer.limen.audit'
+    t =    37.73s     Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    37.86s Added attachment named 'runtime-files-picker-cancelled'
+    t =    37.86s Requesting snapshot of accessibility hierarchy for app with pid 19020
+    t =    37.98s Requesting snapshot of accessibility hierarchy for app with pid 19020
+LIMEN_RUNTIME_TREE runtime-files-picker-cancelled
+Attributes: Application, 0x12d65e940, pid: 19020, label: 'Limen'
+Element subtree:
+ →Application, 0x12d65e940, pid: 19020, label: 'Limen'
+    Window (Main), 0x12d65e800, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x12d65ef80, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x12d65fd40, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x12d65f0c0, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x12d65e6c0, {{0.0, 0.0}, {402.0, 874.0}}
+              Button, 0x12d65c280, {{20.0, 70.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'BACK'
+              Image, 0x12d65c640, {{74.0, 74.7}, {42.0, 42.0}}, label: 'limen-seal'
+              StaticText, 0x12d65c500, {{124.0, 80.5}, {44.3, 15.7}}, label: 'ENTRY'
+              StaticText, 0x12d65c3c0, {{124.0, 96.2}, {135.0, 14.3}}, label: 'Files boundary address'
+              Button, 0x12d65c000, {{280.0, 73.7}, {44.0, 44.0}}, identifier: 'info.circle', label: 'The paperwork around the handover. Add a component only when this handover has it.'
+              Switch, 0x12d65cc80, {{330.0, 71.7}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dark theme', value: NO
+              ScrollView, 0x12d710280, {{20.0, 129.0}, {362.0, 703.0}}
+                Other, 0x12d7103c0, {{20.0, -3582.0}, {362.0, 4666.0}}
+                  Other, 0x12d710500, {{20.0, -581.7}, {362.0, 1557.7}}
+                    StaticText, 0x12d710000, {{36.0, -581.7}, {27.7, 14.3}}, label: 'Keys'
+                    Button, 0x12d710140, {{318.0, -559.3}, {48.0, 51.0}}, identifier: 'trash', label: 'DELETE'
+                    StaticText, 0x12d6da940, {{36.0, -500.3}, {70.7, 14.3}}, label: 'Key transfer'
+                    Button, 0x12d6daa80, {{36.0, -478.0}, {104.3, 48.0}}, label: 'Not recorded'
+                    Button, 0x12d6dabc0, {{146.3, -478.0}, {212.3, 48.0}}, label: 'All keys and copies transferred'
+                    Button, 0x12d6dad00, {{36.0, -424.0}, {125.7, 48.0}}, label: 'No physical keys', Selected, Disabled
+                    Button, 0x12d6daf80, {{167.7, -424.0}, {164.7, 48.0}}, label: 'Incomplete or disputed'
+                    StaticText, 0x12d6db0c0, {{36.0, -334.0}, {102.0, 14.3}}, label: 'Add a component'
+                    Button, 0x12d6db980, {{36.0, -311.7}, {89.0, 48.0}}, label: '+ Contract'
+                    Button, 0x12d6dbac0, {{131.0, -311.7}, {112.7, 48.0}}, label: '+ Rent deposit'
+                    Button, 0x12d6dbc00, {{36.0, -257.7}, {127.3, 48.0}}, label: '+ Meter readings'
+                    Button, 0x12d6dbe80, {{169.3, -257.7}, {71.3, 48.0}}, label: '+ Notes'
+                    StaticText, 0x12d6dbd40, {{36.0, -167.7}, {206.0, 14.3}}, label: 'Actual transfer of possession / keys'
+                    Button, 0x12d6db840, {{36.0, -145.3}, {330.0, 28.3}}, label: 'Actual transfer of possession / keys'
+                      StaticText, 0x12d6db700, {{36.0, -145.3}, {330.0, 28.3}}, label: 'Actual transfer of possession / keys'
+                      Image, 0x12d6db5c0, {{358.3, -137.0}, {7.0, 12.0}}, identifier: 'collapsed'
+                    StaticText, 0x12d6db480, {{36.0, -75.0}, {264.0, 28.7}}, label: 'Not inspected / not available / not applicable: specify reason'
+                    Button, 0x12d6db340, {{36.0, -38.3}, {330.0, 50.3}}, label: 'Not inspected / not available / not applicable: specify reason'
+                      StaticText, 0x12d6db200, {{36.0, -38.3}, {330.0, 50.3}}, label: 'Not inspected / not available / not applicable: specify reason'
+                      Image, 0x12d6dae40, {{358.3, -19.0}, {7.0, 12.0}}, identifier: 'collapsed'
+                    StaticText, 0x12cff3c00, {{36.0, 54.0}, {87.7, 14.3}}, label: 'Meter readings'
+                    Button, 0x12cff2bc0, {{36.0, 76.3}, {330.0, 28.3}}, label: 'Meter readings (0)'
+                      StaticText, 0x12cff2d00, {{36.0, 76.3}, {330.0, 28.3}}, label: 'Meter readings (0)'
+                      Image, 0x12cff3200, {{358.3, 84.7}, {7.0, 12.0}}, identifier: 'collapsed'
+                    StaticText, 0x12cff3700, {{36.0, 146.7}, {175.3, 14.3}}, label: 'Keys, fobs, cards and remotes'
+                    Button, 0x12cff1680, {{36.0, 169.0}, {330.0, 28.3}}, label: 'Keys, fobs, cards and remotes (0)'
+                      StaticText, 0x12cff3840, {{36.0, 169.0}, {330.0, 28.3}}, label: 'Keys, fobs, cards and remotes (0)'
+                      Image, 0x12cff26c0, {{358.3, 177.3}, {7.0, 12.0}}, identifier: 'collapsed'
+                    StaticText, 0x12cff0280, {{36.0, 239.3}, {132.7, 14.3}}, label: 'Supporting documents'
+                    Button, 0x12cff21c0, {{36.0, 261.7}, {330.0, 28.3}}, label: 'Supporting documents (0)'
+                      StaticText, 0x12cff2440, {{36.0, 261.7}, {330.0, 28.3}}, label: 'Supporting documents (0)'
+                      Image, 0x12cff3d40, {{354.8, 273.5}, {12.0, 7.0}}, identifier: 'expanded'
+                    Other, 0x12cff2a80, {{36.0, 298.0}, {330.0, 76.3}}, label: 'Document title'
+                      StaticText, 0x12cff2800, {{48.0, 306.0}, {85.3, 14.3}}, label: 'Document title'
+                      TextField, 0x12cff3ac0, {{48.0, 322.3}, {306.0, 44.0}}, identifier: 'Document title', label: 'Document title', value: Cancelled document...
+                    Button, 0x12cff35c0, {{36.0, 382.3}, {77.3, 48.0}}, label: 'Contract'
+                    Button, 0x12cff1540, {{119.3, 382.3}, {167.7, 48.0}}, label: 'Official initial-rent form'
+                    Button, 0x12cff0500, {{36.0, 436.3}, {248.7, 48.0}}, label: 'Representative's authority / mandate'
+                    Button, 0x12d0ab980, {{36.0, 490.3}, {201.7, 48.0}}, label: 'Date of the previous protocol'
+                    Button, 0x12d0ab480, {{243.7, 490.3}, {101.0, 48.0}}, label: 'Rent deposit'
+                    Button, 0x12d0a8780, {{36.0, 544.3}, {125.7, 48.0}}, label: 'Copies delivered'
+                    Button, 0x12d0aa580, {{167.7, 544.3}, {123.0, 48.0}}, label: 'Other document', Selected, Disabled
+                    Button, 0x12d0aabc0, {{36.0, 600.3}, {330.0, 48.0}}, label: 'Attach a document'
+                    Other, 0x12d0a9cc0, {{36.0, 656.3}, {330.0, 78.3}}, label: 'Document reference / location'
+                      StaticText, 0x12d0abe80, {{48.0, 664.3}, {175.0, 14.3}}, label: 'Document reference / location'
+                      TextField, 0x12d0aae40, {{48.0, 680.7}, {306.0, 46.0}}, identifier: 'Document reference / location', label: 'Document reference / location'
+                    Button, 0x12d0a8f00, {{36.0, 742.7}, {57.7, 48.0}}, label: 'ADD', Disabled
+                    StaticText, 0x12d0a8500, {{36.0, 832.7}, {162.0, 14.3}}, label: 'Follow-up and later findings'
+                    Button, 0x12d0a9900, {{36.0, 855.0}, {330.0, 28.3}}, label: 'Follow-up and later findings (0)'
+                      StaticText, 0x12d0a8640, {{36.0, 855.0}, {330.0, 28.3}}, label: 'Follow-up and later findings (0)'
+                      Image, 0x12d0a9680, {{358.3, 863.3}, {7.0, 12.0}}, identifier: 'collapsed'
+                    StaticText, 0x12d0a92c0, {{36.0, 925.3}, {112.3, 14.3}}, label: 'Privacy information'
+                    Button, 0x12d0aa1c0, {{36.0, 947.7}, {330.0, 28.3}}, label: 'Privacy information'
+                      StaticText, 0x12d0a88c0, {{36.0, 947.7}, {330.0, 28.3}}, label: 'Privacy information'
+                      Image, 0x12d0a8280, {{358.3, 956.0}, {7.0, 12.0}}, identifier: 'collapsed'
+                    ScrollView, 0x12d0a9040, {{20.0, 129.0}, {362.0, 60.0}}
+                      Other, 0x12d0ab840, {{20.0, 129.0}, {240.3, 60.0}}
+                        Button, 0x12d0a8000, {{20.0, 135.0}, {79.7, 48.0}}, label: '○ Object', Selected
+                        Button, 0x12d0a8c80, {{105.7, 135.0}, {81.3, 48.0}}, label: '✓ Parties'
+                        Button, 0x12d0ab0c0, {{193.0, 135.0}, {67.3, 48.0}}, label: '✓ Keys'
+                Other, 0x12d0ab200, {{349.0, 129.0}, {30.0, 683.0}}, label: 'Vertical scroll bar, 7 pages', value: 94%
+                  Other, 0x12d0aad00, {{376.0, 620.3}, {3.0, 92.3}}
+                Other, 0x12d0aa080, {{349.0, 129.0}, {30.0, 683.0}}, label: 'Vertical scroll bar, 7 pages', value: 94%
+                  Other, 0x12d0a9f40, {{376.0, 620.3}, {3.0, 92.3}}
+    Window, 0x12d0a83c0, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x12d0a9540, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x12d0a97c0, {{0.0, 0.0}, {402.0, 874.0}}
+Path to element:
+ →Application, 0x12d65e940, pid: 19020, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x12d0ab340, pid: 19020, label: 'Limen'
+  }
+
+    t =    38.04s Open com.apple.Preferences
+    t =    38.04s     Activate com.apple.Preferences
+    t =    38.10s         Wait for com.apple.Preferences to idle
+    t =    38.17s Waiting 10.0s for NavigationBar (First Match) to exist
+    t =    39.25s     Checking `Expect predicate `existsNoRetry == 1` for object NavigationBar (First Match)`
+    t =    39.25s         Checking existence of `NavigationBar (First Match)`
+    t =    39.26s             Requesting snapshot of accessibility hierarchy for app with pid 16655
+LIMEN_BACKGROUND_STATE audit=3 settings=4
+    t =    39.35s Terminate dev.peringer.limen.audit:19020
+    t =    40.41s Open dev.peringer.limen.audit
+    t =    40.41s     Launch dev.peringer.limen.audit
+2026-10-14 01:05:03.262 xcodebuild[38509:314907] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-14 01:05:03.262 xcodebuild[38509:314907] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =    40.91s         Setting up automation session
+    t =    40.91s         Wait for dev.peringer.limen.audit to idle
+    t =    42.00s Wait for dev.peringer.limen.audit to become Running Foreground
+    t =    42.01s Checking existence of `"Street and number" TextField`
+    t =    42.01s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    42.11s     Find: Descendants matching type TextField
+    t =    42.12s     Find: Elements matching predicate '"Street and number" IN identifiers'
+    t =    42.12s Find the "Street and number" TextField
+    t =    42.12s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    42.17s     Find: Descendants matching type TextField
+    t =    42.17s     Find: Elements matching predicate '"Street and number" IN identifiers'
+    t =    42.18s Find the Target Application 'dev.peringer.limen.audit'
+    t =    42.19s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    42.23s Find the Target Application 'dev.peringer.limen.audit'
+    t =    42.23s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    42.27s Find the "Street and number" TextField
+    t =    42.28s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    42.32s     Find: Descendants matching type TextField
+    t =    42.32s     Find: Elements matching predicate '"Street and number" IN identifiers'
+    t =    42.35s Find the "Street and number" TextField
+    t =    42.35s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    42.40s     Find: Descendants matching type TextField
+    t =    42.40s     Find: Elements matching predicate '"Street and number" IN identifiers'
+    t =    42.40s Checking existence of `"Supporting documents (0)" Button`
+    t =    42.41s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    42.45s     Find: Descendants matching type Button
+    t =    42.45s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    42.46s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    42.46s     Wait for dev.peringer.limen.audit to idle
+    t =    42.47s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    42.47s         Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    42.52s     Check for interrupting elements affecting "Limen" Application
+    t =    42.53s         Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    42.56s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    42.57s     Synthesize event
+    t =    43.08s     Wait for dev.peringer.limen.audit to idle
+    t =    44.93s Checking existence of `"Supporting documents (0)" Button`
+    t =    44.94s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    45.02s     Find: Descendants matching type Button
+    t =    45.02s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    45.03s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    45.03s     Wait for dev.peringer.limen.audit to idle
+    t =    45.03s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    45.04s         Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    45.10s     Check for interrupting elements affecting "Limen" Application
+    t =    45.11s         Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    45.17s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    45.17s     Synthesize event
+    t =    45.68s     Wait for dev.peringer.limen.audit to idle
+    t =    47.59s Checking existence of `"Supporting documents (0)" Button`
+    t =    47.60s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    47.70s     Find: Descendants matching type Button
+    t =    47.70s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    47.71s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    47.71s     Wait for dev.peringer.limen.audit to idle
+    t =    47.71s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    47.71s         Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    47.78s     Check for interrupting elements affecting "Limen" Application
+    t =    47.80s         Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    47.85s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    47.86s     Synthesize event
+    t =    48.37s     Wait for dev.peringer.limen.audit to idle
+    t =    50.24s Checking existence of `"Supporting documents (0)" Button`
+    t =    50.24s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    50.34s     Find: Descendants matching type Button
+    t =    50.34s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    50.35s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    50.35s     Wait for dev.peringer.limen.audit to idle
+    t =    50.35s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    50.36s         Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    50.43s     Check for interrupting elements affecting "Limen" Application
+    t =    50.44s         Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    50.50s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    50.50s     Synthesize event
+    t =    51.01s     Wait for dev.peringer.limen.audit to idle
+    t =    52.87s Checking existence of `"Supporting documents (0)" Button`
+    t =    52.88s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    52.98s     Find: Descendants matching type Button
+    t =    52.98s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    52.99s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    52.99s     Wait for dev.peringer.limen.audit to idle
+    t =    52.99s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    53.00s         Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    53.07s     Check for interrupting elements affecting "Limen" Application
+    t =    53.09s         Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    53.15s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    53.15s     Synthesize event
+    t =    53.66s     Wait for dev.peringer.limen.audit to idle
+    t =    55.52s Checking existence of `"Supporting documents (0)" Button`
+    t =    55.53s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    55.64s     Find: Descendants matching type Button
+    t =    55.64s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    55.65s Find the "Supporting documents (0)" Button
+    t =    55.65s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    55.73s     Find: Descendants matching type Button
+    t =    55.73s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    55.74s Find the Target Application 'dev.peringer.limen.audit'
+    t =    55.74s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    55.81s Find the Target Application 'dev.peringer.limen.audit'
+    t =    55.81s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    55.87s Find the "Supporting documents (0)" Button
+    t =    55.87s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    55.95s     Find: Descendants matching type Button
+    t =    55.95s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    55.97s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    55.97s     Wait for dev.peringer.limen.audit to idle
+    t =    55.97s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    55.98s         Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    56.04s     Check for interrupting elements affecting "Limen" Application
+    t =    56.06s         Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    56.11s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    56.12s     Synthesize event
+    t =    56.62s     Wait for dev.peringer.limen.audit to idle
+    t =    58.52s Checking existence of `"Supporting documents (0)" Button`
+    t =    58.53s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    58.64s     Find: Descendants matching type Button
+    t =    58.64s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    58.65s Find the "Supporting documents (0)" Button
+    t =    58.65s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    58.73s     Find: Descendants matching type Button
+    t =    58.74s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    58.75s Find the Target Application 'dev.peringer.limen.audit'
+    t =    58.75s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    58.81s Find the Target Application 'dev.peringer.limen.audit'
+    t =    58.81s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    58.88s Find the "Supporting documents (0)" Button
+    t =    58.88s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    58.96s     Find: Descendants matching type Button
+    t =    58.96s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    58.97s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    58.97s     Wait for dev.peringer.limen.audit to idle
+    t =    58.98s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    58.98s         Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    59.04s     Check for interrupting elements affecting "Limen" Application
+    t =    59.05s         Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    59.11s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    59.12s     Synthesize event
+    t =    59.62s     Wait for dev.peringer.limen.audit to idle
+    t =    61.47s Checking existence of `"Supporting documents (0)" Button`
+    t =    61.47s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    61.55s     Find: Descendants matching type Button
+    t =    61.55s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    61.56s Find the "Supporting documents (0)" Button
+    t =    61.56s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    61.63s     Find: Descendants matching type Button
+    t =    61.63s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    61.64s Find the Target Application 'dev.peringer.limen.audit'
+    t =    61.64s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    61.69s Find the Target Application 'dev.peringer.limen.audit'
+    t =    61.69s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    61.73s Find the "Supporting documents (0)" Button
+    t =    61.74s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    61.79s     Find: Descendants matching type Button
+    t =    61.79s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    61.81s Checking existence of `"Supporting documents (0)" Button`
+    t =    61.81s     Requesting snapshot of accessibility hierarchy for app with pid 19023
+    t =    61.87s     Find: Descendants matching type Button
+    t =    61.87s     Find: Elements matching predicate '"Supporting documents (0)" IN identifiers'
+    t =    61.88s Tear Down
+Test Case '-[LimenUITests.RuntimeBoundaryTests testSupportingDocumentPickerCancellationPreservesDraft]' passed (61.966 seconds).
+Test Suite 'RuntimeBoundaryTests' passed at 2026-10-14 01:05:24.827.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 79.120 (79.123) seconds
+Test Suite 'LimenUITests.xctest' passed at 2026-10-14 01:05:24.828.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 79.120 (79.124) seconds
+Test Suite 'Selected tests' passed at 2026-10-14 01:05:24.829.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 79.120 (79.126) seconds
+2026-10-14 01:05:25.250 xcodebuild[38509:314907] [MT] IDETestOperationsObserverDebug: 81.910 elapsed -- Testing started completed.
+2026-10-14 01:05:25.250 xcodebuild[38509:314907] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-14 01:05:25.250 xcodebuild[38509:314907] [MT] IDETestOperationsObserverDebug: 81.910 sec, +81.910 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/limen-physical-interruption.xcresult
+
+** TEST SUCCEEDED **
+
+Testing started

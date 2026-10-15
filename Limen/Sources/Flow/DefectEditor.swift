@@ -41,7 +41,7 @@ struct DefectEditor: View {
                                     ScrollView(.horizontal, showsIndicators: false) {
                                         HStack(spacing: 8) {
                                             ForEach(d.photos, id: \.self) { name in
-                                                PhotoThumb(name: name) { model.removePhoto(defectId, name: name) }
+                                                PhotoThumb(name: name, evidence: d.photoEvidence.first { $0.file == name }) { model.removePhoto(defectId, name: name) }
                                             }
                                         }
                                     }
@@ -50,22 +50,29 @@ struct DefectEditor: View {
                         }
                     }
                     if p.kind == .exit {
-                        Panel(label: s.tenantResponseLabel, info: s.tipNormalWear()) {
-                            VStack(alignment: .leading, spacing: 8) {
-                                PillRow(options: TenantResponse.allCases.map { ($0, s.tenantResponse($0)) }, current: d.tenantResponse, dense: true, enabled: !locked) { response in
-                                    model.updateDefect(defectId) { defect in
-                                        var x = defect
-                                        x.tenantResponse = response
-                                        if response == .normalWear { x.chargedToTenant = false }
-                                        return x
+                        ForEach(p.parties.filter { $0.role == .tenant }, id: \.uiKey) { party in
+                            let key = party.participantKey()
+                            let position = d.participantPositions[key] ?? (party.id.isBlank ? TenantPosition(response: d.tenantResponse, comment: d.tenantComment) : TenantPosition())
+                            Panel(label: "\(s.tenantResponseLabel) · \(party.name.ifBlank(s.role(.tenant)))", info: s.tipNormalWear()) {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    PillRow(options: TenantResponse.allCases.map { ($0, s.tenantResponse($0)) }, current: position.response, dense: true, enabled: !locked) { response in
+                                        model.updateDefect(defectId) { defect in
+                                            var next = defect
+                                            next.participantPositions[key] = TenantPosition(response: response, comment: position.comment)
+                                            return next
+                                        }
                                     }
-                                }
-                                Field(label: s.tenantComment, value: d.tenantComment, singleLine: false) { value in
-                                    model.updateDefect(defectId) { var x = $0; x.tenantComment = value; return x }
+                                    Field(label: s.tenantComment, value: position.comment, singleLine: false) { value in
+                                        model.updateDefect(defectId) { defect in
+                                            var next = defect
+                                            next.participantPositions[key] = TenantPosition(response: position.response, comment: value)
+                                            return next
+                                        }
+                                    }
                                 }
                             }
                         }
-                        if d.tenantResponse != .normalWear {
+                        Group {
                             Panel(label: s.chargedToTenant, info: s.tipCharged()) {
                                 VStack(alignment: .leading, spacing: 8) {
                                     Toggle(label: s.chargedToTenant, on: d.chargedToTenant, enabled: !locked) {
@@ -76,7 +83,7 @@ struct DefectEditor: View {
                                         model.updateDefect(defectId) { var x = $0; x.fixBy = f; return x }
                                     }
                                     WeightedRow(weights: [1, 1.4]) {
-                                        DateField(label: s.fixDeadline, stored: d.fixDeadline) { value in
+                                        DateField(label: s.fixDeadline, stored: d.fixDeadline, fieldKey: "defect.\(d.id).fixDeadline") { value in
                                             model.updateDefect(defectId) { var x = $0; x.fixDeadline = value; return x }
                                         }
                                         Field(label: s.costNote, value: d.costNote) { value in
@@ -89,7 +96,7 @@ struct DefectEditor: View {
                                 }
                             }
                         }
-                        if d.chargedToTenant { WearAssessment() }
+                        if d.chargedToTenant { WearAssessment(p: p, defectId: d.id) }
                     }
                     if p.kind == .entry {
                         Panel(label: s.reservationLabel) {
@@ -120,13 +127,24 @@ struct DefectEditor: View {
 /// The Zeitwert calculation belongs to a specific charged defect, not the home screen. Pick the
 /// item, state its age and repair cost, then use the tenant share in that defect's record.
 struct WearAssessment: View {
+    @Environment(LimenModel.self) private var model
+    let p: HandoverProtocol
+    let defectId: String
     @Environment(\.limen) private var colors
     @Environment(\.str) private var s
     @State private var picked: LifeKey?
-    @State private var lifespan = "8"
-    @State private var age = ""
-    @State private var cost = ""
     @State private var showTable = false
+
+    private var estimate: ReplacementEstimate { p.details.estimates[defectId] ?? ReplacementEstimate() }
+    private var lifespan: String { estimate.lifeYears }
+    private var age: String { estimate.ageYears }
+    private var cost: String { estimate.replacementChf }
+
+    private func update(_ change: (inout ReplacementEstimate) -> Void) {
+        var next = estimate
+        change(&next)
+        model.edit { var record = $0; record.details.estimates[defectId] = next; return record }
+    }
 
     var body: some View {
         let lifespanV = swissNumber(lifespan) ?? 0
@@ -158,7 +176,7 @@ struct WearAssessment: View {
                                         Button {
                                             Haptics.play(.key)
                                             picked = row.key
-                                            lifespan = String(Int(row.years))
+                                            update { $0.lifeYears = String(Int(row.years)); $0.basis = s.life(row.key) }
                                             showTable = false
                                         } label: {
                                             HStack {
@@ -177,12 +195,16 @@ struct WearAssessment: View {
                     }
                     HStack(alignment: .top, spacing: 8) {
                         Field(label: s.lifespanYears, value: lifespan, keyboard: .decimalPad) { v in
-                            lifespan = String(v.prefix(5))
+                            update { $0.lifeYears = String(v.prefix(5)) }
                             picked = nil
                         }
-                        Field(label: s.ageYears, value: age, keyboard: .decimalPad) { age = String($0.prefix(5)) }
+                        Field(label: s.ageYears, value: age, keyboard: .decimalPad) { value in update { $0.ageYears = String(value.prefix(5)) } }
                     }
-                    Field(label: s.repairCost, value: cost, keyboard: .decimalPad, isError: !cost.isBlank && swissNumber(cost) == nil) { cost = String($0.prefix(12)) }
+                    Text(s.estimateNotice).font(LimenType.bodySmall).foregroundStyle(colors.ink)
+                    Field(label: s.legalBasis, value: estimate.basis, singleLine: false) { value in update { $0.basis = value } }
+                    Field(label: s.sourceLabel, value: estimate.source) { value in update { $0.source = value } }
+                    DateField(label: s.handoverDate, stored: estimate.date, fieldKey: "estimate.\(defectId).date") { value in update { $0.date = value } }
+                    Field(label: s.repairCost, value: cost, keyboard: .decimalPad, isError: !cost.isBlank && swissNumber(cost) == nil) { value in update { $0.replacementChf = String(value.prefix(12)) } }
                 }
             }
             if lifespanV > 0, let ageV {
@@ -193,8 +215,7 @@ struct WearAssessment: View {
                     VStack(spacing: 4) {
                         Text(share.map { "CHF " + String(format: "%.0f", $0) } ?? String(format: "%.0f%%", fraction * 100))
                             .font(LimenType.mono(54, like: .largeTitle))
-                            .minimumScaleFactor(0.5)
-                            .lineLimit(1)
+                            .fixedSize(horizontal: false, vertical: true)
                             .foregroundStyle(zero ? colors.seal : colors.ink)
                         Text("\(s.remainingValue): " + String(format: "%.0f%%", fraction * 100)).font(LimenType.labelLarge).foregroundStyle(colors.inkDim)
                     }
@@ -208,6 +229,7 @@ struct WearAssessment: View {
     /// apostrophe is the Swiss thousands separator, and a cost entered the normal way used to
     /// parse as nothing.
     private func swissNumber(_ typed: String) -> Double? {
-        Double(typed.filter { !"'’".contains($0) && !$0.isWhitespace }.replacingOccurrences(of: ",", with: "."))
+        guard let value = Double(typed.filter { !"'’".contains($0) && !$0.isWhitespace }.replacingOccurrences(of: ",", with: ".")), value.isFinite, value >= 0 else { return nil }
+        return value
     }
 }

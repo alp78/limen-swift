@@ -1,0 +1,16 @@
+{
+  "archiveSaved": [
+    "Saved $name in Files, in the Limen app folder",
+    "Enregistré sous $name dans Fichiers, dans le dossier de l’app Limen",
+    "Als $name in Dateien im Ordner der App Limen gespeichert",
+    "Salvato come $name in File, nella cartella dell’app Limen",
+    "Memorisà sco $name en Datotecas, en l’ordinatur da l’app Limen"
+  ],
+  "archiveSavedOpen": [
+    "Saved $name in Files, in the Limen app folder. Without a password: anyone with this file can read its records.",
+    "Enregistré sous $name dans Fichiers, dans le dossier de l’app Limen. Sans mot de passe : toute personne détenant ce fichier peut lire ses constats.",
+    "Als $name in Dateien im Ordner der App Limen gespeichert. Ohne Passwort: Wer diese Datei hat, kann die Protokolle darin lesen.",
+    "Salvato come $name in File, nella cartella dell’app Limen. Senza password: chiunque abbia questo file può leggere i verbali.",
+    "Memorisà sco $name en Datotecas, en l’ordinatur da l’app Limen. Senza pled-clav: mintgin che ha questa datoteca po leger ils protocols."
+  ]
+}

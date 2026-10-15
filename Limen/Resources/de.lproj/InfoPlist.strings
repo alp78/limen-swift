@@ -1,0 +1,2 @@
+"NSCameraUsageDescription" = "Limen verwendet die Kamera für Fotos von Mängeln und mitgelieferten Gegenständen. Originale bleiben bis zum Export oder Löschen des Protokolls in dieser App.";
+"NSFaceIDUsageDescription" = "Face ID öffnet gespeicherte Protokolle und Einstellungen, wenn Sie diese Option aktivieren. Die gemeinsame Übergabe bleibt zugänglich.";

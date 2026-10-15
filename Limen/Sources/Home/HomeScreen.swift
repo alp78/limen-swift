@@ -39,7 +39,7 @@ private struct LandingScreen: View {
     var body: some View {
         GeometryReader { geometry in
             let compact = geometry.size.height < 600
-            ScrollView(compact ? .vertical : []) {
+            ScrollView(.vertical) {
                 VStack(spacing: 0) {
                     HStack {
                         LangMenu(current: model.lang) { model.selectLang($0) }
@@ -61,9 +61,9 @@ private struct LandingScreen: View {
                         model.homePage = .newSession
                     }
                     Spacer().frame(height: 10)
-                    LandingKey(label: s.allSessions, enabled: !model.protocols.isEmpty) { model.homePage = .sessions }
+                    LandingKey(label: s.allSessions) { model.requestHomePage(.sessions) }
                     Spacer().frame(height: 10)
-                    LandingKey(label: s.dataAndPrivacy) { model.homePage = .dataPrivacy }
+                    LandingKey(label: s.dataAndPrivacy) { model.requestHomePage(.dataPrivacy) }
                     Spacer().frame(height: 24)
                 }
                 .padding(.horizontal, 24)
@@ -86,8 +86,7 @@ private struct LandingKey: View {
             Text(label)
                 .font(LimenType.labelLarge)
                 .tracking(0.3)
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
+                .fixedSize(horizontal: false, vertical: true)
                 .foregroundStyle(enabled ? colors.ink : colors.disabledInk)
                 .padding(.vertical, 18)
                 .frame(maxWidth: .infinity)
@@ -109,7 +108,7 @@ struct PageMast: View {
         HStack(spacing: 10) {
             IconKey(glyph: .back, label: s.back, onPress: onBack)
             if let title {
-                Text(title).font(LimenType.titleMedium).foregroundStyle(colors.ink).lineLimit(1).minimumScaleFactor(0.7)
+                Text(title).font(LimenType.titleMedium).foregroundStyle(colors.ink).fixedSize(horizontal: false, vertical: true)
             }
             Spacer()
             if controls {
@@ -128,28 +127,55 @@ private struct SessionsScreen: View {
     let onBack: () -> Void
     let onSeedExit: (HandoverProtocol) -> Void
 
+    @State private var query = ""
+    @State private var filter = "all"
+
+    private var filtered: [HandoverProtocol] {
+        model.protocols.filter { record in
+            let search = [record.address, record.place, record.handoverDate, SwissDate.display(record.handoverDate)] + record.parties.map(\.name)
+            let matches = query.isBlank || search.contains { $0.localizedCaseInsensitiveContains(query) }
+            return matches && (filter == "all" || (filter == "draft" && !record.isFinalized()) || (filter == "final" && record.isFinalized()) || record.kind.rawValue == filter)
+        }
+    }
+
+    private var groupKeys: [String] { filtered.map(groupKey).distinct() }
+
+    private func groupKey(_ record: HandoverProtocol) -> String {
+        [record.address.ifBlank(s.noAddress), record.place, record.objectDetail].filter { !$0.isBlank }.joined(separator: " · ")
+    }
+
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 10) {
             PageMast(title: s.allSessions, onBack: onBack)
-            Spacer().frame(height: 14)
-            if model.protocols.isEmpty {
-                Text(s.sessionsEmpty).font(LimenType.bodyLarge).foregroundStyle(colors.inkDim)
-                Spacer()
-            } else {
-                ScrollView {
-                    LazyVStack(spacing: 8) {
-                        ForEach(model.protocols, id: \.id) { p in
-                            ProtocolCard(p: p, onSeedExit: onSeedExit)
+            Field(label: s.searchRecords, value: query) { query = $0 }
+            PillRow(options: [("all", s.allRecords), ("draft", s.draft), ("final", s.finalized), (Kind.entry.rawValue, s.entry), (Kind.exit.rawValue, s.exit)], current: filter) { filter = $0 }
+            if model.libraryLoading { ProgressView(s.working) }
+            ScrollView {
+                LazyVStack(spacing: 10) {
+                    ForEach(model.unreadableRecords, id: \.id) { record in
+                        Panel(label: s.unreadableRecord, warning: true) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(record.id).font(LimenType.bodySmall).textSelection(.enabled)
+                                if record.hasRecovery { SmallKey(label: s.recover) { model.recoverRecord(record.id) } }
+                            }
+                        }
+                    }
+                    if filtered.isEmpty { Text(s.sessionsEmpty).font(LimenType.bodyLarge).foregroundStyle(colors.inkDim) }
+                    ForEach(groupKeys, id: \.self) { group in
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(group).font(LimenType.labelLarge).foregroundStyle(colors.inkDim).accessibilityAddTraits(.isHeader)
+                            ForEach(filtered.filter { groupKey($0) == group }, id: \.id) { record in ProtocolCard(p: record, onSeedExit: onSeedExit) }
                         }
                     }
                 }
             }
+            .refreshable { model.refreshLibrary() }
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 8)
         .readable()
         .background(colors.plate.ignoresSafeArea())
-        .onChange(of: model.protocols.isEmpty) { _, empty in if empty { onBack() } }
+        .task { model.refreshLibrary() }
     }
 }
 
@@ -179,9 +205,9 @@ private struct ProtocolCard: View {
             } label: {
                 HStack(spacing: 8) {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(p.address.ifBlank(s.noAddress)).font(LimenType.titleMedium).lineLimit(1).foregroundStyle(colors.ink)
+                        Text(p.address.ifBlank(s.noAddress)).font(LimenType.titleMedium).fixedSize(horizontal: false, vertical: true).foregroundStyle(colors.ink)
                         Text([p.kind == .entry ? s.entry : s.exit, SwissDate.display(p.handoverDate), p.place].filter { !$0.isBlank }.joined(separator: " · "))
-                            .font(LimenType.labelSmall).lineLimit(1).foregroundStyle(colors.inkDim)
+                            .font(LimenType.labelSmall).fixedSize(horizontal: false, vertical: true).foregroundStyle(colors.inkDim)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Text(status.0.uppercased())

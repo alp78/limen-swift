@@ -1,0 +1,77 @@
+{
+  "role": "tablet",
+  "test": "testRomanshLargestAccessibilityLandscape",
+  "category": "UICTContentSizeCategoryAccessibilityXXXL",
+  "app_frame_points": [
+    1376,
+    1032
+  ],
+  "uuid": "1832F00F-BAD8-43C6-8246-4E23D1763BFD",
+  "runtime": "iOS 26.5",
+  "screens": [
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-01-landing.png",
+      "sha256": "a59bedc24f484e3c2ea591034199f84ff36d0dfb45d3e7139402e5dc51cd345e"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-02-new-session.png",
+      "sha256": "7d7d5dd6579d9034f328700590eaa623c025e00b972de83637514720af291caa"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-03-privacy.png",
+      "sha256": "11a020e2f6847e66bdc99a42c2fa02cbb468929f0753f5f8d46cc8d32d885d54"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-04-licences.png",
+      "sha256": "4de8fec527487b3727313e7010283d8e3f068e2c91e35e24e7b97280d3a466f8"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-05-hub.png",
+      "sha256": "59e9d68defdbcf66185336fb50ee1cae736ce1f4c3fb5e4561efa8e56dd49f34"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-06-inspection.png",
+      "sha256": "55234edb242ac0c2a9f4969e64c774144274ede25e833dd7549fdceb58f9174e"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-07-objects.png",
+      "sha256": "5f61c4cb6944b458b0e87c675ed44379934be1d02e8c9abb06d08c1cb7fcf825"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-08-dossier.png",
+      "sha256": "1c210e8dd5f84b42cf69df0d1ac590d9212b58dcbdbe388d92f36e2ae7924392"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-09-cantons.png",
+      "sha256": "7e263affb44f1dc458ff7ace84ecca847d31e76d8f805719c116873ab12b5081"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-10-legal-overlay.png",
+      "sha256": "25b272bf51cb3728b6cd459da93eac833e6fd3b0968b365fb734fb15020c54cf"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-11-review.png",
+      "sha256": "c89b79a5961fd298815f383c7375feff4ccdaa5348858748e5e5d923217c95df"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-11a-review-action.png",
+      "sha256": "072308b50a25992a6ab2951b93a9d0fa1ce1f4ba0630a125c02c44bc9a5eaa44"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-12-sign.png",
+      "sha256": "9614c4ba9edc8249bd3ce7f845df96e3042d1b5ee525b1a4317f8333d9197cee"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-12a-signature-purpose.png",
+      "sha256": "f9a03a4cd1016a905372a9d86a1787b3c11892c9daa7d2d64a8a2e0b17fb6e7a"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-13-ink.png",
+      "sha256": "3f8248ec37a1e7d4d11db89cada9006caef952968360319a54ae7d5bccdc8db7"
+    },
+    {
+      "file": "rm-UICTContentSizeCategoryAccessibilityXXXL-14-signed.png",
+      "sha256": "bdc819fc72e0a04126e66b984572fafbcb6d2fda3b6b57fce1211cad39d0154a"
+    }
+  ]
+}

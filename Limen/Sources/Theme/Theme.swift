@@ -40,7 +40,7 @@ struct LimenColors: Equatable {
         warning: Color(hex: 0xFCEBD2), warningOutline: Color(hex: 0xB26A00),
         positive: Color(hex: 0x287A42), onPositive: .white,
         danger: Color(hex: 0xFDE8E8), dangerOutline: Color(hex: 0xC94242),
-        disabled: Color(hex: 0xE7E9EE), disabledInk: Color(hex: 0xA7ADB8), isDark: false
+        disabled: Color(hex: 0xE7E9EE), disabledInk: Color(hex: 0x586272), isDark: false
     )
 
     static let night = LimenColors(
@@ -51,7 +51,7 @@ struct LimenColors: Equatable {
         warning: Color(hex: 0x3A2D1C), warningOutline: Color(hex: 0xFFB74D),
         positive: Color(hex: 0x57C778), onPositive: Color(hex: 0x102216),
         danger: Color(hex: 0x3B262A), dangerOutline: Color(hex: 0xFF7878),
-        disabled: Color(hex: 0x2A2D33), disabledInk: Color(hex: 0x5B6472), isDark: true
+        disabled: Color(hex: 0x2A2D33), disabledInk: Color(hex: 0xAFB8C6), isDark: true
     )
 }
 

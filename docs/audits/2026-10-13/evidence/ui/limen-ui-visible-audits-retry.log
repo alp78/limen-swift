@@ -1,0 +1,494 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination "platform=iOS Simulator,id=6F9172CC-DF86-4F05-9EB3-42E8E287668F" -derivedDataPath ./DD-final -collect-test-diagnostics never -resultBundlePath /tmp/limen-ui-visible-audits-retry.xcresult "-only-testing:LimenUITests/AccessibilityJourneyTest/testFrenchLargeVisibleAddress" "-only-testing:LimenUITests/AccessibilityJourneyTest/testGermanLargestVisibleExit" "-only-testing:LimenUITests/AccessibilityJourneyTest/testItalianLargestVisibleExit" "-only-testing:LimenUITests/AccessibilityJourneyTest/testRomanshLargestVisibleExit" test
+
+Writing result bundle at path:
+	/tmp/limen-ui-visible-audits-retry.xcresult
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (5 targets)
+    Target 'LimenUITests' in project 'Limen'
+        ➜ Explicit dependency on target 'Limen' in project 'Limen'
+        ➜ Explicit dependency on target 'LimenKit' in project 'Limen'
+    Target 'LimenTests' in project 'Limen'
+        ➜ Explicit dependency on target 'Limen' in project 'Limen'
+    Target 'LimenKitTests' in project 'Limen'
+        ➜ Explicit dependency on target 'LimenKit' in project 'Limen'
+    Target 'Limen' in project 'Limen'
+        ➜ Explicit dependency on target 'LimenKit' in project 'Limen'
+    Target 'LimenKit' in project 'Limen' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk /Users/aperi/DEV/SWIFT/limen/DD-final/SDKStatCaches.noindex/iphonesimulator27.0-24A430-8dc58220667be655e1bcc261a7455254.sdkstatcache
+    cd /Users/aperi/DEV/SWIFT/limen
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -o /Users/aperi/DEV/SWIFT/limen/DD-final/SDKStatCaches.noindex/iphonesimulator27.0-24A430-8dc58220667be655e1bcc261a7455254.sdkstatcache
+
+SwiftDriver LimenUITests normal arm64 com.apple.xcode.tools.swift.compiler (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name LimenUITests -Onone @/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.SwiftFileList -DDEBUG -module-alias Testing\=_Testing_Unavailable -plugin-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -target arm64-apple-ios17.0-simulator -g -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-final/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/aperi/DEV/SWIFT/limen/DD-final/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 6 -I /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator -Isystem /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib -F /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk/Developer/Library/Frameworks -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/aperi/DEV/SWIFT/limen/DD-final/SDKStatCaches.noindex/iphonesimulator27.0-24A430-8dc58220667be655e1bcc261a7455254.sdkstatcache -output-file-map /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-OutputFileMap.json -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-final/ModuleCache.noindex -sdk-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-final/SDKExplicitPrecompiledModules -emit-dependencies -emit-module -emit-module-path /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule -serialize-diagnostics -dependency-scan-serialize-diagnostics-path /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-dependency-scan.dia -validate-clang-modules-once -clang-build-session-file /Users/aperi/DEV/SWIFT/limen/DD-final/ModuleCache.noindex/Session.modulevalidation -Xcc -fmodules-prune-interval\=86400 -Xcc -fmodules-prune-after\=345600 -emit-const-values -const-gather-protocols-list /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests_const_extract_protocols.json -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-generated-files.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-own-target-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/Limen-fa68bf1a78b3328b1edd5d0c0aaec809-VFS-iphonesimulator/all-product-headers.yaml -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-project-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources-normal/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-Swift.h -working-directory /Users/aperi/DEV/SWIFT/limen -experimental-emit-module-separately -disable-cmo
+
+SwiftCompile normal arm64 Compiling\ ParityJourneyTest.swift /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/ParityJourneyTest.swift (in target 'LimenUITests' from project 'Limen')
+
+SwiftCompile normal arm64 /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/ParityJourneyTest.swift (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-SwiftPerFileCompile ParityJourneyTest.swift
+
+SwiftEmitModule normal arm64 Emitting\ module\ for\ LimenUITests (in target 'LimenUITests' from project 'Limen')
+
+SwiftCompile normal arm64 (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+
+SwiftDriverJobDiscovery normal arm64 Emitting module for LimenUITests (in target 'LimenUITests' from project 'Limen')
+
+SwiftDriver\ Compilation\ Requirements LimenUITests normal arm64 com.apple.xcode.tools.swift.compiler (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name LimenUITests -Onone @/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.SwiftFileList -DDEBUG -module-alias Testing\=_Testing_Unavailable -plugin-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -target arm64-apple-ios17.0-simulator -g -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-final/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/aperi/DEV/SWIFT/limen/DD-final/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 6 -I /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator -Isystem /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib -F /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk/Developer/Library/Frameworks -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/aperi/DEV/SWIFT/limen/DD-final/SDKStatCaches.noindex/iphonesimulator27.0-24A430-8dc58220667be655e1bcc261a7455254.sdkstatcache -output-file-map /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-OutputFileMap.json -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-final/ModuleCache.noindex -sdk-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-final/SDKExplicitPrecompiledModules -emit-dependencies -emit-module -emit-module-path /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule -serialize-diagnostics -dependency-scan-serialize-diagnostics-path /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-dependency-scan.dia -validate-clang-modules-once -clang-build-session-file /Users/aperi/DEV/SWIFT/limen/DD-final/ModuleCache.noindex/Session.modulevalidation -Xcc -fmodules-prune-interval\=86400 -Xcc -fmodules-prune-after\=345600 -emit-const-values -const-gather-protocols-list /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests_const_extract_protocols.json -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-generated-files.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-own-target-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/Limen-fa68bf1a78b3328b1edd5d0c0aaec809-VFS-iphonesimulator/all-product-headers.yaml -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-project-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources-normal/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-Swift.h -working-directory /Users/aperi/DEV/SWIFT/limen -experimental-emit-module-separately -disable-cmo
+
+Copy /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftsourceinfo (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftsourceinfo /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo
+
+Copy /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests.swiftmodule/arm64-apple-ios-simulator.abi.json /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.abi.json (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.abi.json /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests.swiftmodule/arm64-apple-ios-simulator.abi.json
+
+SwiftDriverJobDiscovery normal arm64 Compiling ParityJourneyTest.swift (in target 'LimenUITests' from project 'Limen')
+
+SwiftDriver\ Compilation LimenUITests normal arm64 com.apple.xcode.tools.swift.compiler (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-Swift-Compilation -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name LimenUITests -Onone @/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.SwiftFileList -DDEBUG -module-alias Testing\=_Testing_Unavailable -plugin-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -target arm64-apple-ios17.0-simulator -g -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-final/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/aperi/DEV/SWIFT/limen/DD-final/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 6 -I /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator -Isystem /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib -F /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk/Developer/Library/Frameworks -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/aperi/DEV/SWIFT/limen/DD-final/SDKStatCaches.noindex/iphonesimulator27.0-24A430-8dc58220667be655e1bcc261a7455254.sdkstatcache -output-file-map /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-OutputFileMap.json -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-final/ModuleCache.noindex -sdk-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD-final/SDKExplicitPrecompiledModules -emit-dependencies -emit-module -emit-module-path /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule -serialize-diagnostics -dependency-scan-serialize-diagnostics-path /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-dependency-scan.dia -validate-clang-modules-once -clang-build-session-file /Users/aperi/DEV/SWIFT/limen/DD-final/ModuleCache.noindex/Session.modulevalidation -Xcc -fmodules-prune-interval\=86400 -Xcc -fmodules-prune-after\=345600 -emit-const-values -const-gather-protocols-list /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests_const_extract_protocols.json -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-generated-files.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-own-target-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/Limen-fa68bf1a78b3328b1edd5d0c0aaec809-VFS-iphonesimulator/all-product-headers.yaml -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-project-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources-normal/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-Swift.h -working-directory /Users/aperi/DEV/SWIFT/limen -experimental-emit-module-separately -disable-cmo
+
+Ld /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/LimenUITests normal (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios17.0-simulator -bundle -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -O0 -Xlinker -no_warn_duplicate_libraries -L/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -L/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator -L/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib -F/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -F/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator -iframework /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks -iframework /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk/Developer/Library/Frameworks -filelist /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.LinkFileList -Xlinker -rpath -Xlinker /usr/lib/swift -Xlinker -rpath -Xlinker @loader_path/Frameworks -Xlinker -rpath -Xlinker @executable_path/Frameworks -Xlinker -dead_strip -Xlinker -object_path_lto -Xlinker /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests_lto.o -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -debug_variant -Xlinker -dependency_info -Xlinker /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests_dependency_info.dat -fobjc-link-runtime -fprofile-instr-generate -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator -Xlinker -needed_framework -Xlinker XCTest -framework XCTest -Xlinker -needed-lXCTestSwiftSupport -lXCTestSwiftSupport -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __entitlements -Xlinker /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests.xctest-Simulated.xcent -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __ents_der -Xlinker /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests.xctest-Simulated.xcent.der -framework LimenKit -Xlinker -no_adhoc_codesign -o /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/LimenUITests
+
+CopySwiftLibs /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/LimenUITests --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Frameworks --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/PlugIns --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/SystemExtensions --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Extensions --scan-folder /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenKit.framework --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+ExtractAppIntentsMetadata (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsmetadataprocessor --toolchain-dir /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --module-name LimenUITests --sdk-root /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk --xcode-version 27A266a --platform-family iOS --deployment-target 17.0 --bundle-identifier dev.peringer.limen.uitests --output /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest --target-triple arm64-apple-ios17.0-simulator --binary-file /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/LimenUITests --dependency-file /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests_dependency_info.dat --stringsdata-file /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/ExtractedAppShortcutsMetadata.stringsdata --source-file-list /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.SwiftFileList --metadata-file-list /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests.DependencyMetadataFileList --static-metadata-file-list /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests.DependencyStaticMetadataFileList --swift-const-vals-list /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.SwiftConstValuesFileList --compile-time-extraction --deployment-aware-processing --no-app-shortcuts-localization
+2026-10-14 01:08:26.570 appintentsmetadataprocessor[39907:331712] Starting appintentsmetadataprocessor export
+2026-10-14 01:08:26.571 appintentsmetadataprocessor[39907:331712] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+
+CodeSign /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest
+
+CodeSign /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app
+/Users/aperi/DEV/SWIFT/limen/DD-final/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app: replacing existing signature
+
+PruneExplicitPrecompiledModules /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/aperi/DEV/SWIFT/limen/DD-final/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/aperi/DEV/SWIFT/limen/DD-final/SDKExplicitPrecompiledModules
+
+2026-10-14 01:08:27.451627+0200 LimenUITests-Runner[39924:331983] [Default] Running tests...
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'Selected tests' started at 2026-10-14 01:08:27.970.
+Test Suite 'LimenUITests.xctest' started at 2026-10-14 01:08:27.971.
+Test Suite 'AccessibilityJourneyTest' started at 2026-10-14 01:08:27.971.
+Test Case '-[LimenUITests.AccessibilityJourneyTest testFrenchLargeVisibleAddress]' started.
+    t =     0.00s Start Test at 2026-10-14 01:08:27.972
+    t =     0.02s Set Up
+    t =     0.02s Open dev.peringer.limen.audit
+    t =     0.02s     Launch dev.peringer.limen.audit
+2026-10-14 01:08:28.054 xcodebuild[39888:331551] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-14 01:08:28.054 xcodebuild[39888:331551] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     0.49s         Setting up automation session
+objc[39924]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x106d64310) and /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x106570398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =     1.31s         Wait for dev.peringer.limen.audit to idle
+    t =     2.55s Waiting 30.0s for "NOUVEL ÉTAT DES LIEUX" Button to exist
+    t =     3.63s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =     3.63s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =     3.68s Tap "NOUVEL ÉTAT DES LIEUX" Button
+    t =     3.68s     Wait for dev.peringer.limen.audit to idle
+    t =     3.68s     Find the "NOUVEL ÉTAT DES LIEUX" Button
+    t =     3.69s     Check for interrupting elements affecting "NOUVEL ÉTAT DES LIEUX" Button
+    t =     3.70s     Synthesize event
+    t =     3.99s     Wait for dev.peringer.limen.audit to idle
+    t =     4.00s Waiting 10.0s for "Adresse" Button to exist
+    t =     5.06s     Checking `Expect predicate `existsNoRetry == 1` for object "Adresse" Button`
+    t =     5.07s         Checking existence of `"Adresse" Button`
+    t =     5.11s Find the ScrollView (First Match)
+    t =     5.12s Find the "Adresse" Button
+    t =     5.14s Press ScrollView at {{20.0, 133.0}, {362.0, 596.3}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 133.0}, {362.0, 596.3}}[0.50, 0.75] -> (0.0, -37.3) with velocity of 250.00 pixels per second, and then hold for 0.1 seconds 
+    t =     5.14s     Wait for dev.peringer.limen.audit to idle
+    t =     5.15s     Find the ScrollView at {{20.0, 133.0}, {362.0, 596.3}}
+    t =     5.16s     Check for interrupting elements affecting ScrollView
+    t =     5.17s     Synthesize event
+    t =     5.17s         Find the ScrollView at {{20.0, 133.0}, {362.0, 596.3}}
+    t =     5.18s         Find the ScrollView at {{20.0, 133.0}, {362.0, 596.3}}
+    t =     5.20s         Find the ScrollView at {{20.0, 133.0}, {362.0, 596.3}}
+    t =     5.21s         Find the ScrollView at {{20.0, 133.0}, {362.0, 596.3}}
+    t =     5.22s         Find the ScrollView at {{20.0, 133.0}, {362.0, 596.3}}
+    t =     5.76s     Wait for dev.peringer.limen.audit to idle
+    t =     5.77s Find the "Adresse" Button
+    t =     5.79s Find the "Adresse" Button
+    t =     5.81s Find the Target Application 'dev.peringer.limen.audit'
+    t =     5.91s Added attachment named 'Fr-UICTContentSizeCategoryXXXL-visible-control-form'
+    t =     5.92s Requesting snapshot of accessibility hierarchy for app with pid 39929
+    t =     5.98s Requesting snapshot of accessibility hierarchy for app with pid 39929
+LIMEN_UI_TREE Attributes: Application, 0x113069e00, pid: 39929, label: 'Limen'
+Element subtree:
+ →Application, 0x113069e00, pid: 39929, label: 'Limen'
+    Window (Main), 0x113069cc0, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x113069f40, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x113069680, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x1130697c0, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x113069900, {{0.0, 0.0}, {402.0, 874.0}}
+              Button, 0x113069a40, {{20.0, 70.0}, {48.0, 51.0}}, identifier: 'arrow.backward', label: 'RETOUR'
+              Button, 0x113069b80, {{248.3, 71.7}, {57.7, 48.0}}, label: 'Français'
+                Button, 0x11306a1c0, {{248.3, 71.7}, {57.7, 48.0}}
+                  StaticText, 0x11306a300, {{260.3, 83.8}, {33.7, 20.3}}, label: 'FR ▾'
+              Switch, 0x11306a440, {{330.0, 71.7}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Thème sombre', value: NON
+              ScrollView, 0x11306a580, {{20.0, 133.0}, {362.0, 596.3}}
+                Other, 0x11306a6c0, {{20.0, 105.7}, {362.0, 669.7}}
+                  StaticText, 0x11306a800, {{20.0, 169.7}, {318.7, 32.3}}, label: 'NOUVEL ÉTAT DES LIEUX'
+                  StaticText, 0x11306a940, {{36.0, 230.0}, {75.7, 20.3}}, label: 'Votre rôle'
+                  Button, 0x11306aa80, {{36.0, 258.3}, {104.7, 48.0}}, label: 'Locataire', Selected, Disabled
+                  Button, 0x11306abc0, {{148.7, 258.3}, {104.7, 48.0}}, label: 'Bailleur'
+                  Button, 0x11306ad00, {{261.3, 258.3}, {104.7, 48.0}}, label: 'Régie'
+                  StaticText, 0x11306ae40, {{36.0, 350.3}, {119.3, 20.3}}, label: 'Type de remise'
+                  Button, 0x11306af80, {{36.0, 378.7}, {161.0, 48.0}}, label: 'Entrée', Selected, Disabled
+                  Button, 0x11306b0c0, {{205.0, 378.7}, {161.0, 48.0}}, label: 'Sortie'
+                  StaticText, 0x11306b200, {{36.0, 470.7}, {105.3, 20.3}}, label: 'Votre identité'
+                  Other, 0x11306b340, {{36.0, 499.0}, {330.0, 86.3}}, label: 'Prénom'
+                    StaticText, 0x11306b480, {{48.0, 507.0}, {60.7, 20.3}}, label: 'Prénom'
+                    TextField, 0x11306b5c0, {{48.0, 529.3}, {306.0, 48.0}}, identifier: 'Prénom', label: 'Prénom'
+                  Other, 0x11306b700, {{36.0, 595.3}, {330.0, 86.3}}, label: 'Nom'
+                    StaticText, 0x11306b840, {{48.0, 603.3}, {37.0, 20.3}}, label: 'Nom'
+                    TextField, 0x11306b980, {{48.0, 625.7}, {306.0, 48.0}}, identifier: 'Nom', label: 'Nom'
+                  Button, 0x11306bac0, {{36.0, 691.7}, {330.0, 35.7}}, label: 'Adresse'
+                    StaticText, 0x11306bc00, {{36.0, 691.7}, {330.0, 35.7}}, label: 'Adresse'
+                    Image, 0x11306bd40, {{355.3, 701.3}, {9.7, 16.3}}, identifier: 'collapsed'
+                Other, 0x11306be80, {{349.0, 133.0}, {30.0, 596.3}}, label: 'Vertical scroll bar, 2 pages', value: 37%
+                  Other, 0x103267480, {{376.0, 160.0}, {3.0, 525.7}}
+                Other, 0x1032675c0, {{349.0, 133.0}, {30.0, 596.3}}, label: 'Vertical scroll bar, 2 pages', value: 37%
+                  Other, 0x103267700, {{376.0, 160.0}, {3.0, 525.7}}
+              Button, 0x103267840, {{20.0, 741.3}, {362.0, 90.7}}, identifier: 'start-session', label: 'NOUVEL ÉTAT DES LIEUX · ENTRÉE', Disabled
+Path to element:
+ →Application, 0x113069e00, pid: 39929, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x103267980, pid: 39929, label: 'Limen'
+  }
+
+    t =     6.02s Find the Target Application 'dev.peringer.limen.audit'
+LIMEN_UI_SCREENSHOT /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/F390FF9F-08AF-4BBA-9BBA-0E1D9DE6DAEF/tmp/Fr-UICTContentSizeCategoryXXXL-visible-control-form.png
+    t =     8.16s Tear Down
+Test Case '-[LimenUITests.AccessibilityJourneyTest testFrenchLargeVisibleAddress]' passed (8.399 seconds).
+Test Case '-[LimenUITests.AccessibilityJourneyTest testGermanLargestVisibleExit]' started.
+    t =     0.00s Start Test at 2026-10-14 01:08:36.372
+    t =     0.03s Set Up
+    t =     0.03s Open dev.peringer.limen.audit
+    t =     0.03s     Launch dev.peringer.limen.audit
+    t =     0.03s         Terminate dev.peringer.limen.audit:39929
+2026-10-14 01:08:37.502 xcodebuild[39888:331551] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-14 01:08:37.502 xcodebuild[39888:331551] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     1.34s         Setting up automation session
+    t =     2.07s         Wait for dev.peringer.limen.audit to idle
+    t =     3.30s Waiting 30.0s for "NEUE ÜBERGABE" Button to exist
+    t =     4.37s     Checking `Expect predicate `existsNoRetry == 1` for object "NEUE ÜBERGABE" Button`
+    t =     4.38s         Checking existence of `"NEUE ÜBERGABE" Button`
+    t =     4.43s Tap "NEUE ÜBERGABE" Button
+    t =     4.43s     Wait for dev.peringer.limen.audit to idle
+    t =     4.43s     Find the "NEUE ÜBERGABE" Button
+    t =     4.44s     Check for interrupting elements affecting "NEUE ÜBERGABE" Button
+    t =     4.46s     Synthesize event
+    t =     4.75s     Wait for dev.peringer.limen.audit to idle
+    t =     4.75s Waiting 10.0s for "Auszug" Button to exist
+    t =     5.83s     Checking `Expect predicate `existsNoRetry == 1` for object "Auszug" Button`
+    t =     5.83s         Checking existence of `"Auszug" Button`
+    t =     5.87s Find the ScrollView (First Match)
+    t =     5.88s Find the "Auszug" Button
+    t =     5.91s Press ScrollView at {{20.0, 148.7}, {362.0, 683.3}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 148.7}, {362.0, 683.3}}[0.50, 0.75] -> (0.0, -58.7) with velocity of 250.00 pixels per second, and then hold for 0.1 seconds 
+    t =     5.91s     Wait for dev.peringer.limen.audit to idle
+    t =     5.91s     Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     5.92s     Check for interrupting elements affecting ScrollView
+    t =     5.94s     Synthesize event
+    t =     5.94s         Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     5.95s         Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     5.96s         Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     5.98s         Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     5.99s         Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     6.63s     Wait for dev.peringer.limen.audit to idle
+    t =     6.64s Find the "Auszug" Button
+    t =     6.67s Find the "Auszug" Button
+    t =     6.69s Find the Target Application 'dev.peringer.limen.audit'
+    t =     6.80s Added attachment named 'De-UICTContentSizeCategoryAccessibilityXXXL-visible-control-form'
+    t =     6.80s Requesting snapshot of accessibility hierarchy for app with pid 39961
+    t =     6.86s Requesting snapshot of accessibility hierarchy for app with pid 39961
+LIMEN_UI_TREE Attributes: Application, 0x113069b80, pid: 39961, label: 'Limen'
+Element subtree:
+ →Application, 0x113069b80, pid: 39961, label: 'Limen'
+    Window (Main), 0x113069a40, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x113069cc0, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x113069400, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x113069540, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x113069680, {{0.0, 0.0}, {402.0, 874.0}}
+              Button, 0x1130697c0, {{20.0, 78.0}, {48.0, 50.7}}, identifier: 'arrow.backward', label: 'ZURÜCK'
+              Button, 0x113069900, {{207.7, 70.0}, {98.3, 66.7}}, label: 'Deutsch'
+                Button, 0x113069f40, {{207.7, 70.0}, {98.3, 66.7}}
+                  StaticText, 0x11306a080, {{219.7, 79.0}, {74.3, 45.7}}, label: 'DE ▾'
+              Switch, 0x11306a1c0, {{330.0, 79.3}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Dunkles Design', value: NEIN
+              ScrollView, 0x11306a300, {{20.0, 148.7}, {362.0, 683.3}}
+                Other, 0x11306a440, {{20.0, 100.0}, {362.0, 1468.3}}
+                  StaticText, 0x11306a580, {{20.0, 164.0}, {287.0, 131.3}}, label: 'NEUE ÜBERGABE'
+                  StaticText, 0x11306a6c0, {{36.0, 323.3}, {154.0, 45.7}}, label: 'Ihre Rolle'
+                  Button, 0x11306a800, {{36.0, 377.0}, {330.0, 65.7}}, label: 'Mieter/in', Selected, Disabled
+                  Button, 0x11306a940, {{36.0, 450.7}, {330.0, 66.7}}, label: 'Vermieter/in'
+                  Button, 0x11306aa80, {{36.0, 525.3}, {330.0, 66.7}}, label: 'Verwaltung'
+                  StaticText, 0x11306abc0, {{36.0, 636.0}, {289.0, 45.7}}, label: 'Art der Übergabe'
+                  Button, 0x11306ad00, {{36.0, 689.7}, {330.0, 65.7}}, label: 'Einzug', Selected, Disabled
+                  Button, 0x11306ae40, {{36.0, 763.3}, {330.0, 66.7}}, label: 'Auszug'
+                  StaticText, 0x11306af80, {{36.0, 874.0}, {211.0, 45.7}}, label: 'Ihre Identität'
+                  Other, 0x11306b0c0, {{36.0, 927.7}, {330.0, 139.7}}, label: 'Vorname'
+                    StaticText, 0x11306b200, {{48.0, 935.7}, {150.0, 45.7}}, label: 'Vorname'
+                    TextField, 0x11306b340, {{48.0, 983.3}, {306.0, 76.0}}, identifier: 'Vorname', label: 'Vorname'
+                  Other, 0x11306b480, {{36.0, 1077.3}, {330.0, 139.7}}, label: 'Nachname'
+                    StaticText, 0x11306b5c0, {{48.0, 1085.3}, {181.7, 45.7}}, label: 'Nachname'
+                    TextField, 0x11306b700, {{48.0, 1133.0}, {306.0, 76.0}}, identifier: 'Nachname', label: 'Nachname'
+                  Button, 0x11306b840, {{36.0, 1227.0}, {330.0, 71.3}}, label: 'Adresse'
+                    StaticText, 0x11306b980, {{36.0, 1227.0}, {330.0, 71.3}}, label: 'Adresse'
+                    Image, 0x11306bac0, {{342.0, 1244.0}, {21.7, 37.3}}, identifier: 'collapsed'
+                  Button, 0x11306bc00, {{20.0, 1326.3}, {362.0, 210.0}}, identifier: 'start-session', label: 'NEUE ÜBERGABE · EINZUG', Disabled
+                Other, 0x11306bd40, {{349.0, 148.7}, {30.0, 663.3}}, label: 'Vertical scroll bar, 3 pages', value: 6%
+                  Other, 0x11306be80, {{376.0, 173.3}, {3.0, 306.0}}
+                Other, 0x103267980, {{349.0, 148.7}, {30.0, 663.3}}, label: 'Vertical scroll bar, 3 pages', value: 6%
+                  Other, 0x103267840, {{376.0, 173.3}, {3.0, 306.0}}
+Path to element:
+ →Application, 0x113069b80, pid: 39961, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x1032675c0, pid: 39961, label: 'Limen'
+  }
+
+    t =     6.88s Find the Target Application 'dev.peringer.limen.audit'
+LIMEN_UI_SCREENSHOT /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/F390FF9F-08AF-4BBA-9BBA-0E1D9DE6DAEF/tmp/De-UICTContentSizeCategoryAccessibilityXXXL-visible-control-form.png
+    t =     8.96s Tear Down
+Test Case '-[LimenUITests.AccessibilityJourneyTest testGermanLargestVisibleExit]' passed (9.232 seconds).
+Test Case '-[LimenUITests.AccessibilityJourneyTest testItalianLargestVisibleExit]' started.
+    t =     0.00s Start Test at 2026-10-14 01:08:45.604
+    t =     0.03s Set Up
+    t =     0.03s Open dev.peringer.limen.audit
+    t =     0.04s     Launch dev.peringer.limen.audit
+    t =     0.04s         Terminate dev.peringer.limen.audit:39961
+2026-10-14 01:08:46.747 xcodebuild[39888:331551] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-14 01:08:46.748 xcodebuild[39888:331551] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     1.36s         Setting up automation session
+    t =     2.13s         Wait for dev.peringer.limen.audit to idle
+    t =     3.37s Waiting 30.0s for "NUOVA CONSEGNA" Button to exist
+    t =     4.44s     Checking `Expect predicate `existsNoRetry == 1` for object "NUOVA CONSEGNA" Button`
+    t =     4.44s         Checking existence of `"NUOVA CONSEGNA" Button`
+    t =     4.50s Tap "NUOVA CONSEGNA" Button
+    t =     4.50s     Wait for dev.peringer.limen.audit to idle
+    t =     4.50s     Find the "NUOVA CONSEGNA" Button
+    t =     4.51s     Check for interrupting elements affecting "NUOVA CONSEGNA" Button
+    t =     4.53s     Synthesize event
+    t =     4.82s     Wait for dev.peringer.limen.audit to idle
+    t =     4.82s Waiting 10.0s for "Riconsegna" Button to exist
+    t =     5.89s     Checking `Expect predicate `existsNoRetry == 1` for object "Riconsegna" Button`
+    t =     5.89s         Checking existence of `"Riconsegna" Button`
+    t =     5.92s Find the ScrollView (First Match)
+    t =     5.94s Find the "Riconsegna" Button
+    t =     5.97s Press ScrollView at {{20.0, 148.7}, {362.0, 683.3}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 148.7}, {362.0, 683.3}}[0.50, 0.75] -> (0.0, -58.7) with velocity of 250.00 pixels per second, and then hold for 0.1 seconds 
+    t =     5.97s     Wait for dev.peringer.limen.audit to idle
+    t =     5.97s     Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     5.98s     Check for interrupting elements affecting ScrollView
+    t =     6.00s     Synthesize event
+    t =     6.00s         Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     6.02s         Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     6.04s         Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     6.05s         Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     6.07s         Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     6.72s     Wait for dev.peringer.limen.audit to idle
+    t =     6.72s Find the "Riconsegna" Button
+    t =     6.75s Find the "Riconsegna" Button
+    t =     6.77s Find the Target Application 'dev.peringer.limen.audit'
+    t =     6.87s Added attachment named 'It-UICTContentSizeCategoryAccessibilityXXXL-visible-control-form'
+    t =     6.87s Requesting snapshot of accessibility hierarchy for app with pid 39981
+    t =     6.94s Requesting snapshot of accessibility hierarchy for app with pid 39981
+LIMEN_UI_TREE Attributes: Application, 0x113069b80, pid: 39981, label: 'Limen'
+Element subtree:
+ →Application, 0x113069b80, pid: 39981, label: 'Limen'
+    Window (Main), 0x113069a40, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x113069cc0, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x113068000, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x113069540, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x113069680, {{0.0, 0.0}, {402.0, 874.0}}
+              Button, 0x1130697c0, {{20.0, 78.0}, {48.0, 50.7}}, identifier: 'arrow.backward', label: 'INDIETRO'
+              Button, 0x113069900, {{223.7, 70.0}, {82.3, 66.7}}, label: 'Italiano'
+                Button, 0x113069f40, {{223.7, 70.0}, {82.3, 66.7}}
+                  StaticText, 0x11306a080, {{235.7, 79.0}, {58.3, 45.7}}, label: 'IT ▾'
+              Switch, 0x11306a1c0, {{330.0, 79.3}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Tema scuro', value: NO
+              ScrollView, 0x11306a300, {{20.0, 148.7}, {362.0, 683.3}}
+                Other, 0x11306a440, {{20.0, 100.0}, {362.0, 1468.3}}
+                  StaticText, 0x11306a580, {{20.0, 164.0}, {306.0, 131.3}}, label: 'NUOVA CONSEGNA'
+                  StaticText, 0x11306a6c0, {{36.0, 323.3}, {223.3, 45.7}}, label: 'Il vostro ruolo'
+                  Button, 0x11306a800, {{36.0, 377.0}, {330.0, 65.7}}, label: 'Conduttore/trice', Selected, Disabled
+                  Button, 0x11306a940, {{36.0, 450.7}, {330.0, 66.7}}, label: 'Locatore/trice'
+                  Button, 0x11306aa80, {{36.0, 525.3}, {330.0, 66.7}}, label: 'Amministrazione'
+                  StaticText, 0x11306abc0, {{36.0, 636.0}, {285.0, 45.7}}, label: 'Tipo di consegna'
+                  Button, 0x11306ad00, {{36.0, 689.7}, {330.0, 65.7}}, label: 'Consegna', Selected, Disabled
+                  Button, 0x11306ae40, {{36.0, 763.3}, {330.0, 66.7}}, label: 'Riconsegna'
+                  StaticText, 0x11306af80, {{36.0, 874.0}, {286.3, 45.7}}, label: 'La vostra identità'
+                  Other, 0x11306b0c0, {{36.0, 927.7}, {330.0, 139.7}}, label: 'Nome'
+                    StaticText, 0x11306b200, {{48.0, 935.7}, {100.7, 45.7}}, label: 'Nome'
+                    TextField, 0x11306b340, {{48.0, 983.3}, {306.0, 76.0}}, identifier: 'Nome', label: 'Nome'
+                  Other, 0x11306b480, {{36.0, 1077.3}, {330.0, 139.7}}, label: 'Cognome'
+                    StaticText, 0x11306b5c0, {{48.0, 1085.3}, {164.3, 45.7}}, label: 'Cognome'
+                    TextField, 0x11306b700, {{48.0, 1133.0}, {306.0, 76.0}}, identifier: 'Cognome', label: 'Cognome'
+                  Button, 0x11306b840, {{36.0, 1227.0}, {330.0, 71.3}}, label: 'Indirizzo'
+                    StaticText, 0x11306b980, {{36.0, 1227.0}, {330.0, 71.3}}, label: 'Indirizzo'
+                    Image, 0x11306bac0, {{342.0, 1244.0}, {21.7, 37.3}}, identifier: 'collapsed'
+                  Button, 0x11306bc00, {{20.0, 1326.3}, {362.0, 210.0}}, identifier: 'start-session', label: 'NUOVA CONSEGNA · CONSEGNA', Disabled
+                Other, 0x11306bd40, {{349.0, 148.7}, {30.0, 663.3}}, label: 'Vertical scroll bar, 3 pages', value: 6%
+                  Other, 0x11306be80, {{376.0, 173.3}, {3.0, 306.0}}
+                Other, 0x103267840, {{349.0, 148.7}, {30.0, 663.3}}, label: 'Vertical scroll bar, 3 pages', value: 6%
+                  Other, 0x1032675c0, {{376.0, 173.3}, {3.0, 306.0}}
+Path to element:
+ →Application, 0x113069b80, pid: 39981, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x103267700, pid: 39981, label: 'Limen'
+  }
+
+    t =     6.96s Find the Target Application 'dev.peringer.limen.audit'
+LIMEN_UI_SCREENSHOT /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/F390FF9F-08AF-4BBA-9BBA-0E1D9DE6DAEF/tmp/It-UICTContentSizeCategoryAccessibilityXXXL-visible-control-form.png
+    t =     9.05s Tear Down
+Test Case '-[LimenUITests.AccessibilityJourneyTest testItalianLargestVisibleExit]' passed (9.324 seconds).
+Test Case '-[LimenUITests.AccessibilityJourneyTest testRomanshLargestVisibleExit]' started.
+    t =     0.00s Start Test at 2026-10-14 01:08:54.930
+    t =     0.03s Set Up
+    t =     0.03s Open dev.peringer.limen.audit
+    t =     0.04s     Launch dev.peringer.limen.audit
+    t =     0.04s         Terminate dev.peringer.limen.audit:39981
+2026-10-14 01:08:56.062 xcodebuild[39888:331551] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-14 01:08:56.062 xcodebuild[39888:331551] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     1.35s         Setting up automation session
+    t =     2.06s         Wait for dev.peringer.limen.audit to idle
+    t =     3.30s Waiting 30.0s for "NOVA SURDADA" Button to exist
+    t =     4.36s     Checking `Expect predicate `existsNoRetry == 1` for object "NOVA SURDADA" Button`
+    t =     4.36s         Checking existence of `"NOVA SURDADA" Button`
+    t =     4.43s Tap "NOVA SURDADA" Button
+    t =     4.43s     Wait for dev.peringer.limen.audit to idle
+    t =     4.43s     Find the "NOVA SURDADA" Button
+    t =     4.44s     Check for interrupting elements affecting "NOVA SURDADA" Button
+    t =     4.46s     Synthesize event
+    t =     4.75s     Wait for dev.peringer.limen.audit to idle
+    t =     4.75s Waiting 10.0s for "Sortida" Button to exist
+    t =     5.83s     Checking `Expect predicate `existsNoRetry == 1` for object "Sortida" Button`
+    t =     5.83s         Checking existence of `"Sortida" Button`
+    t =     5.86s Find the ScrollView (First Match)
+    t =     5.87s Find the "Sortida" Button
+    t =     5.90s Press ScrollView at {{20.0, 148.7}, {362.0, 683.3}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 148.7}, {362.0, 683.3}}[0.50, 0.75] -> (0.0, -58.7) with velocity of 250.00 pixels per second, and then hold for 0.1 seconds 
+    t =     5.90s     Wait for dev.peringer.limen.audit to idle
+    t =     5.90s     Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     5.91s     Check for interrupting elements affecting ScrollView
+    t =     5.93s     Synthesize event
+    t =     5.93s         Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     5.94s         Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     5.95s         Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     5.96s         Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     5.98s         Find the ScrollView at {{20.0, 148.7}, {362.0, 683.3}}
+    t =     6.63s     Wait for dev.peringer.limen.audit to idle
+    t =     6.64s Find the "Sortida" Button
+    t =     6.67s Find the "Sortida" Button
+    t =     6.70s Find the Target Application 'dev.peringer.limen.audit'
+    t =     6.80s Added attachment named 'Rm-UICTContentSizeCategoryAccessibilityXXXL-visible-control-form'
+    t =     6.80s Requesting snapshot of accessibility hierarchy for app with pid 40021
+    t =     6.86s Requesting snapshot of accessibility hierarchy for app with pid 40021
+LIMEN_UI_TREE Attributes: Application, 0x113069b80, pid: 40021, label: 'Limen'
+Element subtree:
+ →Application, 0x113069b80, pid: 40021, label: 'Limen'
+    Window (Main), 0x113069a40, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x113069cc0, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x113068000, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x113068140, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x113069680, {{0.0, 0.0}, {402.0, 874.0}}
+              Button, 0x1130697c0, {{20.0, 78.0}, {48.0, 50.7}}, identifier: 'arrow.backward', label: 'ENAVOS'
+              Button, 0x113069900, {{199.7, 70.0}, {106.3, 66.7}}, label: 'Rumantsch'
+                Button, 0x113069f40, {{199.7, 70.0}, {106.3, 66.7}}
+                  StaticText, 0x11306a080, {{211.7, 79.0}, {82.3, 45.7}}, label: 'RM ▾'
+              Switch, 0x11306a1c0, {{330.0, 79.3}, {52.0, 48.0}}, identifier: 'sun.max.fill', label: 'Tema stgir', value: NA
+              ScrollView, 0x11306a300, {{20.0, 148.7}, {362.0, 683.3}}
+                Other, 0x11306a440, {{20.0, 100.0}, {362.0, 1468.3}}
+                  StaticText, 0x11306a580, {{20.0, 164.0}, {261.0, 131.3}}, label: 'NOVA SURDADA'
+                  StaticText, 0x11306a6c0, {{36.0, 323.3}, {180.0, 45.7}}, label: 'Vossa rolla'
+                  Button, 0x11306a800, {{36.0, 377.0}, {330.0, 65.7}}, label: 'Locatari/a', Selected, Disabled
+                  Button, 0x11306a940, {{36.0, 450.7}, {330.0, 66.7}}, label: 'Locatur/a'
+                  Button, 0x11306aa80, {{36.0, 525.3}, {330.0, 66.7}}, label: 'Administraziun'
+                  StaticText, 0x11306abc0, {{36.0, 636.0}, {246.7, 45.7}}, label: 'Tip da surdada'
+                  Button, 0x11306ad00, {{36.0, 689.7}, {330.0, 65.7}}, label: 'Entrada', Selected, Disabled
+                  Button, 0x11306ae40, {{36.0, 763.3}, {330.0, 66.7}}, label: 'Sortida'
+                  StaticText, 0x11306af80, {{36.0, 874.0}, {257.0, 45.7}}, label: 'Vossa identitad'
+                  Other, 0x11306b0c0, {{36.0, 927.7}, {330.0, 139.7}}, label: 'Prenum'
+                    StaticText, 0x11306b200, {{48.0, 935.7}, {129.3, 45.7}}, label: 'Prenum'
+                    TextField, 0x11306b340, {{48.0, 983.3}, {306.0, 76.0}}, identifier: 'Prenum', label: 'Prenum'
+                  Other, 0x11306b480, {{36.0, 1077.3}, {330.0, 139.7}}, label: 'Num'
+                    StaticText, 0x11306b5c0, {{48.0, 1085.3}, {80.0, 45.7}}, label: 'Num'
+                    TextField, 0x11306b700, {{48.0, 1133.0}, {306.0, 76.0}}, identifier: 'Num', label: 'Num'
+                  Button, 0x11306b840, {{36.0, 1227.0}, {330.0, 71.3}}, label: 'Adressa'
+                    StaticText, 0x11306b980, {{36.0, 1227.0}, {330.0, 71.3}}, label: 'Adressa'
+                    Image, 0x11306bac0, {{342.0, 1244.0}, {21.7, 37.3}}, identifier: 'collapsed'
+                  Button, 0x11306bc00, {{20.0, 1326.3}, {362.0, 210.0}}, identifier: 'start-session', label: 'NOVA SURDADA · ENTRADA', Disabled
+                Other, 0x11306bd40, {{349.0, 148.7}, {30.0, 663.3}}, label: 'Vertical scroll bar, 3 pages', value: 6%
+                  Other, 0x11306be80, {{376.0, 173.3}, {3.0, 306.0}}
+                Other, 0x103267840, {{349.0, 148.7}, {30.0, 663.3}}, label: 'Vertical scroll bar, 3 pages', value: 6%
+                  Other, 0x1032675c0, {{376.0, 173.3}, {3.0, 306.0}}
+Path to element:
+ →Application, 0x113069b80, pid: 40021, label: 'Limen'
+Query chain:
+ →Find: Target Application 'dev.peringer.limen.audit'
+  Output: {
+    Application, 0x103267480, pid: 40021, label: 'Limen'
+  }
+
+    t =     6.88s Find the Target Application 'dev.peringer.limen.audit'
+LIMEN_UI_SCREENSHOT /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/F390FF9F-08AF-4BBA-9BBA-0E1D9DE6DAEF/tmp/Rm-UICTContentSizeCategoryAccessibilityXXXL-visible-control-form.png
+    t =     8.98s Tear Down
+Test Case '-[LimenUITests.AccessibilityJourneyTest testRomanshLargestVisibleExit]' passed (9.200 seconds).
+Test Suite 'AccessibilityJourneyTest' passed at 2026-10-14 01:09:04.130.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 36.155 (36.160) seconds
+Test Suite 'LimenUITests.xctest' passed at 2026-10-14 01:09:04.131.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 36.155 (36.160) seconds
+Test Suite 'Selected tests' passed at 2026-10-14 01:09:04.132.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 36.155 (36.161) seconds
+2026-10-14 01:09:04.465 xcodebuild[39888:331551] [MT] IDETestOperationsObserverDebug: 37.786 elapsed -- Testing started completed.
+2026-10-14 01:09:04.465 xcodebuild[39888:331551] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-14 01:09:04.465 xcodebuild[39888:331551] [MT] IDETestOperationsObserverDebug: 37.786 sec, +37.786 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/limen-ui-visible-audits-retry.xcresult
+
+** TEST SUCCEEDED **
+
+Testing started

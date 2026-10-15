@@ -14,6 +14,8 @@ struct NewSessionScreen: View {
     @Environment(LimenModel.self) private var model
     @Environment(\.limen) private var colors
     @Environment(\.str) private var s
+    @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.verticalSizeClass) private var verticalSize
     let entryToSeed: HandoverProtocol?
     let onBack: () -> Void
 
@@ -35,6 +37,8 @@ struct NewSessionScreen: View {
     @State private var addressMatches: [SwissAddressCandidate] = []
     @State private var focusedAddressFields: Set<String> = []
     @State private var loaded = false
+
+    private var inlineStart: Bool { typeSize.isAccessibilitySize || verticalSize == .compact }
 
     private var sessionKind: Kind { entryToSeed != nil ? .exit : kind }
 
@@ -63,6 +67,7 @@ struct NewSessionScreen: View {
         let query: String
         let verified: Bool
         let focused: Bool
+        let enabled: Bool
     }
 
     var body: some View {
@@ -77,7 +82,7 @@ struct NewSessionScreen: View {
             PageMast(title: nil, onBack: onBack)
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
-                    HStack { Spacer(); LimenMark(size: 94); Spacer() }
+                    HStack { Spacer(); LimenMark(size: 52); Spacer() }
                     Text(s.startNewSession).font(LimenType.titleMedium).foregroundStyle(colors.ink)
                     Panel(label: s.userType) {
                         EqualChoiceRow(options: [(Actor.tenant, s.role(.tenant)), (.landlord, s.actorLandlordPrivate), (.agency, s.actorAgency)], current: actor) { actor = $0 }
@@ -98,7 +103,10 @@ struct NewSessionScreen: View {
                             }
                             Field(label: s.firstName, value: firstName) { firstName = $0 }
                             Field(label: s.lastName, value: lastName) { lastName = $0 }
+                            DisclosureGroup(s.identityAddress) {
+                                VStack(alignment: .leading, spacing: 10) {
                             Text(s.identityAddress).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
+                            LookupPreference()
                             Text(s.addressType).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
                             EqualChoiceRow(options: [(true, s.swissAddress), (false, s.foreignAddress)], current: usesSwissAddress) { selectAddressMode($0) }
                             if !usesSwissAddress {
@@ -157,20 +165,17 @@ struct NewSessionScreen: View {
                                     .font(LimenType.labelSmall)
                                     .foregroundStyle(phoneIsValid ? colors.positive : colors.dangerOutline)
                             }
+                                }.padding(.top, 8)
+                            }
                         }
                     }
-                    Spacer().frame(height: 4)
-                    BigKey(label: "\(s.startNewSession) · \((sessionKind == .entry ? s.entry : s.exit).uppercased())", enabled: canStart) {
-                        if let entryToSeed {
-                            model.seedExitFrom(entryToSeed, sessionRole: actor.role, identity: identity)
-                        } else {
-                            model.startNewSession(role: actor.role, identity: identity, kind: sessionKind)
-                        }
-                    }
+                    if inlineStart { startKey(enabled: canStart) }
                     Spacer().frame(height: 20)
                 }
             }
             .scrollDismissesKeyboard(.interactively)
+            if !inlineStart { startKey(enabled: canStart) }
+
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 8)
@@ -179,11 +184,20 @@ struct NewSessionScreen: View {
         .onAppear {
             guard !loaded else { return }
             loaded = true
-            let saved = model.profileName.trimmingCharacters(in: .whitespaces)
+            let reusable = model.reusableIdentity
+            street = reusable.street
+            flatNumber = reusable.flatNumber
+            postalCode = reusable.postalCode
+            city = reusable.city
+            phone = reusable.phone
+            phoneRegionCode = reusable.phoneRegion
+            addressCountryCode = reusable.addressCountry
+            usesSwissAddress = reusable.usesSwissAddress
+            let saved = reusable.fullName.ifBlank(model.profileName).trimmingCharacters(in: .whitespaces)
             let parts = saved.split(separator: " ", maxSplits: 1).map(String.init)
             firstName = parts.first ?? ""
             lastName = parts.count > 1 ? parts[1] : ""
-            company = model.profileCompany
+            company = reusable.company.ifBlank(model.profileCompany)
             if model.myRole == .landlord, !model.profileCompany.isBlank {
                 actor = .agency
             } else if model.myRole == .landlord {
@@ -193,8 +207,9 @@ struct NewSessionScreen: View {
             }
             kind = entryToSeed != nil ? .exit : .entry
         }
-        .task(id: LookupKey(swiss: usesSwissAddress, query: addressQuery, verified: addressVerified, focused: addressFieldsFocused)) {
-            if !usesSwissAddress || !addressFieldsFocused || addressVerified || addressQuery.trimmingCharacters(in: .whitespaces).count < 3 {
+        .onChange(of: identity) { _, value in if loaded { model.saveReusableIdentity(value) } }
+        .task(id: LookupKey(swiss: usesSwissAddress, query: addressQuery, verified: addressVerified, focused: addressFieldsFocused, enabled: model.addressLookupEnabled)) {
+            if !model.addressLookupEnabled || !usesSwissAddress || !addressFieldsFocused || addressVerified || addressQuery.trimmingCharacters(in: .whitespaces).count < 3 {
                 addressMatches = []
                 addressSearching = false
                 return
@@ -207,6 +222,17 @@ struct NewSessionScreen: View {
             addressMatches = matches
             addressSearching = false
         }
+    }
+
+    private func startKey(enabled: Bool) -> some View {
+        BigKey(label: "\(s.startNewSession) · \((sessionKind == .entry ? s.entry : s.exit).uppercased())", enabled: enabled) {
+            if let entryToSeed {
+                model.seedExitFrom(entryToSeed, sessionRole: actor.role, identity: identity)
+            } else {
+                model.startNewSession(role: actor.role, identity: identity, kind: sessionKind)
+            }
+        }
+        .accessibilityIdentifier("start-session")
     }
 
     private func changeAddress(_ change: () -> Void) {
@@ -292,7 +318,7 @@ struct CountryDropDown<T: Identifiable>: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(label).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
                 HStack {
-                    Text(selectedLabel).font(LimenType.bodyMedium).foregroundStyle(colors.ink).lineLimit(1)
+                    Text(selectedLabel).font(LimenType.bodyMedium).foregroundStyle(colors.ink).fixedSize(horizontal: false, vertical: true)
                     Spacer()
                     Image(systemName: "chevron.down").foregroundStyle(colors.inkDim)
                 }
@@ -322,7 +348,7 @@ struct CountryDropDown<T: Identifiable>: View {
                             onSelect(option)
                             open = false
                         } label: {
-                            Text(optionLabel(option)).foregroundStyle(colors.ink).lineLimit(1)
+                            Text(optionLabel(option)).foregroundStyle(colors.ink).fixedSize(horizontal: false, vertical: true)
                         }
                     }
                 }
@@ -340,12 +366,22 @@ struct EqualChoiceRow<T: Hashable>: View {
     let current: T
     var locked = false
     let onSelect: (T) -> Void
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     var body: some View {
-        HStack(spacing: 8) {
-            ForEach(options, id: \.0) { value, label in
-                Chip(label: label, active: value == current, enabled: !locked && value != current, selectionState: value == current, stretch: true) { onSelect(value) }
-            }
+        // Three equal shares of a 375-point screen are 100 points each, and at the accessibility
+        // sizes "Conduttore/trice" no longer fits one: the audit reported its text clipped. The
+        // row stacks there, which keeps every option whole and every key its full width.
+        if typeSize.isAccessibilitySize {
+            VStack(spacing: 8) { chips }
+        } else {
+            WeightedRow(weights: options.map { _ in 1 }) { chips }
+        }
+    }
+
+    private var chips: some View {
+        ForEach(options, id: \.0) { value, label in
+            Chip(label: label, active: value == current, enabled: !locked && value != current, selectionState: value == current, stretch: true) { onSelect(value) }
         }
     }
 }

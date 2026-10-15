@@ -1,0 +1,36 @@
+{
+  "android_reference": "d81796d07ada38aa6e7955d31cf297fe02cac010",
+  "kotlin": "2.3.20",
+  "serialization": "1.8.1",
+  "sha256": {
+    "amendment.canonical.json": "48c238e31bda73d93cee4acb89cf82a890e4c10f41e3f68c6d48c5c9e605b916",
+    "amendment.fingerprint.txt": "9c3195d61e7d441c009c645cac37f8fe5eb67521bace8f228316f494d3ae4651",
+    "amendment.stored.json": "c21ee147c4ce78b6a7a2dbc82ad71649bfc98f9e7a0c9d20aea1eed4e04e285c",
+    "android.limen": "11b444929cb7c3d4fbd8aaf888f3bbde1086259bc7a412cc720fa830711cf00b",
+    "android.zip": "8e7966b15ddeb987bd6ff4ef7dfa5c64f0371f25f963300ac985c2e0497c30d2",
+    "crypto-key.hex": "466652b04d6cfb51be97e077cb0358ae0d7e25463c3c7905bee35a7763fa2006",
+    "crypto-vector.limen": "156d7760025fa4cfd8d7e468a7e0d5ababb4adee9baa2459dc1ab3646d9d329d",
+    "delivered.canonical.json": "944f8673a1e36a76c6a1e136e468f08aacc673534f692c8c2a6edd8bdf872ac8",
+    "delivered.fingerprint.txt": "0f7b5a471e2718ad0c67cfcb3c8c426b52ebdddf81ba23f49a2c79b7e46d9e05",
+    "delivered.stored.json": "31e09a8bdd5b117ef958a5aa72b8b139842ebad827ae6a90c4ae08b348d26421",
+    "draft.canonical.json": "4064bc5e56d085af92f5c506ac08c7a7ccf0333a60d0e2113ef409b2b2f9adf1",
+    "draft.fingerprint.txt": "75bca081e50abc0adc5ede1c6eb8ae7981f681ec10eb32ad4590bce448ad1981",
+    "draft.stored.json": "4f34e73cfc2ed6737fa569413e4c50319e69cabf1b5670cc5bb9cdd4040b9b82",
+    "final.canonical.json": "7569f80d29c5b263e4546cd1745ac7301c782b4e034396b7babdf8228b4414a9",
+    "final.fingerprint.txt": "54d460b013c6776be4e8ad9916823076508c3ed90e22834e57f98a9b84a16f40",
+    "final.stored.json": "04492fa2d1b3dcf6f6eef5cc809f390fca13e5ca18892a3cccb2380d0886fb06",
+    "input.json": "b30f29e4fb4d53625a30c6adf293939dacf785f02c4814cd05b31a3f7fbfa78e",
+    "jvm-return.limen": "304bbb0a90e75b09c61e0326786f6d934e89cd9d8b8c269469378652e9a58172",
+    "jvm-return.zip": "8e7966b15ddeb987bd6ff4ef7dfa5c64f0371f25f963300ac985c2e0497c30d2",
+    "assets/wall.png": "886eca293713dd0dc77ee8c492c64e81359f6e0286b79d5f6df20c506466d1e2",
+    "assets/wall.heic": "aa36846b984b53e9589a4d1587c55427ac5549c0dd244efd07e1b0ca5e5b497c",
+    "assets/ink.png": "886eca293713dd0dc77ee8c492c64e81359f6e0286b79d5f6df20c506466d1e2",
+    "assets/lease.pdf": "81243489605f17e787a2ed3a052d72ac448eb93f79d3ee90a020f8cb11df98e0",
+    "assets/retained.pdf": "81243489605f17e787a2ed3a052d72ac448eb93f79d3ee90a020f8cb11df98e0",
+    "assets/retained.html": "24a709bbc72be59fd3eb03a0a787a418963d73218532fb6af5ca577ec4aa3dc1"
+  },
+  "verified_swift_sha256": {
+    "swift.zip": "b38f2dd7abb0df06c88ed9e2384ccbc6136207339e976975c87e52cbb1742ce1",
+    "swift.limen": "05fe44bc90630e8ed675928bc4577e86fd70a44bbc4cbd89296de96cb9a7145f"
+  }
+}

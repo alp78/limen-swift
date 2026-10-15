@@ -1,0 +1,107 @@
+[
+  {
+    "language": "en",
+    "h1": 1,
+    "h2": 21,
+    "images": [
+      {
+        "alt": "Mandataire du locataire",
+        "embedded": true
+      },
+      {
+        "alt": "Andrea Gerber",
+        "embedded": true
+      },
+      {
+        "alt": "Defects 1 · window-scratch.jpg",
+        "embedded": true
+      }
+    ],
+    "activeElements": [],
+    "escapedStatement": true
+  },
+  {
+    "language": "fr",
+    "h1": 1,
+    "h2": 21,
+    "images": [
+      {
+        "alt": "Mandataire du locataire",
+        "embedded": true
+      },
+      {
+        "alt": "Andrea Gerber",
+        "embedded": true
+      },
+      {
+        "alt": "Défauts 1 · window-scratch.jpg",
+        "embedded": true
+      }
+    ],
+    "activeElements": [],
+    "escapedStatement": true
+  },
+  {
+    "language": "de",
+    "h1": 1,
+    "h2": 21,
+    "images": [
+      {
+        "alt": "Mandataire du locataire",
+        "embedded": true
+      },
+      {
+        "alt": "Andrea Gerber",
+        "embedded": true
+      },
+      {
+        "alt": "Mängel 1 · window-scratch.jpg",
+        "embedded": true
+      }
+    ],
+    "activeElements": [],
+    "escapedStatement": true
+  },
+  {
+    "language": "it",
+    "h1": 1,
+    "h2": 21,
+    "images": [
+      {
+        "alt": "Mandataire du locataire",
+        "embedded": true
+      },
+      {
+        "alt": "Andrea Gerber",
+        "embedded": true
+      },
+      {
+        "alt": "Difetti 1 · window-scratch.jpg",
+        "embedded": true
+      }
+    ],
+    "activeElements": [],
+    "escapedStatement": true
+  },
+  {
+    "language": "rm",
+    "h1": 1,
+    "h2": 21,
+    "images": [
+      {
+        "alt": "Mandataire du locataire",
+        "embedded": true
+      },
+      {
+        "alt": "Andrea Gerber",
+        "embedded": true
+      },
+      {
+        "alt": "Mancanzas 1 · window-scratch.jpg",
+        "embedded": true
+      }
+    ],
+    "activeElements": [],
+    "escapedStatement": true
+  }
+]

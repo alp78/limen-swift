@@ -1,0 +1,488 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination "platform=iOS Simulator,id=CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA" -derivedDataPath ./DD-lang -collect-test-diagnostics never "-only-testing:LimenKitTests" "-only-testing:LimenTests" -resultBundlePath /private/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/verify/unit2.xcresult test
+
+Writing result bundle at path:
+	/private/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/verify/unit2.xcresult
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (5 targets)
+    Target 'LimenUITests' in project 'Limen'
+        ➜ Explicit dependency on target 'Limen' in project 'Limen'
+        ➜ Explicit dependency on target 'LimenKit' in project 'Limen'
+    Target 'LimenTests' in project 'Limen'
+        ➜ Explicit dependency on target 'Limen' in project 'Limen'
+    Target 'LimenKitTests' in project 'Limen'
+        ➜ Explicit dependency on target 'LimenKit' in project 'Limen'
+    Target 'Limen' in project 'Limen'
+        ➜ Explicit dependency on target 'LimenKit' in project 'Limen'
+    Target 'LimenKit' in project 'Limen' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk /Users/aperi/DEV/SWIFT/limen/DD-lang/SDKStatCaches.noindex/iphonesimulator27.0-24A430-8dc58220667be655e1bcc261a7455254.sdkstatcache
+    cd /Users/aperi/DEV/SWIFT/limen
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -o /Users/aperi/DEV/SWIFT/limen/DD-lang/SDKStatCaches.noindex/iphonesimulator27.0-24A430-8dc58220667be655e1bcc261a7455254.sdkstatcache
+
+PruneExplicitPrecompiledModules /Users/aperi/DEV/SWIFT/limen/DD-lang/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/aperi/DEV/SWIFT/limen/DD-lang/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/aperi/DEV/SWIFT/limen/DD-lang/SDKExplicitPrecompiledModules
+
+Test Suite 'All tests' started at 2026-10-15 21:57:47.954.
+Test Suite 'All tests' passed at 2026-10-15 21:57:47.956.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.002) seconds
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64-apple-ios17.0-simulator
+◇ Suite ArchiveParityTests started.
+◇ Test scopedArchivesIncludeOnlyReferencedEvidenceAttachmentsAndRetainedCopies() started.
+✔ Test scopedArchivesIncludeOnlyReferencedEvidenceAttachmentsAndRetainedCopies() passed after 0.074 seconds.
+◇ Test explicitRepairQuarantinesCorruptOriginalAndPreservesHealthyRecords() started.
+✔ Test explicitRepairQuarantinesCorruptOriginalAndPreservesHealthyRecords() passed after 0.012 seconds.
+◇ Test authenticationFailureInstallsNothing() started.
+✔ Test authenticationFailureInstallsNothing() passed after 0.143 seconds.
+◇ Test centralSizesOffsetsNamesAndSymlinksAreValidatedBeforeAllocation() started.
+✔ Test centralSizesOffsetsNamesAndSymlinksAreValidatedBeforeAllocation() passed after 0.008 seconds.
+◇ Test missingRetainedCopiesCanBeExplicitlyRepairedAndMissingCompanionsBlockBackup() started.
+✔ Test missingRetainedCopiesCanBeExplicitlyRepairedAndMissingCompanionsBlockBackup() passed after 0.022 seconds.
+✔ Suite ArchiveParityTests passed after 0.264 seconds.
+◇ Suite ArchiveTests started.
+◇ Test roundTripRestoresProtocolAndEvidenceWithoutOverwriting() started.
+✔ Test roundTripRestoresProtocolAndEvidenceWithoutOverwriting() passed after 0.114 seconds.
+◇ Test roundTripSurvivesAnArchiveLargerThanOneReadOfTheDecryptLoop() started.
+✔ Test roundTripSurvivesAnArchiveLargerThanOneReadOfTheDecryptLoop() passed after 0.458 seconds.
+◇ Test restoreRejectsARecordWhoseEvidenceIsMissing() started.
+✔ Test restoreRejectsARecordWhoseEvidenceIsMissing() passed after 0.041 seconds.
+◇ Test restoreRejectsPathTraversal() started.
+✔ Test restoreRejectsPathTraversal() passed after 0.001 seconds.
+◇ Test exportIgnoresStrayFilesThatAreNotArchiveEntries() started.
+✔ Test exportIgnoresStrayFilesThatAreNotArchiveEntries() passed after 0.071 seconds.
+◇ Test encryptedBackupDoesNotExposeProtocolOrEvidenceText() started.
+✔ Test encryptedBackupDoesNotExposeProtocolOrEvidenceText() passed after 0.034 seconds.
+◇ Test wrongPasswordCannotRestoreEncryptedBackup() started.
+✔ Test wrongPasswordCannotRestoreEncryptedBackup() passed after 0.070 seconds.
+◇ Test legacyPlainZipRemainsImportable() started.
+✔ Test legacyPlainZipRemainsImportable() passed after 0.008 seconds.
+◇ Test emptyPasswordWritesAPlainArchiveThatRestoresWithoutOne() started.
+✔ Test emptyPasswordWritesAPlainArchiveThatRestoresWithoutOne() passed after 0.005 seconds.
+◇ Test theStreamingCipherAgreesWithCryptoKitAtEveryAssociatedDataLength() started.
+✔ Test theStreamingCipherAgreesWithCryptoKitAtEveryAssociatedDataLength() passed after 0.009 seconds.
+◇ Test theStreamingCipherAgreesWithCryptoKit() started.
+✔ Test theStreamingCipherAgreesWithCryptoKit() passed after 0.023 seconds.
+◇ Test theZipWriterAndReaderRoundTripAndInflate() started.
+✔ Test theZipWriterAndReaderRoundTripAndInflate() passed after 0.001 seconds.
+✔ Suite ArchiveTests passed after 0.843 seconds.
+◇ Suite CrossPlatformTests started.
+◇ Test androidCanonicalBytesAndFingerprintsAgreeForEveryRecordStage() started.
+✔ Test androidCanonicalBytesAndFingerprintsAgreeForEveryRecordStage() passed after 0.032 seconds.
+◇ Test androidPlainAndEncryptedArchivesRestoreAndReexportForJvmVerification() started.
+CoreGraphics PDF has logged an error. Set environment variable "CG_PDF_VERBOSE" to learn more.
+LIMEN_SWIFT_COMPAT_OUTPUT /Users/aperi/Library/Developer/CoreSimulator/Devices/CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA/data/tmp/limen-tests-F4307D64-64B8-4663-8543-B72B8C94768E
+✔ Test androidPlainAndEncryptedArchivesRestoreAndReexportForJvmVerification() passed after 0.544 seconds.
+◇ Test deterministicJvmEnvelopeVectorMatchesSwiftWithUnicodePasswordAndChunkBoundaries() started.
+✔ Test deterministicJvmEnvelopeVectorMatchesSwiftWithUnicodePasswordAndChunkBoundaries() passed after 0.174 seconds.
+◇ Test originalHeicBytesDecodeWithoutReencoding() started.
+unrecognised property key✔ Test originalHeicBytesDecodeWithoutReencoding() passed after 0.198 seconds.
+✔ Suite CrossPlatformTests passed after 0.949 seconds.
+◇ Suite EvidenceTests started.
+◇ Test everyExifOrientationDecodesWithTheExpectedUprightDimensions() started.
+✔ Test everyExifOrientationDecodesWithTheExpectedUprightDimensions() passed after 0.015 seconds.
+◇ Test rotatedPortraitSamplingUsesTheDisplayedWidth() started.
+✔ Test rotatedPortraitSamplingUsesTheDisplayedWidth() passed after 0.001 seconds.
+◇ Test missingEmptyHeaderOnlyTruncatedAndHashMismatchHaveNamedFailures() started.
+2026-10-15 21:57:50.042632+0200 xctest[16508:163619] [xctest] handle_error:140: PNG read error
+2026-10-15 21:57:50.045702+0200 xctest[16508:163619] [xctest] imagePNG_error_break:256: *** ERROR: imagePNG_error_break
+2026-10-15 21:57:50.045761+0200 xctest[16508:163619] [xctest] makeImagePlus:3915: *** ERROR: 'PNG '-_reader->initImage[0] failed err=-50
+2026-10-15 21:57:50.046184+0200 xctest[16508:163619] [xctest] handle_error:140: PNG read error
+2026-10-15 21:57:50.046344+0200 xctest[16508:163619] [xctest] imagePNG_error_break:256: *** ERROR: imagePNG_error_break
+2026-10-15 21:57:50.046374+0200 xctest[16508:163619] [xctest] makeImagePlus:3915: *** ERROR: 'PNG '-_reader->initImage[0] failed err=-50
+✔ Test missingEmptyHeaderOnlyTruncatedAndHashMismatchHaveNamedFailures() passed after 0.008 seconds.
+◇ Test mediaTypeComesFromBytesAndDocumentsHaveContentAndSizeValidation() started.
+✔ Test mediaTypeComesFromBytesAndDocumentsHaveContentAndSizeValidation() passed after 0.005 seconds.
+◇ Test symlinkedEvidenceCannotBeHashedOrImported() started.
+✔ Test symlinkedEvidenceCannotBeHashedOrImported() passed after 0.004 seconds.
+✔ Suite EvidenceTests passed after 0.036 seconds.
+◇ Suite InternationalIdentityTests started.
+◇ Test validatesAndFormatsNumbersForTheirSelectedCountry() started.
+✔ Test validatesAndFormatsNumbersForTheirSelectedCountry() passed after 0.012 seconds.
+◇ Test acceptsTheOwnCountryCodeWithoutAPlusSign() started.
+✔ Test acceptsTheOwnCountryCodeWithoutAPlusSign() passed after 0.001 seconds.
+◇ Test aRegionSharingItsCallingCodeFormatsWithTheMainCountrysRules() started.
+✔ Test aRegionSharingItsCallingCodeFormatsWithTheMainCountrysRules() passed after 0.001 seconds.
+◇ Test rejectsAValidNumberWhenItDoesNotMatchTheSelectedCountry() started.
+✔ Test rejectsAValidNumberWhenItDoesNotMatchTheSelectedCountry() passed after 0.001 seconds.
+◇ Test theExampleIsWrittenTheLocalWay() started.
+✔ Test theExampleIsWrittenTheLocalWay() passed after 0.001 seconds.
+◇ Test theCountryListCoversTheWorldAndSortsByEnglishName() started.
+✔ Test theCountryListCoversTheWorldAndSortsByEnglishName() passed after 0.002 seconds.
+◇ Test acceptsACompleteForeignAddress() started.
+✔ Test acceptsACompleteForeignAddress() passed after 0.001 seconds.
+◇ Test quickDraftAcceptsShortOnePartNamesWithoutOptionalContacts() started.
+✔ Test quickDraftAcceptsShortOnePartNamesWithoutOptionalContacts() passed after 0.001 seconds.
+◇ Test parsesOfficialAddressSearchResults() started.
+✔ Test parsesOfficialAddressSearchResults() passed after 0.001 seconds.
+✔ Suite InternationalIdentityTests passed after 0.016 seconds.
+◇ Suite StringsTests started.
+◇ Test everyEnumSpeaksEveryLanguage() started.
+✔ Test everyEnumSpeaksEveryLanguage() passed after 0.001 seconds.
+◇ Test noEszettAnywhereInGerman() started.
+✔ Test noEszettAnywhereInGerman() passed after 0.001 seconds.
+◇ Test theGeneratedStringsFollowTheAndroidOnes() started.
+✔ Test theGeneratedStringsFollowTheAndroidOnes() passed after 0.001 seconds.
+◇ Test theDefaultLanguageFollowsTheHandsetAndSwissGermanReadsGerman() started.
+✔ Test theDefaultLanguageFollowsTheHandsetAndSwissGermanReadsGerman() passed after 0.001 seconds.
+◇ Test nothingShipsWithAnEmDash() started.
+✔ Test nothingShipsWithAnEmDash() passed after 0.001 seconds.
+✔ Suite StringsTests passed after 0.002 seconds.
+◇ Suite LegacyCompatTests started.
+◇ Test everyNestedSerializableTypeIsActuallyInstantiatedByTheFixture() started.
+✔ Test everyNestedSerializableTypeIsActuallyInstantiatedByTheFixture() passed after 0.001 seconds.
+◇ Test topLevelFieldsAddedAfterTheDossierNeverReachTheCanonicalJson() started.
+✔ Test topLevelFieldsAddedAfterTheDossierNeverReachTheCanonicalJson() passed after 0.001 seconds.
+◇ Test nestedFieldsNeverReachTheCanonicalJsonEitherWhenTheirTypeIsPresent() started.
+✔ Test nestedFieldsNeverReachTheCanonicalJsonEitherWhenTheirTypeIsPresent() passed after 0.001 seconds.
+◇ Test theCanonicalTextSpellsTheFieldsInDeclarationOrderWithDefaultsOut() started.
+✔ Test theCanonicalTextSpellsTheFieldsInDeclarationOrderWithDefaultsOut() passed after 0.001 seconds.
+◇ Test aDefectWithNoItemWritesItemAsNullInTheCanonicalText() started.
+✔ Test aDefectWithNoItemWritesItemAsNullInTheCanonicalText() passed after 0.001 seconds.
+◇ Test aRecordWithoutObjectsFingerprintsExactlyAsItAlwaysDid() started.
+✔ Test aRecordWithoutObjectsFingerprintsExactlyAsItAlwaysDid() passed after 0.002 seconds.
+◇ Test theCanonicalFingerprintOfAFixedRecordHasNotMoved() started.
+✔ Test theCanonicalFingerprintOfAFixedRecordHasNotMoved() passed after 0.001 seconds.
+◇ Test objectPhotosAreEvidenceToo() started.
+✔ Test objectPhotosAreEvidenceToo() passed after 0.002 seconds.
+◇ Test anOlderRecordAnswersItsDossierFromItsContent() started.
+✔ Test anOlderRecordAnswersItsDossierFromItsContent() passed after 0.001 seconds.
+◇ Test anEmptyOlderRecordCarriesNoComponents() started.
+✔ Test anEmptyOlderRecordCarriesNoComponents() passed after 0.001 seconds.
+◇ Test anExplicitDossierOverridesWhatTheContentSuggests() started.
+✔ Test anExplicitDossierOverridesWhatTheContentSuggests() passed after 0.001 seconds.
+◇ Test onlyOlderRoomsCarryTheItemGrid() started.
+✔ Test onlyOlderRoomsCarryTheItemGrid() passed after 0.001 seconds.
+◇ Test removingTheLastComponentIsRememberedRatherThanDerivedBack() started.
+✔ Test removingTheLastComponentIsRememberedRatherThanDerivedBack() passed after 0.001 seconds.
+◇ Test aRecordThatChoseItsComponentsBeforeTheFlagExistedStillAnswersFromItsList() started.
+✔ Test aRecordThatChoseItsComponentsBeforeTheFlagExistedStillAnswersFromItsList() passed after 0.001 seconds.
+◇ Test aFindingIsUntouchedOnlyWhileItCarriesNothingButItsPlace() started.
+✔ Test aFindingIsUntouchedOnlyWhileItCarriesNothingButItsPlace() passed after 0.001 seconds.
+✔ Suite LegacyCompatTests passed after 0.008 seconds.
+◇ Suite ParityRulesTests started.
+◇ Test everyCantonHasDatedInitialFormAndCommonAuthorityGuidance() started.
+✔ Test everyCantonHasDatedInitialFormAndCommonAuthorityGuidance() passed after 0.002 seconds.
+◇ Test neLocalityCategoriesExcludeHalfRoomsAndNeverGuessUnknownLocality() started.
+✔ Test neLocalityCategoriesExcludeHalfRoomsAndNeverGuessUnknownLocality() passed after 0.001 seconds.
+◇ Test vaudDistrictAndDepositTriggersAreIndependent() started.
+✔ Test vaudDistrictAndDepositTriggersAreIndependent() passed after 0.001 seconds.
+◇ Test eachUnresolvedCheckNeedsItsOwnExplanation() started.
+✔ Test eachUnresolvedCheckNeedsItsOwnExplanation() passed after 0.001 seconds.
+◇ Test frozenAndLegacyResolversKeepTheirMeaningWithoutMutation() started.
+✔ Test frozenAndLegacyResolversKeepTheirMeaningWithoutMutation() passed after 0.001 seconds.
+◇ Test onlyDependentLegalChecksAreInvalidated() started.
+✔ Test onlyDependentLegalChecksAreInvalidated() passed after 0.001 seconds.
+◇ Test everyParticipantNeedsTheirOwnOutcomeReservationAndDelivery() started.
+✔ Test everyParticipantNeedsTheirOwnOutcomeReservationAndDelivery() passed after 0.002 seconds.
+◇ Test independentTenantPositionsRetainClaimAndCosts() started.
+✔ Test independentTenantPositionsRetainClaimAndCosts() passed after 0.001 seconds.
+◇ Test invalidDraftDatesNumbersAndResidualValuesBlockCompletion() started.
+✔ Test invalidDraftDatesNumbersAndResidualValuesBlockCompletion() passed after 0.002 seconds.
+◇ Test honestScopeNoDepositAndUnavailableRoomsAreRecordable() started.
+✔ Test honestScopeNoDepositAndUnavailableRoomsAreRecordable() passed after 0.001 seconds.
+◇ Test exitSeedPreservesCoTenantsAndContractualLandlord() started.
+✔ Test exitSeedPreservesCoTenantsAndContractualLandlord() passed after 0.001 seconds.
+✔ Suite ParityRulesTests passed after 0.013 seconds.
+◇ Suite SwissDateTests started.
+◇ Test storedIsIsoAndShownIsSwiss() started.
+✔ Test storedIsIsoAndShownIsSwiss() passed after 0.001 seconds.
+◇ Test aDayThatDoesNotExistIsNotADate() started.
+✔ Test aDayThatDoesNotExistIsNotADate() passed after 0.001 seconds.
+◇ Test theLeapDayIsADateEveryFourthYear() started.
+✔ Test theLeapDayIsADateEveryFourthYear() passed after 0.001 seconds.
+◇ Test anIncompleteDateIsNotYetAnAnswer() started.
+✔ Test anIncompleteDateIsNotYetAnAnswer() passed after 0.001 seconds.
+◇ Test theMaskPutsTheSeparatorsBackWhereverTypingStarted() started.
+✔ Test theMaskPutsTheSeparatorsBackWhereverTypingStarted() passed after 0.001 seconds.
+◇ Test whatWasNeverADatePassesThroughInsteadOfBeingLost() started.
+✔ Test whatWasNeverADatePassesThroughInsteadOfBeingLost() passed after 0.001 seconds.
+◇ Test timeIsTwentyFourHourAndChecked() started.
+✔ Test timeIsTwentyFourHourAndChecked() passed after 0.001 seconds.
+✔ Suite SwissDateTests passed after 0.001 seconds.
+◇ Suite ClocksTests started.
+◇ Test weekendDoesNotCount() started.
+✔ Test weekendDoesNotCount() passed after 0.001 seconds.
+◇ Test midweekRunsStraightThrough() started.
+✔ Test midweekRunsStraightThrough() passed after 0.001 seconds.
+◇ Test holidaysAreSkippedWhenGiven() started.
+✔ Test holidaysAreSkippedWhenGiven() passed after 0.001 seconds.
+◇ Test returnDueShiftsSundayOrRecognizedHolidayButNotSaturday() started.
+✔ Test returnDueShiftsSundayOrRecognizedHolidayButNotSaturday() passed after 0.001 seconds.
+◇ Test planningDateRequiresActualTransferAndRecordedClause() started.
+✔ Test planningDateRequiresActualTransferAndRecordedClause() passed after 0.001 seconds.
+◇ Test depositBackstopIsOneYear() started.
+✔ Test depositBackstopIsOneYear() passed after 0.001 seconds.
+◇ Test workingDayPredicate() started.
+✔ Test workingDayPredicate() passed after 0.001 seconds.
+◇ Test theEpochDayRoundTripsAndTheWeekdayIsJavas() started.
+✔ Test theEpochDayRoundTripsAndTheWeekdayIsJavas() passed after 0.001 seconds.
+✔ Suite ClocksTests passed after 0.001 seconds.
+◇ Suite ZeitwertTests started.
+◇ Test halfLifeIsHalfShare() started.
+✔ Test halfLifeIsHalfShare() passed after 0.001 seconds.
+◇ Test pastLifespanIsZeroHoweverRealTheDamage() started.
+✔ Test pastLifespanIsZeroHoweverRealTheDamage() passed after 0.001 seconds.
+◇ Test brandNewIsFullShare() started.
+✔ Test brandNewIsFullShare() passed after 0.001 seconds.
+◇ Test negativeAgeIsInvalidRatherThanANewReplacement() started.
+✔ Test negativeAgeIsInvalidRatherThanANewReplacement() passed after 0.001 seconds.
+◇ Test zeroLifespanNeverDivides() started.
+✔ Test zeroLifespanNeverDivides() passed after 0.001 seconds.
+◇ Test zeroOrNegativeCostIsZero() started.
+✔ Test zeroOrNegativeCostIsZero() passed after 0.001 seconds.
+◇ Test theAslocaWallpaperExample() started.
+✔ Test theAslocaWallpaperExample() passed after 0.001 seconds.
+◇ Test shippedTableHoldsTheCanonicalValues() started.
+✔ Test shippedTableHoldsTheCanonicalValues() passed after 0.001 seconds.
+✔ Suite ZeitwertTests passed after 0.001 seconds.
+◇ Suite TemplatesTests started.
+◇ Test everyRoomKindStartsWithRows() started.
+✔ Test everyRoomKindStartsWithRows() passed after 0.001 seconds.
+◇ Test noTemplateRepeatsARow() started.
+✔ Test noTemplateRepeatsARow() passed after 0.001 seconds.
+◇ Test theKitchenKnowsItsAppliances() started.
+✔ Test theKitchenKnowsItsAppliances() passed after 0.001 seconds.
+◇ Test theBathroomKnowsItsFittings() started.
+✔ Test theBathroomKnowsItsFittings() passed after 0.001 seconds.
+◇ Test theWalkStartsAtTheDoorAndEndsAtTheMailbox() started.
+✔ Test theWalkStartsAtTheDoorAndEndsAtTheMailbox() passed after 0.001 seconds.
+✔ Suite TemplatesTests passed after 0.001 seconds.
+◇ Suite CautionProviderTests started.
+◇ Test recognizesListedInsurersByTheCertificateName() started.
+✔ Test recognizesListedInsurersByTheCertificateName() passed after 0.001 seconds.
+◇ Test preservesAnUnlistedInsurerAsOther() started.
+✔ Test preservesAnUnlistedInsurerAsOther() passed after 0.001 seconds.
+✔ Suite CautionProviderTests passed after 0.001 seconds.
+◇ Suite LegalProfileTests started.
+◇ Test vaudRulvSelectsThePreviousAndCurrentBindingPeriods() started.
+✔ Test vaudRulvSelectsThePreviousAndCurrentBindingPeriods() passed after 0.001 seconds.
+◇ Test romandFrameworkIsContractualOutsideThatRule() started.
+✔ Test romandFrameworkIsContractualOutsideThatRule() passed after 0.001 seconds.
+✔ Suite LegalProfileTests passed after 0.001 seconds.
+◇ Suite LegalOverlayTests started.
+◇ Test initialRentFormUsesOnlyTheDated2026OfficialSnapshot() started.
+✔ Test initialRentFormUsesOnlyTheDated2026OfficialSnapshot() passed after 0.002 seconds.
+◇ Test initialRentFormUsesLeaseConclusionDateNotTheLaterHandover() started.
+✔ Test initialRentFormUsesLeaseConclusionDateNotTheLaterHandover() passed after 0.001 seconds.
+◇ Test vaudEntryAndExitReceiveDifferentChecksWithoutForkingTheFlow() started.
+✔ Test vaudEntryAndExitReceiveDifferentChecksWithoutForkingTheFlow() passed after 0.001 seconds.
+◇ Test missingAndExceptionalOutcomesStayRecordableButNeedAnExplanation() started.
+✔ Test missingAndExceptionalOutcomesStayRecordableButNeedAnExplanation() passed after 0.001 seconds.
+✔ Suite LegalOverlayTests passed after 0.003 seconds.
+◇ Suite ReportTests started.
+◇ Test aRoomContributesItsFindingsAndNothingElse() started.
+✔ Test aRoomContributesItsFindingsAndNothingElse() passed after 0.001 seconds.
+◇ Test aRoomWithNothingWrongInItContributesNothing() started.
+✔ Test aRoomWithNothingWrongInItContributesNothing() passed after 0.001 seconds.
+◇ Test numberingIsThePositionInTheWholeRecordNotWithinTheRoom() started.
+✔ Test numberingIsThePositionInTheWholeRecordNotWithinTheRoom() passed after 0.001 seconds.
+◇ Test aFindingAboutAnObjectIsNotAFindingAboutARoom() started.
+✔ Test aFindingAboutAnObjectIsNotAFindingAboutARoom() passed after 0.001 seconds.
+◇ Test everyFindingReachesExactlyOnePlaceOnThePaper() started.
+✔ Test everyFindingReachesExactlyOnePlaceOnThePaper() passed after 0.001 seconds.
+◇ Test aFindingWhoseRoomIsGoneStillReachesThePaper() started.
+✔ Test aFindingWhoseRoomIsGoneStillReachesThePaper() passed after 0.001 seconds.
+◇ Test theAnnexCitesFindingsByNumberAndObjectsByName() started.
+✔ Test theAnnexCitesFindingsByNumberAndObjectsByName() passed after 0.001 seconds.
+◇ Test aRecordWithoutPhotographsHasNoAnnex() started.
+✔ Test aRecordWithoutPhotographsHasNoAnnex() passed after 0.001 seconds.
+◇ Test evidenceMetadataAloneStillReachesTheAnnex() started.
+✔ Test evidenceMetadataAloneStillReachesTheAnnex() passed after 0.001 seconds.
+✔ Suite ReportTests passed after 0.002 seconds.
+◇ Suite ProtocolIntegrityTests started.
+◇ Test fingerprintCoversTheFrozenRecordAndOriginalEvidence() started.
+✔ Test fingerprintCoversTheFrozenRecordAndOriginalEvidence() passed after 0.009 seconds.
+◇ Test inkOnlyAppliesToTheRevisionItSaw() started.
+✔ Test inkOnlyAppliesToTheRevisionItSaw() passed after 0.001 seconds.
+◇ Test missingEvidenceFailsClosed() started.
+✔ Test missingEvidenceFailsClosed() passed after 0.001 seconds.
+✔ Suite ProtocolIntegrityTests passed after 0.010 seconds.
+◇ Suite CompletionRulesTests started.
+◇ Test bothHandoffsWorkForTenantPrivateLandlordAndAgency() started.
+✔ Test bothHandoffsWorkForTenantPrivateLandlordAndAgency() passed after 0.004 seconds.
+◇ Test unilateralRecordRequiresItsReasonAndOnlyThePresentSideOutcome() started.
+✔ Test unilateralRecordRequiresItsReasonAndOnlyThePresentSideOutcome() passed after 0.001 seconds.
+◇ Test uncheckedScopeAndInconsistentKeysBlockFinalization() started.
+✔ Test uncheckedScopeAndInconsistentKeysBlockFinalization() passed after 0.001 seconds.
+◇ Test aSelectedDepositNeedsItsIdentifyingDetails() started.
+✔ Test aSelectedDepositNeedsItsIdentifyingDetails() passed after 0.001 seconds.
+◇ Test applicableOverlayChecksBlockFinalizationUntilTheyAreRecorded() started.
+✔ Test applicableOverlayChecksBlockFinalizationUntilTheyAreRecorded() passed after 0.002 seconds.
+◇ Test removingTheKeysCardNeedsAnExplanation() started.
+✔ Test removingTheKeysCardNeedsAnExplanation() passed after 0.001 seconds.
+◇ Test theKeysCardStillDemandsAnOutcomeWhileItIsOnTheRecord() started.
+✔ Test theKeysCardStillDemandsAnOutcomeWhileItIsOnTheRecord() passed after 0.001 seconds.
+◇ Test theKeysChipAgreesWithTheGate() started.
+✔ Test theKeysChipAgreesWithTheGate() passed after 0.001 seconds.
+◇ Test anEmptyInspectionAsksForARoomRatherThanForConfirmation() started.
+✔ Test anEmptyInspectionAsksForARoomRatherThanForConfirmation() passed after 0.001 seconds.
+◇ Test aOneSidedRecordWithNoKnownSideFallsBackToBothSignatures() started.
+✔ Test aOneSidedRecordWithNoKnownSideFallsBackToBothSignatures() passed after 0.001 seconds.
+✔ Suite CompletionRulesTests passed after 0.014 seconds.
+◇ Suite SchemaTests started.
+◇ Test nonNullableTypesRejectNullCoercionsFractionsAndOverflow() started.
+✔ Test nonNullableTypesRejectNullCoercionsFractionsAndOverflow() passed after 0.005 seconds.
+◇ Test nullAndMissingHaveDifferentMeaningAndLongsStayExact() started.
+✔ Test nullAndMissingHaveDifferentMeaningAndLongsStayExact() passed after 0.001 seconds.
+◇ Test duplicateKeysUnknownFieldsAndFutureSchemasAreRecoverablyRejected() started.
+✔ Test duplicateKeysUnknownFieldsAndFutureSchemasAreRecoverablyRejected() passed after 0.007 seconds.
+◇ Test nestedMapOrderSurvivesWhitespaceEscapesAndQuotedMapNames() started.
+✔ Test nestedMapOrderSurvivesWhitespaceEscapesAndQuotedMapNames() passed after 0.001 seconds.
+◇ Test fingerprintedChangingDefaultsArePinnedInStoredFiles() started.
+✔ Test fingerprintedChangingDefaultsArePinnedInStoredFiles() passed after 0.001 seconds.
+◇ Test inputSizeAndDepthHaveBoundedFailures() started.
+✔ Test inputSizeAndDepthHaveBoundedFailures() passed after 0.001 seconds.
+✔ Suite SchemaTests passed after 0.017 seconds.
+◇ Suite StoreTests started.
+◇ Test roundTripKeepsEverything() started.
+✔ Test roundTripKeepsEverything() passed after 0.005 seconds.
+◇ Test listSortsNewestFirst() started.
+✔ Test listSortsNewestFirst() passed after 0.010 seconds.
+◇ Test unsupportedFieldsAreReportedWithoutRewritingTheOriginal() started.
+✔ Test unsupportedFieldsAreReportedWithoutRewritingTheOriginal() passed after 0.014 seconds.
+◇ Test corruptFileRemainsVisibleInTheCatalogue() started.
+✔ Test corruptFileRemainsVisibleInTheCatalogue() passed after 0.008 seconds.
+◇ Test deleteTakesPhotosAndInkWithIt() started.
+✔ Test deleteTakesPhotosAndInkWithIt() passed after 0.004 seconds.
+◇ Test signedMeansRecordPlaneAndRefusalDoesNotCount() started.
+✔ Test signedMeansRecordPlaneAndRefusalDoesNotCount() passed after 0.001 seconds.
+◇ Test theStoreOmitsDefaultsAndKeepsTheRequiredFields() started.
+✔ Test theStoreOmitsDefaultsAndKeepsTheRequiredFields() passed after 0.001 seconds.
+◇ Test theMapsKeepTheirRecordedOrderThroughTheFile() started.
+✔ Test theMapsKeepTheirRecordedOrderThroughTheFile() passed after 0.001 seconds.
+◇ Test kotlinEscapesAreWrittenAndReadBack() started.
+✔ Test kotlinEscapesAreWrittenAndReadBack() passed after 0.001 seconds.
+◇ Test staleAndDivergentWritesCannotReplaceARevision() started.
+✔ Test staleAndDivergentWritesCannotReplaceARevision() passed after 0.025 seconds.
+◇ Test lastGoodRecoveryPreservesTheCorruptOriginal() started.
+✔ Test lastGoodRecoveryPreservesTheCorruptOriginal() passed after 0.015 seconds.
+◇ Test filenameIdentityAndTraversalAreRejected() started.
+✔ Test filenameIdentityAndTraversalAreRejected() passed after 0.009 seconds.
+◇ Test firstSaveFailureCanBeRetriedWithoutLosingTheValue() started.
+✔ Test firstSaveFailureCanBeRetriedWithoutLosingTheValue() passed after 0.015 seconds.
+◇ Test higherSequencesCannotChangeFinalizedFactsButCanRecordDistribution() started.
+✔ Test higherSequencesCannotChangeFinalizedFactsButCanRecordDistribution() passed after 0.004 seconds.
+✔ Suite StoreTests passed after 0.116 seconds.
+✔ Test run with 144 tests in 20 suites passed after 2.308 seconds.
+2026-10-15 21:57:54.530002+0200 Limen[16556:163983] [XPCErrors] non-launching port is incompatible with service identifier "com.apple.PointerUI.pointeruid.default-service"
+Test Suite 'All tests' started at 2026-10-15 21:57:55.296.
+Test Suite 'LimenTests.xctest' started at 2026-10-15 21:57:55.296.
+Test Suite 'BundleTests' started at 2026-10-15 21:57:55.296.
+Test Case '-[LimenTests.BundleTests testAuditIdentityAndLocalizedSystemPurposes]' started.
+Test Case '-[LimenTests.BundleTests testAuditIdentityAndLocalizedSystemPurposes]' passed (0.004 seconds).
+Test Case '-[LimenTests.BundleTests testEveryCantonFlagReachedTheBundle]' started.
+Test Case '-[LimenTests.BundleTests testEveryCantonFlagReachedTheBundle]' passed (0.011 seconds).
+Test Case '-[LimenTests.BundleTests testTheBundleCarriesTheProjectsVersion]' started.
+Test Case '-[LimenTests.BundleTests testTheBundleCarriesTheProjectsVersion]' passed (0.000 seconds).
+Test Case '-[LimenTests.BundleTests testTheThirdPartyNoticeReachedTheBundle]' started.
+Test Case '-[LimenTests.BundleTests testTheThirdPartyNoticeReachedTheBundle]' passed (0.003 seconds).
+Test Suite 'BundleTests' passed at 2026-10-15 21:57:55.317.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.019 (0.021) seconds
+Test Suite 'LimenTests.xctest' passed at 2026-10-15 21:57:55.318.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.019 (0.021) seconds
+Test Suite 'All tests' passed at 2026-10-15 21:57:55.318.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.019 (0.022) seconds
+◇ Test run started.
+↳ Testing Library Version: 2084
+↳ Target Platform: arm64-apple-ios17.0-simulator
+◇ Suite AppIconTests started.
+◇ Test writeTheAppIcon() started.
+LIMEN_ICON_WRITTEN /Users/aperi/Library/Developer/CoreSimulator/Devices/CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA/data/Containers/Data/Application/F2166E7F-D835-48D4-9758-880399649F6D/tmp/limen-icon-1024.png
+✔ Test writeTheAppIcon() passed after 0.079 seconds.
+◇ Test theSealIsWholeOnAFullTile() started.
+✔ Test theSealIsWholeOnAFullTile() passed after 0.031 seconds.
+✔ Suite AppIconTests passed after 0.113 seconds.
+◇ Suite ExportLifecycleTests started.
+◇ Test deletedRecordCannotBeResurrectedByALateExport() started.
+✔ Test deletedRecordCannotBeResurrectedByALateExport() passed after 0.013 seconds.
+◇ Test replacementWithTheSameIdCannotReceiveAnEarlierFingerprintExport() started.
+✔ Test replacementWithTheSameIdCannotReceiveAnEarlierFingerprintExport() passed after 0.006 seconds.
+◇ Test documentIntakeUsesDecodedMimeForTheRetainedExtension() started.
+CoreGraphics PDF has logged an error. Set environment variable "CG_PDF_VERBOSE" to learn more.
+✔ Test documentIntakeUsesDecodedMimeForTheRetainedExtension() passed after 0.603 seconds.
+✔ Suite ExportLifecycleTests passed after 0.624 seconds.
+◇ Suite ExportTests started.
+◇ Test pdfGlyphPixelsAppearAboveTheirBaselineAndLongTokensStayInsideTheColumn() started.
+✔ Test pdfGlyphPixelsAppearAboveTheirBaselineAndLongTokensStayInsideTheColumn() passed after 0.017 seconds.
+◇ Test theProfessionalRecordExportsAsAReadablePdfInEveryLanguage() started.
+✔ Test theProfessionalRecordExportsAsAReadablePdfInEveryLanguage() passed after 1.097 seconds.
+◇ Test completePreviewAndRetainedOutputsCarryEveryParticipantAndEscapedEvidence() started.
+LIMEN_DOCUMENT_SAMPLE /Users/aperi/Library/Developer/CoreSimulator/Devices/CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA/data/Containers/Data/Application/F2166E7F-D835-48D4-9758-880399649F6D/tmp/limen-export-14FD4980-B0F6-4265-BA75-27390A49F1AD/synthetic-fr pages=4
+LIMEN_DOCUMENT_SAMPLE /Users/aperi/Library/Developer/CoreSimulator/Devices/CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA/data/Containers/Data/Application/F2166E7F-D835-48D4-9758-880399649F6D/tmp/limen-export-14FD4980-B0F6-4265-BA75-27390A49F1AD/synthetic-en pages=4
+LIMEN_DOCUMENT_SAMPLE /Users/aperi/Library/Developer/CoreSimulator/Devices/CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA/data/Containers/Data/Application/F2166E7F-D835-48D4-9758-880399649F6D/tmp/limen-export-14FD4980-B0F6-4265-BA75-27390A49F1AD/synthetic-de pages=4
+LIMEN_DOCUMENT_SAMPLE /Users/aperi/Library/Developer/CoreSimulator/Devices/CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA/data/Containers/Data/Application/F2166E7F-D835-48D4-9758-880399649F6D/tmp/limen-export-14FD4980-B0F6-4265-BA75-27390A49F1AD/synthetic-it pages=4
+LIMEN_DOCUMENT_SAMPLE /Users/aperi/Library/Developer/CoreSimulator/Devices/CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA/data/Containers/Data/Application/F2166E7F-D835-48D4-9758-880399649F6D/tmp/limen-export-14FD4980-B0F6-4265-BA75-27390A49F1AD/synthetic-rm pages=4
+✔ Test completePreviewAndRetainedOutputsCarryEveryParticipantAndEscapedEvidence() passed after 1.111 seconds.
+◇ Test aDraftIsRefusedAndTamperedEvidenceIsRefused() started.
+✔ Test aDraftIsRefusedAndTamperedEvidenceIsRefused() passed after 0.025 seconds.
+◇ Test draftPreviewNamesEveryMissingOutcomeWithoutClaimingFinalizationOrDepositRelease() started.
+✔ Test draftPreviewNamesEveryMissingOutcomeWithoutClaimingFinalizationOrDepositRelease() passed after 0.616 seconds.
+◇ Test allThreeActorsCompleteEntryAndExitWithTwoSignaturesAndPdf() started.
+✔ Test allThreeActorsCompleteEntryAndExitWithTwoSignaturesAndPdf() passed after 1.115 seconds.
+◇ Test theModelWalksASessionFromTheFormToTheDocument() started.
+✔ Test theModelWalksASessionFromTheFormToTheDocument() passed after 0.061 seconds.
+✔ Suite ExportTests passed after 4.046 seconds.
+◇ Suite PhotoIntakeOwnershipTests started.
+◇ Test sameOwnerIdInAnotherRecordCannotReceiveAnEarlierPhoto(amendment:) started.
+◇ Test case passing 1 argument amendment → false to sameOwnerIdInAnotherRecordCannotReceiveAnEarlierPhoto(amendment:) started.
+​◇ Test case passing 1 argument amendment → true to sameOwnerIdInAnotherRecordCannotReceiveAnEarlierPhoto(amendment:) started.
+​✔ Test sameOwnerIdInAnotherRecordCannotReceiveAnEarlierPhoto(amendment:) with 2 test cases passed after 0.015 seconds.
+◇ Test removedOwnerCannotReceiveOrStrandAnIncomingPhoto() started.
+✔ Test removedOwnerCannotReceiveOrStrandAnIncomingPhoto() passed after 0.005 seconds.
+◇ Test finalizationBeforeIntakeCompletesRejectsTheNewEvidence() started.
+✔ Test finalizationBeforeIntakeCompletesRejectsTheNewEvidence() passed after 0.004 seconds.
+◇ Test privateCaptureCleanupLeavesEveryOtherOperationAlone() started.
+✔ Test privateCaptureCleanupLeavesEveryOtherOperationAlone() passed after 0.005 seconds.
+◇ Test successfulIntakeRetainsExactBytesHashAndSeparateCaptureMetadata() started.
+✔ Test successfulIntakeRetainsExactBytesHashAndSeparateCaptureMetadata() passed after 0.007 seconds.
+✔ Suite PhotoIntakeOwnershipTests passed after 0.040 seconds.
+◇ Suite RemediationModelTests started.
+◇ Test exportMergesAReceiptChangedBehindAnOperationBarrier() started.
+✔ Test exportMergesAReceiptChangedBehindAnOperationBarrier() passed after 0.008 seconds.
+◇ Test exportCannotStampADifferentOpenRecord() started.
+✔ Test exportCannotStampADifferentOpenRecord() passed after 0.013 seconds.
+◇ Test firstSaveFailureRetainsDraftAndCanBeRetried() started.
+✔ Test firstSaveFailureRetainsDraftAndCanBeRetried() passed after 0.012 seconds.
+◇ Test clearingReservationIsDurableAndRequiresNamedConsent() started.
+✔ Test clearingReservationIsDurableAndRequiresNamedConsent() passed after 0.006 seconds.
+◇ Test undoDoesNotRollBackTheSaveSequence() started.
+✔ Test undoDoesNotRollBackTheSaveSequence() passed after 0.011 seconds.
+◇ Test materialEditConsentPreservesAConcurrentFlushSequence() started.
+✔ Test materialEditConsentPreservesAConcurrentFlushSequence() passed after 0.010 seconds.
+◇ Test anOlderPreviewCannotApproveNewContent() started.
+✔ Test anOlderPreviewCannotApproveNewContent() passed after 0.003 seconds.
+◇ Test seededExitCarriesAccessInventoryAndAgreedTimingWithoutOldEvidence() started.
+✔ Test seededExitCarriesAccessInventoryAndAgreedTimingWithoutOldEvidence() passed after 0.005 seconds.
+✔ Suite RemediationModelTests passed after 0.072 seconds.
+✔ Test run with 25 tests in 5 suites passed after 4.897 seconds.
+2026-10-15 21:58:00.536 xcodebuild[16493:163386] [MT] IDETestOperationsObserverDebug: 14.549 elapsed -- Testing started completed.
+2026-10-15 21:58:00.536 xcodebuild[16493:163386] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-15 21:58:00.536 xcodebuild[16493:163386] [MT] IDETestOperationsObserverDebug: 14.549 sec, +14.549 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/verify/unit2.xcresult
+
+** TEST SUCCEEDED **
+
+Testing started

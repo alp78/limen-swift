@@ -8,8 +8,8 @@ import UIKit
 /// theme: the paper the signature is drawn on is white.
 ///
 /// A full-screen cover, not a box in the page: signing is modal, nothing behind it can be
-/// touched while it is up, and the header and the keys take what they need while the pad takes
-/// what is left, which is what keeps it usable in landscape.
+/// touched while it is up. The full signer, purpose and pad scroll together when space is short;
+/// Clear, Cancel and Keep remain available below the content.
 private struct InkStroke {
     var points: [CGPoint]
 }
@@ -37,58 +37,67 @@ struct SignPadOverlay: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(title).font(LimenType.titleMedium).foregroundStyle(colors.ink)
-            Spacer().frame(height: 8)
-            // The one line that belongs above the ink, at reading size, never in small print.
-            Text(meaning).font(LimenType.bodyMedium).foregroundStyle(colors.ink)
-            Spacer().frame(height: 14)
             GeometryReader { geometry in
-                // The largest 2.1:1 rectangle that fits, by width in portrait and by height in landscape.
-                let width = min(geometry.size.width, geometry.size.height * 2.1)
-                let size = CGSize(width: width, height: width / 2.1)
-                ZStack {
-                    Canvas { context, canvasSize in
-                        // The baseline the hand expects on paper.
-                        var guide = Path()
-                        guide.move(to: CGPoint(x: canvasSize.width * 0.07, y: canvasSize.height * 0.72))
-                        guide.addLine(to: CGPoint(x: canvasSize.width * 0.93, y: canvasSize.height * 0.72))
-                        context.stroke(guide, with: .color(Color(hex: 0xD9D9D9)), lineWidth: 2 / displayScale)
-                        let ink = StrokeStyle(lineWidth: inkWidthPixels / displayScale, lineCap: .round, lineJoin: .round)
-                        for stroke in strokes { context.stroke(inkPath(stroke.points), with: .color(inkColor), style: ink) }
-                        if !live.isEmpty { context.stroke(inkPath(live), with: .color(inkColor), style: ink) }
-                    }
-                    .background(Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).strokeBorder(colors.actionOutline, lineWidth: 1.5))
-                    .gesture(
-                        DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                            .onChanged { value in
-                                // A drag the system cancels (a call, a banner, the cover moving)
-                                // never reaches onEnded, and SwiftUI has no onCancelled to clear
-                                // `live` the way Android's onDragCancel does. A new drag has a new
-                                // start point, so a start that is not the one `live` began with
-                                // means the last stroke was cut short: it is dropped, as Android
-                                // drops it, rather than joined to this one by a straight line.
-                                if live.isEmpty || live.first != value.startLocation { live = [value.startLocation] }
-                                live.append(value.location)
+                // Let the full signer and purpose take their natural height. Short windows can
+                // scroll the complete content while the actions remain available below it.
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 14) {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(title).font(LimenType.titleMedium).foregroundStyle(colors.ink)
+                                .accessibilityAddTraits(.isHeader).accessibilityIdentifier("signature-title")
+                            Text(meaning).font(LimenType.bodyMedium).foregroundStyle(colors.ink)
+                                .accessibilityIdentifier("signature-purpose")
+                        }
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        Spacer(minLength: 0)
+                        let size = CGSize(width: geometry.size.width, height: geometry.size.width / 2.1)
+                        ZStack {
+                            Canvas { context, canvasSize in
+                                // The baseline the hand expects on paper.
+                                var guide = Path()
+                                guide.move(to: CGPoint(x: canvasSize.width * 0.07, y: canvasSize.height * 0.72))
+                                guide.addLine(to: CGPoint(x: canvasSize.width * 0.93, y: canvasSize.height * 0.72))
+                                context.stroke(guide, with: .color(Color(hex: 0xD9D9D9)), lineWidth: 2 / displayScale)
+                                let ink = StrokeStyle(lineWidth: inkWidthPixels / displayScale, lineCap: .round, lineJoin: .round)
+                                for stroke in strokes { context.stroke(inkPath(stroke.points), with: .color(inkColor), style: ink) }
+                                if !live.isEmpty { context.stroke(inkPath(live), with: .color(inkColor), style: ink) }
                             }
-                            .onEnded { _ in
-                                // Dots: a tap ends with one point, and initials have dots.
-                                if !live.isEmpty { strokes.append(InkStroke(points: live)) }
-                                live = []
-                            }
-                    )
-                    .frame(width: size.width, height: size.height)
-                    .onChange(of: size, initial: true) { _, now in padSize = now }
-                    .accessibilityLabel(s.signaturePad)
-                    .accessibilityValue(strokes.isEmpty && live.isEmpty ? s.signaturePadEmpty : s.signaturePadHasInk)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .background(Color.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                            .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).strokeBorder(colors.actionOutline, lineWidth: 1.5))
+                            .gesture(
+                                DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                                    .onChanged { value in
+                                        // A drag the system cancels (a call, a banner, the cover moving)
+                                        // never reaches onEnded, and SwiftUI has no onCancelled to clear
+                                        // `live` the way Android's onDragCancel does. A new drag has a new
+                                        // start point, so a start that is not the one `live` began with
+                                        // means the last stroke was cut short: it is dropped, as Android
+                                        // drops it, rather than joined to this one by a straight line.
+                                        if live.isEmpty || live.first != value.startLocation { live = [value.startLocation] }
+                                        live.append(value.location)
+                                    }
+                                    .onEnded { _ in
+                                        // Dots: a tap ends with one point, and initials have dots.
+                                        if !live.isEmpty { strokes.append(InkStroke(points: live)) }
+                                        live = []
+                                    }
+                            )
+                            .frame(width: size.width, height: size.height)
+                            .onChange(of: size, initial: true) { _, now in padSize = now }
+                            .accessibilityLabel(s.signaturePad)
+                            .accessibilityValue(strokes.isEmpty && live.isEmpty ? s.signaturePadEmpty : s.signaturePadHasInk)
+                        }
+                        .frame(maxWidth: .infinity)
+                        Spacer(minLength: 0)
+                    }.frame(minHeight: geometry.size.height, alignment: .top)
+                }.scrollBounceBehavior(.basedOnSize)
             }
             Spacer().frame(height: 12)
             // Clear and Cancel take a share each and Keep takes 1.4 of one, as the Kotlin row does:
             // the key that ends the signing is the widest target on the pad.
-            WeightedRow(weights: [1, 1, 1.4]) {
+            HStack(spacing: 8) {
                 IconKey(glyph: .clear, label: s.clearInk, destructive: true, stretch: true) {
                     strokes = []
                     live = []

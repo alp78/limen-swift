@@ -1,0 +1,2005 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination "platform=iOS Simulator,id=6F9172CC-DF86-4F05-9EB3-42E8E287668F" -derivedDataPath ./DD -parallel-testing-enabled NO -collect-test-diagnostics never -resultBundlePath /private/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/verify/landlord26c.xcresult "-only-testing:LimenUITests/ParityJourneyTest/testPrivateLandlordEntryThenSeededExit" "-only-testing:LimenUITests/ParityJourneyTest/testEmptyFormToDrawnSignaturesAndOpenedDocument" test
+
+Writing result bundle at path:
+	/private/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/verify/landlord26c.xcresult
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (5 targets)
+    Target 'LimenUITests' in project 'Limen'
+        ➜ Explicit dependency on target 'Limen' in project 'Limen'
+        ➜ Explicit dependency on target 'LimenKit' in project 'Limen'
+    Target 'LimenTests' in project 'Limen'
+        ➜ Explicit dependency on target 'Limen' in project 'Limen'
+    Target 'LimenKitTests' in project 'Limen'
+        ➜ Explicit dependency on target 'LimenKit' in project 'Limen'
+    Target 'Limen' in project 'Limen'
+        ➜ Explicit dependency on target 'LimenKit' in project 'Limen'
+    Target 'LimenKit' in project 'Limen' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk /Users/aperi/DEV/SWIFT/limen/DD/SDKStatCaches.noindex/iphonesimulator27.0-24A430-8dc58220667be655e1bcc261a7455254.sdkstatcache
+    cd /Users/aperi/DEV/SWIFT/limen
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -o /Users/aperi/DEV/SWIFT/limen/DD/SDKStatCaches.noindex/iphonesimulator27.0-24A430-8dc58220667be655e1bcc261a7455254.sdkstatcache
+
+SwiftDriver LimenUITests normal arm64 com.apple.xcode.tools.swift.compiler (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name LimenUITests -Onone @/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.SwiftFileList -DDEBUG -module-alias Testing\=_Testing_Unavailable -plugin-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -target arm64-apple-ios17.0-simulator -g -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/aperi/DEV/SWIFT/limen/DD/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 6 -I /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator -Isystem /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib -F /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk/Developer/Library/Frameworks -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/aperi/DEV/SWIFT/limen/DD/SDKStatCaches.noindex/iphonesimulator27.0-24A430-8dc58220667be655e1bcc261a7455254.sdkstatcache -output-file-map /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-OutputFileMap.json -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD/ModuleCache.noindex -sdk-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD/SDKExplicitPrecompiledModules -emit-dependencies -emit-module -emit-module-path /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule -serialize-diagnostics -dependency-scan-serialize-diagnostics-path /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-dependency-scan.dia -validate-clang-modules-once -clang-build-session-file /Users/aperi/DEV/SWIFT/limen/DD/ModuleCache.noindex/Session.modulevalidation -Xcc -fmodules-prune-interval\=86400 -Xcc -fmodules-prune-after\=345600 -emit-const-values -const-gather-protocols-list /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests_const_extract_protocols.json -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-generated-files.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-own-target-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/Limen-fa68bf1a78b3328b1edd5d0c0aaec809-VFS-iphonesimulator/all-product-headers.yaml -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-project-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources-normal/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-Swift.h -working-directory /Users/aperi/DEV/SWIFT/limen -experimental-emit-module-separately -disable-cmo
+
+SwiftCompile normal arm64 Compiling\ ParityJourneyTest.swift /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/ParityJourneyTest.swift (in target 'LimenUITests' from project 'Limen')
+
+SwiftCompile normal arm64 /Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/ParityJourneyTest.swift (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-SwiftPerFileCompile ParityJourneyTest.swift
+
+SwiftEmitModule normal arm64 Emitting\ module\ for\ LimenUITests (in target 'LimenUITests' from project 'Limen')
+
+SwiftCompile normal arm64 (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+
+SwiftDriverJobDiscovery normal arm64 Emitting module for LimenUITests (in target 'LimenUITests' from project 'Limen')
+
+SwiftDriver\ Compilation\ Requirements LimenUITests normal arm64 com.apple.xcode.tools.swift.compiler (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name LimenUITests -Onone @/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.SwiftFileList -DDEBUG -module-alias Testing\=_Testing_Unavailable -plugin-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -target arm64-apple-ios17.0-simulator -g -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/aperi/DEV/SWIFT/limen/DD/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 6 -I /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator -Isystem /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib -F /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk/Developer/Library/Frameworks -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/aperi/DEV/SWIFT/limen/DD/SDKStatCaches.noindex/iphonesimulator27.0-24A430-8dc58220667be655e1bcc261a7455254.sdkstatcache -output-file-map /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-OutputFileMap.json -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD/ModuleCache.noindex -sdk-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD/SDKExplicitPrecompiledModules -emit-dependencies -emit-module -emit-module-path /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule -serialize-diagnostics -dependency-scan-serialize-diagnostics-path /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-dependency-scan.dia -validate-clang-modules-once -clang-build-session-file /Users/aperi/DEV/SWIFT/limen/DD/ModuleCache.noindex/Session.modulevalidation -Xcc -fmodules-prune-interval\=86400 -Xcc -fmodules-prune-after\=345600 -emit-const-values -const-gather-protocols-list /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests_const_extract_protocols.json -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-generated-files.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-own-target-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/Limen-fa68bf1a78b3328b1edd5d0c0aaec809-VFS-iphonesimulator/all-product-headers.yaml -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-project-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources-normal/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-Swift.h -working-directory /Users/aperi/DEV/SWIFT/limen -experimental-emit-module-separately -disable-cmo
+
+Copy /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests.swiftmodule/arm64-apple-ios-simulator.swiftmodule /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests.swiftmodule/arm64-apple-ios-simulator.swiftmodule
+
+Copy /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests.swiftmodule/arm64-apple-ios-simulator.abi.json /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.abi.json (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.abi.json /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests.swiftmodule/arm64-apple-ios-simulator.abi.json
+
+Copy /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftsourceinfo (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftsourceinfo /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo
+
+SwiftDriverJobDiscovery normal arm64 Compiling ParityJourneyTest.swift (in target 'LimenUITests' from project 'Limen')
+
+SwiftDriver\ Compilation LimenUITests normal arm64 com.apple.xcode.tools.swift.compiler (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-Swift-Compilation -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name LimenUITests -Onone @/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.SwiftFileList -DDEBUG -module-alias Testing\=_Testing_Unavailable -plugin-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -target arm64-apple-ios17.0-simulator -g -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/aperi/DEV/SWIFT/limen/DD/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 6 -I /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator -Isystem /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib -F /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk/Developer/Library/Frameworks -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/aperi/DEV/SWIFT/limen/DD/SDKStatCaches.noindex/iphonesimulator27.0-24A430-8dc58220667be655e1bcc261a7455254.sdkstatcache -output-file-map /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-OutputFileMap.json -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD/ModuleCache.noindex -sdk-module-cache-path /Users/aperi/DEV/SWIFT/limen/DD/SDKExplicitPrecompiledModules -emit-dependencies -emit-module -emit-module-path /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule -serialize-diagnostics -dependency-scan-serialize-diagnostics-path /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-dependency-scan.dia -validate-clang-modules-once -clang-build-session-file /Users/aperi/DEV/SWIFT/limen/DD/ModuleCache.noindex/Session.modulevalidation -Xcc -fmodules-prune-interval\=86400 -Xcc -fmodules-prune-after\=345600 -emit-const-values -const-gather-protocols-list /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests_const_extract_protocols.json -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-generated-files.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-own-target-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/Limen-fa68bf1a78b3328b1edd5d0c0aaec809-VFS-iphonesimulator/all-product-headers.yaml -Xcc -iquote -Xcc /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests-project-headers.hmap -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources-normal/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources/arm64 -Xcc -I/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests-Swift.h -working-directory /Users/aperi/DEV/SWIFT/limen -experimental-emit-module-separately -disable-cmo
+
+Ld /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/LimenUITests normal (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios17.0-simulator -bundle -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk -O0 -Xlinker -no_warn_duplicate_libraries -L/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -L/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator -L/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib -F/Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -F/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator -iframework /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks -iframework /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk/Developer/Library/Frameworks -filelist /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.LinkFileList -Xlinker -rpath -Xlinker /usr/lib/swift -Xlinker -rpath -Xlinker @loader_path/Frameworks -Xlinker -rpath -Xlinker @executable_path/Frameworks -Xlinker -dead_strip -Xlinker -object_path_lto -Xlinker /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests_lto.o -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -debug_variant -Xlinker -dependency_info -Xlinker /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests_dependency_info.dat -fobjc-link-runtime -fprofile-instr-generate -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.swiftmodule -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator -Xlinker -needed_framework -Xlinker XCTest -framework XCTest -Xlinker -needed-lXCTestSwiftSupport -lXCTestSwiftSupport -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __entitlements -Xlinker /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests.xctest-Simulated.xcent -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __ents_der -Xlinker /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests.xctest-Simulated.xcent.der -framework LimenKit -Xlinker -no_adhoc_codesign -o /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/LimenUITests
+
+CopySwiftLibs /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/LimenUITests --scan-folder /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Frameworks --scan-folder /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/PlugIns --scan-folder /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/SystemExtensions --scan-folder /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Extensions --scan-folder /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenKit.framework --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+ExtractAppIntentsMetadata (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsmetadataprocessor --toolchain-dir /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --module-name LimenUITests --sdk-root /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.0.sdk --xcode-version 27A266a --platform-family iOS --deployment-target 17.0 --bundle-identifier dev.peringer.limen.uitests --output /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest --target-triple arm64-apple-ios17.0-simulator --binary-file /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest/LimenUITests --dependency-file /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests_dependency_info.dat --stringsdata-file /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/ExtractedAppShortcutsMetadata.stringsdata --source-file-list /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.SwiftFileList --metadata-file-list /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests.DependencyMetadataFileList --static-metadata-file-list /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/LimenUITests.DependencyStaticMetadataFileList --swift-const-vals-list /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/Limen.build/Debug-iphonesimulator/LimenUITests.build/Objects-normal/arm64/LimenUITests.SwiftConstValuesFileList --compile-time-extraction --deployment-aware-processing --no-app-shortcuts-localization
+2026-10-15 22:00:15.713 appintentsmetadataprocessor[17196:169748] Starting appintentsmetadataprocessor export
+2026-10-15 22:00:15.715 appintentsmetadataprocessor[17196:169748] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+
+CodeSign /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app/PlugIns/LimenUITests.xctest
+
+CodeSign /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app (in target 'LimenUITests' from project 'Limen')
+    cd /Users/aperi/DEV/SWIFT/limen
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app
+/Users/aperi/DEV/SWIFT/limen/DD/Build/Products/Debug-iphonesimulator/LimenUITests-Runner.app: replacing existing signature
+
+PruneExplicitPrecompiledModules /Users/aperi/DEV/SWIFT/limen/DD/SDKExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/aperi/DEV/SWIFT/limen/DD/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+2026-10-15 22:00:16.638907+0200 LimenUITests-Runner[17199:169973] [Default] Running tests...
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'Selected tests' started at 2026-10-15 22:00:17.208.
+Test Suite 'LimenUITests.xctest' started at 2026-10-15 22:00:17.209.
+Test Suite 'ParityJourneyTest' started at 2026-10-15 22:00:17.209.
+Test Case '-[LimenUITests.ParityJourneyTest testEmptyFormToDrawnSignaturesAndOpenedDocument]' started.
+    t =     0.00s Start Test at 2026-10-15 22:00:17.210
+    t =     0.02s Set Up
+    t =     0.02s Open dev.peringer.limen.audit
+    t =     0.02s     Launch dev.peringer.limen.audit
+2026-10-15 22:00:17.291 xcodebuild[17188:169549] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-15 22:00:17.291 xcodebuild[17188:169549] [MT] IDELaunchParametersSnapshot: no debugger version
+objc[17199]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x10a5cc310) and /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x109cf0398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =     0.69s         Setting up automation session
+    t =     1.40s         Wait for dev.peringer.limen.audit to idle
+    t =     2.67s Waiting 30.0s for "NEW HANDOVER" Button to exist
+    t =     3.75s     Checking `Expect predicate `existsNoRetry == 1` for object "NEW HANDOVER" Button`
+    t =     3.75s         Checking existence of `"NEW HANDOVER" Button`
+    t =     3.81s Tap "NEW HANDOVER" Button
+    t =     3.81s     Wait for dev.peringer.limen.audit to idle
+    t =     3.81s     Find the "NEW HANDOVER" Button
+    t =     3.82s     Check for interrupting elements affecting "NEW HANDOVER" Button
+    t =     3.84s     Synthesize event
+    t =     4.13s     Wait for dev.peringer.limen.audit to idle
+    t =     4.13s Checking existence of `Keyboard (First Match)`
+    t =     4.15s Checking existence of `ScrollView (First Match)`
+    t =     4.16s Find the "First name" TextField
+    t =     4.18s Find the ScrollView (First Match)
+    t =     4.19s Find the "First name" TextField
+    t =     4.20s Checking existence of `"First name" TextField`
+    t =     4.22s Find the "First name" TextField
+    t =     4.24s Find the "First name" TextField
+    t =     4.26s Checking existence of `"First name" TextField`
+    t =     4.28s Tap "First name" TextField
+    t =     4.28s     Wait for dev.peringer.limen.audit to idle
+    t =     4.28s     Find the "First name" TextField
+    t =     4.30s     Check for interrupting elements affecting "First name" TextField
+    t =     4.32s     Synthesize event
+    t =     4.61s     Wait for dev.peringer.limen.audit to idle
+    t =     4.70s Type 'Alex' into "First name" TextField
+    t =     4.70s     Wait for dev.peringer.limen.audit to idle
+    t =     5.07s     Find the "First name" TextField
+    t =     5.12s     Check for interrupting elements affecting "First name" TextField
+    t =     5.15s     Synthesize event
+    t =     5.42s     Wait for dev.peringer.limen.audit to idle
+    t =     5.42s Checking existence of `"DONE" Button`
+    t =     5.49s Type '
+' into "First name" TextField
+    t =     5.49s     Wait for dev.peringer.limen.audit to idle
+    t =     5.49s     Find the "First name" TextField
+    t =     5.53s     Check for interrupting elements affecting "First name" TextField
+    t =     5.56s     Synthesize event
+    t =     5.77s     Wait for dev.peringer.limen.audit to idle
+    t =     5.99s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =     7.06s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =     7.06s         Checking existence of `Keyboard (First Match)`
+    t =     7.09s Checking existence of `Keyboard (First Match)`
+    t =     7.12s Checking existence of `ScrollView (First Match)`
+    t =     7.12s Find the "Last name" TextField
+    t =     7.14s Find the ScrollView (First Match)
+    t =     7.15s Find the "Last name" TextField
+    t =     7.17s Checking existence of `"Last name" TextField`
+    t =     7.19s Find the "Last name" TextField
+    t =     7.21s Find the "Last name" TextField
+    t =     7.25s Checking existence of `"Last name" TextField`
+    t =     7.27s Tap "Last name" TextField
+    t =     7.27s     Wait for dev.peringer.limen.audit to idle
+    t =     7.27s     Find the "Last name" TextField
+    t =     7.29s     Check for interrupting elements affecting "Last name" TextField
+    t =     7.31s     Synthesize event
+    t =     7.59s     Wait for dev.peringer.limen.audit to idle
+    t =     7.87s Type 'Example' into "Last name" TextField
+    t =     7.87s     Wait for dev.peringer.limen.audit to idle
+    t =     7.88s     Find the "Last name" TextField
+    t =     7.93s     Check for interrupting elements affecting "Last name" TextField
+    t =     7.96s     Synthesize event
+    t =     8.28s     Wait for dev.peringer.limen.audit to idle
+    t =     8.28s Checking existence of `"DONE" Button`
+    t =     8.35s Type '
+' into "Last name" TextField
+    t =     8.35s     Wait for dev.peringer.limen.audit to idle
+    t =     8.35s     Find the "Last name" TextField
+    t =     8.39s     Check for interrupting elements affecting "Last name" TextField
+    t =     8.42s     Synthesize event
+    t =     8.64s     Wait for dev.peringer.limen.audit to idle
+    t =     8.85s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =     9.92s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =     9.92s         Checking existence of `Keyboard (First Match)`
+    t =     9.95s Checking existence of `Keyboard (First Match)`
+    t =     9.97s Checking existence of `ScrollView (First Match)`
+    t =     9.98s Find the "start-session" Button
+    t =     9.99s Find the Target Application 'dev.peringer.limen.audit'
+    t =    10.01s Find the "start-session" Button
+    t =    10.03s Checking existence of `"start-session" Button`
+    t =    10.04s Find the "start-session" Button
+    t =    10.06s Find the "start-session" Button
+    t =    10.09s Find the "start-session" Button
+    t =    10.10s Tap "start-session" Button
+    t =    10.10s     Wait for dev.peringer.limen.audit to idle
+    t =    10.11s     Find the "start-session" Button
+    t =    10.13s     Check for interrupting elements affecting "start-session" Button
+    t =    10.14s     Synthesize event
+    t =    10.44s     Wait for dev.peringer.limen.audit to idle
+    t =    10.44s Checking existence of `Switch (First Match)`
+    t =    10.48s Checking existence of `Keyboard (First Match)`
+    t =    10.51s Checking existence of `ScrollView (First Match)`
+    t =    10.52s Find the Button (First Match)
+    t =    10.54s Find the ScrollView (First Match)
+    t =    10.55s Find the "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    10.57s Checking existence of `"DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button`
+    t =    10.59s Find the "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    10.60s Find the "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    10.63s Checking existence of `"DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button`
+    t =    10.65s Tap "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    10.65s     Wait for dev.peringer.limen.audit to idle
+    t =    10.65s     Find the "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    10.67s     Check for interrupting elements affecting "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    10.69s     Synthesize event
+    t =    10.98s     Wait for dev.peringer.limen.audit to idle
+    t =    10.99s Checking existence of `Keyboard (First Match)`
+    t =    11.05s Checking existence of `ScrollView (First Match)`
+    t =    11.06s Find the "Street and number" TextField
+    t =    11.08s Find the ScrollView (First Match)
+    t =    11.09s Find the "Street and number" TextField
+    t =    11.12s Checking existence of `"Street and number" TextField`
+    t =    11.14s Find the "Street and number" TextField
+    t =    11.17s Find the "Street and number" TextField
+    t =    11.20s Checking existence of `"Street and number" TextField`
+    t =    11.22s Tap "Street and number" TextField
+    t =    11.22s     Wait for dev.peringer.limen.audit to idle
+    t =    11.22s     Find the "Street and number" TextField
+    t =    11.25s     Check for interrupting elements affecting "Street and number" TextField
+    t =    11.27s     Synthesize event
+    t =    11.57s     Wait for dev.peringer.limen.audit to idle
+    t =    11.90s Type 'Auditstrasse 12' into "Street and number" TextField
+    t =    11.90s     Wait for dev.peringer.limen.audit to idle
+    t =    11.90s     Find the "Street and number" TextField
+    t =    11.95s     Check for interrupting elements affecting "Street and number" TextField
+    t =    11.98s     Synthesize event
+    t =    12.43s     Wait for dev.peringer.limen.audit to idle
+    t =    12.44s Checking existence of `"DONE" Button`
+    t =    12.54s Type '
+' into "Street and number" TextField
+    t =    12.54s     Wait for dev.peringer.limen.audit to idle
+    t =    12.54s     Find the "Street and number" TextField
+    t =    12.59s     Check for interrupting elements affecting "Street and number" TextField
+    t =    12.63s     Synthesize event
+    t =    12.84s     Wait for dev.peringer.limen.audit to idle
+    t =    13.08s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =    14.16s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =    14.16s         Checking existence of `Keyboard (First Match)`
+    t =    14.22s Checking existence of `Keyboard (First Match)`
+    t =    14.27s Checking existence of `ScrollView (First Match)`
+    t =    14.28s Find the "Postcode and place" TextField
+    t =    14.30s Find the ScrollView (First Match)
+    t =    14.31s Find the "Postcode and place" TextField
+    t =    14.34s Checking existence of `"Postcode and place" TextField`
+    t =    14.36s Find the "Postcode and place" TextField
+    t =    14.39s Find the "Postcode and place" TextField
+    t =    14.43s Checking existence of `"Postcode and place" TextField`
+    t =    14.46s Tap "Postcode and place" TextField
+    t =    14.46s     Wait for dev.peringer.limen.audit to idle
+    t =    14.47s     Find the "Postcode and place" TextField
+    t =    14.50s     Check for interrupting elements affecting "Postcode and place" TextField
+    t =    14.53s     Synthesize event
+    t =    14.82s     Wait for dev.peringer.limen.audit to idle
+    t =    15.10s Type '5000 Aarau' into "Postcode and place" TextField
+    t =    15.10s     Wait for dev.peringer.limen.audit to idle
+    t =    15.11s     Find the "Postcode and place" TextField
+    t =    15.17s     Check for interrupting elements affecting "Postcode and place" TextField
+    t =    15.20s     Synthesize event
+    t =    15.57s     Wait for dev.peringer.limen.audit to idle
+    t =    15.57s Checking existence of `"DONE" Button`
+    t =    15.65s Type '
+' into "Postcode and place" TextField
+    t =    15.65s     Wait for dev.peringer.limen.audit to idle
+    t =    15.65s     Find the "Postcode and place" TextField
+    t =    15.70s     Check for interrupting elements affecting "Postcode and place" TextField
+    t =    15.73s     Synthesize event
+    t =    15.95s     Wait for dev.peringer.limen.audit to idle
+    t =    16.19s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =    17.26s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =    17.26s         Checking existence of `Keyboard (First Match)`
+    t =    17.35s Checking existence of `Keyboard (First Match)`
+    t =    17.40s Checking existence of `ScrollView (First Match)`
+    t =    17.41s Find the "SELECT CANTON" Button
+    t =    17.45s Find the ScrollView (First Match)
+    t =    17.46s Find the "SELECT CANTON" Button
+    t =    17.50s Checking existence of `"SELECT CANTON" Button`
+    t =    17.54s Find the "SELECT CANTON" Button
+    t =    17.58s Find the "SELECT CANTON" Button
+    t =    17.63s Tap "SELECT CANTON" Button
+    t =    17.63s     Wait for dev.peringer.limen.audit to idle
+    t =    17.63s     Find the "SELECT CANTON" Button
+    t =    17.67s     Check for interrupting elements affecting "SELECT CANTON" Button
+    t =    17.69s     Synthesize event
+    t =    17.99s     Wait for dev.peringer.limen.audit to idle
+    t =    18.40s Tap "AG · Aargau" Button
+    t =    18.40s     Wait for dev.peringer.limen.audit to idle
+    t =    18.40s     Find the "AG · Aargau" Button
+    t =    18.49s     Check for interrupting elements affecting "AG · Aargau" Button
+    t =    18.53s     Synthesize event
+    t =    18.83s     Wait for dev.peringer.limen.audit to idle
+    t =    19.23s Checking existence of `Keyboard (First Match)`
+    t =    19.29s Checking existence of `ScrollView (First Match)`
+    t =    19.30s Find the "Time" TextField
+    t =    19.34s Find the ScrollView (First Match)
+    t =    19.35s Find the "Time" TextField
+    t =    19.40s Checking existence of `"Time" TextField`
+    t =    19.45s Find the "Time" TextField
+    t =    19.49s Find the "Time" TextField
+    t =    19.54s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    19.55s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    19.55s     Wait for dev.peringer.limen.audit to idle
+    t =    19.56s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    19.57s     Check for interrupting elements affecting ScrollView
+    t =    19.60s     Synthesize event
+    t =    19.60s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    19.62s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    19.64s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    19.65s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    19.67s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    20.68s     Wait for dev.peringer.limen.audit to idle
+    t =    20.69s Checking existence of `ScrollView (First Match)`
+    t =    20.69s Find the "Time" TextField
+    t =    20.74s Find the ScrollView (First Match)
+    t =    20.75s Find the "Time" TextField
+    t =    20.81s Checking existence of `"Time" TextField`
+    t =    20.86s Find the "Time" TextField
+    t =    20.92s Find the "Time" TextField
+    t =    20.98s Checking existence of `"Time" TextField`
+    t =    21.03s Tap "Time" TextField
+    t =    21.03s     Wait for dev.peringer.limen.audit to idle
+    t =    21.04s     Find the "Time" TextField
+    t =    21.09s     Check for interrupting elements affecting "Time" TextField
+    t =    21.13s     Synthesize event
+    t =    21.42s     Wait for dev.peringer.limen.audit to idle
+    t =    21.71s Type '1030' into "Time" TextField
+    t =    21.71s     Wait for dev.peringer.limen.audit to idle
+    t =    21.71s     Find the "Time" TextField
+    t =    21.80s     Check for interrupting elements affecting "Time" TextField
+    t =    21.84s     Synthesize event
+    t =    22.11s     Wait for dev.peringer.limen.audit to idle
+    t =    22.51s Checking existence of `"DONE" Button`
+    t =    22.59s Type '
+' into "Time" TextField
+    t =    22.59s     Wait for dev.peringer.limen.audit to idle
+    t =    22.60s     Find the "Time" TextField
+    t =    22.64s     Check for interrupting elements affecting "Time" TextField
+    t =    22.68s     Synthesize event
+    t =    22.90s     Wait for dev.peringer.limen.audit to idle
+    t =    23.11s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =    24.19s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =    24.19s         Checking existence of `Keyboard (First Match)`
+    t =    24.26s Checking existence of `Keyboard (First Match)`
+    t =    24.31s Checking existence of `Keyboard (First Match)`
+    t =    24.37s Checking existence of `ScrollView (First Match)`
+    t =    24.38s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    24.43s Find the ScrollView (First Match)
+    t =    24.44s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    24.48s Checking existence of `"legal-LeaseAndLocalTiming-Confirmed" Button`
+    t =    24.53s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    24.58s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    24.63s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    24.64s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    24.64s     Wait for dev.peringer.limen.audit to idle
+    t =    24.64s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    24.65s     Check for interrupting elements affecting ScrollView
+    t =    24.69s     Synthesize event
+    t =    24.69s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    24.70s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    24.72s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    24.73s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    24.75s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    25.76s     Wait for dev.peringer.limen.audit to idle
+    t =    25.77s Checking existence of `ScrollView (First Match)`
+    t =    25.78s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    25.83s Find the ScrollView (First Match)
+    t =    25.84s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    25.89s Checking existence of `"legal-LeaseAndLocalTiming-Confirmed" Button`
+    t =    25.94s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    25.99s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    26.05s Checking existence of `"legal-LeaseAndLocalTiming-Confirmed" Button`
+    t =    26.10s Tap "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    26.10s     Wait for dev.peringer.limen.audit to idle
+    t =    26.10s     Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    26.15s     Check for interrupting elements affecting "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    26.19s     Synthesize event
+    t =    26.48s     Wait for dev.peringer.limen.audit to idle
+    t =    26.48s Waiting 2.0s for "legal-note-LeaseAndLocalTiming" TextField to exist
+    t =    27.56s     Checking `Expect predicate `existsNoRetry == 1` for object "legal-note-LeaseAndLocalTiming" TextField`
+    t =    27.56s         Checking existence of `"legal-note-LeaseAndLocalTiming" TextField`
+    t =    27.64s Waiting 5.0s for "legal-note-LeaseAndLocalTiming" TextField to exist
+    t =    28.71s     Checking `Expect predicate `existsNoRetry == 1` for object "legal-note-LeaseAndLocalTiming" TextField`
+    t =    28.72s         Checking existence of `"legal-note-LeaseAndLocalTiming" TextField`
+    t =    28.79s Checking existence of `Keyboard (First Match)`
+    t =    28.86s Checking existence of `ScrollView (First Match)`
+    t =    28.86s Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    28.91s Find the ScrollView (First Match)
+    t =    28.92s Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    28.96s Checking existence of `"legal-note-LeaseAndLocalTiming" TextField`
+    t =    29.01s Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    29.06s Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    29.12s Checking existence of `"legal-note-LeaseAndLocalTiming" TextField`
+    t =    29.17s Tap "legal-note-LeaseAndLocalTiming" TextField
+    t =    29.17s     Wait for dev.peringer.limen.audit to idle
+    t =    29.17s     Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    29.23s     Check for interrupting elements affecting "legal-note-LeaseAndLocalTiming" TextField
+    t =    29.27s     Synthesize event
+<unknown>:0: warning: -[LimenUITests.ParityJourneyTest testEmptyFormToDrawnSignaturesAndOpenedDocument] : Invalid frame dimension (negative or non-finite).
+    t =    29.57s     Wait for dev.peringer.limen.audit to idle
+    t =    29.57s Type 'Synthetic acceptan...' into "legal-note-LeaseAndLocalTiming" TextField
+    t =    29.57s     Wait for dev.peringer.limen.audit to idle
+    t =    29.96s     Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    30.04s     Check for interrupting elements affecting "legal-note-LeaseAndLocalTiming" TextField
+    t =    30.08s     Synthesize event
+    t =    31.07s     Wait for dev.peringer.limen.audit to idle
+    t =    31.08s Checking existence of `"DONE" Button`
+    t =    31.18s Find the "DONE" Button
+    t =    31.30s Tap "DONE" Button
+    t =    31.30s     Wait for dev.peringer.limen.audit to idle
+    t =    31.30s     Find the "DONE" Button
+    t =    31.42s     Check for interrupting elements affecting "DONE" Button
+    t =    31.48s     Synthesize event
+    t =    31.77s     Wait for dev.peringer.limen.audit to idle
+    t =    32.58s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =    33.64s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =    33.64s         Checking existence of `Keyboard (First Match)`
+    t =    33.74s Checking existence of `Keyboard (First Match)`
+    t =    33.80s Checking existence of `Keyboard (First Match)`
+    t =    33.86s Checking existence of `ScrollView (First Match)`
+    t =    33.87s Find the "legal-InitialRentForm-Confirmed" Button
+    t =    33.92s Find the ScrollView (First Match)
+    t =    33.93s Find the "legal-InitialRentForm-Confirmed" Button
+    t =    33.98s Checking existence of `"legal-InitialRentForm-Confirmed" Button`
+    t =    34.03s Find the "legal-InitialRentForm-Confirmed" Button
+    t =    34.08s Find the "legal-InitialRentForm-Confirmed" Button
+    t =    34.14s Checking existence of `"legal-InitialRentForm-Confirmed" Button`
+    t =    34.19s Tap "legal-InitialRentForm-Confirmed" Button
+    t =    34.19s     Wait for dev.peringer.limen.audit to idle
+    t =    34.20s     Find the "legal-InitialRentForm-Confirmed" Button
+    t =    34.25s     Check for interrupting elements affecting "legal-InitialRentForm-Confirmed" Button
+    t =    34.29s     Synthesize event
+    t =    34.59s     Wait for dev.peringer.limen.audit to idle
+    t =    34.59s Waiting 2.0s for "legal-note-InitialRentForm" TextField to exist
+    t =    35.64s     Checking `Expect predicate `existsNoRetry == 1` for object "legal-note-InitialRentForm" TextField`
+    t =    35.64s         Checking existence of `"legal-note-InitialRentForm" TextField`
+    t =    35.71s Waiting 5.0s for "legal-note-InitialRentForm" TextField to exist
+    t =    36.75s     Checking `Expect predicate `existsNoRetry == 1` for object "legal-note-InitialRentForm" TextField`
+    t =    36.75s         Checking existence of `"legal-note-InitialRentForm" TextField`
+    t =    36.82s Checking existence of `Keyboard (First Match)`
+    t =    36.92s Checking existence of `ScrollView (First Match)`
+    t =    36.94s Find the "legal-note-InitialRentForm" TextField
+    t =    37.01s Find the ScrollView (First Match)
+    t =    37.03s Find the "legal-note-InitialRentForm" TextField
+    t =    37.10s Checking existence of `"legal-note-InitialRentForm" TextField`
+    t =    37.17s Find the "legal-note-InitialRentForm" TextField
+    t =    37.24s Find the "legal-note-InitialRentForm" TextField
+    t =    37.31s Checking existence of `"legal-note-InitialRentForm" TextField`
+    t =    37.36s Tap "legal-note-InitialRentForm" TextField
+    t =    37.36s     Wait for dev.peringer.limen.audit to idle
+    t =    37.37s     Find the "legal-note-InitialRentForm" TextField
+    t =    37.44s     Check for interrupting elements affecting "legal-note-InitialRentForm" TextField
+    t =    37.48s     Synthesize event
+    t =    37.77s     Wait for dev.peringer.limen.audit to idle
+    t =    38.10s Type 'Synthetic acceptan...' into "legal-note-InitialRentForm" TextField
+    t =    38.10s     Wait for dev.peringer.limen.audit to idle
+    t =    38.11s     Find the "legal-note-InitialRentForm" TextField
+    t =    38.19s     Check for interrupting elements affecting "legal-note-InitialRentForm" TextField
+    t =    38.23s     Synthesize event
+    t =    39.22s     Wait for dev.peringer.limen.audit to idle
+    t =    39.23s Checking existence of `"DONE" Button`
+    t =    39.38s Find the "DONE" Button
+    t =    39.54s Tap "DONE" Button
+    t =    39.54s     Wait for dev.peringer.limen.audit to idle
+    t =    39.55s     Find the "DONE" Button
+    t =    39.68s     Check for interrupting elements affecting "DONE" Button
+    t =    39.73s     Synthesize event
+    t =    40.02s     Wait for dev.peringer.limen.audit to idle
+    t =    40.83s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =    41.85s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =    41.85s         Checking existence of `Keyboard (First Match)`
+    t =    41.97s Checking existence of `Keyboard (First Match)`
+    t =    42.06s Checking existence of `Keyboard (First Match)`
+    t =    42.14s Checking existence of `ScrollView (First Match)`
+    t =    42.15s Find the "Contractual landlord" TextField
+    t =    42.21s Find the ScrollView (First Match)
+    t =    42.22s Find the "Contractual landlord" TextField
+    t =    42.29s Checking existence of `"Contractual landlord" TextField`
+    t =    42.37s Find the "Contractual landlord" TextField
+    t =    42.44s Find the "Contractual landlord" TextField
+    t =    42.52s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    42.53s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    42.53s     Wait for dev.peringer.limen.audit to idle
+    t =    42.53s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    42.55s     Check for interrupting elements affecting ScrollView
+    t =    42.59s     Synthesize event
+    t =    42.59s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    42.61s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    42.62s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    42.64s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    42.65s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    43.67s     Wait for dev.peringer.limen.audit to idle
+    t =    43.68s Checking existence of `ScrollView (First Match)`
+    t =    43.70s Find the "Contractual landlord" TextField
+    t =    43.77s Find the ScrollView (First Match)
+    t =    43.78s Find the "Contractual landlord" TextField
+    t =    43.85s Checking existence of `"Contractual landlord" TextField`
+    t =    43.92s Find the "Contractual landlord" TextField
+    t =    43.99s Find the "Contractual landlord" TextField
+    t =    44.06s Checking existence of `"Contractual landlord" TextField`
+    t =    44.14s Tap "Contractual landlord" TextField
+    t =    44.14s     Wait for dev.peringer.limen.audit to idle
+    t =    44.15s     Find the "Contractual landlord" TextField
+    t =    44.23s     Check for interrupting elements affecting "Contractual landlord" TextField
+    t =    44.28s     Synthesize event
+    t =    44.58s     Wait for dev.peringer.limen.audit to idle
+    t =    44.86s Type 'Case Owner' into "Contractual landlord" TextField
+    t =    44.86s     Wait for dev.peringer.limen.audit to idle
+    t =    44.86s     Find the "Contractual landlord" TextField
+    t =    44.96s     Check for interrupting elements affecting "Contractual landlord" TextField
+    t =    45.02s     Synthesize event
+    t =    45.39s     Wait for dev.peringer.limen.audit to idle
+    t =    45.71s Checking existence of `"DONE" Button`
+    t =    45.85s Type '
+' into "Contractual landlord" TextField
+    t =    45.85s     Wait for dev.peringer.limen.audit to idle
+    t =    45.85s     Find the "Contractual landlord" TextField
+    t =    45.94s     Check for interrupting elements affecting "Contractual landlord" TextField
+    t =    45.99s     Synthesize event
+    t =    46.21s     Wait for dev.peringer.limen.audit to idle
+    t =    46.42s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =    47.49s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =    47.49s         Checking existence of `Keyboard (First Match)`
+    t =    47.59s Checking existence of `Keyboard (First Match)`
+    t =    47.67s Checking existence of `Keyboard (First Match)`
+    t =    47.76s Checking existence of `ScrollView (First Match)`
+    t =    47.77s Find the "No physical keys" Button
+    t =    47.84s Find the ScrollView (First Match)
+    t =    47.85s Find the "No physical keys" Button
+    t =    47.92s Checking existence of `"No physical keys" Button`
+    t =    47.98s Find the "No physical keys" Button
+    t =    48.05s Find the "No physical keys" Button
+    t =    48.12s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    48.13s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    48.13s     Wait for dev.peringer.limen.audit to idle
+    t =    48.13s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    48.14s     Check for interrupting elements affecting ScrollView
+    t =    48.18s     Synthesize event
+    t =    48.19s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    48.20s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    48.21s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    48.23s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    48.24s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    49.26s     Wait for dev.peringer.limen.audit to idle
+    t =    49.27s Checking existence of `ScrollView (First Match)`
+    t =    49.28s Find the "No physical keys" Button
+    t =    49.37s Find the ScrollView (First Match)
+    t =    49.38s Find the "No physical keys" Button
+    t =    49.46s Checking existence of `"No physical keys" Button`
+    t =    49.53s Find the "No physical keys" Button
+    t =    49.62s Find the "No physical keys" Button
+    t =    49.71s Tap "No physical keys" Button
+    t =    49.72s     Wait for dev.peringer.limen.audit to idle
+    t =    49.72s     Find the "No physical keys" Button
+    t =    49.80s     Check for interrupting elements affecting "No physical keys" Button
+    t =    49.85s     Synthesize event
+    t =    50.15s     Wait for dev.peringer.limen.audit to idle
+    t =    50.15s Tap "BACK" Button
+    t =    50.15s     Wait for dev.peringer.limen.audit to idle
+    t =    50.16s     Find the "BACK" Button
+    t =    50.16s     Check for interrupting elements affecting "arrow.backward" Button
+    t =    50.22s     Synthesize event
+    t =    50.52s     Wait for dev.peringer.limen.audit to idle
+    t =    50.52s Checking existence of `Switch (First Match)`
+    t =    50.55s Checking existence of `Keyboard (First Match)`
+    t =    50.57s Checking existence of `ScrollView (First Match)`
+    t =    50.59s Find the Button (First Match)
+    t =    50.61s Find the ScrollView (First Match)
+    t =    50.63s Find the "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button
+    t =    50.64s Checking existence of `"INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button`
+    t =    50.65s Find the "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button
+    t =    50.67s Find the "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button
+    t =    50.70s Checking existence of `"INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button`
+    t =    50.71s Tap "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button
+    t =    50.71s     Wait for dev.peringer.limen.audit to idle
+    t =    50.71s     Find the "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button
+    t =    50.73s     Check for interrupting elements affecting "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button
+    t =    50.75s     Synthesize event
+    t =    51.04s     Wait for dev.peringer.limen.audit to idle
+    t =    51.04s Checking existence of `Keyboard (First Match)`
+    t =    51.08s Checking existence of `ScrollView (First Match)`
+    t =    51.09s Find the "Kitchen" Button
+    t =    51.11s Find the ScrollView (First Match)
+    t =    51.12s Find the "Kitchen" Button
+    t =    51.14s Checking existence of `"Kitchen" Button`
+    t =    51.16s Find the "Kitchen" Button
+    t =    51.18s Find the "Kitchen" Button
+    t =    51.21s Tap "Kitchen" Button
+    t =    51.21s     Wait for dev.peringer.limen.audit to idle
+    t =    51.21s     Find the "Kitchen" Button
+    t =    51.23s     Check for interrupting elements affecting "Kitchen" Button
+    t =    51.25s     Synthesize event
+    t =    51.54s     Wait for dev.peringer.limen.audit to idle
+    t =    51.55s Tap "USE SELECTED ROOMS" Button
+    t =    51.55s     Wait for dev.peringer.limen.audit to idle
+    t =    51.55s     Find the "USE SELECTED ROOMS" Button
+    t =    51.58s     Check for interrupting elements affecting "USE SELECTED ROOMS" Button
+    t =    51.60s     Synthesize event
+    t =    51.90s     Wait for dev.peringer.limen.audit to idle
+    t =    51.90s Checking existence of `Switch (First Match)`
+    t =    51.92s Checking existence of `Keyboard (First Match)`
+    t =    51.93s Checking existence of `ScrollView (First Match)`
+    t =    51.94s Find the Button (First Match)
+    t =    51.96s Find the ScrollView (First Match)
+    t =    51.97s Find the "Kitchen" Button
+    t =    51.99s Checking existence of `"Kitchen" Button`
+    t =    52.00s Find the "Kitchen" Button
+    t =    52.01s Find the "Kitchen" Button
+    t =    52.04s Checking existence of `"Kitchen" Button`
+    t =    52.05s Tap "Kitchen" Button
+    t =    52.05s     Wait for dev.peringer.limen.audit to idle
+    t =    52.05s     Find the "Kitchen" Button
+    t =    52.07s     Check for interrupting elements affecting "Kitchen" Button
+    t =    52.09s     Synthesize event
+    t =    52.38s     Wait for dev.peringer.limen.audit to idle
+    t =    52.38s Checking existence of `Switch (First Match)`
+    t =    52.40s Checking existence of `Keyboard (First Match)`
+    t =    52.44s Checking existence of `ScrollView (First Match)`
+    t =    52.44s Find the Switch (First Match)
+    t =    52.46s Find the ScrollView (First Match)
+    t =    52.47s Find the "ROOM INSPECTED" Switch
+    t =    52.48s Checking existence of `"ROOM INSPECTED" Switch`
+    t =    52.50s Find the "ROOM INSPECTED" Switch
+    t =    52.51s Find the "ROOM INSPECTED" Switch
+    t =    52.54s Checking existence of `"ROOM INSPECTED" Switch`
+    t =    52.55s Tap "ROOM INSPECTED" Switch
+    t =    52.55s     Wait for dev.peringer.limen.audit to idle
+    t =    52.55s     Find the "ROOM INSPECTED" Switch
+    t =    52.57s     Check for interrupting elements affecting "ROOM INSPECTED" Switch
+    t =    52.59s     Synthesize event
+    t =    52.88s     Wait for dev.peringer.limen.audit to idle
+    t =    52.88s Tap "BACK" Button
+    t =    52.88s     Wait for dev.peringer.limen.audit to idle
+    t =    52.88s     Find the "BACK" Button
+    t =    52.89s     Check for interrupting elements affecting "arrow.backward" Button
+    t =    52.91s     Synthesize event
+    t =    53.20s     Wait for dev.peringer.limen.audit to idle
+    t =    53.21s Tap "BACK" Button
+    t =    53.21s     Wait for dev.peringer.limen.audit to idle
+    t =    53.22s     Find the "BACK" Button
+    t =    53.23s     Check for interrupting elements affecting "arrow.backward" Button
+    t =    53.25s     Synthesize event
+    t =    53.54s     Wait for dev.peringer.limen.audit to idle
+    t =    53.55s Checking existence of `Switch (First Match)`
+    t =    53.57s Checking existence of `Keyboard (First Match)`
+    t =    53.59s Checking existence of `ScrollView (First Match)`
+    t =    53.60s Find the Button (First Match)
+    t =    53.61s Find the ScrollView (First Match)
+    t =    53.62s Find the "REVIEW THE RECORD" Button
+    t =    53.64s Checking existence of `"REVIEW THE RECORD" Button`
+    t =    53.65s Find the "REVIEW THE RECORD" Button
+    t =    53.67s Find the "REVIEW THE RECORD" Button
+    t =    53.70s Checking existence of `"REVIEW THE RECORD" Button`
+    t =    53.71s Tap "REVIEW THE RECORD" Button
+    t =    53.71s     Wait for dev.peringer.limen.audit to idle
+    t =    53.71s     Find the "REVIEW THE RECORD" Button
+    t =    53.73s     Check for interrupting elements affecting "REVIEW THE RECORD" Button
+    t =    53.74s     Synthesize event
+    t =    54.04s     Wait for dev.peringer.limen.audit to idle
+    t =    54.04s Checking existence of `Keyboard (First Match)`
+    t =    54.09s Checking existence of `ScrollView (First Match)`
+    t =    54.10s Find the "preview-document" Button
+    t =    54.14s Find the ScrollView (First Match)
+    t =    54.15s Find the "preview-document" Button
+    t =    54.18s Checking existence of `"preview-document" Button`
+    t =    54.22s Find the "preview-document" Button
+    t =    54.26s Find the "preview-document" Button
+    t =    54.31s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    54.31s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    54.31s     Wait for dev.peringer.limen.audit to idle
+    t =    54.32s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    54.33s     Check for interrupting elements affecting ScrollView
+    t =    54.36s     Synthesize event
+    t =    54.37s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    54.38s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    54.40s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    54.42s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    54.44s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    55.45s     Wait for dev.peringer.limen.audit to idle
+    t =    55.46s Checking existence of `ScrollView (First Match)`
+    t =    55.47s Find the "preview-document" Button
+    t =    55.50s Find the ScrollView (First Match)
+    t =    55.51s Find the "preview-document" Button
+    t =    55.55s Checking existence of `"preview-document" Button`
+    t =    55.58s Find the "preview-document" Button
+    t =    55.62s Find the "preview-document" Button
+    t =    55.66s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    55.67s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    55.67s     Wait for dev.peringer.limen.audit to idle
+    t =    55.67s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    55.68s     Check for interrupting elements affecting ScrollView
+    t =    55.72s     Synthesize event
+    t =    55.72s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    55.74s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    55.76s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    55.77s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    55.79s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    56.81s     Wait for dev.peringer.limen.audit to idle
+    t =    57.19s Checking existence of `ScrollView (First Match)`
+    t =    57.21s Find the "preview-document" Button
+    t =    57.26s Find the ScrollView (First Match)
+    t =    57.27s Find the "preview-document" Button
+    t =    57.31s Checking existence of `"preview-document" Button`
+    t =    57.34s Find the "preview-document" Button
+    t =    57.37s Find the "preview-document" Button
+    t =    57.42s Tap "preview-document" Button
+    t =    57.42s     Wait for dev.peringer.limen.audit to idle
+    t =    57.42s     Find the "preview-document" Button
+    t =    57.45s     Check for interrupting elements affecting "preview-document" Button
+    t =    57.48s     Synthesize event
+    t =    57.78s     Wait for dev.peringer.limen.audit to idle
+    t =    58.55s Waiting 30.0s for "confirm-review" Button to exist
+    t =    59.58s     Checking `Expect predicate `existsNoRetry == 1` for object "confirm-review" Button`
+    t =    59.58s         Checking existence of `"confirm-review" Button`
+    t =    59.94s Find the Target Application 'dev.peringer.limen.audit'
+    t =    60.08s Added attachment named 'empty-journey-complete-draft'
+    t =    60.08s Find the Target Application 'dev.peringer.limen.audit'
+LIMEN_UI_SCREENSHOT /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/4182BA15-C2D2-4FDE-8678-49EEEFAEB747/tmp/empty-journey-complete-draft.png
+    t =    60.22s Tap "confirm-review" Button
+    t =    60.22s     Wait for dev.peringer.limen.audit to idle
+    t =    60.22s     Find the "confirm-review" Button
+    t =    60.59s     Check for interrupting elements affecting "confirm-review" Button
+    t =    60.64s     Synthesize event
+    t =    60.94s     Wait for dev.peringer.limen.audit to idle
+    t =    61.29s Checking existence of `Switch (First Match)`
+    t =    61.34s Checking existence of `Keyboard (First Match)`
+    t =    61.39s Checking existence of `ScrollView (First Match)`
+    t =    61.40s Find the Button (First Match)
+    t =    61.44s Find the ScrollView (First Match)
+    t =    61.46s Find the "SIGNATURES" Button
+    t =    61.49s Checking existence of `"SIGNATURES" Button`
+    t =    61.52s Find the "SIGNATURES" Button
+    t =    61.55s Find the "SIGNATURES" Button
+    t =    61.60s Checking existence of `"SIGNATURES" Button`
+    t =    61.62s Tap "SIGNATURES" Button
+    t =    61.62s     Wait for dev.peringer.limen.audit to idle
+    t =    61.63s     Find the "SIGNATURES" Button
+    t =    61.66s     Check for interrupting elements affecting "SIGNATURES" Button
+    t =    61.69s     Synthesize event
+    t =    61.99s     Wait for dev.peringer.limen.audit to idle
+    t =    61.99s Checking existence of `Keyboard (First Match)`
+    t =    62.03s Checking existence of `ScrollView (First Match)`
+    t =    62.04s Find the "SIGN" Button
+    t =    62.06s Find the ScrollView (First Match)
+    t =    62.07s Find the "sign-F9AA22AF-CE00-48B5-8E3E-17A0A2456385" Button
+    t =    62.09s Checking existence of `"sign-F9AA22AF-CE00-48B5-8E3E-17A0A2456385" Button`
+    t =    62.11s Find the "sign-F9AA22AF-CE00-48B5-8E3E-17A0A2456385" Button
+    t =    62.13s Find the "sign-F9AA22AF-CE00-48B5-8E3E-17A0A2456385" Button
+    t =    62.16s Find the "sign-F9AA22AF-CE00-48B5-8E3E-17A0A2456385" Button
+    t =    62.18s Tap "sign-F9AA22AF-CE00-48B5-8E3E-17A0A2456385" Button
+    t =    62.18s     Wait for dev.peringer.limen.audit to idle
+    t =    62.18s     Find the "sign-F9AA22AF-CE00-48B5-8E3E-17A0A2456385" Button
+    t =    62.21s     Check for interrupting elements affecting "sign-F9AA22AF-CE00-48B5-8E3E-17A0A2456385" Button
+    t =    62.23s     Synthesize event
+    t =    62.53s     Wait for dev.peringer.limen.audit to idle
+    t =    62.87s Waiting 10.0s for Any (First Match) to exist
+    t =    63.95s     Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    63.95s         Checking existence of `Any (First Match)`
+    t =    63.99s Press Any (First Match)[0.20, 0.60] for 0.1 seconds, then drag to Any (First Match)[0.80, 0.40] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    63.99s     Wait for dev.peringer.limen.audit to idle
+    t =    63.99s     Find the Any (First Match)
+    t =    64.01s     Check for interrupting elements affecting "Signature drawing area" Other
+    t =    64.05s     Synthesize event
+    t =    64.05s         Find the "Signature drawing area" Other
+    t =    64.07s         Find the "Signature drawing area" Other
+    t =    64.09s         Find the "Signature drawing area" Other
+    t =    64.12s         Find the "Signature drawing area" Other
+    t =    64.15s         Find the "Signature drawing area" Other
+    t =    64.96s     Wait for dev.peringer.limen.audit to idle
+    t =    64.97s Tap "KEEP" Button
+    t =    64.97s     Wait for dev.peringer.limen.audit to idle
+    t =    64.97s     Find the "KEEP" Button
+    t =    65.02s     Check for interrupting elements affecting "checkmark" Button
+    t =    65.05s     Synthesize event
+    t =    65.34s     Wait for dev.peringer.limen.audit to idle
+    t =    65.72s Checking existence of `Keyboard (First Match)`
+    t =    65.77s Checking existence of `ScrollView (First Match)`
+    t =    65.78s Find the "SIGN" Button
+    t =    65.80s Find the ScrollView (First Match)
+    t =    65.81s Find the "sign-1281EDA7-9BA1-4B32-A781-DA391C6A0757" Button
+    t =    65.83s Checking existence of `"sign-1281EDA7-9BA1-4B32-A781-DA391C6A0757" Button`
+    t =    65.85s Find the "sign-1281EDA7-9BA1-4B32-A781-DA391C6A0757" Button
+    t =    65.87s Find the "sign-1281EDA7-9BA1-4B32-A781-DA391C6A0757" Button
+    t =    65.90s Find the "sign-1281EDA7-9BA1-4B32-A781-DA391C6A0757" Button
+    t =    65.92s Tap "sign-1281EDA7-9BA1-4B32-A781-DA391C6A0757" Button
+    t =    65.92s     Wait for dev.peringer.limen.audit to idle
+    t =    65.93s     Find the "sign-1281EDA7-9BA1-4B32-A781-DA391C6A0757" Button
+    t =    65.95s     Check for interrupting elements affecting "sign-1281EDA7-9BA1-4B32-A781-DA391C6A0757" Button
+    t =    65.97s     Synthesize event
+    t =    66.27s     Wait for dev.peringer.limen.audit to idle
+    t =    66.59s Waiting 10.0s for Any (First Match) to exist
+    t =    67.62s     Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    67.62s         Checking existence of `Any (First Match)`
+    t =    67.64s Press Any (First Match)[0.20, 0.60] for 0.1 seconds, then drag to Any (First Match)[0.80, 0.40] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    67.64s     Wait for dev.peringer.limen.audit to idle
+    t =    67.65s     Find the Any (First Match)
+    t =    67.67s     Check for interrupting elements affecting "Signature drawing area" Other
+    t =    67.70s     Synthesize event
+    t =    67.70s         Find the "Signature drawing area" Other
+    t =    67.72s         Find the "Signature drawing area" Other
+    t =    67.75s         Find the "Signature drawing area" Other
+    t =    67.77s         Find the "Signature drawing area" Other
+    t =    67.79s         Find the "Signature drawing area" Other
+    t =    68.60s     Wait for dev.peringer.limen.audit to idle
+    t =    68.61s Tap "KEEP" Button
+    t =    68.61s     Wait for dev.peringer.limen.audit to idle
+    t =    68.62s     Find the "KEEP" Button
+    t =    68.67s     Check for interrupting elements affecting "checkmark" Button
+    t =    68.69s     Synthesize event
+    t =    68.99s     Wait for dev.peringer.limen.audit to idle
+    t =    69.39s Checking existence of `Keyboard (First Match)`
+    t =    69.42s Checking existence of `ScrollView (First Match)`
+    t =    69.43s Find the "FINALIZE RECORD" Button
+    t =    69.46s Find the ScrollView (First Match)
+    t =    69.47s Find the "FINALIZE RECORD" Button
+    t =    69.49s Checking existence of `"FINALIZE RECORD" Button`
+    t =    69.51s Find the "FINALIZE RECORD" Button
+    t =    69.54s Find the "FINALIZE RECORD" Button
+    t =    69.57s Find the Target Application 'dev.peringer.limen.audit'
+    t =    69.68s Added attachment named 'empty-journey-signed'
+    t =    69.68s Find the Target Application 'dev.peringer.limen.audit'
+LIMEN_UI_SCREENSHOT /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/4182BA15-C2D2-4FDE-8678-49EEEFAEB747/tmp/empty-journey-signed.png
+    t =    69.79s Find the "FINALIZE RECORD" Button
+    t =    69.82s Tap "FINALIZE RECORD" Button
+    t =    69.82s     Wait for dev.peringer.limen.audit to idle
+    t =    69.82s     Find the "FINALIZE RECORD" Button
+    t =    69.85s     Check for interrupting elements affecting "FINALIZE RECORD" Button
+    t =    69.87s     Synthesize event
+    t =    70.16s     Wait for dev.peringer.limen.audit to idle
+    t =    70.17s Waiting 30.0s for "EXPORT PDF" Button to exist
+    t =    71.20s     Checking `Expect predicate `existsNoRetry == 1` for object "EXPORT PDF" Button`
+    t =    71.20s         Checking existence of `"EXPORT PDF" Button`
+    t =    71.22s Tap "EXPORT PDF" Button
+    t =    71.22s     Wait for dev.peringer.limen.audit to idle
+    t =    71.23s     Find the "EXPORT PDF" Button
+    t =    71.24s     Check for interrupting elements affecting "EXPORT PDF" Button
+    t =    71.26s     Synthesize event
+    t =    71.55s     Wait for dev.peringer.limen.audit to idle
+    t =    71.56s Waiting 30.0s for "OPEN" Button to exist
+    t =    72.59s     Checking `Expect predicate `existsNoRetry == 1` for object "OPEN" Button`
+    t =    72.60s         Checking existence of `"OPEN" Button`
+    t =    72.65s Checking existence of `Keyboard (First Match)`
+    t =    72.69s Checking existence of `ScrollView (First Match)`
+    t =    72.70s Find the "OPEN" Button
+    t =    72.72s Find the ScrollView (First Match)
+    t =    72.73s Find the "arrow.up.forward.square" Button
+    t =    72.75s Checking existence of `"arrow.up.forward.square" Button`
+    t =    72.77s Find the "arrow.up.forward.square" Button
+    t =    72.80s Find the "arrow.up.forward.square" Button
+    t =    72.83s Tap "arrow.up.forward.square" Button
+    t =    72.83s     Wait for dev.peringer.limen.audit to idle
+    t =    72.83s     Find the "arrow.up.forward.square" Button
+    t =    72.86s     Check for interrupting elements affecting "arrow.up.forward.square" Button
+    t =    72.89s     Synthesize event
+    t =    73.18s     Wait for dev.peringer.limen.audit to idle
+    t =    73.80s Find the Target Application 'dev.peringer.limen.audit'
+    t =    73.94s Added attachment named 'empty-journey-opened-pdf'
+    t =    73.94s Find the Target Application 'dev.peringer.limen.audit'
+LIMEN_UI_SCREENSHOT /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/4182BA15-C2D2-4FDE-8678-49EEEFAEB747/tmp/empty-journey-opened-pdf.png
+    t =    74.08s Waiting 10.0s for NavigationBar (First Match) to exist
+    t =    75.09s     Checking `Expect predicate `existsNoRetry == 1` for object NavigationBar (First Match)`
+    t =    75.09s         Checking existence of `NavigationBar (First Match)`
+    t =    75.15s Tear Down
+Test Case '-[LimenUITests.ParityJourneyTest testEmptyFormToDrawnSignaturesAndOpenedDocument]' passed (75.471 seconds).
+Test Case '-[LimenUITests.ParityJourneyTest testPrivateLandlordEntryThenSeededExit]' started.
+    t =     0.00s Start Test at 2026-10-15 22:01:32.681
+    t =     0.02s Set Up
+    t =     0.02s Open dev.peringer.limen.audit
+    t =     0.02s     Launch dev.peringer.limen.audit
+    t =     0.02s         Terminate dev.peringer.limen.audit:17214
+2026-10-15 22:01:33.753 xcodebuild[17188:169549] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-15 22:01:33.753 xcodebuild[17188:169549] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     1.29s         Setting up automation session
+    t =     2.07s         Wait for dev.peringer.limen.audit to idle
+    t =     3.37s Waiting 30.0s for "NEW HANDOVER" Button to exist
+    t =     4.41s     Checking `Expect predicate `existsNoRetry == 1` for object "NEW HANDOVER" Button`
+    t =     4.41s         Checking existence of `"NEW HANDOVER" Button`
+    t =     4.47s Tap "NEW HANDOVER" Button
+    t =     4.47s     Wait for dev.peringer.limen.audit to idle
+    t =     4.47s     Find the "NEW HANDOVER" Button
+    t =     4.49s     Check for interrupting elements affecting "NEW HANDOVER" Button
+    t =     4.50s     Synthesize event
+    t =     4.79s     Wait for dev.peringer.limen.audit to idle
+    t =     4.79s Tap "Landlord" Button
+    t =     4.79s     Wait for dev.peringer.limen.audit to idle
+    t =     4.80s     Find the "Landlord" Button
+    t =     4.82s     Check for interrupting elements affecting "Landlord" Button
+    t =     4.84s     Synthesize event
+    t =     5.13s     Wait for dev.peringer.limen.audit to idle
+    t =     5.14s Checking existence of `Keyboard (First Match)`
+    t =     5.16s Checking existence of `ScrollView (First Match)`
+    t =     5.17s Find the "First name" TextField
+    t =     5.19s Find the ScrollView (First Match)
+    t =     5.20s Find the "First name" TextField
+    t =     5.23s Checking existence of `"First name" TextField`
+    t =     5.25s Find the "First name" TextField
+    t =     5.28s Find the "First name" TextField
+    t =     5.31s Checking existence of `"First name" TextField`
+    t =     5.33s Tap "First name" TextField
+    t =     5.33s     Wait for dev.peringer.limen.audit to idle
+    t =     5.34s     Find the "First name" TextField
+    t =     5.36s     Check for interrupting elements affecting "First name" TextField
+    t =     5.38s     Synthesize event
+    t =     5.67s     Wait for dev.peringer.limen.audit to idle
+    t =     5.73s Type 'Alex' into "First name" TextField
+    t =     5.73s     Wait for dev.peringer.limen.audit to idle
+    t =     6.10s     Find the "First name" TextField
+    t =     6.16s     Check for interrupting elements affecting "First name" TextField
+    t =     6.18s     Synthesize event
+    t =     6.45s     Wait for dev.peringer.limen.audit to idle
+    t =     6.45s Checking existence of `"DONE" Button`
+    t =     6.53s Type '
+' into "First name" TextField
+    t =     6.53s     Wait for dev.peringer.limen.audit to idle
+    t =     6.53s     Find the "First name" TextField
+    t =     6.57s     Check for interrupting elements affecting "First name" TextField
+    t =     6.59s     Synthesize event
+    t =     6.81s     Wait for dev.peringer.limen.audit to idle
+    t =     7.03s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =     8.07s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =     8.07s         Checking existence of `Keyboard (First Match)`
+    t =     8.09s Checking existence of `Keyboard (First Match)`
+    t =     8.11s Checking existence of `ScrollView (First Match)`
+    t =     8.12s Find the "Last name" TextField
+    t =     8.15s Find the ScrollView (First Match)
+    t =     8.16s Find the "Last name" TextField
+    t =     8.18s Checking existence of `"Last name" TextField`
+    t =     8.21s Find the "Last name" TextField
+    t =     8.24s Find the "Last name" TextField
+    t =     8.27s Checking existence of `"Last name" TextField`
+    t =     8.29s Tap "Last name" TextField
+    t =     8.29s     Wait for dev.peringer.limen.audit to idle
+    t =     8.29s     Find the "Last name" TextField
+    t =     8.31s     Check for interrupting elements affecting "Last name" TextField
+    t =     8.33s     Synthesize event
+    t =     8.62s     Wait for dev.peringer.limen.audit to idle
+    t =     8.88s Type 'Example' into "Last name" TextField
+    t =     8.88s     Wait for dev.peringer.limen.audit to idle
+    t =     8.89s     Find the "Last name" TextField
+    t =     8.94s     Check for interrupting elements affecting "Last name" TextField
+    t =     8.96s     Synthesize event
+    t =     9.28s     Wait for dev.peringer.limen.audit to idle
+    t =     9.29s Checking existence of `"DONE" Button`
+    t =     9.36s Type '
+' into "Last name" TextField
+    t =     9.36s     Wait for dev.peringer.limen.audit to idle
+    t =     9.36s     Find the "Last name" TextField
+    t =     9.40s     Check for interrupting elements affecting "Last name" TextField
+    t =     9.43s     Synthesize event
+    t =     9.64s     Wait for dev.peringer.limen.audit to idle
+    t =     9.86s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =    10.88s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =    10.88s         Checking existence of `Keyboard (First Match)`
+    t =    10.91s Checking existence of `Keyboard (First Match)`
+    t =    10.94s Checking existence of `ScrollView (First Match)`
+    t =    10.95s Find the "start-session" Button
+    t =    10.96s Find the Target Application 'dev.peringer.limen.audit'
+    t =    10.98s Find the "start-session" Button
+    t =    11.00s Checking existence of `"start-session" Button`
+    t =    11.02s Find the "start-session" Button
+    t =    11.04s Find the "start-session" Button
+    t =    11.06s Find the "start-session" Button
+    t =    11.08s Tap "start-session" Button
+    t =    11.08s     Wait for dev.peringer.limen.audit to idle
+    t =    11.08s     Find the "start-session" Button
+    t =    11.10s     Check for interrupting elements affecting "start-session" Button
+    t =    11.12s     Synthesize event
+    t =    11.41s     Wait for dev.peringer.limen.audit to idle
+    t =    11.41s Checking existence of `Switch (First Match)`
+    t =    11.45s Checking existence of `Keyboard (First Match)`
+    t =    11.49s Checking existence of `ScrollView (First Match)`
+    t =    11.50s Find the Button (First Match)
+    t =    11.52s Find the ScrollView (First Match)
+    t =    11.53s Find the "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    11.55s Checking existence of `"DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button`
+    t =    11.57s Find the "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    11.59s Find the "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    11.62s Checking existence of `"DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button`
+    t =    11.64s Tap "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    11.64s     Wait for dev.peringer.limen.audit to idle
+    t =    11.64s     Find the "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    11.66s     Check for interrupting elements affecting "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    11.68s     Synthesize event
+    t =    11.98s     Wait for dev.peringer.limen.audit to idle
+    t =    11.98s Checking existence of `Keyboard (First Match)`
+    t =    12.03s Checking existence of `ScrollView (First Match)`
+    t =    12.04s Find the "Street and number" TextField
+    t =    12.07s Find the ScrollView (First Match)
+    t =    12.08s Find the "Street and number" TextField
+    t =    12.11s Checking existence of `"Street and number" TextField`
+    t =    12.13s Find the "Street and number" TextField
+    t =    12.16s Find the "Street and number" TextField
+    t =    12.19s Checking existence of `"Street and number" TextField`
+    t =    12.21s Tap "Street and number" TextField
+    t =    12.21s     Wait for dev.peringer.limen.audit to idle
+    t =    12.22s     Find the "Street and number" TextField
+    t =    12.24s     Check for interrupting elements affecting "Street and number" TextField
+    t =    12.27s     Synthesize event
+    t =    12.56s     Wait for dev.peringer.limen.audit to idle
+    t =    12.86s Type 'Auditstrasse 24' into "Street and number" TextField
+    t =    12.86s     Wait for dev.peringer.limen.audit to idle
+    t =    12.86s     Find the "Street and number" TextField
+    t =    12.92s     Check for interrupting elements affecting "Street and number" TextField
+    t =    12.96s     Synthesize event
+    t =    13.41s     Wait for dev.peringer.limen.audit to idle
+    t =    13.42s Checking existence of `"DONE" Button`
+    t =    13.51s Type '
+' into "Street and number" TextField
+    t =    13.51s     Wait for dev.peringer.limen.audit to idle
+    t =    13.51s     Find the "Street and number" TextField
+    t =    13.56s     Check for interrupting elements affecting "Street and number" TextField
+    t =    13.59s     Synthesize event
+    t =    13.81s     Wait for dev.peringer.limen.audit to idle
+    t =    14.04s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =    15.07s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =    15.07s         Checking existence of `Keyboard (First Match)`
+    t =    15.12s Checking existence of `Keyboard (First Match)`
+    t =    15.17s Checking existence of `ScrollView (First Match)`
+    t =    15.18s Find the "Postcode and place" TextField
+    t =    15.21s Find the ScrollView (First Match)
+    t =    15.22s Find the "Postcode and place" TextField
+    t =    15.24s Checking existence of `"Postcode and place" TextField`
+    t =    15.27s Find the "Postcode and place" TextField
+    t =    15.29s Find the "Postcode and place" TextField
+    t =    15.33s Checking existence of `"Postcode and place" TextField`
+    t =    15.35s Tap "Postcode and place" TextField
+    t =    15.35s     Wait for dev.peringer.limen.audit to idle
+    t =    15.35s     Find the "Postcode and place" TextField
+    t =    15.38s     Check for interrupting elements affecting "Postcode and place" TextField
+    t =    15.40s     Synthesize event
+    t =    15.69s     Wait for dev.peringer.limen.audit to idle
+    t =    15.99s Type '5000 Aarau' into "Postcode and place" TextField
+    t =    15.99s     Wait for dev.peringer.limen.audit to idle
+    t =    15.99s     Find the "Postcode and place" TextField
+    t =    16.05s     Check for interrupting elements affecting "Postcode and place" TextField
+    t =    16.08s     Synthesize event
+    t =    16.45s     Wait for dev.peringer.limen.audit to idle
+    t =    16.46s Checking existence of `"DONE" Button`
+    t =    16.54s Type '
+' into "Postcode and place" TextField
+    t =    16.54s     Wait for dev.peringer.limen.audit to idle
+    t =    16.55s     Find the "Postcode and place" TextField
+    t =    16.59s     Check for interrupting elements affecting "Postcode and place" TextField
+    t =    16.62s     Synthesize event
+    t =    16.84s     Wait for dev.peringer.limen.audit to idle
+    t =    17.07s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =    18.13s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =    18.13s         Checking existence of `Keyboard (First Match)`
+    t =    18.19s Checking existence of `Keyboard (First Match)`
+    t =    18.24s Checking existence of `ScrollView (First Match)`
+    t =    18.25s Find the "SELECT CANTON" Button
+    t =    18.29s Find the ScrollView (First Match)
+    t =    18.31s Find the "SELECT CANTON" Button
+    t =    18.35s Checking existence of `"SELECT CANTON" Button`
+    t =    18.38s Find the "SELECT CANTON" Button
+    t =    18.43s Find the "SELECT CANTON" Button
+    t =    18.47s Tap "SELECT CANTON" Button
+    t =    18.47s     Wait for dev.peringer.limen.audit to idle
+    t =    18.47s     Find the "SELECT CANTON" Button
+    t =    18.51s     Check for interrupting elements affecting "SELECT CANTON" Button
+    t =    18.54s     Synthesize event
+    t =    18.83s     Wait for dev.peringer.limen.audit to idle
+    t =    19.24s Tap "AG · Aargau" Button
+    t =    19.24s     Wait for dev.peringer.limen.audit to idle
+    t =    19.24s     Find the "AG · Aargau" Button
+    t =    19.32s     Check for interrupting elements affecting "AG · Aargau" Button
+    t =    19.37s     Synthesize event
+    t =    19.67s     Wait for dev.peringer.limen.audit to idle
+    t =    20.06s Checking existence of `Keyboard (First Match)`
+    t =    20.12s Checking existence of `ScrollView (First Match)`
+    t =    20.13s Find the "Time" TextField
+    t =    20.17s Find the ScrollView (First Match)
+    t =    20.18s Find the "Time" TextField
+    t =    20.22s Checking existence of `"Time" TextField`
+    t =    20.25s Find the "Time" TextField
+    t =    20.30s Find the "Time" TextField
+    t =    20.34s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    20.35s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    20.35s     Wait for dev.peringer.limen.audit to idle
+    t =    20.36s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    20.37s     Check for interrupting elements affecting ScrollView
+    t =    20.40s     Synthesize event
+    t =    20.40s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    20.41s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    20.43s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    20.44s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    20.46s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    21.47s     Wait for dev.peringer.limen.audit to idle
+    t =    21.47s Checking existence of `ScrollView (First Match)`
+    t =    21.48s Find the "Time" TextField
+    t =    21.52s Find the ScrollView (First Match)
+    t =    21.53s Find the "Time" TextField
+    t =    21.58s Checking existence of `"Time" TextField`
+    t =    21.63s Find the "Time" TextField
+    t =    21.67s Find the "Time" TextField
+    t =    21.72s Checking existence of `"Time" TextField`
+    t =    21.77s Tap "Time" TextField
+    t =    21.77s     Wait for dev.peringer.limen.audit to idle
+    t =    21.77s     Find the "Time" TextField
+    t =    21.82s     Check for interrupting elements affecting "Time" TextField
+    t =    21.85s     Synthesize event
+    t =    22.15s     Wait for dev.peringer.limen.audit to idle
+    t =    22.44s Type '1030' into "Time" TextField
+    t =    22.44s     Wait for dev.peringer.limen.audit to idle
+    t =    22.45s     Find the "Time" TextField
+    t =    22.51s     Check for interrupting elements affecting "Time" TextField
+    t =    22.55s     Synthesize event
+    t =    22.82s     Wait for dev.peringer.limen.audit to idle
+    t =    23.26s Checking existence of `"DONE" Button`
+    t =    23.34s Type '
+' into "Time" TextField
+    t =    23.34s     Wait for dev.peringer.limen.audit to idle
+    t =    23.34s     Find the "Time" TextField
+    t =    23.39s     Check for interrupting elements affecting "Time" TextField
+    t =    23.42s     Synthesize event
+    t =    23.64s     Wait for dev.peringer.limen.audit to idle
+    t =    23.86s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =    24.86s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =    24.86s         Checking existence of `Keyboard (First Match)`
+    t =    24.95s Checking existence of `Keyboard (First Match)`
+    t =    25.01s Checking existence of `Keyboard (First Match)`
+    t =    25.07s Checking existence of `ScrollView (First Match)`
+    t =    25.08s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    25.13s Find the ScrollView (First Match)
+    t =    25.14s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    25.19s Checking existence of `"legal-LeaseAndLocalTiming-Confirmed" Button`
+    t =    25.24s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    25.29s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    25.35s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    25.35s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    25.35s     Wait for dev.peringer.limen.audit to idle
+    t =    25.36s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    25.37s     Check for interrupting elements affecting ScrollView
+    t =    25.40s     Synthesize event
+    t =    25.40s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    25.42s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    25.43s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    25.45s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    25.46s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    26.48s     Wait for dev.peringer.limen.audit to idle
+    t =    26.48s Checking existence of `ScrollView (First Match)`
+    t =    26.49s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    26.55s Find the ScrollView (First Match)
+    t =    26.56s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    26.61s Checking existence of `"legal-LeaseAndLocalTiming-Confirmed" Button`
+    t =    26.66s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    26.71s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    26.77s Tap "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    26.77s     Wait for dev.peringer.limen.audit to idle
+    t =    26.77s     Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    26.82s     Check for interrupting elements affecting "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    26.86s     Synthesize event
+    t =    27.15s     Wait for dev.peringer.limen.audit to idle
+    t =    27.16s Waiting 5.0s for "legal-note-LeaseAndLocalTiming" TextField to exist
+    t =    28.17s     Checking `Expect predicate `existsNoRetry == 1` for object "legal-note-LeaseAndLocalTiming" TextField`
+    t =    28.17s         Checking existence of `"legal-note-LeaseAndLocalTiming" TextField`
+    t =    28.23s Checking existence of `Keyboard (First Match)`
+    t =    28.30s Checking existence of `ScrollView (First Match)`
+    t =    28.31s Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    28.36s Find the ScrollView (First Match)
+    t =    28.37s Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    28.42s Checking existence of `"legal-note-LeaseAndLocalTiming" TextField`
+    t =    28.47s Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    28.53s Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    28.59s Checking existence of `"legal-note-LeaseAndLocalTiming" TextField`
+    t =    28.63s Tap "legal-note-LeaseAndLocalTiming" TextField
+    t =    28.63s     Wait for dev.peringer.limen.audit to idle
+    t =    28.64s     Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    28.69s     Check for interrupting elements affecting "legal-note-LeaseAndLocalTiming" TextField
+    t =    28.72s     Synthesize event
+<unknown>:0: warning: -[LimenUITests.ParityJourneyTest testPrivateLandlordEntryThenSeededExit] : Invalid frame dimension (negative or non-finite).
+    t =    29.02s     Wait for dev.peringer.limen.audit to idle
+    t =    29.41s Type 'Synthetic UI accep...' into "legal-note-LeaseAndLocalTiming" TextField
+    t =    29.41s     Wait for dev.peringer.limen.audit to idle
+    t =    29.41s     Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    29.49s     Check for interrupting elements affecting "legal-note-LeaseAndLocalTiming" TextField
+    t =    29.54s     Synthesize event
+    t =    30.42s     Wait for dev.peringer.limen.audit to idle
+    t =    30.43s Checking existence of `"DONE" Button`
+    t =    30.54s Find the "DONE" Button
+    t =    30.65s Tap "DONE" Button
+    t =    30.65s     Wait for dev.peringer.limen.audit to idle
+    t =    30.65s     Find the "DONE" Button
+    t =    30.76s     Check for interrupting elements affecting "DONE" Button
+    t =    30.82s     Synthesize event
+    t =    31.12s     Wait for dev.peringer.limen.audit to idle
+    t =    31.92s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =    32.96s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =    32.96s         Checking existence of `Keyboard (First Match)`
+    t =    33.06s Checking existence of `Keyboard (First Match)`
+    t =    33.12s Checking existence of `ScrollView (First Match)`
+    t =    33.13s Find the "legal-InitialRentForm-Confirmed" Button
+    t =    33.18s Find the ScrollView (First Match)
+    t =    33.19s Find the "legal-InitialRentForm-Confirmed" Button
+    t =    33.24s Checking existence of `"legal-InitialRentForm-Confirmed" Button`
+    t =    33.29s Find the "legal-InitialRentForm-Confirmed" Button
+    t =    33.34s Find the "legal-InitialRentForm-Confirmed" Button
+    t =    33.40s Tap "legal-InitialRentForm-Confirmed" Button
+    t =    33.40s     Wait for dev.peringer.limen.audit to idle
+    t =    33.40s     Find the "legal-InitialRentForm-Confirmed" Button
+    t =    33.45s     Check for interrupting elements affecting "legal-InitialRentForm-Confirmed" Button
+    t =    33.49s     Synthesize event
+    t =    33.78s     Wait for dev.peringer.limen.audit to idle
+    t =    33.78s Waiting 5.0s for "legal-note-InitialRentForm" TextField to exist
+    t =    34.82s     Checking `Expect predicate `existsNoRetry == 1` for object "legal-note-InitialRentForm" TextField`
+    t =    34.82s         Checking existence of `"legal-note-InitialRentForm" TextField`
+    t =    34.90s Checking existence of `Keyboard (First Match)`
+    t =    34.97s Checking existence of `ScrollView (First Match)`
+    t =    34.98s Find the "legal-note-InitialRentForm" TextField
+    t =    35.03s Find the ScrollView (First Match)
+    t =    35.04s Find the "legal-note-InitialRentForm" TextField
+    t =    35.09s Checking existence of `"legal-note-InitialRentForm" TextField`
+    t =    35.14s Find the "legal-note-InitialRentForm" TextField
+    t =    35.20s Find the "legal-note-InitialRentForm" TextField
+    t =    35.26s Checking existence of `"legal-note-InitialRentForm" TextField`
+    t =    35.31s Tap "legal-note-InitialRentForm" TextField
+    t =    35.31s     Wait for dev.peringer.limen.audit to idle
+    t =    35.31s     Find the "legal-note-InitialRentForm" TextField
+    t =    35.37s     Check for interrupting elements affecting "legal-note-InitialRentForm" TextField
+    t =    35.40s     Synthesize event
+    t =    35.70s     Wait for dev.peringer.limen.audit to idle
+    t =    36.05s Type 'Synthetic UI accep...' into "legal-note-InitialRentForm" TextField
+    t =    36.05s     Wait for dev.peringer.limen.audit to idle
+    t =    36.05s     Find the "legal-note-InitialRentForm" TextField
+    t =    36.14s     Check for interrupting elements affecting "legal-note-InitialRentForm" TextField
+    t =    36.19s     Synthesize event
+    t =    37.07s     Wait for dev.peringer.limen.audit to idle
+    t =    37.08s Checking existence of `"DONE" Button`
+    t =    37.21s Find the "DONE" Button
+    t =    37.39s Tap "DONE" Button
+    t =    37.39s     Wait for dev.peringer.limen.audit to idle
+    t =    37.40s     Find the "DONE" Button
+    t =    37.53s     Check for interrupting elements affecting "DONE" Button
+    t =    37.58s     Synthesize event
+    t =    37.87s     Wait for dev.peringer.limen.audit to idle
+    t =    38.67s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =    39.70s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =    39.70s         Checking existence of `Keyboard (First Match)`
+    t =    39.81s Checking existence of `Keyboard (First Match)`
+    t =    39.89s Checking existence of `ScrollView (First Match)`
+    t =    39.90s Find the "Tenant" TextField
+    t =    39.96s Find the ScrollView (First Match)
+    t =    39.97s Find the "Tenant" TextField
+    t =    40.04s Checking existence of `"Tenant" TextField`
+    t =    40.10s Find the "Tenant" TextField
+    t =    40.16s Find the "Tenant" TextField
+    t =    40.23s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    40.24s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    40.24s     Wait for dev.peringer.limen.audit to idle
+    t =    40.24s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    40.26s     Check for interrupting elements affecting ScrollView
+    t =    40.30s     Synthesize event
+    t =    40.30s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    40.31s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    40.33s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    40.34s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    40.36s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    41.37s     Wait for dev.peringer.limen.audit to idle
+    t =    41.38s Checking existence of `ScrollView (First Match)`
+    t =    41.39s Find the "Tenant" TextField
+    t =    41.46s Find the ScrollView (First Match)
+    t =    41.47s Find the "Tenant" TextField
+    t =    41.54s Checking existence of `"Tenant" TextField`
+    t =    41.61s Find the "Tenant" TextField
+    t =    41.69s Find the "Tenant" TextField
+    t =    41.76s Checking existence of `"Tenant" TextField`
+    t =    41.84s Tap "Tenant" TextField
+    t =    41.84s     Wait for dev.peringer.limen.audit to idle
+    t =    41.84s     Find the "Tenant" TextField
+    t =    41.90s     Check for interrupting elements affecting "Tenant" TextField
+    t =    41.95s     Synthesize event
+    t =    42.24s     Wait for dev.peringer.limen.audit to idle
+    t =    42.54s Type 'Case Tenant' into "Tenant" TextField
+    t =    42.54s     Wait for dev.peringer.limen.audit to idle
+    t =    42.54s     Find the "Tenant" TextField
+    t =    42.64s     Check for interrupting elements affecting "Tenant" TextField
+    t =    42.69s     Synthesize event
+    t =    43.08s     Wait for dev.peringer.limen.audit to idle
+    t =    43.32s Checking existence of `"DONE" Button`
+    t =    43.47s Type '
+' into "Tenant" TextField
+    t =    43.47s     Wait for dev.peringer.limen.audit to idle
+    t =    43.50s     Find the "Tenant" TextField
+    t =    43.58s     Check for interrupting elements affecting "Tenant" TextField
+    t =    43.63s     Synthesize event
+    t =    43.85s     Wait for dev.peringer.limen.audit to idle
+    t =    44.06s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =    45.11s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =    45.11s         Checking existence of `Keyboard (First Match)`
+    t =    45.23s Checking existence of `Keyboard (First Match)`
+    t =    45.31s Checking existence of `Keyboard (First Match)`
+    t =    45.39s Checking existence of `ScrollView (First Match)`
+    t =    45.39s Find the "No physical keys" Button
+    t =    45.45s Find the ScrollView (First Match)
+    t =    45.46s Find the "No physical keys" Button
+    t =    45.53s Checking existence of `"No physical keys" Button`
+    t =    45.58s Find the "No physical keys" Button
+    t =    45.65s Find the "No physical keys" Button
+    t =    45.72s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    45.73s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    45.73s     Wait for dev.peringer.limen.audit to idle
+    t =    45.73s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    45.74s     Check for interrupting elements affecting ScrollView
+    t =    45.78s     Synthesize event
+    t =    45.79s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    45.80s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    45.81s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    45.83s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    45.84s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    46.86s     Wait for dev.peringer.limen.audit to idle
+    t =    46.86s Checking existence of `ScrollView (First Match)`
+    t =    46.87s Find the "No physical keys" Button
+    t =    46.94s Find the ScrollView (First Match)
+    t =    46.96s Find the "No physical keys" Button
+    t =    47.02s Checking existence of `"No physical keys" Button`
+    t =    47.09s Find the "No physical keys" Button
+    t =    47.16s Find the "No physical keys" Button
+    t =    47.23s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    47.24s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    47.24s     Wait for dev.peringer.limen.audit to idle
+    t =    47.24s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    47.26s     Check for interrupting elements affecting ScrollView
+    t =    47.31s     Synthesize event
+    t =    47.31s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    47.32s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    47.34s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    47.35s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    47.37s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    48.38s     Wait for dev.peringer.limen.audit to idle
+    t =    48.39s Checking existence of `ScrollView (First Match)`
+    t =    48.41s Find the "No physical keys" Button
+    t =    48.51s Find the ScrollView (First Match)
+    t =    48.52s Find the "No physical keys" Button
+    t =    48.60s Checking existence of `"No physical keys" Button`
+    t =    48.67s Find the "No physical keys" Button
+    t =    48.76s Find the "No physical keys" Button
+    t =    48.85s Tap "No physical keys" Button
+    t =    48.85s     Wait for dev.peringer.limen.audit to idle
+    t =    48.85s     Find the "No physical keys" Button
+    t =    48.93s     Check for interrupting elements affecting "No physical keys" Button
+    t =    48.99s     Synthesize event
+    t =    49.28s     Wait for dev.peringer.limen.audit to idle
+    t =    49.29s Tap "BACK" Button
+    t =    49.29s     Wait for dev.peringer.limen.audit to idle
+    t =    49.29s     Find the "BACK" Button
+    t =    49.30s     Check for interrupting elements affecting "arrow.backward" Button
+    t =    49.36s     Synthesize event
+    t =    49.66s     Wait for dev.peringer.limen.audit to idle
+    t =    49.66s Checking existence of `Switch (First Match)`
+    t =    49.68s Checking existence of `Keyboard (First Match)`
+    t =    49.72s Checking existence of `ScrollView (First Match)`
+    t =    49.72s Find the Button (First Match)
+    t =    49.74s Find the ScrollView (First Match)
+    t =    49.75s Find the "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button
+    t =    49.77s Checking existence of `"INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button`
+    t =    49.78s Find the "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button
+    t =    49.80s Find the "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button
+    t =    49.83s Checking existence of `"INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button`
+    t =    49.84s Tap "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button
+    t =    49.84s     Wait for dev.peringer.limen.audit to idle
+    t =    49.84s     Find the "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button
+    t =    49.86s     Check for interrupting elements affecting "INSPECTION, Rooms, damage and everything supplied with the flat, ROOMS 0 · OBJECTS 0" Button
+    t =    49.88s     Synthesize event
+    t =    50.18s     Wait for dev.peringer.limen.audit to idle
+    t =    50.18s Checking existence of `Keyboard (First Match)`
+    t =    50.22s Checking existence of `ScrollView (First Match)`
+    t =    50.23s Find the "Kitchen" Button
+    t =    50.25s Find the ScrollView (First Match)
+    t =    50.26s Find the "Kitchen" Button
+    t =    50.28s Checking existence of `"Kitchen" Button`
+    t =    50.30s Find the "Kitchen" Button
+    t =    50.32s Find the "Kitchen" Button
+    t =    50.34s Tap "Kitchen" Button
+    t =    50.34s     Wait for dev.peringer.limen.audit to idle
+    t =    50.35s     Find the "Kitchen" Button
+    t =    50.36s     Check for interrupting elements affecting "Kitchen" Button
+    t =    50.38s     Synthesize event
+    t =    50.68s     Wait for dev.peringer.limen.audit to idle
+    t =    50.68s Tap "USE SELECTED ROOMS" Button
+    t =    50.68s     Wait for dev.peringer.limen.audit to idle
+    t =    50.69s     Find the "USE SELECTED ROOMS" Button
+    t =    50.71s     Check for interrupting elements affecting "USE SELECTED ROOMS" Button
+    t =    50.73s     Synthesize event
+    t =    51.02s     Wait for dev.peringer.limen.audit to idle
+    t =    51.02s Checking existence of `Switch (First Match)`
+    t =    51.04s Checking existence of `Keyboard (First Match)`
+    t =    51.05s Checking existence of `ScrollView (First Match)`
+    t =    51.06s Find the Button (First Match)
+    t =    51.07s Find the ScrollView (First Match)
+    t =    51.09s Find the "Kitchen" Button
+    t =    51.11s Checking existence of `"Kitchen" Button`
+    t =    51.12s Find the "Kitchen" Button
+    t =    51.14s Find the "Kitchen" Button
+    t =    51.16s Checking existence of `"Kitchen" Button`
+    t =    51.17s Tap "Kitchen" Button
+    t =    51.17s     Wait for dev.peringer.limen.audit to idle
+    t =    51.17s     Find the "Kitchen" Button
+    t =    51.18s     Check for interrupting elements affecting "Kitchen" Button
+    t =    51.20s     Synthesize event
+    t =    51.49s     Wait for dev.peringer.limen.audit to idle
+    t =    51.50s Checking existence of `Switch (First Match)`
+    t =    51.52s Checking existence of `Keyboard (First Match)`
+    t =    51.55s Checking existence of `ScrollView (First Match)`
+    t =    51.56s Find the Switch (First Match)
+    t =    51.58s Find the ScrollView (First Match)
+    t =    51.59s Find the "ROOM INSPECTED" Switch
+    t =    51.61s Checking existence of `"ROOM INSPECTED" Switch`
+    t =    51.62s Find the "ROOM INSPECTED" Switch
+    t =    51.64s Find the "ROOM INSPECTED" Switch
+    t =    51.66s Checking existence of `"ROOM INSPECTED" Switch`
+    t =    51.67s Tap "ROOM INSPECTED" Switch
+    t =    51.67s     Wait for dev.peringer.limen.audit to idle
+    t =    51.68s     Find the "ROOM INSPECTED" Switch
+    t =    51.69s     Check for interrupting elements affecting "ROOM INSPECTED" Switch
+    t =    51.71s     Synthesize event
+    t =    52.00s     Wait for dev.peringer.limen.audit to idle
+    t =    52.00s Find the Target Application 'dev.peringer.limen.audit'
+    t =    52.11s Added attachment named 'actor-room-inspected'
+    t =    52.11s Find the Target Application 'dev.peringer.limen.audit'
+LIMEN_UI_SCREENSHOT /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/4182BA15-C2D2-4FDE-8678-49EEEFAEB747/tmp/actor-room-inspected.png
+    t =    52.21s Tap "BACK" Button
+    t =    52.21s     Wait for dev.peringer.limen.audit to idle
+    t =    52.21s     Find the "BACK" Button
+    t =    52.22s     Check for interrupting elements affecting "arrow.backward" Button
+    t =    52.23s     Synthesize event
+    t =    52.53s     Wait for dev.peringer.limen.audit to idle
+    t =    52.53s Tap "BACK" Button
+    t =    52.53s     Wait for dev.peringer.limen.audit to idle
+    t =    52.54s     Find the "BACK" Button
+    t =    52.55s     Check for interrupting elements affecting "arrow.backward" Button
+    t =    52.56s     Synthesize event
+    t =    52.86s     Wait for dev.peringer.limen.audit to idle
+    t =    52.86s Checking existence of `Switch (First Match)`
+    t =    52.89s Checking existence of `Keyboard (First Match)`
+    t =    52.90s Checking existence of `ScrollView (First Match)`
+    t =    52.91s Find the Button (First Match)
+    t =    52.93s Find the ScrollView (First Match)
+    t =    52.94s Find the "REVIEW THE RECORD" Button
+    t =    52.96s Checking existence of `"REVIEW THE RECORD" Button`
+    t =    52.97s Find the "REVIEW THE RECORD" Button
+    t =    52.99s Find the "REVIEW THE RECORD" Button
+    t =    53.01s Checking existence of `"REVIEW THE RECORD" Button`
+    t =    53.02s Tap "REVIEW THE RECORD" Button
+    t =    53.02s     Wait for dev.peringer.limen.audit to idle
+    t =    53.03s     Find the "REVIEW THE RECORD" Button
+    t =    53.04s     Check for interrupting elements affecting "REVIEW THE RECORD" Button
+    t =    53.06s     Synthesize event
+    t =    53.35s     Wait for dev.peringer.limen.audit to idle
+    t =    53.36s Checking existence of `Keyboard (First Match)`
+    t =    53.41s Checking existence of `ScrollView (First Match)`
+    t =    53.42s Find the "preview-document" Button
+    t =    53.45s Find the ScrollView (First Match)
+    t =    53.46s Find the "preview-document" Button
+    t =    53.50s Checking existence of `"preview-document" Button`
+    t =    53.53s Find the "preview-document" Button
+    t =    53.56s Find the "preview-document" Button
+    t =    53.60s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    53.61s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    53.61s     Wait for dev.peringer.limen.audit to idle
+    t =    53.61s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    53.62s     Check for interrupting elements affecting ScrollView
+    t =    53.65s     Synthesize event
+    t =    53.65s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    53.67s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    53.68s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    53.70s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    53.71s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    54.73s     Wait for dev.peringer.limen.audit to idle
+    t =    54.73s Checking existence of `ScrollView (First Match)`
+    t =    54.74s Find the "preview-document" Button
+    t =    54.78s Find the ScrollView (First Match)
+    t =    54.80s Find the "preview-document" Button
+    t =    54.83s Checking existence of `"preview-document" Button`
+    t =    54.86s Find the "preview-document" Button
+    t =    54.89s Find the "preview-document" Button
+    t =    54.93s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    54.94s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    54.94s     Wait for dev.peringer.limen.audit to idle
+    t =    54.94s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    54.95s     Check for interrupting elements affecting ScrollView
+    t =    54.98s     Synthesize event
+    t =    54.99s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    55.00s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    55.02s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    55.03s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    55.05s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    56.06s     Wait for dev.peringer.limen.audit to idle
+    t =    56.42s Checking existence of `ScrollView (First Match)`
+    t =    56.44s Find the "preview-document" Button
+    t =    56.48s Find the ScrollView (First Match)
+    t =    56.49s Find the "preview-document" Button
+    t =    56.53s Checking existence of `"preview-document" Button`
+    t =    56.56s Find the "preview-document" Button
+    t =    56.60s Find the "preview-document" Button
+    t =    56.65s Tap "preview-document" Button
+    t =    56.65s     Wait for dev.peringer.limen.audit to idle
+    t =    56.65s     Find the "preview-document" Button
+    t =    56.68s     Check for interrupting elements affecting "preview-document" Button
+    t =    56.71s     Synthesize event
+    t =    57.01s     Wait for dev.peringer.limen.audit to idle
+    t =    58.07s Waiting 30.0s for "confirm-review" Button to exist
+    t =    59.10s     Checking `Expect predicate `existsNoRetry == 1` for object "confirm-review" Button`
+    t =    59.10s         Checking existence of `"confirm-review" Button`
+    t =    59.45s Find the Target Application 'dev.peringer.limen.audit'
+    t =    59.60s Added attachment named 'landlord-entry-full-preview'
+    t =    59.60s Find the Target Application 'dev.peringer.limen.audit'
+LIMEN_UI_SCREENSHOT /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/4182BA15-C2D2-4FDE-8678-49EEEFAEB747/tmp/landlord-entry-full-preview.png
+    t =    59.74s Tap "confirm-review" Button
+    t =    59.74s     Wait for dev.peringer.limen.audit to idle
+    t =    59.74s     Find the "confirm-review" Button
+    t =    60.08s     Check for interrupting elements affecting "confirm-review" Button
+    t =    60.13s     Synthesize event
+    t =    60.43s     Wait for dev.peringer.limen.audit to idle
+    t =    60.79s Checking existence of `Switch (First Match)`
+    t =    60.83s Checking existence of `Keyboard (First Match)`
+    t =    60.87s Checking existence of `ScrollView (First Match)`
+    t =    60.87s Find the Button (First Match)
+    t =    60.90s Find the ScrollView (First Match)
+    t =    60.91s Find the "SIGNATURES" Button
+    t =    60.94s Checking existence of `"SIGNATURES" Button`
+    t =    60.97s Find the "SIGNATURES" Button
+    t =    61.00s Find the "SIGNATURES" Button
+    t =    61.04s Checking existence of `"SIGNATURES" Button`
+    t =    61.06s Tap "SIGNATURES" Button
+    t =    61.06s     Wait for dev.peringer.limen.audit to idle
+    t =    61.06s     Find the "SIGNATURES" Button
+    t =    61.09s     Check for interrupting elements affecting "SIGNATURES" Button
+    t =    61.12s     Synthesize event
+    t =    61.42s     Wait for dev.peringer.limen.audit to idle
+    t =    61.42s Checking existence of `Keyboard (First Match)`
+    t =    61.46s Checking existence of `ScrollView (First Match)`
+    t =    61.48s Find the "SIGN" Button
+    t =    61.50s Find the ScrollView (First Match)
+    t =    61.51s Find the "sign-FA797F29-3895-48CB-8B98-FA9CCDBDDF06" Button
+    t =    61.53s Checking existence of `"sign-FA797F29-3895-48CB-8B98-FA9CCDBDDF06" Button`
+    t =    61.55s Find the "sign-FA797F29-3895-48CB-8B98-FA9CCDBDDF06" Button
+    t =    61.57s Find the "sign-FA797F29-3895-48CB-8B98-FA9CCDBDDF06" Button
+    t =    61.60s Find the "sign-FA797F29-3895-48CB-8B98-FA9CCDBDDF06" Button
+    t =    61.62s Tap "sign-FA797F29-3895-48CB-8B98-FA9CCDBDDF06" Button
+    t =    61.62s     Wait for dev.peringer.limen.audit to idle
+    t =    61.62s     Find the "sign-FA797F29-3895-48CB-8B98-FA9CCDBDDF06" Button
+    t =    61.64s     Check for interrupting elements affecting "sign-FA797F29-3895-48CB-8B98-FA9CCDBDDF06" Button
+    t =    61.66s     Synthesize event
+    t =    61.96s     Wait for dev.peringer.limen.audit to idle
+    t =    62.31s Waiting 10.0s for Any (First Match) to exist
+    t =    63.35s     Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    63.35s         Checking existence of `Any (First Match)`
+    t =    63.37s Press Any (First Match)[0.20, 0.60] for 0.1 seconds, then drag to Any (First Match)[0.80, 0.40] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    63.37s     Wait for dev.peringer.limen.audit to idle
+    t =    63.38s     Find the Any (First Match)
+    t =    63.40s     Check for interrupting elements affecting "Signature drawing area" Other
+    t =    63.44s     Synthesize event
+    t =    63.44s         Find the "Signature drawing area" Other
+    t =    63.46s         Find the "Signature drawing area" Other
+    t =    63.49s         Find the "Signature drawing area" Other
+    t =    63.52s         Find the "Signature drawing area" Other
+    t =    63.54s         Find the "Signature drawing area" Other
+    t =    64.34s     Wait for dev.peringer.limen.audit to idle
+    t =    64.35s Tap "KEEP" Button
+    t =    64.35s     Wait for dev.peringer.limen.audit to idle
+    t =    64.35s     Find the "KEEP" Button
+    t =    64.39s     Check for interrupting elements affecting "checkmark" Button
+    t =    64.42s     Synthesize event
+    t =    64.72s     Wait for dev.peringer.limen.audit to idle
+    t =    65.10s Checking existence of `Keyboard (First Match)`
+    t =    65.14s Checking existence of `ScrollView (First Match)`
+    t =    65.15s Find the "SIGN" Button
+    t =    65.17s Find the ScrollView (First Match)
+    t =    65.18s Find the "sign-C08055E1-33D3-49FD-9C2A-87211FA4E448" Button
+    t =    65.20s Checking existence of `"sign-C08055E1-33D3-49FD-9C2A-87211FA4E448" Button`
+    t =    65.23s Find the "sign-C08055E1-33D3-49FD-9C2A-87211FA4E448" Button
+    t =    65.26s Find the "sign-C08055E1-33D3-49FD-9C2A-87211FA4E448" Button
+    t =    65.30s Find the "sign-C08055E1-33D3-49FD-9C2A-87211FA4E448" Button
+    t =    65.32s Tap "sign-C08055E1-33D3-49FD-9C2A-87211FA4E448" Button
+    t =    65.32s     Wait for dev.peringer.limen.audit to idle
+    t =    65.33s     Find the "sign-C08055E1-33D3-49FD-9C2A-87211FA4E448" Button
+    t =    65.36s     Check for interrupting elements affecting "sign-C08055E1-33D3-49FD-9C2A-87211FA4E448" Button
+    t =    65.39s     Synthesize event
+    t =    65.69s     Wait for dev.peringer.limen.audit to idle
+    t =    66.02s Waiting 10.0s for Any (First Match) to exist
+    t =    67.06s     Checking `Expect predicate `existsNoRetry == 1` for object Any (First Match)`
+    t =    67.06s         Checking existence of `Any (First Match)`
+    t =    67.08s Press Any (First Match)[0.20, 0.60] for 0.1 seconds, then drag to Any (First Match)[0.80, 0.40] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    67.08s     Wait for dev.peringer.limen.audit to idle
+    t =    67.09s     Find the Any (First Match)
+    t =    67.11s     Check for interrupting elements affecting "Signature drawing area" Other
+    t =    67.14s     Synthesize event
+    t =    67.15s         Find the "Signature drawing area" Other
+    t =    67.17s         Find the "Signature drawing area" Other
+    t =    67.20s         Find the "Signature drawing area" Other
+    t =    67.23s         Find the "Signature drawing area" Other
+    t =    67.26s         Find the "Signature drawing area" Other
+    t =    68.07s     Wait for dev.peringer.limen.audit to idle
+    t =    68.08s Tap "KEEP" Button
+    t =    68.08s     Wait for dev.peringer.limen.audit to idle
+    t =    68.09s     Find the "KEEP" Button
+    t =    68.13s     Check for interrupting elements affecting "checkmark" Button
+    t =    68.16s     Synthesize event
+    t =    68.46s     Wait for dev.peringer.limen.audit to idle
+    t =    68.86s Checking existence of `Keyboard (First Match)`
+    t =    68.90s Checking existence of `ScrollView (First Match)`
+    t =    68.91s Find the "FINALIZE RECORD" Button
+    t =    68.93s Find the ScrollView (First Match)
+    t =    68.94s Find the "FINALIZE RECORD" Button
+    t =    68.96s Checking existence of `"FINALIZE RECORD" Button`
+    t =    68.98s Find the "FINALIZE RECORD" Button
+    t =    69.01s Find the "FINALIZE RECORD" Button
+    t =    69.04s Find the Target Application 'dev.peringer.limen.audit'
+    t =    69.14s Added attachment named 'landlord-entry-signed'
+    t =    69.15s Find the Target Application 'dev.peringer.limen.audit'
+LIMEN_UI_SCREENSHOT /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/4182BA15-C2D2-4FDE-8678-49EEEFAEB747/tmp/landlord-entry-signed.png
+    t =    69.26s Find the "FINALIZE RECORD" Button
+    t =    69.28s Tap "FINALIZE RECORD" Button
+    t =    69.28s     Wait for dev.peringer.limen.audit to idle
+    t =    69.29s     Find the "FINALIZE RECORD" Button
+    t =    69.32s     Check for interrupting elements affecting "FINALIZE RECORD" Button
+    t =    69.34s     Synthesize event
+    t =    69.63s     Wait for dev.peringer.limen.audit to idle
+    t =    69.64s Waiting 30.0s for "EXPORT PDF" Button to exist
+    t =    70.64s     Checking `Expect predicate `existsNoRetry == 1` for object "EXPORT PDF" Button`
+    t =    70.64s         Checking existence of `"EXPORT PDF" Button`
+    t =    70.68s Tap "EXPORT PDF" Button
+    t =    70.68s     Wait for dev.peringer.limen.audit to idle
+    t =    70.68s     Find the "EXPORT PDF" Button
+    t =    70.71s     Check for interrupting elements affecting "EXPORT PDF" Button
+    t =    70.72s     Synthesize event
+    t =    71.02s     Wait for dev.peringer.limen.audit to idle
+    t =    71.02s Waiting 30.0s for "OPEN" Button to exist
+    t =    72.05s     Checking `Expect predicate `existsNoRetry == 1` for object "OPEN" Button`
+    t =    72.06s         Checking existence of `"OPEN" Button`
+    t =    72.11s Checking existence of `Keyboard (First Match)`
+    t =    72.15s Checking existence of `ScrollView (First Match)`
+    t =    72.16s Find the "OPEN" Button
+    t =    72.18s Find the ScrollView (First Match)
+    t =    72.19s Find the "arrow.up.forward.square" Button
+    t =    72.22s Checking existence of `"arrow.up.forward.square" Button`
+    t =    72.24s Find the "arrow.up.forward.square" Button
+    t =    72.27s Find the "arrow.up.forward.square" Button
+    t =    72.30s Tap "arrow.up.forward.square" Button
+    t =    72.30s     Wait for dev.peringer.limen.audit to idle
+    t =    72.30s     Find the "arrow.up.forward.square" Button
+    t =    72.33s     Check for interrupting elements affecting "arrow.up.forward.square" Button
+    t =    72.35s     Synthesize event
+    t =    72.65s     Wait for dev.peringer.limen.audit to idle
+    t =    73.07s Waiting 10.0s for NavigationBar (First Match) to exist
+    t =    74.08s     Checking `Expect predicate `existsNoRetry == 1` for object NavigationBar (First Match)`
+    t =    74.08s         Checking existence of `NavigationBar (First Match)`
+    t =    74.13s Find the Target Application 'dev.peringer.limen.audit'
+    t =    74.28s Added attachment named 'landlord-entry-opened-pdf'
+    t =    74.28s Find the Target Application 'dev.peringer.limen.audit'
+LIMEN_UI_SCREENSHOT /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/4182BA15-C2D2-4FDE-8678-49EEEFAEB747/tmp/landlord-entry-opened-pdf.png
+    t =    74.43s Tap "DONE" Button
+    t =    74.43s     Wait for dev.peringer.limen.audit to idle
+    t =    74.43s     Find the "DONE" Button
+    t =    74.48s     Check for interrupting elements affecting "DONE" Button
+    t =    74.53s     Synthesize event
+    t =    74.83s     Wait for dev.peringer.limen.audit to idle
+    t =    75.59s Checking existence of `Keyboard (First Match)`
+    t =    75.63s Checking existence of `ScrollView (First Match)`
+    t =    75.64s Find the "DONE" Button
+    t =    75.69s Find the ScrollView (First Match)
+    t =    75.70s Find the "DONE" Button
+    t =    75.75s Checking existence of `"DONE" Button`
+    t =    75.79s Find the "DONE" Button
+    t =    75.85s Find the "DONE" Button
+    t =    75.92s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    75.93s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    75.93s     Wait for dev.peringer.limen.audit to idle
+    t =    75.93s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    75.95s     Check for interrupting elements affecting ScrollView
+    t =    75.98s     Synthesize event
+    t =    75.99s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    76.01s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    76.03s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    76.05s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    76.07s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    77.09s     Wait for dev.peringer.limen.audit to idle
+    t =    77.09s Checking existence of `ScrollView (First Match)`
+    t =    77.10s Find the "DONE" Button
+    t =    77.15s Find the ScrollView (First Match)
+    t =    77.16s Find the "DONE" Button
+    t =    77.20s Checking existence of `"DONE" Button`
+    t =    77.25s Find the "DONE" Button
+    t =    77.29s Find the "DONE" Button
+    t =    77.34s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    77.35s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    77.35s     Wait for dev.peringer.limen.audit to idle
+    t =    77.35s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    77.36s     Check for interrupting elements affecting ScrollView
+    t =    77.39s     Synthesize event
+    t =    77.39s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    77.41s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    77.42s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    77.43s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    77.45s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    78.46s     Wait for dev.peringer.limen.audit to idle
+    t =    78.47s Checking existence of `ScrollView (First Match)`
+    t =    78.48s Find the "DONE" Button
+    t =    78.52s Find the ScrollView (First Match)
+    t =    78.54s Find the "DONE" Button
+    t =    78.58s Checking existence of `"DONE" Button`
+    t =    78.63s Find the "DONE" Button
+    t =    78.68s Find the "DONE" Button
+    t =    78.75s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    78.75s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    78.75s     Wait for dev.peringer.limen.audit to idle
+    t =    78.76s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    78.77s     Check for interrupting elements affecting ScrollView
+    t =    78.80s     Synthesize event
+    t =    78.80s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    78.82s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    78.83s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    78.85s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    78.87s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    79.88s     Wait for dev.peringer.limen.audit to idle
+    t =    80.25s Checking existence of `ScrollView (First Match)`
+    t =    80.26s Find the "DONE" Button
+    t =    80.31s Find the ScrollView (First Match)
+    t =    80.32s Find the "DONE" Button
+    t =    80.37s Checking existence of `"DONE" Button`
+    t =    80.42s Find the "DONE" Button
+    t =    80.47s Find the "DONE" Button
+    t =    80.54s Tap "DONE" Button
+    t =    80.54s     Wait for dev.peringer.limen.audit to idle
+    t =    80.55s     Find the "DONE" Button
+    t =    80.62s     Check for interrupting elements affecting "DONE" Button
+    t =    80.64s     Synthesize event
+    t =    80.95s     Wait for dev.peringer.limen.audit to idle
+    t =    80.96s Checking existence of `"SAVED HANDOVERS" Button`
+    t =    80.98s Tap "BACK" Button
+    t =    80.98s     Wait for dev.peringer.limen.audit to idle
+    t =    80.98s     Find the "BACK" Button
+    t =    80.99s     Check for interrupting elements affecting "arrow.backward" Button
+    t =    81.01s     Synthesize event
+    t =    81.31s     Wait for dev.peringer.limen.audit to idle
+    t =    81.31s Waiting 15.0s for "SAVED HANDOVERS" Button to exist
+    t =    82.34s     Checking `Expect predicate `existsNoRetry == 1` for object "SAVED HANDOVERS" Button`
+    t =    82.35s         Checking existence of `"SAVED HANDOVERS" Button`
+    t =    82.38s Tap "SAVED HANDOVERS" Button
+    t =    82.38s     Wait for dev.peringer.limen.audit to idle
+    t =    82.38s     Find the "SAVED HANDOVERS" Button
+    t =    82.40s     Check for interrupting elements affecting "SAVED HANDOVERS" Button
+    t =    82.42s     Synthesize event
+    t =    82.72s     Wait for dev.peringer.limen.audit to idle
+    t =    82.72s Waiting 30.0s for "EXIT FROM THIS" Button to exist
+    t =    83.74s     Checking `Expect predicate `existsNoRetry == 1` for object "EXIT FROM THIS" Button`
+    t =    83.74s         Checking existence of `"EXIT FROM THIS" Button`
+    t =    83.80s Checking existence of `Keyboard (First Match)`
+    t =    83.82s Checking existence of `ScrollView (First Match)`
+    t =    83.83s Find the "EXIT FROM THIS" Button
+    t =    83.86s Find the ScrollView (First Match)
+    t =    83.87s Find the "EXIT FROM THIS" Button
+    t =    83.89s Checking existence of `"EXIT FROM THIS" Button`
+    t =    83.92s Find the "EXIT FROM THIS" Button
+    t =    83.94s Find the "EXIT FROM THIS" Button
+    t =    83.97s Tap "EXIT FROM THIS" Button
+    t =    83.97s     Wait for dev.peringer.limen.audit to idle
+    t =    83.98s     Find the "EXIT FROM THIS" Button
+    t =    84.00s     Check for interrupting elements affecting "EXIT FROM THIS" Button
+    t =    84.02s     Synthesize event
+    t =    84.31s     Wait for dev.peringer.limen.audit to idle
+    t =    84.32s Waiting 15.0s for "start-session" Button to exist
+    t =    85.35s     Checking `Expect predicate `existsNoRetry == 1` for object "start-session" Button`
+    t =    85.35s         Checking existence of `"start-session" Button`
+    t =    85.38s Checking existence of `Keyboard (First Match)`
+    t =    85.40s Checking existence of `ScrollView (First Match)`
+    t =    85.40s Find the "start-session" Button
+    t =    85.42s Find the Target Application 'dev.peringer.limen.audit'
+    t =    85.44s Find the "start-session" Button
+    t =    85.45s Checking existence of `"start-session" Button`
+    t =    85.47s Find the "start-session" Button
+    t =    85.49s Find the "start-session" Button
+    t =    85.52s Find the "start-session" Button
+    t =    85.53s Tap "start-session" Button
+    t =    85.53s     Wait for dev.peringer.limen.audit to idle
+    t =    85.54s     Find the "start-session" Button
+    t =    85.55s     Check for interrupting elements affecting "start-session" Button
+    t =    85.57s     Synthesize event
+    t =    85.87s     Wait for dev.peringer.limen.audit to idle
+    t =    85.87s Checking existence of `Switch (First Match)`
+    t =    85.91s Checking existence of `Keyboard (First Match)`
+    t =    85.95s Checking existence of `ScrollView (First Match)`
+    t =    85.96s Find the Button (First Match)
+    t =    85.97s Find the ScrollView (First Match)
+    t =    85.99s Find the "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    86.01s Checking existence of `"DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button`
+    t =    86.03s Find the "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    86.05s Find the "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    86.08s Checking existence of `"DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button`
+    t =    86.09s Tap "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    86.09s     Wait for dev.peringer.limen.audit to idle
+    t =    86.10s     Find the "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    86.12s     Check for interrupting elements affecting "DOSSIER, Contract, deposit, meters, keys and the people, COMPONENTS 1" Button
+    t =    86.14s     Synthesize event
+    t =    86.43s     Wait for dev.peringer.limen.audit to idle
+    t =    86.44s Checking existence of `Keyboard (First Match)`
+    t =    86.49s Checking existence of `ScrollView (First Match)`
+    t =    86.50s Find the "Time" TextField
+    t =    86.54s Find the ScrollView (First Match)
+    t =    86.55s Find the "Time" TextField
+    t =    86.59s Checking existence of `"Time" TextField`
+    t =    86.63s Find the "Time" TextField
+    t =    86.67s Find the "Time" TextField
+    t =    86.72s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    86.72s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    86.72s     Wait for dev.peringer.limen.audit to idle
+    t =    86.73s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    86.74s     Check for interrupting elements affecting ScrollView
+    t =    86.76s     Synthesize event
+    t =    86.77s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    86.78s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    86.79s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    86.81s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    86.82s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    87.84s     Wait for dev.peringer.limen.audit to idle
+    t =    87.85s Checking existence of `ScrollView (First Match)`
+    t =    87.87s Find the "Time" TextField
+    t =    87.92s Find the ScrollView (First Match)
+    t =    87.93s Find the "Time" TextField
+    t =    87.97s Checking existence of `"Time" TextField`
+    t =    88.01s Find the "Time" TextField
+    t =    88.06s Find the "Time" TextField
+    t =    88.11s Checking existence of `"Time" TextField`
+    t =    88.15s Tap "Time" TextField
+    t =    88.15s     Wait for dev.peringer.limen.audit to idle
+    t =    88.15s     Find the "Time" TextField
+    t =    88.19s     Check for interrupting elements affecting "Time" TextField
+    t =    88.23s     Synthesize event
+    t =    88.52s     Wait for dev.peringer.limen.audit to idle
+    t =    88.80s Type '1030' into "Time" TextField
+    t =    88.80s     Wait for dev.peringer.limen.audit to idle
+    t =    88.80s     Find the "Time" TextField
+    t =    88.87s     Check for interrupting elements affecting "Time" TextField
+    t =    88.90s     Synthesize event
+    t =    89.17s     Wait for dev.peringer.limen.audit to idle
+    t =    89.60s Checking existence of `"DONE" Button`
+    t =    89.68s Type '
+' into "Time" TextField
+    t =    89.68s     Wait for dev.peringer.limen.audit to idle
+    t =    89.68s     Find the "Time" TextField
+    t =    89.73s     Check for interrupting elements affecting "Time" TextField
+    t =    89.76s     Synthesize event
+    t =    89.98s     Wait for dev.peringer.limen.audit to idle
+    t =    90.20s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =    91.22s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =    91.22s         Checking existence of `Keyboard (First Match)`
+    t =    91.29s Checking existence of `Keyboard (First Match)`
+    t =    91.35s Checking existence of `Keyboard (First Match)`
+    t =    91.41s Checking existence of `ScrollView (First Match)`
+    t =    91.42s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    91.47s Find the ScrollView (First Match)
+    t =    91.48s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    91.53s Checking existence of `"legal-LeaseAndLocalTiming-Confirmed" Button`
+    t =    91.57s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    91.62s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    91.68s Checking existence of `ScrollView at {{20.0, 129.0}, {362.0, 703.0}}`
+    t =    91.69s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+    t =    91.69s     Wait for dev.peringer.limen.audit to idle
+    t =    91.70s     Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    91.71s     Check for interrupting elements affecting ScrollView
+    t =    91.75s     Synthesize event
+    t =    91.75s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    91.76s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    91.78s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    91.80s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    91.82s         Find the ScrollView at {{20.0, 129.0}, {362.0, 703.0}}
+    t =    92.84s     Wait for dev.peringer.limen.audit to idle
+    t =    92.84s Checking existence of `ScrollView (First Match)`
+    t =    92.86s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    92.90s Find the ScrollView (First Match)
+    t =    92.91s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    92.96s Checking existence of `"legal-LeaseAndLocalTiming-Confirmed" Button`
+    t =    93.01s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    93.06s Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    93.12s Tap "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    93.12s     Wait for dev.peringer.limen.audit to idle
+    t =    93.12s     Find the "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    93.16s     Check for interrupting elements affecting "legal-LeaseAndLocalTiming-Confirmed" Button
+    t =    93.20s     Synthesize event
+    t =    93.49s     Wait for dev.peringer.limen.audit to idle
+    t =    93.50s Waiting 5.0s for "legal-note-LeaseAndLocalTiming" TextField to exist
+    t =    94.53s     Checking `Expect predicate `existsNoRetry == 1` for object "legal-note-LeaseAndLocalTiming" TextField`
+    t =    94.53s         Checking existence of `"legal-note-LeaseAndLocalTiming" TextField`
+    t =    94.58s Checking existence of `Keyboard (First Match)`
+    t =    94.65s Checking existence of `ScrollView (First Match)`
+    t =    94.66s Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    94.71s Find the ScrollView (First Match)
+    t =    94.72s Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    94.77s Checking existence of `"legal-note-LeaseAndLocalTiming" TextField`
+    t =    94.81s Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    94.86s Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    94.93s Checking existence of `"legal-note-LeaseAndLocalTiming" TextField`
+    t =    94.98s Tap "legal-note-LeaseAndLocalTiming" TextField
+    t =    94.98s     Wait for dev.peringer.limen.audit to idle
+    t =    94.99s     Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    95.04s     Check for interrupting elements affecting "legal-note-LeaseAndLocalTiming" TextField
+    t =    95.08s     Synthesize event
+    t =    95.37s     Wait for dev.peringer.limen.audit to idle
+    t =    95.71s Type 'Synthetic UI accep...' into "legal-note-LeaseAndLocalTiming" TextField
+    t =    95.71s     Wait for dev.peringer.limen.audit to idle
+    t =    95.71s     Find the "legal-note-LeaseAndLocalTiming" TextField
+    t =    95.78s     Check for interrupting elements affecting "legal-note-LeaseAndLocalTiming" TextField
+    t =    95.83s     Synthesize event
+    t =    96.71s     Wait for dev.peringer.limen.audit to idle
+    t =    96.72s Checking existence of `"DONE" Button`
+    t =    96.85s Find the "DONE" Button
+    t =    97.01s Tap "DONE" Button
+    t =    97.01s     Wait for dev.peringer.limen.audit to idle
+    t =    97.01s     Find the "DONE" Button
+    t =    97.14s     Check for interrupting elements affecting "DONE" Button
+    t =    97.18s     Synthesize event
+    t =    97.48s     Wait for dev.peringer.limen.audit to idle
+    t =    98.27s Waiting 3.0s for Keyboard (First Match) to not exist
+    t =    99.31s     Checking `Expect predicate `existsNoRetry == 0` for object Keyboard (First Match)`
+    t =    99.31s         Checking existence of `Keyboard (First Match)`
+    t =    99.39s Checking existence of `Keyboard (First Match)`
+    t =    99.45s Checking existence of `Keyboard (First Match)`
+    t =    99.52s Checking existence of `ScrollView (First Match)`
+    t =    99.53s Find the "No physical keys" Button
+    t =   100.58s     Find the "No physical keys" Button (retry 1)
+    t =   101.64s     Find the "No physical keys" Button (retry 2)
+    t =   101.72s     Collecting debug information to assist test failure triage
+    t =   101.72s         Requesting snapshot of accessibility hierarchy for app with pid 17529
+    t =   101.81s     Requesting snapshot of accessibility hierarchy for app with pid 17529
+    t =   101.89s     Find: Descendants matching type Button
+    t =   101.89s     Find: Elements matching predicate '"No physical keys" IN identifiers'
+    t =   101.89s     Requesting snapshot of accessibility hierarchy for app with pid 17529
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/ParityJourneyTest.swift:318: error: -[LimenUITests.ParityJourneyTest testPrivateLandlordEntryThenSeededExit] : Failed to get matching snapshot: No matches found for Elements matching predicate '"No physical keys" IN identifiers' from input {(
+    Button, identifier: 'arrow.backward', label: 'BACK',
+    Button, identifier: 'info.circle', label: 'The paperwork around the handover. Add a component only when this handover has it.',
+    Button, identifier: 'info.circle', label: 'Enter the address manually, or enable optional swisstopo suggestions.',
+    Button, label: 'SELECT CANTON',
+    Button, identifier: 'calendar', label: 'PICK A DATE',
+    Button, identifier: 'clock', label: 'PICK A TIME',
+    Button, identifier: 'calendar', label: 'PICK A DATE',
+    Button, identifier: 'info.circle', label: 'The canton adapts a common Swiss handover record; it does not create a separate workflow.',
+    Button, identifier: 'legal-LeaseAndLocalTiming-Confirmed', label: 'Confirmed', Selected,
+    Button, identifier: 'legal-LeaseAndLocalTiming-MissingOrDisputed', label: 'Missing / disputed',
+    Button, identifier: 'legal-LeaseAndLocalTiming-NotApplicable', label: 'Not applicable',
+    Button, identifier: 'legal-LeaseAndLocalTiming-ToVerify', label: 'To verify',
+    Button, label: 'Official source · www.fedlex.admin.ch',
+    Button, label: 'Official source · www.bwo.admin.ch',
+    Button, label: 'Official source · www.bwo.admin.ch',
+    Button, label: '+ Tenant',
+    Button, label: '+ Contractual landlord',
+    Button, label: '+ Witness',
+    Button, label: '+ Expert',
+    Button, label: '+ Next tenant',
+    Button, label: '✓ Object', Selected,
+    Button, label: '✓ Parties',
+    Button, label: '○ Keys'
+)}
+Possibly caused by runtime issues:
+Automation type mismatch: computed Button from legacy attributes vs Link from modern attribute. Input attributes and values: {
+    "XC_kAXXCAttributeAutomationType" = 42;
+    "XC_kAXXCAttributeElementBaseType" = UIResponder;
+    "XC_kAXXCAttributeElementType" = "SwiftUI.AccessibilityNode";
+    "XC_kAXXCAttributeTraits" = 8589934595;
+}
+See test report attachments for more detail.
+    t =   102.00s Tear Down
+Test Case '-[LimenUITests.ParityJourneyTest testPrivateLandlordEntryThenSeededExit]' failed (102.372 seconds).
+Test Suite 'ParityJourneyTest' failed at 2026-10-15 22:03:15.054.
+	 Executed 2 tests, with 1 failure (0 unexpected) in 177.843 (177.845) seconds
+Test Suite 'LimenUITests.xctest' failed at 2026-10-15 22:03:15.054.
+	 Executed 2 tests, with 1 failure (0 unexpected) in 177.843 (177.845) seconds
+Test Suite 'Selected tests' failed at 2026-10-15 22:03:15.054.
+	 Executed 2 tests, with 1 failure (0 unexpected) in 177.843 (177.846) seconds
+2026-10-15 22:03:15.377 xcodebuild[17188:169549] [MT] IDETestOperationsObserverDebug: 179.534 elapsed -- Testing started completed.
+2026-10-15 22:03:15.377 xcodebuild[17188:169549] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-15 22:03:15.377 xcodebuild[17188:169549] [MT] IDETestOperationsObserverDebug: 179.534 sec, +179.534 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/verify/landlord26c.xcresult
+
+Failing tests:
+	ParityJourneyTest.testPrivateLandlordEntryThenSeededExit()
+
+** TEST FAILED **
+
+Testing started

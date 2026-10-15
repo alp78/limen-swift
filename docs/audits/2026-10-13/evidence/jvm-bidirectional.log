@@ -1,0 +1,6 @@
+/Users/aperi/DEV/ANDROID/limen/app/src/main/java/dev/peringer/limen/data/SwissIdentity.kt:120:17: warning: 'constructor(p0: String!): URL' is deprecated. Deprecated in Java.
+      val url = URL("$endpoint?searchText=$encoded&type=locations&origins=address")
+                ^^^
+Verified Swift -> JVM: swift.zip, four canonical records and fingerprints; wrote jvm-return.zip
+Verified Swift -> JVM: swift.limen, four canonical records and fingerprints; wrote jvm-return.limen
+Generated JVM fixtures from real Android constructors/archive implementation

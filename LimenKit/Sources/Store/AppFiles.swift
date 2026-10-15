@@ -3,11 +3,13 @@ import Foundation
 /// Where the records live: Application Support inside the app's container, the iOS shape of
 /// Android's filesDir. Readable by nothing else, and excluded from the phone's backups the way
 /// the Android manifest's allowBackup=false excluded everything: a handover leaves this phone
-/// only as the PDF or the password-protected archive the person exports.
+/// only in documents and the protected or explicitly unprotected archive the person exports.
 public enum AppFiles {
     public static var support: URL {
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-        try? FileManager.default.createDirectory(at: base, withIntermediateDirectories: true)
+        try? FileManager.default.createDirectory(at: base, withIntermediateDirectories: true,
+            attributes: [.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication])
+        try? FileManager.default.setAttributes([.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: base.path)
         var url = base
         var values = URLResourceValues()
         values.isExcludedFromBackup = true
@@ -30,7 +32,7 @@ public enum AppFiles {
     /// the seconds an export takes, because a kill mid-export would leave it there for good.
     public static var scratch: URL {
         let base = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0].appendingPathComponent("scratch")
-        try? FileManager.default.createDirectory(at: base, withIntermediateDirectories: true)
+        protectPrivateDirectory(base)
         return base
     }
 
@@ -38,7 +40,18 @@ public enum AppFiles {
     /// record or deleted.
     public static var captures: URL {
         let base = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0].appendingPathComponent("captures")
-        try? FileManager.default.createDirectory(at: base, withIntermediateDirectories: true)
+        protectPrivateDirectory(base)
         return base
+    }
+
+    /// First-unlock protection permits the existing background flush while the phone locks.
+    /// It is distinct from the optional library authentication gate and from archive encryption.
+    private static func protectPrivateDirectory(_ url: URL) {
+        try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true,
+            attributes: [.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication])
+        try? FileManager.default.setAttributes([.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: url.path)
+        var protected = url
+        var values = URLResourceValues(); values.isExcludedFromBackup = true
+        try? protected.setResourceValues(values)
     }
 }

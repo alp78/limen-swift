@@ -10,6 +10,7 @@ import XCTest
 /// report, and because XCTest gives each method its own app process, which is how the walk gets to
 /// start twice: once on an empty store for the landing and the forms, once on the seeded draft for
 /// the steps.
+@MainActor
 final class LanguageWalkTest: XCTestCase {
     override func setUp() {
         continueAfterFailure = false
@@ -21,11 +22,46 @@ final class LanguageWalkTest: XCTestCase {
     func testTheWalkInItalian() { walk(.it) }
     func testTheWalkInRomansh() { walk(.rm) }
 
+    private var category = "UICTContentSizeCategoryL"
+    private var expectsLandscape = false
+
+    func testEnglishLarge() { category = "UICTContentSizeCategoryXXXL"; walk(.en) }
+    func testFrenchLarge() { category = "UICTContentSizeCategoryXXXL"; walk(.fr) }
+    func testGermanLarge() { category = "UICTContentSizeCategoryXXXL"; walk(.de) }
+    func testItalianLarge() { category = "UICTContentSizeCategoryXXXL"; walk(.it) }
+    func testRomanshLarge() { category = "UICTContentSizeCategoryXXXL"; walk(.rm) }
+    func testEnglishLargestAccessibility() { category = "UICTContentSizeCategoryAccessibilityXXXL"; walk(.en) }
+    func testFrenchLargestAccessibility() { category = "UICTContentSizeCategoryAccessibilityXXXL"; walk(.fr) }
+    func testGermanLargestAccessibility() { category = "UICTContentSizeCategoryAccessibilityXXXL"; walk(.de) }
+    func testItalianLargestAccessibility() { category = "UICTContentSizeCategoryAccessibilityXXXL"; walk(.it) }
+    func testRomanshLargestAccessibility() { category = "UICTContentSizeCategoryAccessibilityXXXL"; walk(.rm) }
+
+    func testRomanshLargestAccessibilitySignatureOnly() {
+        category = "UICTContentSizeCategoryAccessibilityXXXL"
+        let app = launch(.rm, ["LIMEN_DEMO"])
+        reviewAndSignature(app, Str(.rm), "rm-\(category)-signature-only", .rm)
+    }
+
+    func testEnglishLandscape() {
+        expectsLandscape = true
+        XCUIDevice.shared.orientation = .landscapeLeft
+        defer { XCUIDevice.shared.orientation = .portrait }
+        walk(.en)
+    }
+
+    func testRomanshLargestAccessibilityLandscape() {
+        category = "UICTContentSizeCategoryAccessibilityXXXL"
+        expectsLandscape = true
+        XCUIDevice.shared.orientation = .landscapeLeft
+        defer { XCUIDevice.shared.orientation = .portrait }
+        walk(.rm)
+    }
+
     // MARK: - The walk
 
     private func walk(_ lang: Lang) {
         let s = Str(lang)
-        let tag = lang.rawValue.lowercased()
+        let tag = lang.rawValue.lowercased() + "-" + category
 
         var app = launch(lang, ["LIMEN_RESET"])
         landing(app, s, tag, lang)
@@ -53,11 +89,17 @@ final class LanguageWalkTest: XCTestCase {
 
         // The agency is the one actor with a field of its own, so choosing it proves the form
         // reacts in this language and not only that its keys are translated.
+        reveal(app, app.buttons[s.actorAgency])
         app.buttons[s.actorAgency].tap()
         XCTAssertTrue(element(app, s.companyName).waitForExistence(timeout: 10), "no agency field in \(lang.rawValue)")
         XCTAssertTrue(app.buttons[s.exit].exists, "no exit kind in \(lang.rawValue)")
+        reveal(app, app.buttons[s.exit])
         app.buttons[s.exit].tap()
+        reveal(app, app.buttons[s.entry])
         app.buttons[s.entry].tap()
+        reveal(app, app.buttons[s.identityAddress])
+        app.buttons[s.identityAddress].tap()
+        reveal(app, element(app, s.phoneNumber))
         XCTAssertTrue(element(app, s.phoneNumber).exists, "no phone field in \(lang.rawValue)")
         shoot(app, "\(tag)-02-new-session")
         app.buttons[s.back].firstMatch.tap()
@@ -67,10 +109,11 @@ final class LanguageWalkTest: XCTestCase {
         XCTAssertTrue(app.buttons[s.dataAndPrivacy].waitForExistence(timeout: 15), "no way back to the landing in \(lang.rawValue)")
         app.buttons[s.dataAndPrivacy].tap()
         XCTAssertTrue(element(app, s.privacyTitle).waitForExistence(timeout: 15), "no privacy title in \(lang.rawValue)")
+        reveal(app, element(app, s.controllerTitle))
         XCTAssertTrue(element(app, s.controllerTitle).exists, "no controller panel in \(lang.rawValue)")
         shoot(app, "\(tag)-03-privacy")
 
-        app.swipeUp()
+        reveal(app, app.buttons[s.openLicences])
         XCTAssertTrue(app.buttons[s.openLicences].waitForExistence(timeout: 10), "no licences key in \(lang.rawValue)")
         app.buttons[s.openLicences].tap()
         // The notice is one document in one language, as Apache-2.0 section 4(d) asks for it, so
@@ -100,18 +143,22 @@ final class LanguageWalkTest: XCTestCase {
     private func dossierAndCanton(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
         XCTAssertTrue(element(app, s.stepDossier).waitForExistence(timeout: 15), "no dossier door in \(lang.rawValue)")
         element(app, s.stepDossier).tap()
+        reveal(app, element(app, s.parties))
         XCTAssertTrue(element(app, s.parties).waitForExistence(timeout: 15), "no parties panel in \(lang.rawValue)")
         shoot(app, "\(tag)-08-dossier")
 
         let cantonKey = app.buttons[s.selectCanton]
+        reveal(app, cantonKey)
         XCTAssertTrue(cantonKey.waitForExistence(timeout: 10), "no canton key in \(lang.rawValue)")
         cantonKey.tap()
         let zurich = app.buttons[s.canton(.zh)]
+        reveal(app, zurich)
         XCTAssertTrue(zurich.waitForExistence(timeout: 15), "no canton grid in \(lang.rawValue)")
         shoot(app, "\(tag)-09-cantons")
         zurich.tap()
         // Choosing a canton is what makes the legal overlay speak, and its rows are the longest
         // sentences in the app: if a language breaks a panel, it breaks here.
+        reveal(app, element(app, s.initialRentFormRule(.required)))
         XCTAssertTrue(element(app, s.initialRentFormRule(.required)).waitForExistence(timeout: 15), "no legal overlay in \(lang.rawValue)")
         shoot(app, "\(tag)-10-legal-overlay")
         app.buttons[s.back].firstMatch.tap()
@@ -119,20 +166,35 @@ final class LanguageWalkTest: XCTestCase {
 
     private func reviewAndSignature(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
         XCTAssertTrue(app.buttons[s.hubClose].waitForExistence(timeout: 15), "no close key in \(lang.rawValue)")
+        reveal(app, app.buttons[s.hubClose])
+        shoot(app, "\(tag)-11a-review-action")
         app.buttons[s.hubClose].tap()
         XCTAssertTrue(element(app, s.objectLabel).waitForExistence(timeout: 15), "no review in \(lang.rawValue)")
         shoot(app, "\(tag)-11-review")
 
-        app.swipeUp()
+        let preview = app.buttons["preview-document"]
+        reveal(app, preview)
+        preview.tap()
+        XCTAssertTrue(app.buttons["confirm-review"].waitForExistence(timeout: 30))
+        app.buttons["confirm-review"].tap()
         let signatures = key(app, s.stepSign)
         XCTAssertTrue(signatures.waitForExistence(timeout: 10), "no signatures key in \(lang.rawValue)")
+        reveal(app, signatures)
         signatures.tap()
         XCTAssertTrue(element(app, s.oneSided).waitForExistence(timeout: 15), "no signature page in \(lang.rawValue)")
         shoot(app, "\(tag)-12-sign")
 
+        reveal(app, app.buttons[s.signKey].firstMatch)
         app.buttons[s.signKey].firstMatch.tap()
         let pad = element(app, s.signaturePad)
         XCTAssertTrue(pad.waitForExistence(timeout: 15), "no ink pad in \(lang.rawValue)")
+        let purpose = app.staticTexts["signature-purpose"]
+        XCTAssertTrue(purpose.waitForExistence(timeout: 10))
+        XCTAssertEqual(purpose.label, s.tipRecord().lead)
+        reveal(app, purpose)
+        shoot(app, "\(tag)-12a-signature-purpose")
+        reveal(app, pad)
+        XCTAssertTrue(pad.isHittable)
         pad.coordinate(withNormalizedOffset: CGVector(dx: 0.2, dy: 0.5))
             .press(forDuration: 0.1, thenDragTo: pad.coordinate(withNormalizedOffset: CGVector(dx: 0.8, dy: 0.4)))
         shoot(app, "\(tag)-13-ink")
@@ -143,11 +205,36 @@ final class LanguageWalkTest: XCTestCase {
 
     // MARK: - Driving
 
+    private func reveal(_ app: XCUIApplication, _ target: XCUIElement) {
+        for _ in 0..<30 {
+            let scroller = app.scrollViews.firstMatch
+            let viewport = scroller.exists && target.identifier != "start-session" ? scroller.frame : app.frame
+            let top = viewport.minY + (target.elementType == .textField ? min(55, viewport.height * 0.2) : 8)
+            let bottom = viewport.maxY - 24
+            var distance = viewport.height * 0.35
+            if target.exists {
+                let frame = target.frame
+                if target.isHittable && frame.midY >= top && frame.midY <= bottom { return }
+                // A fixed swipe overshoots a nearby key in compact landscape and alternates
+                // forever above and below it. Move toward the middle of the visible viewport.
+                distance = max(-viewport.height * 0.35, min(viewport.height * 0.35, frame.midY - (top + bottom) / 2))
+            }
+            let surface = scroller.exists ? scroller : app
+            let from = surface.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5 + distance / viewport.height / 2))
+            let to = surface.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5 - distance / viewport.height / 2))
+            from.press(forDuration: 0.05, thenDragTo: to, withVelocity: .slow, thenHoldForDuration: 0.1)
+        }
+    }
+
     private func launch(_ lang: Lang, _ arguments: [String]) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = arguments
+        app.launchArguments = arguments + ["-UIPreferredContentSizeCategoryName", category]
         app.launchEnvironment["LIMEN_LANG"] = lang.rawValue
         app.launch()
+        XCTAssertTrue(app.wait(for: .runningForeground, timeout: 20))
+        let frame = app.frame
+        print("LIMEN_UI_WINDOW language=\(lang.rawValue) category=\(category) expectedLandscape=\(expectsLandscape) orientation=\(XCUIDevice.shared.orientation.rawValue) frame=\(frame)")
+        XCTAssertEqual(frame.width > frame.height, expectsLandscape, "The launch must actually use the requested window orientation")
         return app
     }
 
@@ -164,11 +251,16 @@ final class LanguageWalkTest: XCTestCase {
     }
 
     private func shoot(_ app: XCUIApplication, _ name: String) {
-        let screenshot = app.screenshot()
+        // The application-only crop has stale portrait bounds on some landscape runtimes.
+        // Retain the actual screen so orientation evidence includes every visible control.
+        let screenshot = XCUIScreen.main.screenshot()
         let attachment = XCTAttachment(screenshot: screenshot)
         attachment.name = name
         attachment.lifetime = .keepAlways
         add(attachment)
+        let local = FileManager.default.temporaryDirectory.appendingPathComponent(name + ".png")
+        try? screenshot.pngRepresentation.write(to: local)
+        print("LIMEN_UI_SCREENSHOT \(local.path)")
         if let folder = ProcessInfo.processInfo.environment["LIMEN_SHOTS"] {
             try? screenshot.pngRepresentation.write(to: URL(fileURLWithPath: folder).appendingPathComponent("\(name).png"))
         }

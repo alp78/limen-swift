@@ -3,22 +3,22 @@ import LimenKit
 import Observation
 import UIKit
 
-private let keyDark = "darkTheme"
-private let keyLang = "lang"
-private let keyOpen = "openProtocol"
-private let keyStep = "openStep"
-private let keyRoom = "openRoom"
-private let keyDefect = "openDefect"
-private let keyRole = "myRole"
-private let keyName = "profileName"
-private let keyCompany = "profileCompany"
-private let keyControllerOrganisation = "controllerOrganisation"
-private let keyControllerContact = "controllerContact"
-private let keyControllerStreet = "controllerStreet"
-private let keyControllerPostal = "controllerPostalCode"
-private let keyControllerCity = "controllerCity"
-private let keyControllerEmail = "controllerEmail"
-private let keyControllerPhone = "controllerPhone"
+let keyDark = "darkTheme"
+let keyLang = "lang"
+let keyOpen = "openProtocol"
+let keyStep = "openStep"
+let keyRoom = "openRoom"
+let keyDefect = "openDefect"
+let keyRole = "myRole"
+let keyName = "profileName"
+let keyCompany = "profileCompany"
+let keyControllerOrganisation = "controllerOrganisation"
+let keyControllerContact = "controllerContact"
+let keyControllerStreet = "controllerStreet"
+let keyControllerPostal = "controllerPostalCode"
+let keyControllerCity = "controllerCity"
+let keyControllerEmail = "controllerEmail"
+let keyControllerPhone = "controllerPhone"
 
 /// How long the draft waits before it reaches the disk. Long enough that a burst of typing
 /// writes once, short enough that it is over before a thumb reaches the next control.
@@ -53,7 +53,7 @@ struct PendingUndo {
 @MainActor
 @Observable
 final class LimenModel {
-    private let prefs: UserDefaults
+    let prefs: UserDefaults
     let store: Store
 
     // MARK: Who holds this phone
@@ -79,6 +79,15 @@ final class LimenModel {
     // MARK: The case
 
     var protocols: [HandoverProtocol]
+    var libraryLoading = false
+    var unreadableRecords: [Store.UnreadableRecord] = []
+    var libraryGeneration = 0
+    var addressLookupEnabled = false
+    var libraryProtectionEnabled = false
+    var libraryUnlocked = false
+    var libraryAuthenticationBusy = false
+    var archiveSelection: Set<String> = []
+    var reusableIdentity = SessionIdentity()
     var archiveBusy = false
     var archiveExported: ExportedFile?
     /// Whether the last export carried a password, so the screen can say when it did not.
@@ -89,10 +98,27 @@ final class LimenModel {
     // MARK: The flow
 
     /// The protocol being walked, or nil when the case is showing. Saved on every edit.
+    var saveError: String?
+    var evidenceError: String?
+    var pendingEdit: HandoverProtocol?
+    var pendingEditRevision: Int64?
+    var pendingEditNames: [String] = []
+    var documentPreview: ExportedFile?
+    var documentPreviewHTML: ExportedFile?
+    var previewRecordId: String?
+    var previewRevision: Int64?
+    var previewBusy = false
+    var previewTask: Task<Void, Never>?
+    var previewRenderer: @Sendable (HandoverProtocol, Str, Store) async throws -> PdfExport.Document = { record, strings, store in
+        try await Task.detached { try PdfExport.document(record, strings, photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id)) }.value
+    }
+    var previewError: String?
+    var accessibleExport: ExportedFile?
     var working: HandoverProtocol?
     /// The entry record shown beside an exit inspection, never copied into the mutable exit.
     var entryBaseline: HandoverProtocol?
     var flowStep: FlowStep = .hub
+    var dossierTarget: String?
     /// The steps walked to get here, so back retraces the route rather than guessing it.
     var flowTrail: [FlowStep] = []
     /// The room being inspected, or nil while the grid of rooms is showing. Held by id rather
@@ -112,6 +138,10 @@ final class LimenModel {
     var showDepositCompare = false
 
     var exporting = false
+    var exportTask: Task<Void, Never>?
+    var exportRenderer: @Sendable (HandoverProtocol, Str, Store) async throws -> ExportCopy = { record, strings, store in
+        try await Task.detached { try PdfExport.exportRetained(record, strings, store: store) }.value
+    }
     var exported: ExportedFile?
     var exportIssue: ExportIssue?
     /// The document's language, chosen at export and free of the UI language.
@@ -141,7 +171,11 @@ final class LimenModel {
         controllerIdentity = controller
         darkTheme = prefs.bool(forKey: keyDark)
         lang = Lang.from(prefs.string(forKey: keyLang))
-        protocols = store.list()
+        protocols = []
+        addressLookupEnabled = prefs.bool(forKey: "addressLookupEnabled")
+        libraryProtectionEnabled = prefs.bool(forKey: "libraryProtectionEnabled")
+        if let bytes = prefs.data(forKey: "reusableIdentity"), let p = try? ProtocolJSON.decode(bytes) { reusableIdentity = p.sessionIdentity }
+        refreshLibrary()
         // Reopens whatever record was on screen when the process last ended.
         if let openId = prefs.string(forKey: keyOpen), !openId.isBlank {
             if let recovered = store.load(openId) {
@@ -202,7 +236,7 @@ final class LimenModel {
         noticeTask?.cancel()
         noticeTask = Task {
             try? await Task.sleep(for: .seconds(3))
-            if !Task.isCancelled { notice = nil }
+            if !Task.isCancelled && !UIAccessibility.isVoiceOverRunning { notice = nil }
         }
     }
 
@@ -210,17 +244,18 @@ final class LimenModel {
 
     func exportArchive(password: String) {
         if archiveBusy { return }
-        flush()
+        guard flush() else { return }
         archiveProtected = !password.isEmpty
         archiveBusy = true
         archiveExported = nil
         archiveImported = nil
         archiveFailed = false
         let store = store
+        let selected = archiveSelection.isEmpty ? nil : archiveSelection
         let name = "Limen-backup-\(Exports.stamp()).limen"
         Task {
             let result: Result<ExportedFile, Error> = await Task.detached {
-                Result { try Exports.write(name: name) { url in try store.exportArchive(password: password, to: url) } }
+                Result { try Exports.write(name: name) { url in try store.exportArchive(password: password, to: url, protocolIds: selected) } }
             }.value
             archiveBusy = false
             switch result {
@@ -232,7 +267,7 @@ final class LimenModel {
 
     func importArchive(_ url: URL, password: String) {
         if archiveBusy { return }
-        flush()
+        guard flush() else { return }
         archiveBusy = true
         archiveExported = nil
         archiveImported = nil
@@ -249,7 +284,7 @@ final class LimenModel {
             switch result {
             case .success(let imported):
                 archiveImported = imported
-                protocols = store.list()
+                refreshLibrary()
             case .failure:
                 archiveFailed = true
             }
@@ -267,11 +302,17 @@ final class LimenModel {
         // amendment switches protocols without an intervening close, and inherited these: the
         // parent's exported PDF was then offered on the amendment's own export step.
         exported = nil
+        accessibleExport = nil
+        documentPreview = nil
+        documentPreviewHTML = nil
+        pendingEdit = nil
+        pendingEditNames = []
         exportIssue = nil
         pdfLang = nil
         defectShell = nil
         flowTrail = []
         working = p
+        if let p { restoreExport(p) }
         entryBaseline = nil
         if let p, p.kind == .exit, !p.seedId.isBlank, let entry = store.load(p.seedId), entry.isFinalized() {
             entryBaseline = entry
@@ -284,11 +325,37 @@ final class LimenModel {
     func edit(_ transform: (HandoverProtocol) -> HandoverProtocol) {
         commitUndo()
         guard let p = working, !p.isFinalized(), !finalizing else { return }
-        let edited = transform(p)
-        if edited == p { return }
+        // Two owned intake operations can finish while consent is open. Accumulate their
+        // proposed changes instead of replacing one with another snapshot of the same draft.
+        let base = pendingEdit?.id == p.id && pendingEditRevision == p.contentRevision ? pendingEdit ?? p : p
+        let edited = transform(base)
+        if edited == base { return }
+        let affected = p.signatures.filter { p.isCurrent($0) && !$0.file.isBlank }.map(\.name).filter { !$0.isBlank }.distinct()
+        if !affected.isEmpty {
+            pendingEdit = edited
+            pendingEditRevision = p.contentRevision
+            pendingEditNames = affected
+            return
+        }
+        applyContentEdit(edited, from: p)
+    }
+
+    func applyContentEdit(_ edited: HandoverProtocol, from p: HandoverProtocol) {
         var next = edited
+        // A background flush may have saved while material-edit consent was open.
+        next.saveSequence = p.saveSequence
         next.contentRevision = p.contentRevision + 1
         next.exportedEpochMs = 0
+        documentPreview = nil
+        documentPreviewHTML = nil
+        previewRevision = nil
+        previewRecordId = nil
+        next.details.reviewRevision = -1
+        next.details.legalSnapshot = nil
+        for requirement in p.invalidatedLegalRequirements(next: next) {
+            next.legalOverlay = next.legalOverlay.withoutStatus(requirement)
+            next.legalOverlay.notes[requirement] = nil
+        }
         working = next
         finalizationIssues = []
         finalizationError = false
@@ -301,20 +368,19 @@ final class LimenModel {
         guard let before = working else { return }
         let edited = transform(before)
         if edited == before { return }
-        var after = edited
-        after.contentRevision = before.contentRevision + 1
-        after.exportedEpochMs = 0
-        let token = DispatchTime.now().uptimeNanoseconds
+        if before.signatures.contains(where: { before.isCurrent($0) && !$0.file.isBlank }) {
+            edit { _ in edited }
+            return
+        }
+        applyContentEdit(edited, from: before)
+        guard let after = working else { return }
+        let token = UInt64.random(in: 1...UInt64.max)
         let dir = store.photoDir(before.id)
         let files = evidenceNames.distinct().filter(EvidenceNames.isSafe).map { dir.appendingPathComponent($0) }
-        working = after
         pendingUndo = PendingUndo(token: token, before: before, afterRevision: after.contentRevision, files: files)
         undoNotice = UndoNotice(token: token, kind: kind)
-        finalizationIssues = []
-        finalizationError = false
-        scheduleSave()
         undoTask = Task {
-            try? await Task.sleep(for: .seconds(6))
+            try? await Task.sleep(for: .seconds(UIAccessibility.isVoiceOverRunning ? 30 : 6))
             if !Task.isCancelled { commitUndo(token) }
         }
     }
@@ -331,7 +397,10 @@ final class LimenModel {
         if let current = working, current.id == pending.before.id, current.contentRevision == pending.afterRevision {
             var restored = pending.before
             restored.contentRevision = current.contentRevision + 1
+            restored.saveSequence = current.saveSequence
             restored.exportedEpochMs = 0
+            restored.details.reviewRevision = -1
+            restored.details.legalSnapshot = nil
             working = restored
             undoTask?.cancel()
             pendingUndo = nil
@@ -345,7 +414,8 @@ final class LimenModel {
     func commitUndo(_ token: UInt64? = nil) {
         guard let pending = pendingUndo else { return }
         if let token, pending.token != token { return }
-        for file in pending.files { try? FileManager.default.removeItem(at: file) }
+        // Keep removed originals privately until the whole record is deleted. A failed save
+        // or last-good recovery may still refer to them. Scoped backups omit unused files.
         undoTask?.cancel()
         undoTask = nil
         pendingUndo = nil
@@ -383,6 +453,7 @@ final class LimenModel {
             next.deliveryReceipts = record.deliveryReceipts.filter { $0.role != role } +
                 [DeliveryReceipt(role, epochMs: changedAt, method: method, note: note.trimmingCharacters(in: .whitespacesAndNewlines))]
             next.deliveryMetadataEpochMs = changedAt
+            next.deliveryRevision += 1
             return next
         }
     }
@@ -393,36 +464,48 @@ final class LimenModel {
             var next = record
             next.deliveryReceipts = record.deliveryReceipts.filter { $0.role != role }
             next.deliveryMetadataEpochMs = Int64(Date().timeIntervalSince1970 * 1000)
+            next.deliveryRevision += 1
             return next
         }
     }
 
     func scheduleSave() {
         saveTask?.cancel()
-        let store = store
         saveTask = Task {
-            try? await Task.sleep(for: saveDelay)
-            guard !Task.isCancelled, let p = working else { return }
-            await Task.detached { try? store.save(p) }.value
+            do { try await Task.sleep(for: saveDelay) } catch { return }
+            guard !Task.isCancelled else { return }
+            persistWorking()
         }
     }
 
-    /// The draft on disk, now. Called when the app leaves the foreground, when the flow closes
-    /// and before any protocol is read back, so the debounce above can never be the reason a
-    /// keystroke was lost. It writes on the calling thread on purpose: these are lifecycle edges,
-    /// not typing.
-    func flush() {
+    /// All model writes enter this owner on the main actor. The store rejects stale sequences
+    /// as a second boundary for finalization and imported metadata writers.
+    @discardableResult
+    func persistWorking() -> Bool {
+        guard var p = working else { return true }
+        guard !finalizing else { return false }
+        p.saveSequence += 1
+        working = p
+        do {
+            try store.save(p)
+            saveError = nil
+            return true
+        } catch {
+            saveError = str.saveFailed + " (\(error.localizedDescription))"
+            return false
+        }
+    }
+
+    @discardableResult
+    func flush() -> Bool {
         commitUndo()
         saveTask?.cancel()
         saveTask = nil
-        guard let p = working, !finalizing else { return }
-        try? store.save(p)
-        // The place in the walk is part of what "still open" means. The camera routinely
-        // suspends this process while the shutter is open, and coming back to the case home
-        // instead of the room being photographed is the moment the picture reads as lost.
+        guard persistWorking() else { return false }
         prefs.set(flowStep.rawValue, forKey: keyStep)
         prefs.set(openRoomId, forKey: keyRoom)
         prefs.set(editingDefectId, forKey: keyDefect)
+        return true
     }
 
     static func now() -> Int64 { Int64(Date().timeIntervalSince1970 * 1000) }
@@ -447,7 +530,7 @@ final class LimenModel {
     }
 
     func createProtocol(_ kind: Kind, sessionRole: Role?, sessionName: String, sessionIdentity: SessionIdentity) {
-        flush()
+        guard flush() else { return }
         let now = Self.now()
         let resolvedName = sessionIdentity.fullName.ifBlank(sessionName.trimmingCharacters(in: .whitespacesAndNewlines))
         var resolvedIdentity = sessionIdentity
@@ -470,19 +553,22 @@ final class LimenModel {
             }
             tenant.phone = resolvedIdentity.phone
         }
-        // An agency session puts the firm on the landlord line and the person present behind
-        // "vertreten durch", the way the paper forms record a Verwaltung.
+        // An agency is the representative, never a substitute for the contractual landlord.
         var landlord = Party(.landlord)
         if sessionRole == .landlord {
-            landlord.name = resolvedIdentity.company.isBlank ? resolvedName : resolvedIdentity.company
+            landlord.name = resolvedIdentity.company.isBlank ? resolvedName : ""
+            landlord.agency = resolvedIdentity.company
             landlord.representedBy = resolvedIdentity.company.isBlank ? "" : resolvedName
             landlord.phone = resolvedIdentity.phone
         }
+        tenant.id = UUID().uuidString
+        landlord.id = UUID().uuidString
         p.parties = [tenant, landlord]
+        saveReusableIdentity(resolvedIdentity)
         p.keys = [KeyCount(.apartment), KeyCount(.houseDoor), KeyCount(.mailbox), KeyCount(.cellar)]
         p.dossier = [.keys]
-        try? store.save(p)
         setActiveProtocol(p)
+        persistWorking()
         flowStep = .hub
         openRoomId = nil
         prefs.set(p.id, forKey: keyOpen)
@@ -515,7 +601,7 @@ final class LimenModel {
         var resolvedIdentity = identity
         resolvedIdentity.phone = InternationalPhone.format(identity.phone, regionCode: identity.phoneRegion)
         chooseRole(sessionRole, name: name, company: identity.company)
-        flush()
+        guard flush() else { return }
         let now = Self.now()
         var p = entry
         p.id = "p\(now)"
@@ -528,26 +614,25 @@ final class LimenModel {
         p.handoverDate = LocalDate.today().isoString
         p.handoverTime = ""
         p.lastProtocolDate = entry.handoverDate
-        p.parties = entry.parties.map { party in
+        p.parties = entry.partiesForExit(role: sessionRole, identity: resolvedIdentity).map { party in
             var next = party
-            if party.role != sessionRole { return party }
-            if sessionRole == .landlord, !resolvedIdentity.company.isBlank {
-                // The agency's exit session: firm on the landlord line, the person sent behind
-                // "vertreten durch", matching how createProtocol writes an agency entry.
-                next.name = resolvedIdentity.company
-                next.representedBy = name
-                next.phone = resolvedIdentity.phone
-            } else if sessionRole == .tenant {
-                // The leaving tenant's contact address is the new address of the exit form.
-                next.name = name
-                next.address = [resolvedIdentity.addressLine, resolvedIdentity.placeLine].filter { !$0.isBlank }.joined(separator: ", ")
-                next.phone = resolvedIdentity.phone
-            } else {
-                next.name = name
-                next.phone = resolvedIdentity.phone
-            }
+            if next.id.isBlank { next.id = UUID().uuidString }
             return next
         }
+        p.details = RecordDetails(municipality: entry.details.municipality, district: entry.details.district,
+                                  habitableRooms: entry.details.habitableRooms, notificationDays: entry.details.notificationDays,
+                                  notificationClause: entry.details.notificationClause,
+                                  accessDevices: entry.details.accessDevices.map { device in
+                                      var next = device
+                                      next.expected = device.transferred
+                                      next.transferred = 0
+                                      next.note = ""
+                                      return next
+                                  }, understoodLanguage: entry.details.understoodLanguage)
+        p.saveSequence = 0
+        p.deliveryRevision = 0
+        p.exportHistory = []
+        saveReusableIdentity(resolvedIdentity)
         p.rooms = entry.rooms.map(Self.freshRoom)
         p.roomSetupComplete = true
         p.objects = entry.objects.map(Self.freshObject)
@@ -571,15 +656,15 @@ final class LimenModel {
         p.deliveryMetadataEpochMs = 0
         p.exportedEpochMs = 0
         p.meters = Meters()
-        try? store.save(p)
         setActiveProtocol(p)
+        persistWorking()
         flowStep = .hub
         openRoomId = nil
         prefs.set(p.id, forKey: keyOpen)
     }
 
     func openProtocol(_ id: String) {
-        flush()
+        guard flush() else { return }
         guard let p = store.load(id) else { return }
         setActiveProtocol(p)
         // A reopened record opens on its hub whether it is signed or not. A finalized one used
@@ -593,15 +678,16 @@ final class LimenModel {
     func deleteProtocol(_ id: String) {
         let deleted = protocols.first { $0.id == id } ?? store.load(id)
         store.delete(id)
-        protocols = store.list()
+        refreshLibrary()
         // A draft belongs to the person who started this one handover. Once it is discarded, ask
         // who holds the phone again instead of carrying that session's side forward.
         if let deleted, !deleted.isFinalized() { clearProfile() }
     }
 
     func closeFlow() {
-        flush()
+        guard flush() else { return }
         setActiveProtocol(nil)
+        if libraryProtectionEnabled && !libraryUnlocked { homePage = .landing }
         editingDefectId = nil
         openRoomId = nil
         flowTrail = []
@@ -614,7 +700,7 @@ final class LimenModel {
         prefs.removeObject(forKey: keyStep)
         prefs.removeObject(forKey: keyRoom)
         prefs.removeObject(forKey: keyDefect)
-        protocols = store.list()
+        refreshLibrary()
     }
 
     /// Every place is reachable in every state. A finalized record is walked exactly like a
@@ -639,7 +725,9 @@ final class LimenModel {
     func completionIssues(_ p: HandoverProtocol? = nil) -> [FinalizationIssue] {
         guard let record = p ?? working else { return [] }
         if record.isFinalized() { return [] }
-        return CompletionRules.protocolCompletionIssues(record, requiredRoles: requiredRecordRoles(record), photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id))
+        var issues = CompletionRules.protocolCompletionIssues(record, requiredRoles: requiredRecordRoles(record), photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id))
+        if (try? EvidenceValidation.requireReadable(record, photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id))) == nil { issues.append(.evidence) }
+        return issues.distinct()
     }
 
     func finalizeProtocol() {
@@ -655,8 +743,11 @@ final class LimenModel {
         Task {
             let result: Result<HandoverProtocol, Error> = await Task.detached {
                 Result {
+                    try EvidenceValidation.requireReadable(p, photoDir: store.photoDir(p.id), signatureDir: store.signatureDir(p.id))
                     var withMoment = p
-                    withMoment.signatures = p.signatures.filter(p.isCurrent)
+                    withMoment.saveSequence += 1
+                    withMoment.signatures = p.signatures.filter { p.isCurrent($0) || $0.plane == .costs }
+                    withMoment.details.legalSnapshot = p.freezeLegalRules()
                     withMoment.pendingRecordReservations = OrderedMap()
                     withMoment.finalizedEpochMs = Int64(Date().timeIntervalSince1970 * 1000)
                     var frozen = withMoment
@@ -666,6 +757,7 @@ final class LimenModel {
                 }
             }.value
             finalizing = false
+            guard working?.id == p.id else { return }
             switch result {
             case .success(let frozen):
                 setActiveProtocol(frozen)
@@ -682,7 +774,7 @@ final class LimenModel {
         guard let p = working, p.isFinalized(), !amendmentInProgress else { return }
         // The one protocol switch that had no flush before it: a debounced write still in the
         // air would have been aimed at the record being left.
-        flush()
+        guard flush() else { return }
         amendmentInProgress = true
         amendmentError = false
         let store = store
@@ -702,6 +794,11 @@ final class LimenModel {
                     draft.deliveryMetadataEpochMs = 0
                     draft.signatures = []
                     draft.exportedEpochMs = 0
+                    draft.saveSequence = 1
+                    draft.deliveryRevision = 0
+                    draft.exportHistory = []
+                    draft.details.legalSnapshot = nil
+                    draft.details.reviewRevision = -1
                     let sourceDir = store.photoDir(p.id)
                     let targetDir = store.photoDir(draft.id)
                     for source in (try? FileManager.default.contentsOfDirectory(at: sourceDir, includingPropertiesForKeys: nil)) ?? [] {
@@ -712,6 +809,7 @@ final class LimenModel {
                 }
             }.value
             amendmentInProgress = false
+            guard working?.id == p.id else { return }
             switch result {
             case .success(let draft):
                 setActiveProtocol(draft)
@@ -745,114 +843,4 @@ final class LimenModel {
         if let parent = flowStep.parent { flowStep = parent } else { closeFlow() }
     }
 
-    // MARK: A record for the smoke
-
-    #if DEBUG
-    /// Under `LIMEN_DEMO`, the draft the Android instrumentation seeded before its walk: an entry
-    /// in Vaud with its overlay answered, two named parties, one room and the keys card.
-    static func seedDemo(into store: Store, prefs: UserDefaults) {
-        var p = HandoverProtocol(id: "navigation-draft", kind: .entry, createdEpochMs: 1)
-        p.sessionRole = .tenant
-        p.sessionName = "Test tenant"
-        p.address = "Test street 1"
-        p.place = "1000 Test"
-        p.objectCanton = .vd
-        p.legalOverlay = LegalOverlayRecord().withStatus(.leaseAndLocalTiming, .confirmed).withStatus(.vaudExitReadiness, .confirmed)
-        p.handoverDate = "2026-08-18"
-        p.handoverTime = "10:00"
-        p.contract.conclusionDate = "2026-07-01"
-        p.parties = [Party(.tenant, name: "Test tenant"), Party(.landlord, name: "Test landlord")]
-        p.rooms = [Room(id: "r1", kind: .room)]
-        p.dossier = [.keys]
-        p.keyTransfer = .noPhysicalKeys
-        try? store.save(p)
-        prefs.set(p.id, forKey: keyOpen)
-        prefs.set("Tenant", forKey: keyRole)
-        prefs.set("Test tenant", forKey: keyName)
-    }
-
-/// Under `LIMEN_STORE`, the exit protocol the store screenshots walk. Complete to the last rule
-    /// except the two signatures, which the walk draws so the pad and the seal are photographed as
-    /// a person actually produces them. The record is NOT opened: the first shot is the landing.
-    static func seedStoreScene(into store: Store, prefs: UserDefaults, lang: Lang) {
-        let scene = StoreScene.of(lang)
-        var p = HandoverProtocol(id: "store-\(lang.rawValue.lowercased())", kind: .exit, createdEpochMs: 1)
-        p.sessionRole = .landlord
-        p.sessionName = scene.representative
-        p.address = scene.street
-        p.place = scene.place
-        p.objectCanton = scene.canton
-        p.objectDetail = scene.floor
-        p.handoverDate = "2026-09-10"
-        p.handoverTime = "12:00"
-        p.contract.conclusionDate = "2021-03-02"
-        p.contract.startDate = "2021-04-01"
-        p.contract.endDate = "2026-09-30"
-        p.contract.noticeDate = "2026-06-27"
-        p.parties = [
-            Party(.tenant, name: scene.tenant, address: scene.tenantAddress),
-            Party(.landlord, name: scene.agency, representedBy: scene.representative, phone: scene.phone),
-        ]
-        var identity = SessionIdentity()
-        identity.company = scene.agency
-        identity.street = scene.controllerStreet
-        identity.postalCode = scene.controllerPostal
-        identity.city = scene.controllerCity
-        identity.phone = scene.phone
-        p.sessionIdentity = identity
-        var controller = ControllerIdentity()
-        controller.organisation = scene.agency
-        controller.contactName = scene.representative
-        controller.street = scene.controllerStreet
-        controller.postalCode = scene.controllerPostal
-        controller.city = scene.controllerCity
-        controller.phone = scene.phone
-        p.controllerIdentity = controller
-        p.rooms = [
-            Room(id: "r1", kind: .hall, inspected: true),
-            Room(id: "r2", kind: .livingRoom, inspected: true),
-            Room(id: "r3", kind: .kitchen, inspected: true),
-            Room(id: "r4", kind: .bathroom, inspected: true),
-            Room(id: "r5", kind: .bedroom, inspected: true),
-        ]
-        p.roomSetupComplete = true
-        var defect = Defect(id: "d1")
-        defect.roomId = "r3"
-        defect.text = scene.defect
-        defect.tenantResponse = .disputes
-        defect.tenantComment = scene.tenantComment
-        defect.reservation = ""
-        p.defects = [defect]
-        p.dossier = [.contract, .keys]
-        p.keys = [KeyCount(.apartment, count: 3), KeyCount(.mailbox, count: 1)]
-        p.keyTransfer = .allTransferred
-        // Every requirement the canton actually resolves to, rather than a fixed pair: Vaud carries
-        // rows Zug does not, and a scene that answered only the shared ones could not be finalized.
-        if let overlay = p.resolvedLegalOverlay() {
-            var answers = LegalOverlayRecord()
-            for requirement in overlay.requirements { answers = answers.withStatus(requirement, .confirmed) }
-            p.legalOverlay = answers
-        }
-        try? store.save(p)
-        prefs.set("Landlord", forKey: keyRole)
-        prefs.set(scene.representative, forKey: keyName)
-        prefs.set(scene.agency, forKey: keyCompany)
-        prefs.set(controller.organisation, forKey: keyControllerOrganisation)
-        prefs.set(controller.contactName, forKey: keyControllerContact)
-        prefs.set(controller.street, forKey: keyControllerStreet)
-        prefs.set(controller.postalCode, forKey: keyControllerPostal)
-        prefs.set(controller.city, forKey: keyControllerCity)
-        prefs.set(controller.phone, forKey: keyControllerPhone)
-    }
-
-    static func resetForTests(prefs: UserDefaults, root: URL) {
-        for key in [keyDark, keyLang, keyOpen, keyStep, keyRoom, keyDefect, keyRole, keyName, keyCompany,
-                    keyControllerOrganisation, keyControllerContact, keyControllerStreet, keyControllerPostal, keyControllerCity, keyControllerEmail, keyControllerPhone] {
-            prefs.removeObject(forKey: key)
-        }
-        for item in (try? FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil)) ?? [] {
-            try? FileManager.default.removeItem(at: item)
-        }
-    }
-    #endif
 }

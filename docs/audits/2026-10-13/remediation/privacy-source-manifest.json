@@ -1,0 +1,17 @@
+{
+  "websiteHead": "2f992a6e6b5900c79a1efd096b3cdd50a5555cff",
+  "baseFiles": {
+    "src/content/legal/limen/en.mdx": "8080a521ed2dfb0cd8aafe8df0c1a0eacf8b223d21f70852e05b1b9ca4a28818",
+    "src/content/legal/limen/fr.mdx": "64a0113e3178ab20bf5b2509ed015cc8bf4391372c1f0c1b9d2134aa1ac54158",
+    "src/content/legal/limen/de.mdx": "978a085f104d6aec9f4cd75771938e0dd93f8b4e6c67d28e1f79506b128844f1",
+    "src/content/legal/limen/it.mdx": "a0f78b38155262973f8a022e066682412d12ec14cee7084922b8db5dae8b17eb",
+    "src/content/legal/limen/rm.mdx": "b93842beecdfd242708fd9a13d0c821308ede7cc6fcf14986e835e84dcb997db"
+  },
+  "proposedFiles": {
+    "src/content/legal/limen/en.mdx": "14017e142732f06010e06b4c1075c578ac1c0008a0737fe057c6d7c6c68bd546",
+    "src/content/legal/limen/fr.mdx": "69739eefedd64bf7d1b7b43989c44510ea08019daebccf302abcccd8c7fe2556",
+    "src/content/legal/limen/de.mdx": "8873105c15cdd18204277d919b91527a75c9d8605d5b5f809ca7d694b1af3f31",
+    "src/content/legal/limen/it.mdx": "e1b061567ae3ba0ba5823ca1ae9cff19441d094fcd568592b9af1869776933a9",
+    "src/content/legal/limen/rm.mdx": "18fc8d353011c6fbfac6359bccc7fa1b04c3e0888e70f4f5f49dd59a47c42829"
+  }
+}

@@ -1,6 +1,7 @@
 import CoreGraphics
 import Foundation
 import UIKit
+import PDFKit
 
 /// The protocol as an A4 document, drawn with the platform's own PDF context: no library, no
 /// fonts to embed by hand, black ink on white paper. The layout follows the paper canon it will
@@ -48,13 +49,33 @@ public enum PdfExport {
     /// number them "3 / 7". A form that names its own total is a form nobody can quietly take a
     /// page out of, which is the tamper evidence paper has always used and people actually check.
     public static func render(_ p: HandoverProtocol, _ s: Str, photoDir: URL, signatureDir: URL) throws -> Data {
-        let reference = reference(p)
-        let counted = build(p, s, photoDir: photoDir, signatureDir: signatureDir, reference: reference, total: 0)
-        return build(p, s, photoDir: photoDir, signatureDir: signatureDir, reference: reference, total: counted.pages).data
+        try document(p, s, photoDir: photoDir, signatureDir: signatureDir).pdf
     }
 
-    private static func build(_ p: HandoverProtocol, _ s: Str, photoDir: URL, signatureDir: URL, reference: String, total: Int) -> (data: Data, pages: Int) {
-        let sheet = Sheet(s: s, reference: reference, total: total)
+    public struct Document: Sendable {
+        public let pdf: Data
+        public let html: Data
+        public let pages: Int
+
+        public init(pdf: Data, html: Data, pages: Int) {
+            self.pdf = pdf
+            self.html = html
+            self.pages = pages
+        }
+    }
+
+    public static func document(_ p: HandoverProtocol, _ s: Str, photoDir: URL, signatureDir: URL) throws -> Document {
+        try EvidenceValidation.requireReadable(p, photoDir: photoDir, signatureDir: signatureDir)
+        let reference = p.isFinalized() ? reference(p) : s.previewDraft
+        let counted = try build(p, s, photoDir: photoDir, signatureDir: signatureDir, reference: reference, total: 0)
+        let drawn = try build(p, s, photoDir: photoDir, signatureDir: signatureDir, reference: reference, total: counted.pages)
+        guard drawn.pages == counted.pages, let pdf = PDFDocument(data: drawn.data),
+              pdf.pageCount == drawn.pages, pdf.pageCount > 0, !(pdf.string ?? "").isEmpty else { throw ExportError.rendering }
+        return Document(pdf: drawn.data, html: Data(drawn.html.utf8), pages: drawn.pages)
+    }
+
+    private static func build(_ p: HandoverProtocol, _ s: Str, photoDir: URL, signatureDir: URL, reference: String, total: Int) throws -> RenderPass {
+        let sheet = try Sheet(s: s, reference: reference, total: total)
         let cards = p.dossierCards()
         title(sheet, p, s)
         header(sheet, p, s)
@@ -70,228 +91,19 @@ public enum PdfExport {
         objects(sheet, p, s)
         findings(sheet, p, s)
         if cards.contains(.notes) { remarks(sheet, p, s) }
+        for section in RecordContent.extraContent(record: p, strings: s) {
+            sheet.sectionTitle(section.title)
+            for paragraph in section.paragraphs { sheet.wrapped(paragraph, sheet.body) }
+        }
         signatures(sheet, p, s, signatureDir)
         delivery(sheet, p, s)
         release(sheet, p, s)
         annex(sheet, p, s, photoDir, measuring: total == 0)
-        return sheet.close()
+        return try sheet.close()
     }
 
     /// The filing reference is a readable prefix of the frozen evidence fingerprint.
     static func reference(_ p: HandoverProtocol) -> String { "LIMEN-\(p.evidenceFingerprint.prefix(16))" }
-
-    // MARK: The sheet: cursor, page breaks, footer
-
-    /// A face at a size, the Paint of the Android sheet: sans or mono, regular or bold, in ink or grey.
-    struct Ink {
-        let font: UIFont
-        let colour: UIColor
-        var size: CGFloat { font.pointSize }
-
-        func width(_ text: String) -> CGFloat {
-            (text as NSString).size(withAttributes: [.font: font]).width
-        }
-
-        var attributes: [NSAttributedString.Key: Any] { [.font: font, .foregroundColor: colour] }
-    }
-
-    final class Sheet {
-        let s: Str
-        let reference: String
-        let total: Int
-        private let data = NSMutableData()
-        private var consumer: CGDataConsumer?
-        private var pdf: CGContext?
-        var y: CGFloat = 0
-        var pageNo = 0
-        private var pageOpen = false
-
-        let black = UIColor.black
-        let grey = UIColor(red: 90 / 255, green: 90 / 255, blue: 90 / 255, alpha: 1)
-        let titleInk: Ink
-        let section: Ink
-        let label: Ink
-        let value: Ink
-        let body: Ink
-        let small: Ink
-        let ruleColour = UIColor(red: 200 / 255, green: 200 / 255, blue: 200 / 255, alpha: 1)
-
-        init(s: Str, reference: String, total: Int) {
-            self.s = s
-            self.reference = reference
-            self.total = total
-            titleInk = Ink(font: .monospacedSystemFont(ofSize: 40, weight: .bold), colour: black)
-            section = Ink(font: .systemFont(ofSize: 26, weight: .bold), colour: black)
-            label = Ink(font: .systemFont(ofSize: 20), colour: grey)
-            value = Ink(font: .monospacedSystemFont(ofSize: 22, weight: .regular), colour: black)
-            body = Ink(font: .systemFont(ofSize: 21), colour: black)
-            small = Ink(font: .systemFont(ofSize: 17), colour: grey)
-            guard let consumer = CGDataConsumer(data: data), let pdf = CGContext(consumer: consumer, mediaBox: nil, nil) else { return }
-            self.consumer = consumer
-            self.pdf = pdf
-        }
-
-        func newPage() {
-            finish()
-            pageNo += 1
-            guard let pdf else { return }
-            var box = CGRect(origin: .zero, size: a4)
-            pdf.beginPage(mediaBox: &box)
-            // PDF space runs upward from the bottom left; the sheet is drawn top down in its own
-            // units, so the page is flipped and scaled once here and every drawing call below
-            // reads exactly like the Android one.
-            pdf.translateBy(x: 0, y: a4.height)
-            pdf.scaleBy(x: a4.width / pageWidth, y: -a4.height / pageHeight)
-            pdf.setFillColor(UIColor.white.cgColor)
-            pdf.fill(CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight))
-            pageOpen = true
-            y = margin
-        }
-
-        func finish() {
-            guard pageOpen, let pdf else { return }
-            // The footer: the instrument's name and the page, quietly.
-            line(margin, pageHeight - foot - 14, pageWidth - margin, pageHeight - foot - 14, ruleColour, 1.5)
-            text("Limen · \(reference)", margin, pageHeight - foot + 8, small)
-            let pageText = total > 0 ? "\(s.pdfPage) \(pageNo) / \(total)" : "\(s.pdfPage) \(pageNo)"
-            text(pageText, pageWidth - margin - small.width(pageText), pageHeight - foot + 8, small)
-            pdf.endPage()
-            pageOpen = false
-        }
-
-        func close() -> (data: Data, pages: Int) {
-            finish()
-            pdf?.closePDF()
-            return (data as Data, pageNo)
-        }
-
-        /// Guarantees `need` vertical units, breaking the page when they are not there.
-        func ensure(_ need: CGFloat) {
-            if !pageOpen || y + need > pageHeight - foot - 30 { newPage() }
-        }
-
-        func gap(_ v: CGFloat) { y += v }
-
-        /// Draws with the baseline at `baseline`, the way Canvas.drawText places its text.
-        func text(_ string: String, _ x: CGFloat, _ baseline: CGFloat, _ ink: Ink) {
-            guard let pdf else { return }
-            UIGraphicsPushContext(pdf)
-            // Core Text draws glyphs upright in a bottom-up space; the page above was flipped, so
-            // each string is drawn through a local flip around its own baseline.
-            pdf.saveGState()
-            pdf.translateBy(x: x, y: baseline)
-            pdf.scaleBy(x: 1, y: -1)
-            (string as NSString).draw(at: CGPoint(x: 0, y: -ink.font.ascender), withAttributes: ink.attributes)
-            pdf.restoreGState()
-            UIGraphicsPopContext()
-        }
-
-        func line(_ x1: CGFloat, _ y1: CGFloat, _ x2: CGFloat, _ y2: CGFloat, _ colour: UIColor, _ width: CGFloat) {
-            guard let pdf else { return }
-            pdf.setStrokeColor(colour.cgColor)
-            pdf.setLineWidth(width)
-            pdf.move(to: CGPoint(x: x1, y: y1))
-            pdf.addLine(to: CGPoint(x: x2, y: y2))
-            pdf.strokePath()
-        }
-
-        func image(_ image: CGImage, in rect: CGRect) {
-            guard let pdf else { return }
-            pdf.saveGState()
-            pdf.translateBy(x: rect.minX, y: rect.maxY)
-            pdf.scaleBy(x: 1, y: -1)
-            pdf.interpolationQuality = .high
-            pdf.draw(image, in: CGRect(x: 0, y: 0, width: rect.width, height: rect.height))
-            pdf.restoreGState()
-        }
-
-        func sectionTitle(_ title: String) {
-            ensure(60)
-            gap(16)
-            text(title.uppercased(), margin, y + section.size, section)
-            y += section.size + 8
-            line(margin, y, pageWidth - margin, y, ruleColour, 1.5)
-            gap(10)
-        }
-
-        func labeledRow(_ pairs: [(String, String)]) {
-            let width = (pageWidth - 2 * margin) / CGFloat(pairs.count)
-            let columns = pairs.map { heading, entry in
-                (wrapLines(heading, label, width - 18), wrapLines(entry.ifBlank("–"), value, width - 18))
-            }
-            let labelLines = columns.map { $0.0.count }.max() ?? 0
-            let valueLines = columns.map { $0.1.count }.max() ?? 0
-            let labelStep = label.size + 5
-            let valueStep = value.size + 6
-            let need = CGFloat(labelLines) * labelStep + CGFloat(valueLines) * valueStep + 14
-            ensure(need)
-            for (index, column) in columns.enumerated() {
-                let x = margin + CGFloat(index) * width
-                for (line, string) in column.0.enumerated() {
-                    text(string, x, y + label.size + CGFloat(line) * labelStep, label)
-                }
-                let valueTop = y + CGFloat(labelLines) * labelStep
-                for (line, string) in column.1.enumerated() {
-                    text(string, x, valueTop + value.size + CGFloat(line) * valueStep, value)
-                }
-            }
-            y += need
-        }
-
-        func wrapped(_ string: String, _ ink: Ink, x: CGFloat = margin, width: CGFloat = pageWidth - 2 * margin) {
-            for line in wrapLines(string, ink, width) {
-                ensure(ink.size + 10)
-                text(line, x, y + ink.size, ink)
-                y += ink.size + 7
-            }
-        }
-
-        func ellipsize(_ string: String, _ ink: Ink, _ width: CGFloat) -> String {
-            if ink.width(string) <= width { return string }
-            var t = string
-            while !t.isEmpty, ink.width("\(t)…") > width { t.removeLast() }
-            return "\(t)…"
-        }
-
-        func wrapLines(_ string: String, _ ink: Ink, _ width: CGFloat) -> [String] {
-            var out: [String] = []
-            for paragraph in string.split(separator: "\n", omittingEmptySubsequences: false) {
-                var line = ""
-                for word in paragraph.split(separator: " ", omittingEmptySubsequences: false).map(String.init) {
-                    if ink.width(word) > width {
-                        if !line.isEmpty {
-                            out.append(line)
-                            line = ""
-                        }
-                        var chunks: [String] = []
-                        var chunk = ""
-                        for character in word {
-                            let probe = chunk + String(character)
-                            if !chunk.isEmpty, ink.width(probe) > width {
-                                chunks.append(chunk)
-                                chunk = String(character)
-                            } else {
-                                chunk = probe
-                            }
-                        }
-                        if !chunk.isEmpty { chunks.append(chunk) }
-                        out.append(contentsOf: chunks.dropLast())
-                        line = chunks.last ?? ""
-                        continue
-                    }
-                    let probe = line.isEmpty ? word : "\(line) \(word)"
-                    if ink.width(probe) <= width {
-                        line = probe
-                    } else {
-                        if !line.isEmpty { out.append(line) }
-                        line = word
-                    }
-                }
-                out.append(line)
-            }
-            return out
-        }
-    }
 
     // MARK: Sections
 
@@ -317,7 +129,7 @@ public enum PdfExport {
     private static func header(_ sheet: Sheet, _ p: HandoverProtocol, _ s: Str) {
         sheet.labeledRow([(s.address, p.address), (s.place, p.place)])
         if let canton = p.objectCanton {
-            sheet.labeledRow([(s.cantonLabel, s.canton(canton)), (s.legalBasis, s.legalProfile(p.legalProfile()))])
+            sheet.labeledRow([(s.cantonLabel, s.canton(canton)), (s.legalBasis, s.legalProfile(p.resolvedLegalOverlay()?.profile ?? p.legalProfile()))])
         }
         sheet.labeledRow([
             (s.objectDetail, p.objectDetail),
@@ -330,8 +142,8 @@ public enum PdfExport {
 
     /// Identifies the immutable record and, when applicable, the record it corrects.
     private static func integrity(_ sheet: Sheet, _ p: HandoverProtocol, _ s: Str) {
-        sheet.sectionTitle(s.pdfFinalized)
-        sheet.wrapped("\(s.fingerprint): \(p.evidenceFingerprint)", sheet.small)
+        sheet.sectionTitle(p.isFinalized() ? s.pdfFinalized : s.previewDraft)
+        if p.isFinalized() { sheet.wrapped("\(s.fingerprint): \(p.evidenceFingerprint)", sheet.small) }
         if !p.amendedFromId.isBlank {
             // By the reference the amended document actually prints on itself. The raw store id
             // appears on no PDF anywhere, so it identified nothing to a reader.
@@ -355,6 +167,7 @@ public enum PdfExport {
         for requirement in overlay.requirements.sorted(by: { $0.ordinal < $1.ordinal }) {
             guard let status = p.legalOverlay.status(requirement) else { continue }
             sheet.wrapped("\(s.legalRequirement(requirement)): \(s.legalCheckStatus(status))", sheet.body)
+            if let note = p.legalOverlay.notes[requirement], !note.isBlank { sheet.wrapped(note, sheet.body) }
         }
         if !p.legalOverlay.note.isBlank {
             sheet.wrapped("\(s.legalOverlayNote): \(p.legalOverlay.note)", sheet.small)
@@ -369,6 +182,8 @@ public enum PdfExport {
         sheet.sectionTitle(s.parties)
         for party in p.parties {
             var detail: [String] = []
+            if !party.agency.isBlank { detail.append("\(s.companyName): \(party.agency)") }
+            if !party.authority.isBlank { detail.append("\(s.authority): \(party.authority)") }
             if !party.representedBy.isBlank { detail.append("\(s.representedBy): \(party.representedBy)") }
             if !party.phone.isBlank { detail.append(party.phone) }
             if !party.email.isBlank { detail.append(party.email) }
@@ -418,14 +233,14 @@ public enum PdfExport {
     }
 
     private static func deposit(_ sheet: Sheet, _ p: HandoverProtocol, _ s: Str) {
-        if p.deposit.kind == .none { return }
         sheet.sectionTitle(s.deposit)
+        sheet.wrapped(s.depositKind(p.deposit.kind), sheet.body)
         switch p.deposit.kind {
         case .insurance:
             sheet.labeledRow([(s.depositProvider, p.deposit.provider), (s.depositPolicy, p.deposit.policyNo), (s.depositAmount, p.deposit.amountChf)])
         case .bankAccount:
             sheet.labeledRow([(s.depositBankName, p.deposit.bank), (s.depositAccount, p.deposit.account), (s.depositAmount, p.deposit.amountChf)])
-        case .none:
+        case .none, .unknown:
             break
         }
     }
@@ -597,6 +412,10 @@ public enum PdfExport {
         if !d.tenantComment.isBlank {
             sheet.wrapped("\(s.tenantComment): \(d.tenantComment)", sheet.small, x: margin + 60, width: pageWidth - 2 * margin - 60)
         }
+        for (id, position) in d.participantPositions.entries {
+            let name = p.parties.first { $0.participantKey() == id }?.signerName() ?? id
+            sheet.wrapped("\(name) · \(s.tenantResponse(position.response)) · \(position.comment)", sheet.body)
+        }
         sheet.gap(8)
     }
 
@@ -677,6 +496,10 @@ public enum PdfExport {
         sheet.wrapped(s.signRecordMeaning, sheet.small)
         sheet.gap(10)
         drawPlane(sheet, p, s, signatureDir, .record)
+        if p.signatures.contains(where: { $0.plane == .costs }) {
+            sheet.sectionTitle(s.costNote)
+            drawPlane(sheet, p, s, signatureDir, .costs)
+        }
         sheet.wrapped(s.inkEvidenceNotice, sheet.small)
 
         // The Swiss ritual, said on the document itself: two identical papers, one per party. In
@@ -687,7 +510,16 @@ public enum PdfExport {
     }
 
     private static func drawPlane(_ sheet: Sheet, _ p: HandoverProtocol, _ s: Str, _ dir: URL, _ plane: Plane) {
-        let sigs = p.signatures.filter { $0.plane == plane && p.isCurrent($0) }
+        let sigs = p.signatures.filter { $0.plane == plane && (p.isCurrent($0) || plane == .costs) }
+        if plane == .record {
+            for party in CompletionRules.requiredRecordParticipants(p) {
+                guard !sigs.contains(where: { $0.participantId.isBlank ? party.id.isBlank && $0.role == party.role : $0.participantId == party.participantKey() }) else { continue }
+                sheet.wrapped("\(s.role(party.role)) · \(party.signerName()) · \(s.notSigned)", sheet.body)
+                let reservation = p.reservationFor(party: party)
+                if !reservation.isBlank { sheet.wrapped("\(s.reservationLabel): \(reservation)", sheet.small) }
+                sheet.gap(14)
+            }
+        }
         if sigs.isEmpty {
             sheet.wrapped(s.notSigned, sheet.body)
             return
@@ -695,8 +527,9 @@ public enum PdfExport {
         for sig in sigs {
             sheet.ensure(190)
             let x = margin
-            if sig.refused {
-                sheet.text(s.refusedNote.uppercased(), x, sheet.y + sheet.value.size, sheet.value)
+            if sig.refused || !sig.outcome.isBlank {
+                let outcome = sig.outcome == "absent" ? s.absentOutcome : sig.outcome == "unable" ? s.unableToDraw : s.refusedNote
+                sheet.wrapped(outcome, sheet.body)
                 sheet.y += sheet.value.size + 6
             } else if !sig.file.isBlank, let image = PhotoDecode.sampled(dir.appendingPathComponent(sig.file), targetWidth: 840) {
                 let maxW: CGFloat = 420
@@ -704,9 +537,9 @@ public enum PdfExport {
                 let scale = min(maxW / CGFloat(image.width), maxH / CGFloat(image.height), 1)
                 let w = CGFloat(image.width) * scale
                 let h = CGFloat(image.height) * scale
-                sheet.image(image, in: CGRect(x: x, y: sheet.y, width: w, height: h))
+                sheet.image(image, in: CGRect(x: x, y: sheet.y, width: w, height: h), alt: sig.name)
                 sheet.y += h + 4
-            }
+            } else if !sig.file.isBlank { sheet.renderingFailed = true }
             sheet.line(x, sheet.y + 4, x + 420, sheet.y + 4, sheet.ruleColour, 1.5)
             sheet.y += 10
             var caption: [String] = [s.role(sig.role)]
@@ -732,7 +565,7 @@ public enum PdfExport {
         sheet.wrapped(s.deliverySelfDeclared, sheet.small)
         let roleOrder = Role.allCases
         for receipt in p.deliveryReceipts.sorted(by: { (roleOrder.firstIndex(of: $0.role) ?? 0) < (roleOrder.firstIndex(of: $1.role) ?? 0) }) {
-            var detail: [String] = [s.role(receipt.role), s.deliveryMethod(receipt.method)]
+            var detail: [String] = [p.parties.first { $0.participantKey() == receipt.participantId }?.signerName() ?? s.role(receipt.role), s.deliveryMethod(receipt.method)]
             if receipt.epochMs > 0 { detail.append(formatMoment(receipt.epochMs)) }
             if !receipt.note.isBlank { detail.append(receipt.note) }
             sheet.wrapped(detail.joined(separator: " · "), sheet.body)
@@ -740,12 +573,12 @@ public enum PdfExport {
     }
 
     private static func release(_ sheet: Sheet, _ p: HandoverProtocol, _ s: Str) {
-        if p.kind != .exit || p.deposit.kind == .none { return }
+        guard p.kind == .exit, p.deposit.kind == .bankAccount || p.deposit.kind == .insurance else { return }
         let releaseText: String
         switch p.deposit.kind {
         case .bankAccount: releaseText = s.releaseBank
         case .insurance: releaseText = s.releaseInsurance
-        case .none: releaseText = ""
+        case .none, .unknown: releaseText = ""
         }
         var need: CGFloat = 70 + CGFloat(sheet.wrapLines(releaseText, sheet.body, pageWidth - 2 * margin).count) * (sheet.body.size + 7)
         let providerLine = "\(s.depositProvider): \(p.deposit.provider)" + (p.deposit.policyNo.isBlank ? "" : " · \(s.depositPolicy): \(p.deposit.policyNo)")
@@ -763,7 +596,7 @@ public enum PdfExport {
                 sheet.gap(6)
                 sheet.wrapped(providerLine, sheet.value)
             }
-        case .none:
+        case .none, .unknown:
             break
         }
     }
@@ -779,42 +612,33 @@ public enum PdfExport {
     }
 
     private static func annex(_ sheet: Sheet, _ p: HandoverProtocol, _ s: Str, _ photoDir: URL, measuring: Bool) {
-        let plates = Report.plates(p)
-        if plates.isEmpty { return }
-        let cellW = (pageWidth - 2 * margin - 40) / 2
-        let cellH: CGFloat = 420
-        // Whether a plate decodes, which the counting pass and the rendering pass must answer
-        // identically or the printed "page N of M" lies about a document already signed.
-        let readablePlates = plates.filter { PhotoDecode.readable(photoDir.appendingPathComponent($0.file)) }
-        if readablePlates.isEmpty { return }
-        sheet.ensure(cellH + 120)
-        sheet.sectionTitle(s.pdfDefectAnnex)
-        var col = 0
-        for plate in readablePlates {
-            let file = photoDir.appendingPathComponent(plate.file)
-            // The counting pass reads the dimensions only: same page breaks, no decoding.
-            let image = measuring ? nil : PhotoDecode.sampled(file, targetWidth: Int(cellW))
-            if measuring ? PhotoDecode.readable(file) : image != nil {
-                if col == 0 { sheet.ensure(cellH + 50) }
-                let x = margin + CGFloat(col) * (cellW + 40)
-                if let image {
-                    let scale = min(cellW / CGFloat(image.width), (cellH - 40) / CGFloat(image.height))
-                    let w = CGFloat(image.width) * scale
-                    let h = CGFloat(image.height) * scale
-                    sheet.image(image, in: CGRect(x: x, y: sheet.y, width: w, height: h))
-                    var text = caption(plate, s)
-                    if !plate.sha256.isBlank { text += " · \(plate.sha256.prefix(12))" }
-                    sheet.text(sheet.ellipsize(text, sheet.small, cellW), x, sheet.y + h + sheet.small.size + 6, sheet.small)
-                }
-                col += 1
-                if col == 2 {
-                    col = 0
-                    sheet.y += cellH + 20
-                }
-            }
+        var plates = Report.plates(p).map { ($0.file, caption($0, s), $0.sha256) }
+        for (roomId, photos) in p.details.roomPhotos.entries {
+            let room = p.rooms.first { $0.id == roomId }
+            let label = room.map { $0.name.ifBlank(s.room($0.kind)) } ?? roomId
+            plates += photos.map { ($0.file, label, $0.sha256) }
         }
-        if col != 0 { sheet.y += cellH + 20 }
+        for meter in p.details.readings { plates += meter.photos.map { ($0.file, meter.label, $0.sha256) } }
+        if plates.isEmpty { return }
+        sheet.sectionTitle(s.pdfDefectAnnex)
+        let width = pageWidth - 2 * margin
+        for (file, caption, hash) in plates {
+            sheet.ensure(650)
+            if !measuring {
+                guard let image = PhotoDecode.sampled(photoDir.appendingPathComponent(file), targetWidth: Int(width)) else {
+                    sheet.renderingFailed = true
+                    continue
+                }
+                let scale = min(width / CGFloat(image.width), 530 / CGFloat(image.height))
+                sheet.image(image, in: CGRect(x: margin, y: sheet.y, width: CGFloat(image.width) * scale, height: CGFloat(image.height) * scale), alt: caption + " · " + file)
+            }
+            sheet.y += 540
+            sheet.wrapped(caption + " · " + file, sheet.body)
+            if !hash.isBlank { sheet.wrapped("SHA-256: " + hash, sheet.small) }
+            sheet.gap(12)
+        }
     }
+
 }
 
 extension HandoverProtocol {

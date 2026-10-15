@@ -1,0 +1,440 @@
+[
+  {
+    "file": "default-en-02-new-session.png",
+    "sourceResult": "/tmp/limen-ui-language-default.xcresult",
+    "test": "LanguageWalkTest/testTheWalkInEnglish()",
+    "attachment": "en-UICTContentSizeCategoryL-02-new-session_0_3B01D02E-7F7B-411C-AB4D-BCB331E4BCF4.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931240.045,
+    "sha256": "5b5b60ac79af40619ca350a541d5a439628e6acecf3adbf82334eb12f837bac7"
+  },
+  {
+    "file": "default-en-10-legal-overlay.png",
+    "sourceResult": "/tmp/limen-ui-language-default.xcresult",
+    "test": "LanguageWalkTest/testTheWalkInEnglish()",
+    "attachment": "en-UICTContentSizeCategoryL-10-legal-overlay_0_E5678295-C7C2-4828-BBBC-3411BF89FFBE.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931280.698,
+    "sha256": "d75ea1e494e25f27e68e60f3350618f766800ea26b3e829e528ea08cb37788d0"
+  },
+  {
+    "file": "default-fr-02-new-session.png",
+    "sourceResult": "/tmp/limen-ui-language-default.xcresult",
+    "test": "LanguageWalkTest/testTheWalkInFrench()",
+    "attachment": "fr-UICTContentSizeCategoryL-02-new-session_0_EC0A427A-5BDC-4865-BD2F-4EBCC3829DED.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931317.681,
+    "sha256": "4f2a47c3f32a59a9ba26f3e8e7f0d8e4d9dcaf599598b0bd310ffc3ca9a5c8a6"
+  },
+  {
+    "file": "default-fr-10-legal-overlay.png",
+    "sourceResult": "/tmp/limen-ui-language-default.xcresult",
+    "test": "LanguageWalkTest/testTheWalkInFrench()",
+    "attachment": "fr-UICTContentSizeCategoryL-10-legal-overlay_0_6F4F1DA6-2CEC-4AE8-BEAA-74E2C4040D0C.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931356.333,
+    "sha256": "6d788727c1aa9becb793ab195fa76ad33dc3ff1836ce6e9c8e5ed78983f2efe7"
+  },
+  {
+    "file": "default-de-02-new-session.png",
+    "sourceResult": "/tmp/limen-ui-language-default.xcresult",
+    "test": "LanguageWalkTest/testTheWalkInGerman()",
+    "attachment": "de-UICTContentSizeCategoryL-02-new-session_0_F782DCD3-4A11-46E5-8C86-22DDBF32E6B3.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931390.504,
+    "sha256": "b89e03d1f81e3fe212ffd9c534a5db016d1adf2a9fbd6a4d498e605c512f6036"
+  },
+  {
+    "file": "default-de-10-legal-overlay.png",
+    "sourceResult": "/tmp/limen-ui-language-default.xcresult",
+    "test": "LanguageWalkTest/testTheWalkInGerman()",
+    "attachment": "de-UICTContentSizeCategoryL-10-legal-overlay_0_62080B6A-DEBA-4407-B727-FD29DB6047F7.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931430.941,
+    "sha256": "7110094142fa0175250005b3c155a246f689bec5ab4b9d1872bbd6ccaae3901e"
+  },
+  {
+    "file": "default-it-02-new-session.png",
+    "sourceResult": "/tmp/limen-ui-language-default.xcresult",
+    "test": "LanguageWalkTest/testTheWalkInItalian()",
+    "attachment": "it-UICTContentSizeCategoryL-02-new-session_0_CD9A11B4-BD00-4F74-849F-1EEB75FAD98C.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931465.964,
+    "sha256": "b38b80191bef49c6798df59cdd4bfc5cbff89756979bb644c3fe1d9d6bfa5e91"
+  },
+  {
+    "file": "default-it-10-legal-overlay.png",
+    "sourceResult": "/tmp/limen-ui-language-default.xcresult",
+    "test": "LanguageWalkTest/testTheWalkInItalian()",
+    "attachment": "it-UICTContentSizeCategoryL-10-legal-overlay_0_C2122346-CCB5-4469-B842-217351C2DAC4.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931502.947,
+    "sha256": "b1cff96af088f71518a01fa9ea356f31e9b5624442ceaafceeea1613c3d10ebe"
+  },
+  {
+    "file": "default-rm-02-new-session.png",
+    "sourceResult": "/tmp/limen-ui-language-default.xcresult",
+    "test": "LanguageWalkTest/testTheWalkInRomansh()",
+    "attachment": "rm-UICTContentSizeCategoryL-02-new-session_0_377E7336-96B6-4467-B44B-83900E3C9350.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931536.165,
+    "sha256": "72d8d4a88c95af950b9d8a2177d9fa885d9cad08f7a3e3d9e8497651c803343e"
+  },
+  {
+    "file": "default-rm-10-legal-overlay.png",
+    "sourceResult": "/tmp/limen-ui-language-default.xcresult",
+    "test": "LanguageWalkTest/testTheWalkInRomansh()",
+    "attachment": "rm-UICTContentSizeCategoryL-10-legal-overlay_0_91C61EF9-2EDF-40DD-8C6F-B02F339D67C0.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931573.366,
+    "sha256": "6ab4ca10d46ae994ce7bb85694f1999a484f61533be9b8f89bfaca7ccd86f264"
+  },
+  {
+    "file": "empty-journey-complete-draft.png",
+    "sourceResult": "/tmp/limen-ui-parity-8.xcresult",
+    "test": "ParityJourneyTest/testEmptyFormToDrawnSignaturesAndOpenedDocument()",
+    "attachment": "empty-journey-complete-draft_0_1828768E-6CD1-4648-A5BC-F2F8E53131D6.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931159.333,
+    "sha256": "ea88205c3b490478e4a89d092d6fe602cf4925c9eb8f7154983cd76775132ca8"
+  },
+  {
+    "file": "empty-journey-signed.png",
+    "sourceResult": "/tmp/limen-ui-parity-8.xcresult",
+    "test": "ParityJourneyTest/testEmptyFormToDrawnSignaturesAndOpenedDocument()",
+    "attachment": "empty-journey-signed_0_3E776F8B-29FE-4921-AF37-3C10C96A4787.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931168.84,
+    "sha256": "2f143c548e5849606c7181ebfb1ed1e2f8a53f947889cc29b10bd550578fff0d"
+  },
+  {
+    "file": "empty-journey-opened-pdf.png",
+    "sourceResult": "/tmp/limen-ui-parity-8.xcresult",
+    "test": "ParityJourneyTest/testEmptyFormToDrawnSignaturesAndOpenedDocument()",
+    "attachment": "empty-journey-opened-pdf_0_7E6979C7-E9F3-4A00-B227-51A299335C0E.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931172.933,
+    "sha256": "2ce1439a844146bd20ffd947e306f6b3e2153963de05c44fdfa70d099f8486b6"
+  },
+  {
+    "file": "landlord-entry-full-preview.png",
+    "sourceResult": "/tmp/limen-ui-lifecycles.xcresult",
+    "test": "ParityJourneyTest/testPrivateLandlordEntryThenSeededExit()",
+    "attachment": "landlord-entry-full-preview_0_887C5359-141F-404F-B211-61D867A7665A.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931754.555,
+    "sha256": "6f292911e7a3710eeb9874c35854b8d9a6ce054ff9e050a80ae39c8907380ec1"
+  },
+  {
+    "file": "landlord-entry-signed.png",
+    "sourceResult": "/tmp/limen-ui-lifecycles.xcresult",
+    "test": "ParityJourneyTest/testPrivateLandlordEntryThenSeededExit()",
+    "attachment": "landlord-entry-signed_0_DFD6724A-9FA4-4303-8ACE-07FBE8FAF020.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931764.254,
+    "sha256": "05bdffcf56c0ec36d710fe2542f4a2de7a5721026b9e32462bad12124b66be0a"
+  },
+  {
+    "file": "landlord-entry-opened-pdf.png",
+    "sourceResult": "/tmp/limen-ui-lifecycles.xcresult",
+    "test": "ParityJourneyTest/testPrivateLandlordEntryThenSeededExit()",
+    "attachment": "landlord-entry-opened-pdf_0_E7F9FB55-E75E-4659-BD8F-9C93DA8F250D.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931769.464,
+    "sha256": "71c8e1b16e26ad3a599d75f7d78ed7a43b45103c26f941d08f308c864dae748e"
+  },
+  {
+    "file": "entry-baseline-visible-in-fresh-exit.png",
+    "sourceResult": "/tmp/limen-ui-lifecycles.xcresult",
+    "test": "ParityJourneyTest/testPrivateLandlordEntryThenSeededExit()",
+    "attachment": "entry-baseline-visible-in-fresh-exit_0_E91130E0-5918-4F3F-B11C-009572AB27E6.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931819.262,
+    "sha256": "65e9119c5340d4b20b65042adedeb06e83ccd60bc5d0fe1f4a54d2b47efe0f92"
+  },
+  {
+    "file": "landlord-seeded-exit-signed.png",
+    "sourceResult": "/tmp/limen-ui-lifecycles.xcresult",
+    "test": "ParityJourneyTest/testPrivateLandlordEntryThenSeededExit()",
+    "attachment": "landlord-seeded-exit-signed_0_4E7462DB-7139-4D4A-BC60-7A8A8726C835.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931835.706,
+    "sha256": "93868022dc6f07e457817abb8981637272f12da6057bb2cf32e970c5bc891089"
+  },
+  {
+    "file": "landlord-seeded-exit-opened-pdf.png",
+    "sourceResult": "/tmp/limen-ui-lifecycles.xcresult",
+    "test": "ParityJourneyTest/testPrivateLandlordEntryThenSeededExit()",
+    "attachment": "landlord-seeded-exit-opened-pdf_0_087F9613-3666-430A-8FCD-219CCAEB28CC.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791931840.907,
+    "sha256": "3a7939fed1be14eb9985042652e3097eb16677a1226f59bf40e3d1eb3879ee9c"
+  },
+  {
+    "file": "agency-standalone-exit-full-preview.png",
+    "sourceResult": "/tmp/limen-ui-lifecycles-retry.xcresult",
+    "test": "ParityJourneyTest/testAgencyStandaloneExitThenAmendment()",
+    "attachment": "agency-standalone-exit-full-preview_0_F82F39FB-0533-4133-B2DB-22BD7EAB22BD.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791932053.062,
+    "sha256": "953fddd6fe042cfdbafaf6e8bf6dc3664c1029c33025b94aff53d45075e2dd08"
+  },
+  {
+    "file": "agency-standalone-exit-signed.png",
+    "sourceResult": "/tmp/limen-ui-lifecycles-retry.xcresult",
+    "test": "ParityJourneyTest/testAgencyStandaloneExitThenAmendment()",
+    "attachment": "agency-standalone-exit-signed_0_DAE6A4E1-9CED-41A9-880B-B6EA18E6C1F5.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791932064.358,
+    "sha256": "f53bfb0e9f7650cb6bc3041187e5879b5616e0612157242f5cb8f3942a8adafd"
+  },
+  {
+    "file": "agency-standalone-exit-opened-pdf.png",
+    "sourceResult": "/tmp/limen-ui-lifecycles-retry.xcresult",
+    "test": "ParityJourneyTest/testAgencyStandaloneExitThenAmendment()",
+    "attachment": "agency-standalone-exit-opened-pdf_0_7078740F-47D1-44B5-A6DD-FD2BDC4692CA.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791932069.586,
+    "sha256": "6ad5856ac372e04ef6797e169f78b2491c8c292a0705d9291f6a29baaafe2be4"
+  },
+  {
+    "file": "agency-amendment-full-preview.png",
+    "sourceResult": "/tmp/limen-ui-lifecycles-retry.xcresult",
+    "test": "ParityJourneyTest/testAgencyStandaloneExitThenAmendment()",
+    "attachment": "agency-amendment-full-preview_0_629FF627-56EF-4347-A286-77A958A43976.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791932091.451,
+    "sha256": "a3634e130ec596d2a4351cc125aab12e42cd9d28efa42738a4dab37ab64621b7"
+  },
+  {
+    "file": "agency-amendment-signed.png",
+    "sourceResult": "/tmp/limen-ui-lifecycles-retry.xcresult",
+    "test": "ParityJourneyTest/testAgencyStandaloneExitThenAmendment()",
+    "attachment": "agency-amendment-signed_0_BEEAACF3-C930-413D-BE7F-A5462CD21965.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791932102.658,
+    "sha256": "e2d294e6cd5015b5865d20a69c6f57c67a224eeafa69d1ee067a4bf3d6383bf4"
+  },
+  {
+    "file": "agency-amendment-opened-pdf.png",
+    "sourceResult": "/tmp/limen-ui-lifecycles-retry.xcresult",
+    "test": "ParityJourneyTest/testAgencyStandaloneExitThenAmendment()",
+    "attachment": "agency-amendment-opened-pdf_0_578EE1EC-7F15-4213-8C8F-7A596366DECF.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791932107.889,
+    "sha256": "5e93dee1bcd0302a4e4ea5b543a846dbdef63baadcb6fb79aaa9f980b0451e5a"
+  },
+  {
+    "file": "final-audit-hub.png",
+    "sourceResult": "/tmp/limen-ui-audit-final.xcresult",
+    "test": "AccessibilityJourneyTest/testMainHandoverScreens()",
+    "attachment": "En-hub-audit_0_66790510-522B-469F-8F3B-E3814F779574.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791932266.474,
+    "sha256": "d7c0dc48f6984bb7a2760fb62d115ef23898283cfb9757645627bc5dd40c430d"
+  },
+  {
+    "file": "final-audit-dossier.png",
+    "sourceResult": "/tmp/limen-ui-audit-final.xcresult",
+    "test": "AccessibilityJourneyTest/testMainHandoverScreens()",
+    "attachment": "En-dossier-audit_0_6F6FAC53-333C-4F75-8FC2-A0721208D11E.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791932269.973,
+    "sha256": "23958a5ef26f8ca1ee8b5f00d91d2ca5f58e7148d4c10cd90ab7a91ceee795f8"
+  },
+  {
+    "file": "final-audit-inspection.png",
+    "sourceResult": "/tmp/limen-ui-audit-final.xcresult",
+    "test": "AccessibilityJourneyTest/testMainHandoverScreens()",
+    "attachment": "En-inspection-audit_0_D4B47F93-0DF6-484D-B30C-F717EEDE1D8B.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791932273.734,
+    "sha256": "3badd4fa49a84beae11f844efa6ae8d85d24f0027d2144789315712881d8182a"
+  },
+  {
+    "file": "final-audit-review.png",
+    "sourceResult": "/tmp/limen-ui-audit-final.xcresult",
+    "test": "AccessibilityJourneyTest/testMainHandoverScreens()",
+    "attachment": "En-review-audit_0_0E1F123A-1DB7-4C1F-82FE-C5DF9EE3C492.png",
+    "device": "iPhone 18 Pro",
+    "deviceId": "CDF6919D-01E4-44D4-84F9-AF3CF5BFB1CA",
+    "timestamp": 1791932276.945,
+    "sha256": "d2a8c21392cdfdacbdb08001c5a4448c6d78899b275c89748949b9b05e77b597"
+  },
+  {
+    "file": "sized-audit-initial-fr-form.png",
+    "sourceResult": "/tmp/limen-ui-sized-audits-final.xcresult",
+    "test": "AccessibilityJourneyTest/testFrenchLarge()",
+    "attachment": "Fr-UICTContentSizeCategoryXXXL-form_0_A01B1A93-9B7F-4DFB-884B-E3350CCFE3E8.png",
+    "device": "iPhone 17 Pro",
+    "deviceId": "6F9172CC-DF86-4F05-9EB3-42E8E287668F",
+    "timestamp": 1791932718.899,
+    "isAssociatedWithFailure": false,
+    "sha256": "25221f2074482aa8eeb9256c0519784b60986c426574a28596e0a715069848b5"
+  },
+  {
+    "file": "sized-audit-initial-fr-element.png",
+    "sourceResult": "/tmp/limen-ui-sized-audits-final.xcresult",
+    "test": "AccessibilityJourneyTest/testFrenchLarge()",
+    "attachment": "Element Screenshot_1_88FE3954-F02E-4824-97F4-3814576982E2.png",
+    "device": "iPhone 17 Pro",
+    "deviceId": "6F9172CC-DF86-4F05-9EB3-42E8E287668F",
+    "timestamp": 1791932721.217,
+    "isAssociatedWithFailure": true,
+    "sha256": "aa71a5b1038ac6bdc86b350cd332b5837cf1acc49a27b347a24f6dadf6e97682"
+  },
+  {
+    "file": "sized-audit-initial-de-form.png",
+    "sourceResult": "/tmp/limen-ui-sized-audits-final.xcresult",
+    "test": "AccessibilityJourneyTest/testGermanLargestAccessibility()",
+    "attachment": "De-UICTContentSizeCategoryAccessibilityXXXL-form_0_EBA47AC5-57CD-47BD-B748-49E3ECD7C4DF.png",
+    "device": "iPhone 17 Pro",
+    "deviceId": "6F9172CC-DF86-4F05-9EB3-42E8E287668F",
+    "timestamp": 1791932728.58,
+    "isAssociatedWithFailure": false,
+    "sha256": "92db392a1c7418d25993456b3ddb2292395a9525aeaaab8c6bb2d19e54bafb95"
+  },
+  {
+    "file": "sized-audit-initial-de-element.png",
+    "sourceResult": "/tmp/limen-ui-sized-audits-final.xcresult",
+    "test": "AccessibilityJourneyTest/testGermanLargestAccessibility()",
+    "attachment": "Element Screenshot_1_E2AB836F-E3A5-4735-8BEB-A6EC9D6623D1.png",
+    "device": "iPhone 17 Pro",
+    "deviceId": "6F9172CC-DF86-4F05-9EB3-42E8E287668F",
+    "timestamp": 1791932730.738,
+    "isAssociatedWithFailure": true,
+    "sha256": "36dc718c16b992fe485e051b7345b8b1420c3a98ad7af7de144b25e2cc091a35"
+  },
+  {
+    "file": "sized-audit-initial-it-form.png",
+    "sourceResult": "/tmp/limen-ui-sized-audits-final.xcresult",
+    "test": "AccessibilityJourneyTest/testItalianLargestAccessibility()",
+    "attachment": "It-UICTContentSizeCategoryAccessibilityXXXL-form_0_5C80D053-393E-4B32-88F9-AB51204DF26B.png",
+    "device": "iPhone 17 Pro",
+    "deviceId": "6F9172CC-DF86-4F05-9EB3-42E8E287668F",
+    "timestamp": 1791932738.149,
+    "isAssociatedWithFailure": false,
+    "sha256": "1f6a65641417793d9cc21a2130757bef46496daf6e622b0b388ec5b844b30c5c"
+  },
+  {
+    "file": "sized-audit-initial-it-element.png",
+    "sourceResult": "/tmp/limen-ui-sized-audits-final.xcresult",
+    "test": "AccessibilityJourneyTest/testItalianLargestAccessibility()",
+    "attachment": "Element Screenshot_1_6A83466D-C343-4AF3-9BE9-00FC79090818.png",
+    "device": "iPhone 17 Pro",
+    "deviceId": "6F9172CC-DF86-4F05-9EB3-42E8E287668F",
+    "timestamp": 1791932740.314,
+    "isAssociatedWithFailure": true,
+    "sha256": "d59d7a0671ad300bb8b6e52a8bd350edfa5d3c92a36dbb58170ae7e6655319de"
+  },
+  {
+    "file": "sized-audit-initial-rm-form.png",
+    "sourceResult": "/tmp/limen-ui-sized-audits-final.xcresult",
+    "test": "AccessibilityJourneyTest/testRomanshLargestAccessibility()",
+    "attachment": "Rm-UICTContentSizeCategoryAccessibilityXXXL-form_0_3AE28B78-BA9E-4CBF-822B-96C2649D707E.png",
+    "device": "iPhone 17 Pro",
+    "deviceId": "6F9172CC-DF86-4F05-9EB3-42E8E287668F",
+    "timestamp": 1791932747.645,
+    "isAssociatedWithFailure": false,
+    "sha256": "959e1f0c3d01326e58626e77094d5faa9ff9ac7650316ee710c8b01981bfe9cb"
+  },
+  {
+    "file": "sized-audit-initial-rm-element.png",
+    "sourceResult": "/tmp/limen-ui-sized-audits-final.xcresult",
+    "test": "AccessibilityJourneyTest/testRomanshLargestAccessibility()",
+    "attachment": "Element Screenshot_1_8155F160-F14E-42B4-8CEE-3B611BB82292.png",
+    "device": "iPhone 17 Pro",
+    "deviceId": "6F9172CC-DF86-4F05-9EB3-42E8E287668F",
+    "timestamp": 1791932749.791,
+    "isAssociatedWithFailure": true,
+    "sha256": "e139bd658b9deda2235a743ac9d48638738067fbb375834e2fb90c2c62f02624"
+  },
+  {
+    "file": "sized-audit-visible-fr.png",
+    "sourceResult": "/tmp/limen-ui-visible-audits-retry.xcresult",
+    "test": "AccessibilityJourneyTest/testFrenchLargeVisibleAddress()",
+    "attachment": "Fr-UICTContentSizeCategoryXXXL-visible-control-form_0_D33D3636-A060-4479-9E09-F5445CFFFC92.png",
+    "device": "iPhone 17 Pro",
+    "deviceId": "6F9172CC-DF86-4F05-9EB3-42E8E287668F",
+    "timestamp": 1791932913.886,
+    "sha256": "be6e2485709d5ab9c4cce0fc660e9d122c8a15aaf01d4eade84ae1714e19cfe9"
+  },
+  {
+    "file": "sized-audit-visible-de.png",
+    "sourceResult": "/tmp/limen-ui-visible-audits-retry.xcresult",
+    "test": "AccessibilityJourneyTest/testGermanLargestVisibleExit()",
+    "attachment": "De-UICTContentSizeCategoryAccessibilityXXXL-visible-control-form_0_C6158667-0E3B-4AC8-BC05-F4BE084CC754.png",
+    "device": "iPhone 17 Pro",
+    "deviceId": "6F9172CC-DF86-4F05-9EB3-42E8E287668F",
+    "timestamp": 1791932923.173,
+    "sha256": "6878b9ee4b249f003661287ccb65b421bea86023c7cb01718cd587fc8cadda28"
+  },
+  {
+    "file": "sized-audit-visible-it.png",
+    "sourceResult": "/tmp/limen-ui-visible-audits-retry.xcresult",
+    "test": "AccessibilityJourneyTest/testItalianLargestVisibleExit()",
+    "attachment": "It-UICTContentSizeCategoryAccessibilityXXXL-visible-control-form_0_DDAA3F1A-6F1A-4852-B7DF-FC6865AFD2B6.png",
+    "device": "iPhone 17 Pro",
+    "deviceId": "6F9172CC-DF86-4F05-9EB3-42E8E287668F",
+    "timestamp": 1791932932.478,
+    "sha256": "667b46233bab0232b25d2b132fc73ae2c36f38efe818b674eec9ff16ef0dabd7"
+  },
+  {
+    "file": "sized-audit-visible-rm.png",
+    "sourceResult": "/tmp/limen-ui-visible-audits-retry.xcresult",
+    "test": "AccessibilityJourneyTest/testRomanshLargestVisibleExit()",
+    "attachment": "Rm-UICTContentSizeCategoryAccessibilityXXXL-visible-control-form_0_D0EF07DB-3148-4CAE-A4B1-210DD98ABDB2.png",
+    "device": "iPhone 17 Pro",
+    "deviceId": "6F9172CC-DF86-4F05-9EB3-42E8E287668F",
+    "timestamp": 1791932941.726,
+    "sha256": "7cf180c85949c5da7a8a971def22c0cbecc127eae766a09808244a95c1166c3d"
+  },
+  {
+    "file": "smoke-06-backup-unprotected.png",
+    "sourceResult": "/tmp/limen-ui-smoke-final.xcresult",
+    "test": "SmokeTest/testTheLandingTheFormAndThePrivacyPage()",
+    "attachment": "06-backup-unprotected_0_311CCC19-23FC-470E-92CA-CDABE0E39C9B.png",
+    "device": "iPhone 17 Pro",
+    "deviceId": "6F9172CC-DF86-4F05-9EB3-42E8E287668F",
+    "timestamp": 1791933130.152,
+    "sha256": "df7085ee3b8ea31ce1a75e6a1739b2968e860af10d9c61c9ed1b3e23ecae5e8a"
+  },
+  {
+    "file": "smoke-05-backup-password.png",
+    "sourceResult": "/tmp/limen-ui-smoke-final.xcresult",
+    "test": "SmokeTest/testTheLandingTheFormAndThePrivacyPage()",
+    "attachment": "05-backup-password_0_E1EA5B93-B650-4124-A32E-EE8C5FBA8FCD.png",
+    "device": "iPhone 17 Pro",
+    "deviceId": "6F9172CC-DF86-4F05-9EB3-42E8E287668F",
+    "timestamp": 1791933125.748,
+    "sha256": "c0ff93811e983015a81b87456ed44ca40f68aeb53994fd4c324cf45f52b62946"
+  }
+]

@@ -81,6 +81,25 @@ import Testing
         #expect(swiss.hasRequiredFields())
     }
 
+    @Test func quickDraftAcceptsShortOnePartNamesWithoutOptionalContacts() {
+        for name in ["Li", "A", "李", "Madonna"] {
+            var identity = SessionIdentity()
+            identity.firstName = name
+            #expect(identity.hasRequiredFields())
+        }
+        #expect(!SessionIdentity().hasRequiredFields())
+        var invalidPhone = SessionIdentity()
+        invalidPhone.firstName = "A"
+        invalidPhone.phone = "invalid"
+        #expect(!invalidPhone.hasRequiredFields())
+        var foreign = SessionIdentity()
+        foreign.lastName = "Ng"
+        foreign.usesSwissAddress = false
+        foreign.addressCountry = "GB"
+        foreign.street = "A named cottage"
+        #expect(foreign.hasRequiredFields())
+    }
+
     @Test func parsesOfficialAddressSearchResults() {
         let matches = SwissAddressLookup.parse(
             "{\"results\":[{\"attrs\":{\"origin\":\"address\",\"label\":\"Avenue de la Gare 1 <b>1003 Lausanne</b>\",\"detail\":\"avenue de la gare 1 1003 lausanne ch vd\"}}]}"
@@ -135,7 +154,7 @@ import Testing
         #expect(s.entry == "Entrée")
         #expect(s.countRooms(3) == "PIÈCES 3")
         #expect(s.canton(.zh) == "ZH · Zürich")
-        #expect(s.archiveSaved("a.limen") == "Enregistré dans Téléchargements/Limen sous a.limen")
+        #expect(s.archiveSaved("a.limen") == "Enregistré sous a.limen dans Fichiers, dans le dossier de l’app Limen")
         #expect(s.archiveRestored(ArchiveImportResult(imported: 1, skippedExisting: 2, rejected: 3)) == "Restaurés : 1 ; existants conservés : 2 ; invalides refusés : 3.")
         #expect(s.tipExitNotice().bullets == s.tipClocks().bullets)
         #expect(s.gradeShort(.notChecked) == "· ")

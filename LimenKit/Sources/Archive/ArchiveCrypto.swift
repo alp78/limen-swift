@@ -15,14 +15,18 @@ enum ArchiveCrypto {
     private static let keyBytes = 32
     private static let iterations: UInt32 = 210_000
     /// The same ceiling the unpacker applies, enforced before the unpacker ever sees the bytes.
-    private static let maxPlaintextBytes: Int64 = 2 * 1024 * 1024 * 1024
+    private static let maxPlaintextBytes: Int64 = ArchiveLimits.payload
 
-    static func export(root: URL, password: String, to output: URL) throws {
+    static func export(root: URL, password: String, to output: URL, protocolIds: Set<String>? = nil) throws {
+        var completed = false
+        defer { if !completed { try? FileManager.default.removeItem(at: output) } }
+        ArchiveStaging.sweep(AppFiles.scratch, prefix: "limen-export-")
         // No password writes the plain archive, byte for byte the form the legacy branch of
         // `importArchive` has always read, so an unprotected backup needs no new reader and no new
         // version. Whether to protect is the person's call; the screen says which they made.
         if password.isEmpty {
-            try ArchiveIO.export(root: root, to: output)
+            try ArchiveIO.export(root: root, to: output, protocolIds: protocolIds)
+            completed = true
             return
         }
         let salt = try randomBytes(saltBytes)
@@ -39,7 +43,7 @@ enum ArchiveCrypto {
         // the defer leaves it readable for good.
         let plain = AppFiles.scratch.appendingPathComponent("limen-export-\(UUID().uuidString).zip")
         defer { try? FileManager.default.removeItem(at: plain) }
-        try ArchiveIO.export(root: root, to: plain)
+        try ArchiveIO.export(root: root, to: plain, protocolIds: protocolIds)
         FileManager.default.createFile(atPath: output.path, contents: nil)
         let out = try FileHandle(forWritingTo: output)
         defer { try? out.close() }
@@ -51,15 +55,18 @@ enum ArchiveCrypto {
             try out.write(contentsOf: cipher.encrypt(chunk))
         }
         try out.write(contentsOf: cipher.finalizeEncryption())
+        try out.synchronize()
+        completed = true
     }
 
     /// Encrypted archives are preferred; version-1 plain ZIP files remain importable.
-    static func importArchive(root: URL, password: String, from input: URL) throws -> ArchiveImportResult {
+    static func importArchive(root: URL, password: String, from input: URL, repairCorrupt: Bool = false) throws -> ArchiveImportResult {
+        guard Files.isRegularFile(input), Files.size(input) <= maxPlaintextBytes + 54 else { throw ArchiveError.tooLarge }
         let probe = try FileHandle(forReadingFrom: input)
         defer { try? probe.close() }
         let prefix = try probe.read(upToCount: magic.count) ?? Data()
         if prefix != magic {
-            return try ArchiveIO.importArchive(root: root, from: input)
+            return try ArchiveIO.importArchive(root: root, from: input, repairCorrupt: repairCorrupt)
         }
         guard !password.isEmpty else { throw ArchiveError.emptyPassword }
         guard let versionByte = try probe.read(upToCount: 1)?.first, versionByte == version else { throw ArchiveError.unsupportedVersion }
@@ -77,10 +84,7 @@ enum ArchiveCrypto {
         // The staged file is every record in the archive in the clear, and the defer below cannot
         // run if the process is killed part way. Anything an earlier run left behind goes first,
         // rather than sitting in Application Support until the app is deleted.
-        for stale in (try? FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil)) ?? []
-        where stale.lastPathComponent.hasPrefix("archive-decrypt-") {
-            try? FileManager.default.removeItem(at: stale)
-        }
+        ArchiveStaging.sweep(root, prefix: "archive-decrypt-")
         let staged = root.appendingPathComponent("archive-decrypt-\(UUID().uuidString).zip")
         defer { try? FileManager.default.removeItem(at: staged) }
         FileManager.default.createFile(atPath: staged.path, contents: nil)
@@ -104,11 +108,11 @@ enum ArchiveCrypto {
             guard tail.count == 16 else { throw ArchiveError.truncated }
             guard cipher.finalizeDecryption(tag: tail) else { throw ArchiveError.wrongPassword }
         }
-        return try ArchiveIO.importArchive(root: root, from: staged)
+        return try ArchiveIO.importArchive(root: root, from: staged, repairCorrupt: repairCorrupt)
     }
 
     /// PBKDF2 encodes the password as UTF-8, as Java's PBKDF2WithHmacSHA256 does.
-    private static func derive(password: String, salt: Data) throws -> Data {
+    static func derive(password: String, salt: Data) throws -> Data {
         var key = Data(count: keyBytes)
         let passwordBytes = Array(password.utf8)
         let status = key.withUnsafeMutableBytes { keyBuffer in

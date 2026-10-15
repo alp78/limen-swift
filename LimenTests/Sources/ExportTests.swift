@@ -1,5 +1,5 @@
 import Foundation
-import LimenKit
+@testable import LimenKit
 import PDFKit
 import Testing
 import UIKit
@@ -9,6 +9,43 @@ import UIKit
 /// finalized exit in Vaud with every dossier component, one photographed finding, two ink files
 /// and two delivery receipts. The result is a real PDF that PDFKit opens, with its pages counted.
 @Suite struct ExportTests {
+    @Test func pdfGlyphPixelsAppearAboveTheirBaselineAndLongTokensStayInsideTheColumn() throws {
+        let sheet = try PdfExport.Sheet(s: Str(.en), reference: "pixel-test", total: 1)
+        sheet.newPage()
+        sheet.text("F", 200, 200, sheet.titleInk)
+        let pass = try sheet.close()
+        let provider = try #require(CGDataProvider(data: pass.data as CFData))
+        let document = try #require(CGPDFDocument(provider))
+        let page = try #require(document.page(at: 1))
+        let width = 1240, height = 1754
+        let context = try #require(CGContext(data: nil, width: width, height: height, bitsPerComponent: 8, bytesPerRow: width * 4,
+            space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue))
+        context.setFillColor(UIColor.white.cgColor)
+        context.fill(CGRect(x: 0, y: 0, width: width, height: height))
+        // A raw bitmap context uses PDF coordinates; its buffer rows are read top to bottom.
+        context.scaleBy(x: CGFloat(width) / page.getBoxRect(.mediaBox).width, y: CGFloat(height) / page.getBoxRect(.mediaBox).height)
+        context.drawPDFPage(page)
+        let pixels = try #require(context.data).assumingMemoryBound(to: UInt8.self)
+        func darkPixels(yRange: Range<Int>) -> Int {
+            var count = 0
+            for y in yRange {
+                for x in 195..<250 {
+                    let index = (y * width + x) * 4
+                    if pixels[index] < 100, pixels[index + 1] < 100, pixels[index + 2] < 100 { count += 1 }
+                }
+            }
+            return count
+        }
+        #expect(darkPixels(yRange: 150..<200) > 100, "Upright F must lie above its baseline")
+        #expect(darkPixels(yRange: 201..<250) == 0, "An inverted glyph falls below its baseline")
+        for token in [String(repeating: "A9", count: 32), "https://example.invalid/" + String(repeating: "longpath", count: 20)] {
+            let lines = sheet.wrapLines(token, sheet.body, 300)
+            #expect(lines.count > 1)
+            #expect(lines.joined() == token)
+            #expect(lines.allSatisfy { sheet.body.width($0) <= 300 })
+        }
+    }
+
     private func evidence(_ file: URL, background: UIColor, text: String) throws {
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
@@ -117,7 +154,9 @@ import UIKit
         for lang in Lang.allCases {
             let exported = try PdfExport.export(record, Str(lang), photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id), folder: root)
             #expect(exported.bytes > 1_000, "\(lang)")
-            let head = try #require(FileHandle(forReadingFrom: exported.url).readData(ofLength: 5))
+            let handle = try FileHandle(forReadingFrom: exported.url)
+            let head = handle.readData(ofLength: 5)
+            try handle.close()
             #expect(head == Data("%PDF-".utf8))
             let document = try #require(PDFDocument(url: exported.url))
             #expect(document.pageCount >= 2, "\(lang) has \(document.pageCount) pages")
@@ -134,6 +173,57 @@ import UIKit
         #expect(english.displayName.hasSuffix(".pdf"))
     }
 
+    @Test func completePreviewAndRetainedOutputsCarryEveryParticipantAndEscapedEvidence() throws {
+        let root = try scratch()
+        let store = Store(root: root)
+        var record = try professionalRecord(store: store)
+        record.parties[0].id = "tenant-one"
+        record.parties[1].id = "landlord-one"
+        record.parties[1].agency = "Example Agency"
+        record.parties[1].authority = "Written mandate"
+        var coTenant = Party(.tenant, name: "Second Tenant")
+        coTenant.id = "tenant-two"
+        record.parties.append(coTenant)
+        record.details.reservations["tenant-one"] = "<script>alert('statement')</script>"
+        record.details.reservations["tenant-two"] = "Independent reservation"
+        record.signatures[0].participantId = record.parties[0].id
+        record.signatures[0].name = record.parties[0].signerName()
+        record.signatures[1].participantId = record.parties[1].id
+        var coTenantOutcome = Signature(.tenant, name: coTenant.name, plane: .record, refused: true,
+            reservation: "Independent reservation", contentRevision: record.contentRevision)
+        coTenantOutcome.participantId = coTenant.id
+        record.signatures.append(coTenantOutcome)
+        record.details.readings = [MeterReading(id: "m1", label: "Water meter", identifier: "W42", value: "18", unit: "m³")]
+        record.details.scopeNotes["Contract"] = "Lease unavailable on site"
+        record.details.attachments = [SupportingDocument(id: "external", title: "Prior report", externalReference: "Held by both parties")]
+        record.defects[0].participantPositions["tenant-two"] = TenantPosition(response: .normalWear, comment: "Independent position")
+        record.evidenceFingerprint = try ProtocolIntegrity.fingerprint(record, photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id))
+        for lang in Lang.allCases {
+            let rendered = try PdfExport.document(record, Str(lang), photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id))
+            let pdfText = try #require(PDFDocument(data: rendered.pdf)?.string)
+            let html = String(decoding: rendered.html, as: UTF8.self)
+            for phrase in ["Second Tenant", "Independent reservation", "Example Agency", "Written mandate", "Water meter", "Prior report", "Independent position"] {
+                #expect(pdfText.contains(phrase), "\(lang): \(phrase)")
+                #expect(html.contains(phrase), "\(lang): \(phrase)")
+            }
+            #expect(!html.contains("<script>"))
+            #expect(html.contains("&lt;script&gt;"))
+            #expect(html.contains("lang=\"\(lang.rawValue.lowercased())\""))
+            let sample = root.appendingPathComponent("synthetic-\(lang.rawValue.lowercased())")
+            try rendered.pdf.write(to: sample.appendingPathExtension("pdf"))
+            try rendered.html.write(to: sample.appendingPathExtension("html"))
+            print("LIMEN_DOCUMENT_SAMPLE \(sample.path) pages=\(rendered.pages)")
+        }
+        let copy = try PdfExport.exportRetained(record, Str(.en), store: store, publicFolder: root.appendingPathComponent("public"))
+        record.exportHistory = [copy]
+        try store.save(record)
+        let retained = root.appendingPathComponent(copy.uri)
+        #expect(try ProtocolIntegrity.fileHash(retained) == copy.sha256)
+        try FileManager.default.removeItem(at: root.appendingPathComponent("public"))
+        #expect(FileManager.default.fileExists(atPath: retained.path))
+        #expect(store.load(record.id)?.exportHistory == [copy])
+    }
+
     @Test func aDraftIsRefusedAndTamperedEvidenceIsRefused() throws {
         let root = try scratch()
         let store = Store(root: root)
@@ -141,14 +231,74 @@ import UIKit
         #expect(throws: PdfExport.ExportError.notFinalized) {
             var draft = record
             draft.finalizedEpochMs = 0
-            try PdfExport.export(draft, Str(.en), photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id), folder: root)
+            _ = try PdfExport.export(draft, Str(.en), photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id), folder: root)
         }
         try Data("swapped".utf8).write(to: store.photoDir(record.id).appendingPathComponent("window-scratch.jpg"))
         #expect(throws: PdfExport.ExportError.integrityMismatch) {
-            try PdfExport.export(record, Str(.en), photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id), folder: root)
+            _ = try PdfExport.export(record, Str(.en), photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id), folder: root)
         }
         record.evidenceFingerprint = ""
         #expect(!record.isFinalized())
+    }
+
+    @Test func draftPreviewNamesEveryMissingOutcomeWithoutClaimingFinalizationOrDepositRelease() throws {
+        let root = try scratch()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let store = Store(root: root)
+        var draft = try professionalRecord(store: store)
+        draft.finalizedEpochMs = 0
+        draft.evidenceFingerprint = ""
+        draft.deposit.kind = .unknown
+        draft.sessionRole = nil
+        draft.parties[0].id = "tenant-present"
+        draft.parties[1].id = "landlord-pending"
+        var coTenant = Party(.tenant, name: "Co-tenant pending")
+        coTenant.id = "tenant-pending"
+        draft.parties.append(coTenant)
+        draft.pendingRecordReservations[.landlord] = "Pending landlord reservation"
+        draft.details.reservations[coTenant.id] = "Independent pending reservation"
+        var outcome = try #require(draft.signatures.first)
+        outcome.participantId = draft.parties[0].id
+        let strings = Str(.en)
+        func flattened(_ value: String) -> String { value.split(whereSeparator: \.isWhitespace).joined(separator: " ") }
+
+        // No recorded side on a legacy unilateral draft must not invent a tenant-only scope.
+        // Both the drawn-ink and refusal variants must still name all outstanding outcomes.
+        for oneSided in [false, true] {
+            for refused in [false, true] {
+                draft.oneSided = oneSided
+                var signature = outcome
+                signature.refused = refused
+                if refused { signature.file = "" }
+                draft.signatures = [signature]
+                let document = try PdfExport.document(draft, strings, photoDir: store.photoDir(draft.id), signatureDir: store.signatureDir(draft.id))
+                let pdf = flattened(try #require(PDFDocument(data: document.pdf)?.string))
+                let html = String(decoding: document.html, as: UTF8.self)
+                #expect(pdf.contains(strings.previewDraft.uppercased()))
+                #expect(html.contains("<h1>\(strings.previewDraft)</h1>"))
+                #expect(!pdf.contains(strings.pdfFinalized.uppercased()))
+                #expect(!html.contains("<h2>\(strings.pdfFinalized)</h2>"))
+                for text in [pdf, html] {
+                    #expect(!text.contains(strings.fingerprint))
+                    #expect(!text.contains("LIMEN-"))
+                    #expect(!text.contains(strings.releaseTitle.uppercased()))
+                    #expect(!text.contains(strings.releaseTitle))
+                    #expect(!text.contains(strings.releaseBank))
+                    #expect(!text.contains(strings.releaseInsurance))
+                    for party in draft.parties.dropFirst() {
+                        #expect(text.contains("\(strings.role(party.role)) · \(party.signerName()) · \(strings.notSigned)"))
+                    }
+                    #expect(text.contains("Pending landlord reservation"))
+                    #expect(text.contains("Independent pending reservation"))
+                }
+                if refused {
+                    #expect(pdf.contains(flattened(strings.refusedNote)))
+                    #expect(html.contains(strings.refusedNote))
+                } else {
+                    #expect(html.contains("alt=\"\(outcome.name)\""))
+                }
+            }
+        }
     }
 
     /// The Android matrix: every actor and both handovers finalize and export with two signatures.
@@ -195,6 +345,7 @@ import UIKit
                     Party(.tenant, name: "Matrix Tenant", representedBy: "Tenant proxy", email: "tenant@example.invalid"),
                     Party(.landlord, name: actor == "agency" ? "Matrix Agency SA" : "Matrix Landlord", representedBy: actor == "agency" ? "Agency Operator" : "", email: "landlord@example.invalid"),
                 ]
+                for index in draft.parties.indices where !draft.parties[index].representedBy.isBlank { draft.parties[index].authority = "Mandate shown" }
                 draft.contract.conclusionDate = "2026-07-01"
                 draft.contract.startDate = "2026-08-01"
                 draft.rooms = [Room(id: "r1", kind: .room, inspected: true)]

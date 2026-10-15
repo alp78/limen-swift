@@ -69,7 +69,7 @@ import Testing
         #expect(store.list().map(\.id) == ["new", "old"])
     }
 
-    @Test func unknownFieldsFromTheFutureAreSkipped() throws {
+    @Test func unsupportedFieldsAreReportedWithoutRewritingTheOriginal() throws {
         let root = try temporaryRoot()
         let store = Store(root: root)
         try store.save(Self.fullProtocol())
@@ -78,16 +78,20 @@ import Testing
         // A version-2 writer adds a field this reader has never heard of.
         let brace = try #require(text.range(of: "{"))
         try writeText(text.replacingCharacters(in: brace, with: "{\n  \"fromTheFuture\": {\"x\": 1},"), to: file)
-        #expect(store.load("p1") != nil)
+        #expect(store.load("p1") == nil)
+        #expect(store.catalogue().unreadable == [Store.UnreadableRecord(id: "p1", hasRecovery: false)])
+        #expect(throws: Store.SaveError.unreadablePrevious) { try store.save(Self.fullProtocol()) }
+        #expect(readText(file).contains("fromTheFuture"))
     }
 
-    @Test func corruptFileIsRefusedQuietlyAndDoesNotPoisonTheList() throws {
+    @Test func corruptFileRemainsVisibleInTheCatalogue() throws {
         let root = try temporaryRoot()
         let store = Store(root: root)
         try store.save(Self.fullProtocol())
         try writeText("{ not json", to: root.appendingPathComponent("protocols/broken.json"))
         #expect(store.list().count == 1)
         #expect(store.load("broken") == nil)
+        #expect(store.catalogue().unreadable.map(\.id) == ["broken"])
     }
 
     @Test func deleteTakesPhotosAndInkWithIt() throws {
@@ -135,4 +139,68 @@ import Testing
         #expect(text.contains("\"remarks\":\"line one\\nline \\\"two\\\" \\\\ tab\\t bell\\u0007 é\""))
         #expect(try ProtocolJSON.decode(Data(text.utf8)) == p)
     }
+
+    @Test func staleAndDivergentWritesCannotReplaceARevision() throws {
+        let store = Store(root: try temporaryRoot())
+        var p = Self.fullProtocol()
+        p.saveSequence = 1; p.contentRevision = 1
+        try store.save(p)
+        var latest = p
+        latest.saveSequence = 2; latest.contentRevision = 2; latest.address = "Latest"
+        try store.save(latest)
+        #expect(throws: Store.SaveError.staleWrite) { try store.save(p) }
+        var divergent = latest; divergent.address = "Same sequence, different facts"
+        #expect(throws: Store.SaveError.staleWrite) { try store.save(divergent) }
+        var olderFacts = latest; olderFacts.saveSequence = 3; olderFacts.contentRevision = 1
+        #expect(throws: Store.SaveError.staleWrite) { try store.save(olderFacts) }
+        #expect(store.load(p.id) == latest)
+    }
+
+    @Test func lastGoodRecoveryPreservesTheCorruptOriginal() throws {
+        let root = try temporaryRoot(); let store = Store(root: root)
+        var p = Self.fullProtocol(); p.saveSequence = 1
+        try store.save(p)
+        var latest = p; latest.saveSequence = 2; latest.address = "Latest"
+        try store.save(latest)
+        try writeText("damaged original", to: root.appendingPathComponent("protocols/p1.json"))
+        #expect(store.catalogue().unreadable == [Store.UnreadableRecord(id: "p1", hasRecovery: true)])
+        #expect(try store.recover("p1"))
+        #expect(store.load("p1") == p)
+        let retained = try FileManager.default.contentsOfDirectory(at: root.appendingPathComponent("recovery/p1"), includingPropertiesForKeys: nil)
+        #expect(retained.contains { $0.pathExtension == "quarantine" && readText($0) == "damaged original" })
+    }
+
+    @Test func filenameIdentityAndTraversalAreRejected() throws {
+        let root = try temporaryRoot(); let store = Store(root: root)
+        try store.save(Self.fullProtocol())
+        try writeText(Store.fileText(Self.fullProtocol("different")), to: root.appendingPathComponent("protocols/wrong.json"))
+        #expect(store.load("wrong") == nil)
+        #expect(store.catalogue().unreadable.map(\.id) == ["wrong"])
+        #expect(store.load("../protocols/p1") == nil)
+        #expect(throws: Store.SaveError.unsafeIdentifier) { try store.save(Self.fullProtocol("../escape")) }
+    }
+
+    @Test func firstSaveFailureCanBeRetriedWithoutLosingTheValue() throws {
+        let root = try temporaryRoot()
+        try writeText("blocks directory", to: root.appendingPathComponent("protocols"))
+        let store = Store(root: root); let p = Self.fullProtocol()
+        #expect(throws: (any Error).self) { try store.save(p) }
+        try FileManager.default.removeItem(at: root.appendingPathComponent("protocols"))
+        try FileManager.default.createDirectory(at: root.appendingPathComponent("protocols"), withIntermediateDirectories: true)
+        try store.save(p)
+        #expect(store.load(p.id) == p)
+    }
+    @Test func higherSequencesCannotChangeFinalizedFactsButCanRecordDistribution() throws {
+        let store = Store(root: try temporaryRoot())
+        var p = HandoverProtocol(id: "final", kind: .entry, createdEpochMs: 1)
+        p.finalizedEpochMs = 1; p.evidenceFingerprint = "frozen"; p.saveSequence = 1
+        try store.save(p)
+        var changed = p; changed.saveSequence = 2; changed.address = "Different"
+        #expect(throws: Store.SaveError.staleWrite) { try store.save(changed) }
+        changed = p; changed.saveSequence = 2; changed.deliveryRevision = 1
+        changed.deliveryReceipts = [DeliveryReceipt(.tenant, epochMs: 2)]
+        try store.save(changed)
+        #expect(store.load(p.id) == changed)
+    }
+
 }

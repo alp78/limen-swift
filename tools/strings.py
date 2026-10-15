@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Turns the Android Strings.kt into the port's Str.swift.
+"""Turns Android Strings.kt and RecordStrings.kt into the port's Str.swift.
 
 Nothing is retyped: `ui/Strings.kt` in the Android repository holds every word the instrument
 speaks in its five languages, as one Kotlin class of `pick(en, fr, de, it, rm)` calls, and this
@@ -13,6 +13,8 @@ Run whenever the Android strings change: `make strings`.
 from __future__ import annotations
 
 import os
+import argparse
+import json
 import re
 from pathlib import Path
 
@@ -112,7 +114,12 @@ class Parser:
                     end = self.text.index("}", self.pos)
                     expr = self.text[self.pos + 2:end]
                     self.pos = end + 1
-                    out.append("\\(" + expr.strip() + ")")
+                    nested = Parser(expr, self.renamed)
+                    translated = nested.expression()
+                    nested.skip_ws()
+                    if nested.pos != len(expr):
+                        raise SystemExit(f"unsupported interpolation: {expr!r}")
+                    out.append("\\(" + translated + ")")
                     continue
                 match = re.match(r"[A-Za-z_][A-Za-z0-9_]*", self.text[self.pos + 1:])
                 if match:
@@ -167,7 +174,7 @@ class Parser:
         return result
 
     def call(self, name: str, args: list[str]) -> str:
-        if name == "pick":
+        if name in ("pick", "words"):
             return "pick(" + ", ".join(args) + ")"
         if name == "listOf":
             return "[" + ", ".join(args) + "]"
@@ -214,19 +221,25 @@ class Parser:
             if self.peek("}"):
                 self.pos += 1
                 break
-            case = self.dotted()
+            cases = [self.dotted()]
+            while self.peek(","):
+                self.expect(",")
+                cases.append(self.dotted())
             self.expect("->")
             value = self.expression()
-            branches.append(("." + swift_case(case.split(".")[-1]), value))
+            case = "default" if cases == ["else"] else "case " + ", ".join("." + swift_case(c.split(".")[-1]) for c in cases)
+            branches.append((case, value))
+            if self.peek(";"):
+                self.expect(";")
         lines = [f"switch {subject} {{"]
         for case, value in branches:
-            lines.append(f"        case {case}: return {value}")
+            lines.append(f"        {case}: return {value}")
         lines.append("        }")
         return "\n".join(lines)
 
 
 def collisions(body: str) -> dict[str, str]:
-    vals = set(re.findall(r"^\s*(?:private\s+)?val\s+(\w+)\s*=", body, re.M))
+    vals = set(re.findall(r"^\s*(?:private\s+)?val\s+(\w+)\b", body, re.M))
     funs = set(re.findall(r"^\s*(?:private\s+)?fun\s+(\w+)\s*\(", body, re.M))
     return {name: name + "Label" for name in vals & funs}
 
@@ -240,24 +253,43 @@ def parse_declarations(body: str) -> list[dict]:
         if parser.pos >= len(body):
             break
         private = False
-        if parser.peek("private"):
-            parser.expect("private")
+        if parser.peek("private") or parser.peek("internal"):
+            parser.identifier()
             private = True
         if parser.peek("val"):
             parser.expect("val")
             name = parser.identifier()
+            if name == "Str" and parser.peek("."):
+                parser.expect(".")
+                name = parser.identifier()
+            declared_type = None
+            if parser.peek(":"):
+                parser.expect(":")
+                declared_type = parser.dotted()
+                if declared_type not in ("String", "Tip"):
+                    raise SystemExit(f"unsupported property type: {declared_type}")
+            if parser.peek("get"):
+                parser.expect("get")
+                parser.expect("(")
+                parser.expect(")")
             parser.expect("=")
             value = parser.expression()
-            declarations.append({"kind": "val", "name": renamed.get(name, name), "private": private, "value": value})
+            declarations.append({"kind": "val", "name": renamed.get(name, name), "private": private, "value": value, "type": declared_type})
         elif parser.peek("fun"):
             parser.expect("fun")
             name = parser.identifier()
+            if name == "Str" and parser.peek("."):
+                parser.expect(".")
+                name = parser.identifier()
             parser.expect("(")
             params: list[tuple[str, str]] = []
             while not parser.peek(")"):
                 pname = parser.identifier()
                 parser.expect(":")
                 ptype = parser.dotted()
+                if parser.peek("?"):
+                    parser.expect("?")
+                    ptype += "?"
                 params.append((pname, ptype.split(".")[-1]))
                 if parser.peek(","):
                     parser.pos += 1
@@ -265,7 +297,7 @@ def parse_declarations(body: str) -> list[dict]:
             if parser.peek(":"):
                 parser.expect(":")
                 parser.dotted()
-            if name == "pick":
+            if name in ("pick", "words"):
                 # The selector itself is hand-written in Swift; skip its Kotlin body.
                 parser.expect("=")
                 parser.when()
@@ -279,15 +311,34 @@ def parse_declarations(body: str) -> list[dict]:
 
 
 def main() -> None:
+    arguments = argparse.ArgumentParser()
+    arguments.add_argument("--check", action="store_true")
+    args = arguments.parse_args()
     text = SOURCE.read_text(encoding="utf-8")
     start = text.index("class Str(val lang: Lang) {")
     body_start = text.index("{", start) + 1
     # The class runs to the end of the file; its closing brace is the last one.
     body_end = text.rindex("}")
     declarations = parse_declarations(text[body_start:body_end])
+    core_count = len(declarations)
+    extra = SOURCE.with_name("RecordStrings.kt").read_text(encoding="utf-8")
+    extensions = parse_declarations(extra[extra.index("internal fun Str.words"):])
+    declared_extensions = re.findall(r"^\s*(?:internal\s+)?(?:val|fun)\s+Str\.(\w+)", extra, re.M)
+    if len(extensions) != len([name for name in declared_extensions if name != "words"]):
+        raise SystemExit("RecordStrings.kt declaration coverage mismatch")
+    declarations += extensions
+    names = [d["name"] for d in declarations]
+    if len(names) != len(set(names)):
+        raise SystemExit("Duplicate generated member")
+    overrides = json.loads((HERE / "tools" / "ios-strings.json").read_text())
+    for name, translations in overrides.items():
+        if name not in names or len(translations) != 5:
+            raise SystemExit(f"Invalid iOS override: {name}")
+        declaration = declarations[names.index(name)]
+        declaration["value"] = "pick(" + ", ".join(Parser(json.dumps(t, ensure_ascii=False)).string() for t in translations) + ")"
 
     lines = [
-        "// Generated by tools/strings.py from the Android ui/Strings.kt. Do not edit.",
+        "// Generated by tools/strings.py from Android Strings.kt, RecordStrings.kt and ios-strings.json. Do not edit.",
         "//",
         "// Every word the instrument speaks, in all five languages at once. German follows Swiss",
         "// usage, ss and never the eszett. Legal terms follow each language's own canon (etat des",
@@ -315,7 +366,7 @@ def main() -> None:
         access = "private" if d["private"] else "public"
         value = d["value"]
         if d["kind"] == "val":
-            rtype = "[String]" if value.startswith("[") else "String"
+            rtype = d.get("type") or ("[String]" if value.startswith("[") or value.endswith(".bullets") else "String")
             lines.append(f"    {access} var {d['name']}: {rtype} {{ {value} }}")
         else:
             rtype = "Tip" if value.startswith("Tip(") else "String"
@@ -328,8 +379,13 @@ def main() -> None:
                 lines.append(f"    {access} func {d['name']}({params}) -> {rtype} {{ {value} }}")
     lines.append("}")
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(f"{len(declarations)} declarations")
+    generated = "\n".join(lines) + "\n"
+    if args.check:
+        if OUT.read_text(encoding="utf-8") != generated:
+            raise SystemExit("Generated strings have drifted; run make strings with LIMEN_ANDROID set")
+    else:
+        OUT.write_text(generated, encoding="utf-8")
+    print(f"{len(declarations)} declarations ({core_count} core, {len(extensions)} extensions), {len(overrides)} iOS overrides")
 
 
 if __name__ == "__main__":

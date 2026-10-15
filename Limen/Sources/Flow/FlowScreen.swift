@@ -9,6 +9,7 @@ struct FlowScreen: View {
     @Environment(LimenModel.self) private var model
     @Environment(\.limen) private var colors
     @Environment(\.str) private var s
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var previousStep: FlowStep = .hub
     @State private var flowWidth: CGFloat = 0
 
@@ -57,16 +58,8 @@ struct FlowScreen: View {
                 // The stack behind keeps the full width so the plate does too; only the column of
                 // content is capped. See View.readable.
                 .readable()
-                .animation(.easeInOut(duration: 0.18), value: model.flowStep)
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.18), value: model.flowStep)
                 .onChange(of: model.flowStep) { _, now in previousStep = now }
-                if let defectId = model.editingDefectId {
-                    DefectEditor(p: p, defectId: defectId)
-                        .transition(.opacity)
-                }
-                if model.showDepositCompare {
-                    DepositCompareOverlay()
-                        .transition(.opacity)
-                }
                 if let notice = model.undoNotice {
                     HStack(spacing: 8) {
                         Text(s.removedForUndo(notice.kind)).font(LimenType.bodyMedium).foregroundStyle(colors.ink).frame(maxWidth: .infinity, alignment: .leading)
@@ -91,6 +84,14 @@ struct FlowScreen: View {
             .animation(.easeInOut(duration: 0.16), value: model.notice)
             .background(colors.plate.ignoresSafeArea())
             .environment(\.recordLocked, locked)
+            .fullScreenCover(isPresented: Binding(get: { model.editingDefectId != nil }, set: { if !$0 { model.closeDefect() } })) {
+                if let current = model.working, let id = model.editingDefectId {
+                    DefectEditor(p: current, defectId: id).environment(\.recordLocked, current.isFinalized())
+                }
+            }
+            .sheet(isPresented: Binding(get: { model.showDepositCompare }, set: { model.setDepositCompare($0) })) {
+                DepositCompareOverlay()
+            }
         }
     }
 }
@@ -110,7 +111,7 @@ private struct FlowMast: View {
             LimenMark(size: 42)
             VStack(alignment: .leading, spacing: 0) {
                 Text((p.kind == .entry ? s.entry : s.exit).uppercased()).font(LimenType.labelLarge).foregroundStyle(colors.ink)
-                Text(p.address.ifBlank(s.noAddress)).font(LimenType.labelSmall).lineLimit(1).foregroundStyle(colors.inkDim)
+                Text(p.address.ifBlank(s.noAddress)).font(LimenType.labelSmall).fixedSize(horizontal: false, vertical: true).foregroundStyle(colors.inkDim)
             }
             .padding(.leading, 2)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -168,7 +169,7 @@ struct DefectLine: View {
         } label: {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(d.text.ifBlank(s.defectText)).font(LimenType.bodyMedium).lineLimit(2).foregroundStyle(colors.ink)
+                    Text(d.text.ifBlank(s.defectText)).font(LimenType.bodyMedium).fixedSize(horizontal: false, vertical: true).foregroundStyle(colors.ink)
                     if !detail.isEmpty {
                         Text(detail).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
                     }
@@ -226,7 +227,7 @@ struct HubStep: View {
                     Panel(label: s.stillMissing, warning: true) {
                         VStack(alignment: .leading, spacing: 4) {
                             ForEach(issues, id: \.self) { issue in
-                                Text("· \(s.finalizationIssue(issue))").font(LimenType.bodyMedium).foregroundStyle(colors.ink)
+                                CompletionIssueKey(p: p, issue: issue)
                             }
                         }
                     }

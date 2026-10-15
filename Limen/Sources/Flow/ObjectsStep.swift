@@ -130,11 +130,12 @@ private struct ObjectRow: View {
                 model.updateObject(entry.id) { var x = $0; x.note = value; return x }
             }
             Toggle(label: s.objectInspected, on: entry.inspected, enabled: !locked) { model.setObjectInspected(entry.id, !entry.inspected) }
+            if !entry.inspected { ScopeNote(p: p, key: entry.id) }
             if !evidenceFiles.isEmpty {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
                         ForEach(evidenceFiles, id: \.self) { name in
-                            PhotoThumb(name: name, size: 72) { model.removeObjectPhoto(entry.id, name: name) }
+                            PhotoThumb(name: name, size: 84, evidence: entry.photoEvidence.first { $0.file == name }) { model.removeObjectPhoto(entry.id, name: name) }
                         }
                     }
                 }

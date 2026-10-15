@@ -1,0 +1,44 @@
+[
+  {
+    "test": "ParityJourneyTest/testEmptyFormToDrawnSignaturesAndOpenedDocument()",
+    "result": "scratchpad/verify/phone-journey.xcresult",
+    "deviceId": "00008150-001074183A7B401C",
+    "deviceName": "Alexis’s iPhone",
+    "model": "iPhone 17 (iPhone18,3)",
+    "os": "26.6.2 (23G90)",
+    "bundleUnderTest": "dev.peringer.limen.audit, Debug, built 2026-10-15 21:24 from the current tree",
+    "exportedFileName": "1FC99DC8-CCDA-4A49-9293-DFE496BD2CD4.png",
+    "suggestedHumanReadableName": "empty-journey-opened-pdf_0_BF519F75-BBA3-46EB-B911-FE2D1FD5AFE4.png",
+    "file": "empty-journey-opened-pdf.png",
+    "timestamp": 1792092527.984,
+    "sha256": "a329c779a2974feeae221506695cf6ec2f0847c6f0db33239142df9eb5166da8"
+  },
+  {
+    "test": "ParityJourneyTest/testEmptyFormToDrawnSignaturesAndOpenedDocument()",
+    "result": "scratchpad/verify/phone-journey.xcresult",
+    "deviceId": "00008150-001074183A7B401C",
+    "deviceName": "Alexis’s iPhone",
+    "model": "iPhone 17 (iPhone18,3)",
+    "os": "26.6.2 (23G90)",
+    "bundleUnderTest": "dev.peringer.limen.audit, Debug, built 2026-10-15 21:24 from the current tree",
+    "exportedFileName": "97F26D1A-F0B7-44A1-9AEA-D241B415AD98.png",
+    "suggestedHumanReadableName": "empty-journey-signed_0_7AB313A1-EC5E-4119-A8B9-35167DB85F42.png",
+    "file": "empty-journey-signed.png",
+    "timestamp": 1792092523.653,
+    "sha256": "035ac1571cad14e635c0ab3b56f7aa9bb44b82edcd34dad6d839bb5ba803329a"
+  },
+  {
+    "test": "ParityJourneyTest/testEmptyFormToDrawnSignaturesAndOpenedDocument()",
+    "result": "scratchpad/verify/phone-journey.xcresult",
+    "deviceId": "00008150-001074183A7B401C",
+    "deviceName": "Alexis’s iPhone",
+    "model": "iPhone 17 (iPhone18,3)",
+    "os": "26.6.2 (23G90)",
+    "bundleUnderTest": "dev.peringer.limen.audit, Debug, built 2026-10-15 21:24 from the current tree",
+    "exportedFileName": "F932FD02-355F-45E1-A4F3-4DF1EA0D4C87.png",
+    "suggestedHumanReadableName": "empty-journey-complete-draft_0_C03BCEA5-80D8-4F53-B6F3-5CBB0BFA416C.png",
+    "file": "empty-journey-complete-draft.png",
+    "timestamp": 1792092509.83,
+    "sha256": "71d28d6addae5db61152ab473f95d78fd174c7ab048d5a58305be28a0fe742e8"
+  }
+]

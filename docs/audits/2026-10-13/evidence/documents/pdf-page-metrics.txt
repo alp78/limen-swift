@@ -1,0 +1,25 @@
+LANG en PAGES 4
+  PAGE 1 A4 595.2760000000001x841.89 CHARS 1368 FIRST PROTOCOL · EXIT | Street and number | Test street 1 | Canton of the object | VD · Vaud | Postcode and pla
+  PAGE 2 A4 595.2760000000001x841.89 CHARS 1471 FIRST Bank | Banque Cantonale | Vaudoise, Service | professionnel des | garanties de loyer | METER READINGS | Acc
+  PAGE 3 A4 595.2760000000001x841.89 CHARS 1294 FIRST SUPPORTING DOCUMENTS | Other document · Prior report | Held by both parties | application/pdf · SHA-2
+  PAGE 4 A4 595.2760000000001x841.89 CHARS 491 FIRST RELEASE OF THE RENT DEPOSIT | Under Art. 257e CO, the bank may release the blocked deposit with b
+LANG fr PAGES 4
+  PAGE 1 A4 595.2760000000001x841.89 CHARS 1402 FIRST ÉTAT DES LIEUX · SORTIE | Rue et numéro | Test street 1 | Canton de l'objet | VD · Vaud | NPA et localité
+  PAGE 2 A4 595.2760000000001x841.89 CHARS 1546 FIRST Banque | Banque Cantonale | Vaudoise, Service | professionnel des | garanties de loyer | RELEVÉ DES COMPT
+  PAGE 3 A4 595.2760000000001x841.89 CHARS 1409 FIRST PIÈCES JUSTIFICATIVES | Autre document · Prior report | Held by both parties | application/pdf · SHA-
+  PAGE 4 A4 595.2760000000001x841.89 CHARS 527 FIRST LIBÉRATION DE LA GARANTIE DE LOYER | Selon l'art. 257e CO, la banque peut libérer la garantie ave
+LANG de PAGES 4
+  PAGE 1 A4 595.2760000000001x841.89 CHARS 1441 FIRST PROTOKOLL · AUSZUG | Strasse und Nummer | Test street 1 | Kanton des Mietobjekts | VD · Vaud | PLZ und Or
+  PAGE 2 A4 595.2760000000001x841.89 CHARS 1537 FIRST Bank | Banque Cantonale | Vaudoise, Service | professionnel des | garanties de loyer | ZÄHLERSTÄNDE | Konto
+  PAGE 3 A4 595.2760000000001x841.89 CHARS 1394 FIRST BEILAGEN | Andere Beilage · Prior report | Held by both parties | application/pdf · SHA-256: · 0 B | Im
+  PAGE 4 A4 595.2760000000001x841.89 CHARS 518 FIRST FREIGABE DES MIETZINSDEPOTS | Nach Art. 257e OR darf die Bank das Depot mit Zustimmung beider Par
+LANG it PAGES 4
+  PAGE 1 A4 595.2760000000001x841.89 CHARS 1443 FIRST VERBALE · RICONSEGNA | Via e numero | Test street 1 | Cantone dell'oggetto | VD · Vaud | NAP e località | 1
+  PAGE 2 A4 595.2760000000001x841.89 CHARS 1591 FIRST Banca | Banque Cantonale | Vaudoise, Service | professionnel des | garanties de loyer | LETTURE DEI CONTA
+  PAGE 3 A4 595.2760000000001x841.89 CHARS 1356 FIRST DOCUMENTI GIUSTIFICATIVI | Altro documento · Prior report | Held by both parties | application/pdf · 
+  PAGE 4 A4 595.2760000000001x841.89 CHARS 520 FIRST SVINCOLO DEL DEPOSITO DI GARANZIA | Secondo l'art. 257e CO, la banca può liberare il deposito con
+LANG rm PAGES 4
+  PAGE 1 A4 595.2760000000001x841.89 CHARS 1424 FIRST PROTOCOL · SORTIDA | Via e numer | Test street 1 | Chantun da l'object | VD · Vaud | NPA e lieu | 1000 Test
+  PAGE 2 A4 595.2760000000001x841.89 CHARS 1563 FIRST Banca | Banque Cantonale | Vaudoise, Service | professionnel des | garanties de loyer | POSIZIUNS DALS CO
+  PAGE 3 A4 595.2760000000001x841.89 CHARS 1394 FIRST DOCUMENTS CUMPROVANTS | Auter document · Prior report | Held by both parties | application/pdf · SHA-
+  PAGE 4 A4 595.2760000000001x841.89 CHARS 476 FIRST LIBERAZIUN DAL DEPOSIT DA LOCAZIUN | Tenor l'art. 257e DO po la banca liberar il deposit cun il c

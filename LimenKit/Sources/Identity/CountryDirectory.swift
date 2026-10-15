@@ -80,17 +80,11 @@ public struct SwissAddressCandidate: Hashable, Sendable, Identifiable {
 
 extension SessionIdentity {
     public func hasRequiredFields() -> Bool {
-        let first = firstName.trimmingCharacters(in: .whitespacesAndNewlines)
-        let last = lastName.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard first.count >= 2, firstName.contains(where: \.isLetter), last.count >= 2, lastName.contains(where: \.isLetter) else { return false }
-        guard !street.isBlank, !flatNumber.isBlank, !postalCode.isBlank, !city.isBlank else { return false }
-        guard CountryDirectory.addressRegions.contains(addressCountry) else { return false }
-        if usesSwissAddress {
-            guard addressCountry == "CH", postalCode.count == 4, postalCode.allSatisfy(\.isASCIIDigit) else { return false }
-        } else {
-            guard addressCountry != "CH" else { return false }
-        }
-        return InternationalPhone.isValid(phone, regionCode: phoneRegion)
+        // A draft starts with a name. Contacts are optional and remain as entered; a one-part
+        // name, foreign address or absent phone must not prevent a factual inspection record.
+        fullName.contains(where: \.isLetter) && CountryDirectory.addressRegions.contains(addressCountry) &&
+            (postalCode.isBlank || !usesSwissAddress || postalCode.count == 4 && postalCode.allSatisfy(\.isASCIIDigit)) &&
+            (phone.isBlank || InternationalPhone.isValid(phone, regionCode: phoneRegion))
     }
 }
 

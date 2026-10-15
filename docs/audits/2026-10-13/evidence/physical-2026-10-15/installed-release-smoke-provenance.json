@@ -1,0 +1,58 @@
+[
+  {
+    "test": "InstalledReleaseSmokeTest/testInstalledReleaseReadOnlyFlow()",
+    "result": "scratchpad/verify/phone6-smoke.xcresult",
+    "deviceId": "00008150-001074183A7B401C",
+    "deviceName": "Alexis’s iPhone",
+    "model": "iPhone 17 (iPhone18,3)",
+    "os": "26.6.2 (23G90)",
+    "bundleUnderTest": "dev.peringer.limen 1.2.0 (5), development-signed, archive 2026-10-15 22:09:52, development IPA sha256 b745635bc54815d68d373cbe6e978e1bca8fe597e6645a731aaae578b5a5294f",
+    "exportedFileName": "1FEAB754-68DA-448C-A825-C74075AA5E75.png",
+    "suggestedHumanReadableName": "release-returned-home_0_70211D34-B17E-4BD0-8556-C989129808F9.png",
+    "file": "release-returned-home.png",
+    "timestamp": 1792095061.584,
+    "sha256": "ba38e34054b447c04892bbef15feaba1e4e9645f0eaa41103208ca9ead62147e"
+  },
+  {
+    "test": "InstalledReleaseSmokeTest/testInstalledReleaseReadOnlyFlow()",
+    "result": "scratchpad/verify/phone6-smoke.xcresult",
+    "deviceId": "00008150-001074183A7B401C",
+    "deviceName": "Alexis’s iPhone",
+    "model": "iPhone 17 (iPhone18,3)",
+    "os": "26.6.2 (23G90)",
+    "bundleUnderTest": "dev.peringer.limen 1.2.0 (5), development-signed, archive 2026-10-15 22:09:52, development IPA sha256 b745635bc54815d68d373cbe6e978e1bca8fe597e6645a731aaae578b5a5294f",
+    "exportedFileName": "EB2F239D-DAB5-4584-ADC0-AAB640782AA9.png",
+    "suggestedHumanReadableName": "release-privacy_0_BF6120AB-5B78-4597-B756-F8E29F6D982C.png",
+    "file": "release-privacy.png",
+    "timestamp": 1792095060.052,
+    "sha256": "bf21a34fc4f34cead7a65792d57aa1fcf063842c11e260cdfc8365fbb47e6a0c"
+  },
+  {
+    "test": "InstalledReleaseSmokeTest/testInstalledReleaseReadOnlyFlow()",
+    "result": "scratchpad/verify/phone6-smoke.xcresult",
+    "deviceId": "00008150-001074183A7B401C",
+    "deviceName": "Alexis’s iPhone",
+    "model": "iPhone 17 (iPhone18,3)",
+    "os": "26.6.2 (23G90)",
+    "bundleUnderTest": "dev.peringer.limen 1.2.0 (5), development-signed, archive 2026-10-15 22:09:52, development IPA sha256 b745635bc54815d68d373cbe6e978e1bca8fe597e6645a731aaae578b5a5294f",
+    "exportedFileName": "2B294987-CE07-45E3-BC38-E60AD95CA55E.png",
+    "suggestedHumanReadableName": "release-empty-form_0_0487B266-6310-4A62-BAD6-1CB4FB7BBB2A.png",
+    "file": "release-empty-form.png",
+    "timestamp": 1792095058.129,
+    "sha256": "9cc4dc000af7f463039a6acb5196ccb2336353458a6746fc55af530ad386813c"
+  },
+  {
+    "test": "InstalledReleaseSmokeTest/testInstalledReleaseReadOnlyFlow()",
+    "result": "scratchpad/verify/phone6-smoke.xcresult",
+    "deviceId": "00008150-001074183A7B401C",
+    "deviceName": "Alexis’s iPhone",
+    "model": "iPhone 17 (iPhone18,3)",
+    "os": "26.6.2 (23G90)",
+    "bundleUnderTest": "dev.peringer.limen 1.2.0 (5), development-signed, archive 2026-10-15 22:09:52, development IPA sha256 b745635bc54815d68d373cbe6e978e1bca8fe597e6645a731aaae578b5a5294f",
+    "exportedFileName": "7EA901B2-045E-4128-93F9-8F081F827472.png",
+    "suggestedHumanReadableName": "release-landing_0_FD642CF8-B1BA-411B-A405-028A58725DE1.png",
+    "file": "release-landing.png",
+    "timestamp": 1792095056.59,
+    "sha256": "ccedb277fc9ed36e76dfc11367f5f9679dbba2f6fb34b8a0a3e4d376780f92aa"
+  }
+]

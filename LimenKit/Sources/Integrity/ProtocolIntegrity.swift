@@ -14,12 +14,7 @@ public enum ProtocolIntegrity {
         let missing = evidence.filter { !isReadable($0.file) }.map(\.label)
         if !missing.isEmpty { throw IntegrityError.missingEvidence(missing) }
         var digest = SHA256()
-        var canonical = protocolRecord
-        canonical.evidenceFingerprint = ""
-        canonical.deliveryReceipts = []
-        canonical.deliveryMetadataEpochMs = 0
-        canonical.exportedEpochMs = 0
-        digest.update(data: Data(ProtocolJSON.encode(canonical, encodeDefaults: true).compact.utf8))
+        digest.update(data: Data(canonicalText(protocolRecord).utf8))
 
         // Kotlin's distinctBy keeps the first of each label, and sortedBy compares strings by
         // their UTF-16 units; the labels are ASCII, but the comparison is spelt out so it stays
@@ -32,6 +27,20 @@ public enum ProtocolIntegrity {
             digest.update(data: Data(try fileHash(entry.file).utf8))
         }
         return hex(digest.finalize())
+    }
+
+    /// Mutable distribution metadata is outside the signed content. Centralizing this selection
+    /// keeps the persistence boundary and the fingerprint from disagreeing about immutability.
+    public static func canonicalText(_ protocolRecord: HandoverProtocol) -> String {
+        var canonical = protocolRecord
+        canonical.evidenceFingerprint = ""
+        canonical.deliveryReceipts = []
+        canonical.deliveryMetadataEpochMs = 0
+        canonical.exportedEpochMs = 0
+        canonical.deliveryRevision = 0
+        canonical.exportHistory = []
+        canonical.saveSequence = 0
+        return ProtocolJSON.encode(canonical, encodeDefaults: true).compact
     }
 
     public static func matches(_ protocolRecord: HandoverProtocol, photoDir: URL, signatureDir: URL) -> Bool {
@@ -67,7 +76,7 @@ public enum ProtocolIntegrity {
 
     static func isReadable(_ file: URL) -> Bool {
         var isDirectory: ObjCBool = false
-        guard FileManager.default.fileExists(atPath: file.path, isDirectory: &isDirectory), !isDirectory.boolValue,
+        guard Files.isRegularFile(file), FileManager.default.fileExists(atPath: file.path, isDirectory: &isDirectory), !isDirectory.boolValue,
               FileManager.default.isReadableFile(atPath: file.path),
               let size = (try? FileManager.default.attributesOfItem(atPath: file.path))?[.size] as? NSNumber else { return false }
         return size.int64Value > 0
@@ -80,6 +89,12 @@ public enum ProtocolIntegrity {
         }
         for entry in p.objects {
             for name in entry.photoFiles() { files.append(("photo/\(name)", resolvedFile(photoDir, name))) }
+        }
+        for evidence in p.details.roomPhotos.entries.flatMap(\.value) + p.details.readings.flatMap(\.photos) {
+            files.append(("photo/\(evidence.file)", resolvedFile(photoDir, evidence.file)))
+        }
+        for document in p.details.attachments where !document.file.isBlank {
+            files.append(("document/\(document.file)", resolvedFile(photoDir, document.file)))
         }
         for signature in p.signatures where !signature.file.isBlank {
             files.append(("ink/\(signature.file)", resolvedFile(signatureDir, signature.file)))
