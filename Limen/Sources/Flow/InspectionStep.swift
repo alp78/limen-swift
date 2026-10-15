@@ -32,7 +32,12 @@ private struct RoomGrid: View {
             VStack(alignment: .leading, spacing: 10) {
                 if !locked, p.rooms.isEmpty, !p.roomSetupComplete {
                     InitialRoomSetup(p: p)
-                    Panel(label: s.scopeReason) { ScopeNote(p: p, key: "Inspection") }
+                    ScopeNote(p: p, key: "Inspection")
+                    // A handover with no room to walk leaves the setup through its reason, as on
+                    // Android; the room key above needs a selection to do the same.
+                    if !(p.details.scopeNotes["Inspection"] ?? "").isBlank {
+                        SmallKey(label: s.done, stretch: true) { model.edit { var next = $0; next.roomSetupComplete = true; return next } }
+                    }
                     Spacer().frame(height: 12)
                 } else {
                     FlowRow(spacing: 8) {
@@ -79,7 +84,6 @@ private struct RoomGrid: View {
 
 private struct InitialRoomSetup: View {
     @Environment(LimenModel.self) private var model
-    @Environment(\.limen) private var colors
     @Environment(\.str) private var s
     let p: HandoverProtocol
     @State private var selected: Set<RoomKind> = []
@@ -87,7 +91,6 @@ private struct InitialRoomSetup: View {
     var body: some View {
         Panel(label: s.chooseRoomsPresent) {
             VStack(alignment: .leading, spacing: 10) {
-                Text(s.chooseRoomsPresentBody).font(LimenType.bodyMedium).foregroundStyle(colors.ink)
                 FlowRow(spacing: 6) {
                     ForEach(Templates.defaultRooms, id: \.self) { kind in
                         let active = selected.contains(kind)
@@ -148,6 +151,7 @@ private struct RoomDetail: View {
     let room: Room
     @State private var confirmingClear = false
     @State private var confirmingRemove = false
+    @State private var actionsOpen = false
 
     var body: some View {
         let roomDefects = p.defects.filter { $0.roomId == room.id }
@@ -168,12 +172,6 @@ private struct RoomDetail: View {
                 }
                 // Only a room the canon has no word for needs naming; the rest are named already.
                 Field(label: s.roomName, value: room.name, hint: s.room(room.kind)) { model.renameRoom(room.id, name: $0) }
-                if !locked {
-                    WeightedRow(weights: [1, 1]) {
-                        SmallKey(label: s.moveUp, enabled: p.rooms.first?.id != room.id) { model.moveRoom(id: room.id, offset: -1) }
-                        SmallKey(label: s.moveDown, enabled: p.rooms.last?.id != room.id) { model.moveRoom(id: room.id, offset: 1) }
-                    }
-                }
                 Toggle(label: s.roomInspected, on: room.inspected, enabled: !locked) { model.setRoomInspected(room.id, !room.inspected) }
                 if !room.inspected { ScopeNote(p: p, key: room.id) }
                 Panel(label: s.overviewPhotos) {
@@ -216,20 +214,40 @@ private struct RoomDetail: View {
                         }
                     }
                 }
+                // One row: the room's actions behind one glyph, opened into up, down, clear and
+                // remove, and the primary key at the right end. When the open row is wider than
+                // the screen, which it is on every iPhone at the largest sizes, the primary key
+                // takes a line of its own rather than being clipped at the edge.
                 if !locked {
-                    Menu(s.roomActions) {
-                        Button(s.clearRoom, role: .destructive) { confirmingClear = true }
-                        Button(s.removeRoom, role: .destructive) { confirmingRemove = true }
-                    }.font(LimenType.bodyMedium).frame(minHeight: 44)
-
+                    ViewThatFits(in: .horizontal) {
+                        HStack(spacing: 8) {
+                            roomActionKeys
+                            Spacer(minLength: 8)
+                            ActionKey(glyph: .next, label: s.nextRoom, active: true, stretch: false) { model.nextRoom() }
+                        }
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack(spacing: 8) { roomActionKeys }
+                            ActionKey(glyph: .next, label: s.nextRoom, active: true) { model.nextRoom() }
+                        }
+                    }
                 }
-                BigKey(label: s.nextRoom) { model.nextRoom() }
                 Spacer().frame(height: 12)
             }
         }
         .scrollDismissesKeyboard(.interactively)
         .confirmDialog($confirmingClear, body: s.clearRoomBody) { model.clearRoom(room.id) }
         .confirmDialog($confirmingRemove, body: s.removeRoomBody) { model.removeRoom(room.id) }
+    }
+
+    /// The two destructive ones are red and still behind their confirmation.
+    @ViewBuilder private var roomActionKeys: some View {
+        IconKey(glyph: .more, label: s.roomActions) { actionsOpen.toggle() }
+        if actionsOpen {
+            IconKey(glyph: .up, label: s.moveUp, enabled: p.rooms.first?.id != room.id) { model.moveRoom(id: room.id, offset: -1) }
+            IconKey(glyph: .down, label: s.moveDown, enabled: p.rooms.last?.id != room.id) { model.moveRoom(id: room.id, offset: 1) }
+            IconKey(glyph: .clear, label: s.clearRoom, destructive: true) { confirmingClear = true }
+            IconKey(glyph: .delete, label: s.removeRoom, destructive: true) { confirmingRemove = true }
+        }
     }
 }
 

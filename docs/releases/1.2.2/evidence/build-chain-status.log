@@ -1,0 +1,8 @@
+start 22:38:35
+gen exit 0 22:38:36
+sim booted 22:38:37
+build exit 0 22:38:47
+lint exit 0 22:38:47
+check-generated exit 0 22:38:47
+unit exit 0 22:39:05
+done 22:39:05

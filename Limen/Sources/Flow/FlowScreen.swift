@@ -96,9 +96,8 @@ struct FlowScreen: View {
     }
 }
 
-/// The flow's own masthead: the way out, where you are, what this place is for, the theme.
-///
-/// The step's instruction lives behind the mark rather than in a paragraph over the controls.
+/// The flow's own masthead: the way out, where you are, the theme. No info mark: the sentence
+/// per step it used to show went with Android 1.2.2, and nothing on a step explains the step.
 private struct FlowMast: View {
     @Environment(LimenModel.self) private var model
     @Environment(\.limen) private var colors
@@ -115,7 +114,6 @@ private struct FlowMast: View {
             }
             .padding(.leading, 2)
             .frame(maxWidth: .infinity, alignment: .leading)
-            InfoTip(tip: s.tipStep(model.flowStep))
             ThemeToggle(dark: model.darkTheme, description: s.themeMode) { model.toggleTheme() }
         }
     }
@@ -184,19 +182,20 @@ struct DefectLine: View {
     }
 }
 
-/// The handover's home. Two doors, neither ahead of the other, and the closing sequence underneath.
+/// The handover's home. Three doors: the two halves of the handover, neither ahead of the other,
+/// and the record itself, which is its review, its signatures and its export.
 ///
 /// Only the closing is ordered, because a signature that saw no review is worth nothing.
 /// Everything above it is entered in whatever order the handover itself takes.
 struct HubStep: View {
     @Environment(LimenModel.self) private var model
-    @Environment(\.limen) private var colors
     @Environment(\.str) private var s
     @Environment(\.recordLocked) private var locked
     let p: HandoverProtocol
     // Recomputed when the record changes, as Android's remember(p) does, not on every body pass:
     // the check stats every photograph and every signature file on disk.
     @State private var issues: [FinalizationIssue] = []
+    @State private var showAllIssues = false
 
     var body: some View {
         let defects = p.defects.count
@@ -206,10 +205,7 @@ struct HubStep: View {
                 if !objectIssues.isEmpty, !p.isFinalized() {
                     Panel(label: s.objectPreflight, warning: true) {
                         VStack(alignment: .leading, spacing: 8) {
-                            HStack(spacing: 10) {
-                                if let canton = p.objectCanton { CantonFlag(canton: canton, label: s.canton(canton), size: 30) }
-                                Text(s.objectPreflightBody).font(LimenType.bodyMedium).foregroundStyle(colors.ink)
-                            }
+                            if let canton = p.objectCanton { CantonFlag(canton: canton, label: s.canton(canton), size: 30) }
                             SmallKey(label: s.completeObjectAndCanton, stretch: true) { model.goTo(.dossier) }
                         }
                     }
@@ -220,24 +216,31 @@ struct HubStep: View {
                 HubDoor(title: s.stepDossier, lead: s.hubDossierLead, readout: s.countComponents(p.dossierCards().count), alert: nil, glyph: .edit) {
                     model.goTo(.dossier)
                 }
+                // A signed record has nothing left to close; what it still offers is its document.
+                HubDoor(title: s.stepRecord, lead: s.hubRecordLead, readout: p.isFinalized() ? s.finalized : (p.isSigned() ? s.awaitingSignatures : s.notSigned), alert: nil, glyph: .confirm) {
+                    model.goTo(locked ? .export : .review)
+                }
                 Spacer().frame(height: 2)
                 // What is still missing, said here rather than found at the signature. Nothing is
-                // blocked by it: Review is always reachable, and it repeats the same list.
+                // blocked by it: Review is always reachable, and it repeats the same list. One
+                // line at a time, the rest behind a count, as Android 1.2.1 lists them.
                 if !issues.isEmpty {
                     Panel(label: s.stillMissing, warning: true) {
                         VStack(alignment: .leading, spacing: 4) {
-                            ForEach(issues, id: \.self) { issue in
+                            ForEach(showAllIssues ? issues : Array(issues.prefix(1)), id: \.self) { issue in
                                 CompletionIssueKey(p: p, issue: issue)
+                            }
+                            if issues.count > 1 {
+                                SmallKey(label: "\(s.showAll) (\(issues.count))") { showAllIssues.toggle() }
                             }
                         }
                     }
                 }
-                // A signed record has nothing left to close; what it still offers is its document.
-                BigKey(label: locked ? s.stepExport.uppercased() : s.hubClose) { model.goTo(locked ? .export : .review) }
                 Spacer().frame(height: 12)
             }
         }
         .onChange(of: p, initial: true) { _, now in issues = model.completionIssues(now) }
+        .onChange(of: p.id) { _, _ in showAllIssues = false }
     }
 }
 

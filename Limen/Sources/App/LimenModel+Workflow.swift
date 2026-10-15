@@ -26,11 +26,6 @@ extension LimenModel {
         } catch { evidenceError = error.localizedDescription }
     }
 
-    func setAddressLookupEnabled(_ enabled: Bool) {
-        addressLookupEnabled = enabled
-        prefs.set(enabled, forKey: "addressLookupEnabled")
-    }
-
     func setLibraryProtectionEnabled(_ enabled: Bool) {
         guard !libraryAuthenticationBusy else { return }
         guard enabled else {

@@ -2,6 +2,8 @@
 
 Updated 14 October 2026. The directory retains the original cross-platform audit date. This is implementation evidence for the Swift working tree, not a claim that the Android findings were observed on an iPhone.
 
+Superseded in part on 15 October 2026: the forms this ledger describes were simplified to Android 1.2.2 on the owner's review, and [the 1.2.2 handoff](../../releases/1.2.2/HANDOFF.md) records which screens changed. The data, archive, legal and export findings below stand.
+
 The authorised scope is `_scratch/MACBOOK-IOS-PARITY-PROMPT.txt`. Android `eb5c03800a9e749155db718136c9418a58c0d11c` is the reviewed 1.2 baseline; current `d81796d07ada38aa6e7955d31cf297fe02cac010` includes intervening fixes reviewed during implementation. Android is a read-only reference. No production website, external vault, Git publication or store submission is part of this change.
 
 ## Verification state

@@ -54,7 +54,7 @@ final class ParityJourneyTest: XCTestCase {
         tap(app, s.roomInspected)
         app.buttons[s.back].firstMatch.tap()
         app.buttons[s.back].firstMatch.tap()
-        tap(app, s.hubClose)
+        tap(app, s.hubRecordLead)
         let preview = app.buttons["preview-document"]
         reveal(app, preview)
         preview.tap()
@@ -96,7 +96,7 @@ final class ParityJourneyTest: XCTestCase {
         let amend = app.buttons[s.amendRecord]
         reveal(app, amend)
         amend.tap()
-        XCTAssertTrue(app.buttons[s.hubClose].waitForExistence(timeout: 30))
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label CONTAINS[c] %@", s.hubRecordLead)).firstMatch.waitForExistence(timeout: 30))
         tap(app, s.stepDossier)
         replace(app, s.handoverTime, "1130")
         dismissKeyboard(app)
@@ -205,7 +205,7 @@ final class ParityJourneyTest: XCTestCase {
     }
 
     private func signFinalizeExport(_ app: XCUIApplication, tag: String) {
-        tap(app, s.hubClose)
+        tap(app, s.hubRecordLead)
         let preview = app.buttons["preview-document"]
         reveal(app, preview)
         preview.tap()
@@ -256,7 +256,9 @@ final class ParityJourneyTest: XCTestCase {
         let date = app.textFields[s.handoverDate]
         reveal(app, date)
         XCTAssertEqual(date.value as? String, "31/02/2026")
-        let revert = app.buttons["Restore previous valid value"]
+        // The undo glyph's accessible name, which lives in the app target's iOS copy rather than
+        // in the generated strings the test can import.
+        let revert = app.buttons["Restore last valid date"]
         reveal(app, revert)
         XCTAssertTrue(revert.exists)
         revert.tap()
@@ -375,7 +377,7 @@ final class AccessibilityJourneyTest: XCTestCase {
         record(app, "En-inspection-audit")
         try performLoggedAudit(app, "En-inspection-audit")
         app.buttons[s.back].firstMatch.tap()
-        app.buttons[s.hubClose].tap()
+        app.buttons.matching(NSPredicate(format: "label CONTAINS[c] %@", s.hubRecordLead)).firstMatch.tap()
         record(app, "En-review-audit")
         try performLoggedAudit(app, "En-review-audit")
     }

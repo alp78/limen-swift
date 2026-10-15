@@ -37,7 +37,9 @@ final class StoreShotsTest: XCTestCase {
         shoot(app, "\(tag)-01-home")
 
         app.buttons[s.allSessions].tap()
-        let card = element(app, s.exit)
+        // By the scene's street, not by the word "Exit": the list's filter row carries that word
+        // too, sits above the cards, and was what the first match found.
+        let card = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] %@", StoreScene.of(lang).street)).firstMatch
         XCTAssertTrue(card.waitForExistence(timeout: 15), "the seeded record is not in the list for \(lang.rawValue)")
         card.tap()
 
@@ -83,8 +85,9 @@ final class StoreShotsTest: XCTestCase {
         app.buttons[s.back].firstMatch.tap()
 
         // 05 the whole protocol, before anyone signs it
-        XCTAssertTrue(app.buttons[s.hubClose].waitForExistence(timeout: 15), "no close key in \(lang.rawValue)")
-        app.buttons[s.hubClose].tap()
+        let record = key(app, s.hubRecordLead)
+        XCTAssertTrue(record.waitForExistence(timeout: 15), "no record door in \(lang.rawValue)")
+        record.tap()
         XCTAssertTrue(element(app, s.objectLabel).waitForExistence(timeout: 15), "no review in \(lang.rawValue)")
         shoot(app, "\(tag)-05-review")
 
@@ -121,7 +124,10 @@ final class StoreShotsTest: XCTestCase {
         XCTAssertTrue(finalize.waitForExistence(timeout: 15), "no finalize key in \(lang.rawValue)")
         app.swipeUp()
         press(finalize)
-        XCTAssertTrue(element(app, s.finalized).waitForExistence(timeout: 30), "the record did not finalize in \(lang.rawValue)")
+        let finalized = element(app, s.finalized).waitForExistence(timeout: 30)
+        // The tree names what held the record back, which the one-word failure cannot.
+        if !finalized { print("LIMEN_UI_TREE \(app.debugDescription)") }
+        XCTAssertTrue(finalized, "the record did not finalize in \(lang.rawValue)")
         shoot(app, "\(tag)-07-finalized")
 
         // 08 the exported document and its delivery record

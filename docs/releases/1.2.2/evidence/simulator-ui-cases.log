@@ -1,0 +1,47 @@
+# batch A, iPhone 18 Pro / iOS 27, batchA start 22:43:48
+Test Case '-[LimenUITests.AccessibilityJourneyTest testMainHandoverScreens]' passed (20.306 seconds).
+Test Case '-[LimenUITests.ParityJourneyTest testAgencyStandaloneExitThenAmendment]' passed (119.280 seconds).
+Test Case '-[LimenUITests.ParityJourneyTest testEmptyFormToDrawnSignaturesAndOpenedDocument]' passed (84.181 seconds).
+Test Case '-[LimenUITests.ParityJourneyTest testInvalidDateSurvivesRelaunchAndHasExplicitRevert]' passed (21.562 seconds).
+Test Case '-[LimenUITests.ParityJourneyTest testPrivateLandlordEntryThenSeededExit]' failed (109.208 seconds).
+Test Case '-[LimenUITests.RuntimeBoundaryTests testSimulatorCameraRefusalPreservesDraft]' passed (32.044 seconds).
+Test Case '-[LimenUITests.RuntimeBoundaryTests testSupportingDocumentPickerCancellationPreservesDraft]' passed (73.637 seconds).
+Test Case '-[LimenUITests.RuntimeBoundaryTests testUnsuccessfulAuthenticationDoesNotPersistALibraryGate]' passed (25.986 seconds).
+Test Case '-[LimenUITests.SimplificationShotsTest testFrenchScreensOfTheSimplifiedForms]' passed (99.844 seconds).
+Test Case '-[LimenUITests.SmokeTest testTheLandingTheFormAndThePrivacyPage]' passed (41.255 seconds).
+Test Case '-[LimenUITests.SmokeTest testTheSeededDraftWalksEveryStep]' passed (44.521 seconds).
+# batch B, iPhone 17 Pro / iOS 26.5, batchB start 22:43:50
+Test Case '-[LimenUITests.LanguageWalkTest testEnglishLandscape]' passed (96.051 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testEnglishLarge]' passed (80.816 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testEnglishLargestAccessibility]' passed (168.867 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testFrenchLarge]' passed (81.896 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testFrenchLargestAccessibility]' passed (161.722 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testGermanLarge]' passed (84.348 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testGermanLargestAccessibility]' passed (192.656 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testItalianLarge]' passed (80.910 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testItalianLargestAccessibility]' passed (166.534 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testRomanshLarge]' passed (81.070 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testRomanshLargestAccessibility]' passed (245.698 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testRomanshLargestAccessibilityLandscape]' passed (207.527 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testRomanshLargestAccessibilitySignatureOnly]' passed (60.004 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testTheWalkInEnglish]' passed (72.949 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testTheWalkInFrench]' passed (76.513 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testTheWalkInGerman]' passed (74.829 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testTheWalkInItalian]' passed (75.359 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testTheWalkInRomansh]' passed (72.793 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInEnglish]' failed (26.627 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInFrench]' failed (26.706 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInGerman]' failed (26.521 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInItalian]' failed (26.622 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInRomansh]' failed (26.602 seconds).
+# store-shot rerun, iPhone 17 Pro / iOS 26.5, store start 23:22:12, card lookup corrected; all five stop at the parties rule of the store scene
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInEnglish]' failed (85.501 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInFrench]' failed (85.994 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInGerman]' failed (86.013 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInItalian]' failed (85.500 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInRomansh]' failed (85.396 seconds).
+# English rerun with the tree printed at the finalize step
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInEnglish]' failed (85.076 seconds).
+    35:                  StaticText, 0x11311f840, {{36.0, 517.0}, {80.3, 12.0}}, label: 'Before finalizing'
+    36-                  Button, 0x11311f980, {{36.0, 537.0}, {330.0, 56.0}}, label: 'Name both tenant and landlord / agency'
+    37-                  Button, 0x11311fac0, {{36.0, 601.0}, {330.0, 57.3}}, label: 'FINALIZE RECORD', Disabled

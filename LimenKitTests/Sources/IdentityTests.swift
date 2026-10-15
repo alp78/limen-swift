@@ -133,7 +133,6 @@ import Testing
             for v in DeliveryMethod.allCases { #expect(!s.deliveryMethod(v).isBlank, "\(lang) delivery \(v)") }
             for v in FinalizationIssue.allCases { #expect(!s.finalizationIssue(v).isBlank, "\(lang) issue \(v)") }
             for v in ExportIssue.allCases { #expect(!s.exportIssue(v).isBlank, "\(lang) export \(v)") }
-            for v in FlowStep.allCases { #expect(!s.stepLead(v).isBlank, "\(lang) lead \(v)") }
             for v in LifeKey.allCases { #expect(!s.life(v).isBlank, "\(lang) life \(v)") }
             for v in TenantResponse.allCases { #expect(!s.tenantResponse(v).isBlank, "\(lang) response \(v)") }
             for v in UndoKind.allCases { #expect(!s.removedForUndo(v).isBlank, "\(lang) undo \(v)") }

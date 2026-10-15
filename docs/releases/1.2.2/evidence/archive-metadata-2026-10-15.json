@@ -1,0 +1,24 @@
+{
+  "archivedAt": "2026-10-15T23:18:35+02:00",
+  "archive": "DD-release/Limen-1.2.2-6.xcarchive (gitignored build product)",
+  "bundleIdentifier": "dev.peringer.limen",
+  "shortVersion": "1.2.2",
+  "build": "6",
+  "minimumOS": "17.0",
+  "team": "KDSZB7N44K",
+  "sourceCommit": "ca3e6bc2eb73862ea9a74e1d6f5a68164fde56cc",
+  "sourceTreeDirty": true,
+  "exports": {
+    "development (installed on the iPhone)": {
+      "path": "DD-release/export-1.2.2-6-dev/Limen.ipa",
+      "sha256": "055637865a0111eeb96aa5b148844afc4942d90d9333580ac9970a0f41783e94",
+      "bytes": 7443381
+    },
+    "app-store-connect (not uploaded)": {
+      "path": "DD-release/export-1.2.2-6-store/Limen.ipa",
+      "sha256": "b4ac184ca95ecca92c1bdb3b4fff1f213655620bf7ddb7bd915959e17f235645",
+      "bytes": 7443320
+    }
+  },
+  "uploaded": false
+}

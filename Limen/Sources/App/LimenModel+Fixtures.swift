@@ -106,7 +106,7 @@ extension LimenModel {
     static func resetForTests(prefs: UserDefaults, root: URL) {
         for key in [keyDark, keyLang, keyOpen, keyStep, keyRoom, keyDefect, keyRole, keyName, keyCompany,
                     keyControllerOrganisation, keyControllerContact, keyControllerStreet, keyControllerPostal, keyControllerCity, keyControllerEmail, keyControllerPhone,
-                    "reusableIdentity", "addressLookupEnabled", "libraryProtectionEnabled"] + prefs.dictionaryRepresentation().keys.filter({ $0.hasPrefix("validInput.") }) {
+                    "reusableIdentity", "libraryProtectionEnabled"] + prefs.dictionaryRepresentation().keys.filter({ $0.hasPrefix("validInput.") }) {
             prefs.removeObject(forKey: key)
         }
         for item in (try? FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil)) ?? [] {

@@ -165,10 +165,12 @@ final class LanguageWalkTest: XCTestCase {
     }
 
     private func reviewAndSignature(_ app: XCUIApplication, _ s: Str, _ tag: String, _ lang: Lang) {
-        XCTAssertTrue(app.buttons[s.hubClose].waitForExistence(timeout: 15), "no close key in \(lang.rawValue)")
-        reveal(app, app.buttons[s.hubClose])
-        shoot(app, "\(tag)-11a-review-action")
-        app.buttons[s.hubClose].tap()
+        // The third door is found by its lead, which no other control on the hub carries.
+        let record = key(app, s.hubRecordLead)
+        XCTAssertTrue(record.waitForExistence(timeout: 15), "no record door in \(lang.rawValue)")
+        reveal(app, record)
+        shoot(app, "\(tag)-11a-record-door")
+        record.tap()
         XCTAssertTrue(element(app, s.objectLabel).waitForExistence(timeout: 15), "no review in \(lang.rawValue)")
         shoot(app, "\(tag)-11-review")
 

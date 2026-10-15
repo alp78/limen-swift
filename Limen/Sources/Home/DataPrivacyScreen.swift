@@ -45,7 +45,6 @@ struct DataPrivacyScreen: View {
                             }
                         }
                     }
-                    LookupPreference()
                     Panel(label: s.libraryProtection) {
                         Toggle(label: s.libraryProtection, on: model.libraryProtectionEnabled) { model.setLibraryProtectionEnabled(!model.libraryProtectionEnabled) }
                     }

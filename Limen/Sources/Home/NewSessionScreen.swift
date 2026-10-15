@@ -35,6 +35,7 @@ struct NewSessionScreen: View {
     @State private var addressVerified = false
     @State private var addressSearching = false
     @State private var addressMatches: [SwissAddressCandidate] = []
+    @State private var lookupFailed = false
     @State private var focusedAddressFields: Set<String> = []
     @State private var loaded = false
 
@@ -67,7 +68,6 @@ struct NewSessionScreen: View {
         let query: String
         let verified: Bool
         let focused: Bool
-        let enabled: Bool
     }
 
     var body: some View {
@@ -99,14 +99,12 @@ struct NewSessionScreen: View {
                         VStack(alignment: .leading, spacing: 10) {
                             if actor == .agency {
                                 Field(label: s.companyName, value: company) { company = $0 }
-                                Text(s.agencyRoleExplanation).font(LimenType.bodySmall).foregroundStyle(colors.inkDim)
                             }
                             Field(label: s.firstName, value: firstName) { firstName = $0 }
                             Field(label: s.lastName, value: lastName) { lastName = $0 }
                             DisclosureGroup(s.identityAddress) {
                                 VStack(alignment: .leading, spacing: 10) {
                             Text(s.identityAddress).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
-                            LookupPreference()
                             Text(s.addressType).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
                             EqualChoiceRow(options: [(true, s.swissAddress), (false, s.foreignAddress)], current: usesSwissAddress) { selectAddressMode($0) }
                             if !usesSwissAddress {
@@ -125,13 +123,17 @@ struct NewSessionScreen: View {
                             if usesSwissAddress, addressFieldsFocused, addressSearching {
                                 Text(s.addressSearching).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
                             }
+                            // A status, not an instruction: the field below stays free to type.
+                            if usesSwissAddress, lookupFailed {
+                                Text(s.lookupFailed).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
+                            }
                             if usesSwissAddress, addressFieldsFocused {
                                 AddressMatchList(matches: addressMatches, showFlag: false, onSelect: selectAddress)
                             }
                             if usesSwissAddress, addressVerified {
                                 Text(s.addressVerified).font(LimenType.labelSmall).foregroundStyle(colors.seal)
                             }
-                            Field(label: s.street, value: street, hint: usesSwissAddress ? s.addressLookupHint : nil, onFocusChanged: { setFocused("street", $0) }) { value in
+                            Field(label: s.street, value: street, onFocusChanged: { setFocused("street", $0) }) { value in
                                 changeAddress { street = value }
                             }
                             Field(label: s.flatNumber, value: flatNumber, onFocusChanged: { setFocused("flat", $0) }) { value in
@@ -169,12 +171,12 @@ struct NewSessionScreen: View {
                             }
                         }
                     }
-                    if inlineStart { startKey(enabled: canStart) }
+                    if inlineStart { actionRow(enabled: canStart) }
                     Spacer().frame(height: 20)
                 }
             }
             .scrollDismissesKeyboard(.interactively)
-            if !inlineStart { startKey(enabled: canStart) }
+            if !inlineStart { actionRow(enabled: canStart) }
 
         }
         .padding(.horizontal, 20)
@@ -208,8 +210,11 @@ struct NewSessionScreen: View {
             kind = entryToSeed != nil ? .exit : .entry
         }
         .onChange(of: identity) { _, value in if loaded { model.saveReusableIdentity(value) } }
-        .task(id: LookupKey(swiss: usesSwissAddress, query: addressQuery, verified: addressVerified, focused: addressFieldsFocused, enabled: model.addressLookupEnabled)) {
-            if !model.addressLookupEnabled || !usesSwissAddress || !addressFieldsFocused || addressVerified || addressQuery.trimmingCharacters(in: .whitespaces).count < 3 {
+        // No switch in front of it: the lookup runs whenever the phone is online, and the fields
+        // stay free to type when it is offline or nothing matches. 1.2.0's opt-in and disclosure
+        // were taken out on the owner's review of the Android forms.
+        .task(id: LookupKey(swiss: usesSwissAddress, query: addressQuery, verified: addressVerified, focused: addressFieldsFocused)) {
+            if !usesSwissAddress || !addressFieldsFocused || addressVerified || addressQuery.trimmingCharacters(in: .whitespaces).count < 3 {
                 addressMatches = []
                 addressSearching = false
                 return
@@ -217,22 +222,46 @@ struct NewSessionScreen: View {
             try? await Task.sleep(for: .milliseconds(350))
             if Task.isCancelled { return }
             addressSearching = true
-            let matches = await SwissAddressLookup.search(addressQuery)
+            let result = await SwissAddressLookup.lookup(addressQuery)
             if Task.isCancelled { return }
-            addressMatches = matches
+            addressMatches = result.matches
+            lookupFailed = result.failed
             addressSearching = false
         }
     }
 
-    private func startKey(enabled: Bool) -> some View {
-        BigKey(label: "\(s.startNewSession) · \((sessionKind == .entry ? s.entry : s.exit).uppercased())", enabled: enabled) {
-            if let entryToSeed {
-                model.seedExitFrom(entryToSeed, sessionRole: actor.role, identity: identity)
-            } else {
-                model.startNewSession(role: actor.role, identity: identity, kind: sessionKind)
+    /// Draft keeps the record in the library and returns to it; Validate opens it. Both are
+    /// disabled until the name is in, and neither repeats the title or names the session kind.
+    @ViewBuilder private func actionRow(enabled: Bool) -> some View {
+        let draft = ActionKey(glyph: .save, label: s.draft, active: false, enabled: enabled) {
+            start()
+            model.closeFlow()
+            model.entryToSeedId = nil
+            model.requestHomePage(.sessions)
+        }
+        .accessibilityIdentifier("save-draft")
+        let validate = ActionKey(glyph: .confirm, label: s.validate, active: true, enabled: enabled, onPress: start)
+            .accessibilityIdentifier("start-session")
+        // Two halves of a 375-point row hold "Bestätigen" only up to the largest standard size.
+        if typeSize.isAccessibilitySize {
+            VStack(spacing: 8) {
+                draft
+                validate
+            }
+        } else {
+            HStack(spacing: 10) {
+                draft
+                validate
             }
         }
-        .accessibilityIdentifier("start-session")
+    }
+
+    private func start() {
+        if let entryToSeed {
+            model.seedExitFrom(entryToSeed, sessionRole: actor.role, identity: identity)
+        } else {
+            model.startNewSession(role: actor.role, identity: identity, kind: sessionKind)
+        }
     }
 
     private func changeAddress(_ change: () -> Void) {

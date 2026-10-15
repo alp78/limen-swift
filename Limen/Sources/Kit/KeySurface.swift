@@ -91,7 +91,7 @@ private struct KeyStyle: ButtonStyle {
 
 /// Universal controls use the familiar glyph instead of repeating a text label.
 enum ButtonGlyph {
-    case add, remove, delete, edit, camera, gallery, back, next, confirm, cancel, clear, share, open, calendar, clock
+    case add, remove, delete, edit, camera, gallery, back, next, confirm, cancel, clear, share, open, calendar, clock, save, undo, more, up, down
 
     var symbol: String {
         switch self {
@@ -110,7 +110,49 @@ enum ButtonGlyph {
         case .open: return "arrow.up.forward.square"
         case .calendar: return "calendar"
         case .clock: return "clock"
+        case .save: return "square.and.arrow.down"
+        case .undo: return "arrow.uturn.backward"
+        case .more: return "ellipsis"
+        case .up: return "arrow.up"
+        case .down: return "arrow.down"
         }
+    }
+}
+
+/// A bottom-row action: a glyph and one or two words, filled when it is the primary one.
+///
+/// Android 1.2.1 replaced the sentence-long transport keys of the forms with this shape, so the
+/// screen's title says what is being validated and the key never repeats it.
+struct ActionKey: View {
+    @Environment(\.limen) private var colors
+    let glyph: ButtonGlyph
+    let label: String
+    var active = false
+    var enabled = true
+    var stretch = true
+    let onPress: () -> Void
+
+    var body: some View {
+        let ink: Color = {
+            if active && enabled { return colors.onInk }
+            if !enabled { return colors.disabledInk }
+            return colors.ink
+        }()
+        KeySurface(active: active && enabled, enabled: enabled, radius: 12, onPress: onPress) {
+            HStack(spacing: 8) {
+                Image(systemName: glyph.symbol).font(.system(size: 20, weight: .medium)).foregroundStyle(ink).frame(width: 20, height: 20)
+                Text(label)
+                    .font(LimenType.actionKey)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .foregroundStyle(ink)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .frame(maxWidth: stretch ? .infinity : nil)
+        }
+        .frame(maxWidth: stretch ? .infinity : nil)
+        .accessibilityLabel(label)
     }
 }
 

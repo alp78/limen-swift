@@ -205,7 +205,9 @@ private struct ProtocolCard: View {
             } label: {
                 HStack(spacing: 8) {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(p.address.ifBlank(s.noAddress)).font(LimenType.titleMedium).fixedSize(horizontal: false, vertical: true).foregroundStyle(colors.ink)
+                        // One line, ellipsised: wrapped, a long address pushed the chip row off the
+                        // card, and the audit-era cut ("Adresse pas encore") was what the owner saw.
+                        Text(p.address.ifBlank(s.noAddress)).font(LimenType.titleMedium).lineLimit(1).truncationMode(.tail).foregroundStyle(colors.ink)
                         Text([p.kind == .entry ? s.entry : s.exit, SwissDate.display(p.handoverDate), p.place].filter { !$0.isBlank }.joined(separator: " · "))
                             .font(LimenType.labelSmall).fixedSize(horizontal: false, vertical: true).foregroundStyle(colors.inkDim)
                     }
@@ -223,8 +225,16 @@ private struct ProtocolCard: View {
             .buttonStyle(.plain)
             HStack(spacing: 6) {
                 if p.kind == .entry {
-                    let canCreateExit = p.isFinalized()
-                    Chip(label: canCreateExit ? s.exitFromThis : s.finalizeEntryFirst, dim: !canCreateExit, enabled: canCreateExit) { onSeedExit(p) }
+                    // A draft offers its own finalization; a finalized entry offers the exit seeded
+                    // from it. A disabled chip explaining why it was disabled was not a control.
+                    if p.isFinalized() {
+                        Chip(label: s.exitFromThis, dim: false) { onSeedExit(p) }
+                    } else {
+                        Chip(label: s.finalizeEntryFirst, dim: false) {
+                            model.openProtocol(p.id)
+                            model.goTo(.sign)
+                        }
+                    }
                 }
                 Spacer()
                 Chip(label: armed ? s.sure : s.delete, active: armed, tick: armed ? .reject : .key, destructive: true) {

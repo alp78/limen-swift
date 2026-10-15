@@ -70,7 +70,7 @@ struct DossierStep: View {
                             }
                         }
                         RecordDetailPanels(p: p)
-                        BigKey(label: locked ? s.stepExport.uppercased() : s.hubClose) { model.goTo(locked ? .export : .review) }
+                        // No key at the foot: the record opens from the hub's third door.
                         Spacer().frame(height: 12)
                     } header: {
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -180,6 +180,7 @@ private struct ObjectCard: View {
     let p: HandoverProtocol
     @State private var searching = false
     @State private var matches: [SwissAddressCandidate] = []
+    @State private var lookupFailed = false
     @State private var focused: Set<String> = []
     @State private var verified = false
     @State private var loadedFor = ""
@@ -189,18 +190,21 @@ private struct ObjectCard: View {
         let query: String
         let anyFocus: Bool
         let verified: Bool
-        let enabled: Bool
     }
 
     var body: some View {
         let anyFocus = !focused.isEmpty
         let query = [p.address, p.place].filter { !$0.isBlank }.joined(separator: " ")
+        // No switch and no disclosure on the card: the lookup runs whenever the phone is online,
+        // and the info mark carries the one line about it.
         Panel(label: s.objectLabel, info: s.tipAddress()) {
             VStack(alignment: .leading, spacing: 8) {
-                LookupPreference()
                 // Above the fields they fill: below them, the keyboard covered the answer.
                 if anyFocus, !verified, searching {
                     Text(s.addressSearching).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
+                }
+                if lookupFailed {
+                    Text(s.lookupFailed).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
                 }
                 if anyFocus, !verified {
                     AddressMatchList(matches: matches) { candidate in
@@ -256,8 +260,8 @@ private struct ObjectCard: View {
             matches = []
             focused = []
         }
-        .task(id: LookupKey(id: p.id, query: query, anyFocus: anyFocus, verified: verified, enabled: model.addressLookupEnabled)) {
-            if !model.addressLookupEnabled || !anyFocus || verified || query.trimmingCharacters(in: .whitespaces).count < 3 {
+        .task(id: LookupKey(id: p.id, query: query, anyFocus: anyFocus, verified: verified)) {
+            if !anyFocus || verified || query.trimmingCharacters(in: .whitespaces).count < 3 {
                 matches = []
                 searching = false
                 return
@@ -265,9 +269,10 @@ private struct ObjectCard: View {
             try? await Task.sleep(for: .milliseconds(350))
             if Task.isCancelled { return }
             searching = true
-            let found = await SwissAddressLookup.search(query)
+            let result = await SwissAddressLookup.lookup(query)
             if Task.isCancelled { return }
-            matches = found
+            matches = result.matches
+            lookupFailed = result.failed
             searching = false
         }
     }

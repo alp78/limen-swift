@@ -4,19 +4,8 @@ import WebKit
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct LookupPreference: View {
-    @Environment(LimenModel.self) private var model
-    @Environment(\.str) private var s
-    @Environment(\.limen) private var colors
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Toggle(label: s.onlineLookup, on: model.addressLookupEnabled) { model.setAddressLookupEnabled(!model.addressLookupEnabled) }
-            Text(s.lookupDisclosure).font(LimenType.bodySmall).foregroundStyle(colors.inkDim)
-        }
-    }
-}
-
+/// The reason a room, an object or a dossier rubric was not inspected or does not apply.
+/// Labelled with the one word; the sentence it used to carry is the document's section title.
 struct ScopeNote: View {
     @Environment(LimenModel.self) private var model
     @Environment(\.str) private var s
@@ -24,7 +13,7 @@ struct ScopeNote: View {
     let key: String
 
     var body: some View {
-        Field(label: s.scopeReason, value: p.details.scopeNotes[key] ?? "", singleLine: false) { value in
+        Field(label: s.reason, value: p.details.scopeNotes[key] ?? "", singleLine: false) { value in
             model.edit { var next = $0; next.details.scopeNotes[key] = value; return next }
         }
     }
@@ -60,8 +49,9 @@ struct CompletePreviewPanel: View {
                         if accessible, let html = model.documentPreviewHTML {
                             LocalDocumentView(url: html.url)
                         } else { PDFPreview(url: file.url) }
+                        // One word under the document it validates; Done in the bar only closes.
                         if !p.isFinalized() {
-                            SmallKey(label: s.acknowledgeReview, stretch: true) { model.confirmReview(); showing = false }.accessibilityIdentifier("confirm-review").padding(.horizontal)
+                            ActionKey(glyph: .confirm, label: s.validate, active: true) { model.confirmReview(); showing = false }.accessibilityIdentifier("confirm-review").padding(.horizontal)
                         }
                     } else if let error = model.previewError {
                         Text(error).padding()
@@ -98,8 +88,9 @@ struct RecordDetailPanels: View {
                 }
             }
             .id("transfer")
-            Panel(label: s.scopeReason) {
-                DisclosureGroup(s.scopeReason) {
+            // One field per rubric, named by the rubric; the panel carries the one word.
+            Panel(label: s.reason) {
+                DisclosureGroup(s.reason) {
                     VStack(alignment: .leading, spacing: 8) {
                         ForEach(DossierCard.allCases, id: \.self) { card in
                             Text(s.dossierCard(card)).font(LimenType.labelSmall).foregroundStyle(colors.ink)
@@ -113,15 +104,8 @@ struct RecordDetailPanels: View {
             AccessDevicesPanel(p: p)
             SupportingDocumentsPanel(p: p).id("documents")
             FollowUpsPanel(p: p).id("follow-up")
-            Panel(label: s.privacyTitle) {
-                DisclosureGroup(s.privacyTitle) {
-                    VStack(alignment: .leading, spacing: 8) {
-                        ForEach(Array(s.privacyParagraphs.enumerated()), id: \.offset) { _, paragraph in Text(paragraph).font(LimenType.bodySmall).foregroundStyle(colors.ink) }
-                        Text([p.controllerIdentity.organisation, p.controllerIdentity.contactName, p.controllerIdentity.email, p.controllerIdentity.phone].filter { !$0.isBlank }.joined(separator: " · ")).font(LimenType.bodyMedium).foregroundStyle(colors.ink)
-                        Toggle(label: s.participantNotice, on: p.details.participantNoticeShown, enabled: !locked) { edit { $0.participantNoticeShown.toggle() } }
-                    }.padding(.top, 8)
-                }
-            }
+            // No participant notice panel here any more. The privacy text lives under Data,
+            // backup and privacy; details.participantNoticeShown stays in the record, unread.
         }
     }
 
@@ -144,7 +128,7 @@ private struct DetailedMetersPanel: View {
                 VStack(spacing: 12) {
                     ForEach(p.details.readings, id: \.id) { reading in MeterDetail(p: p, reading: reading) }
                     if !locked {
-                        SmallKey(label: "+ \(s.meters)", stretch: true) {
+                        IconKey(glyph: .add, label: "\(s.add) · \(s.meters)") {
                             model.edit { var next = $0; next.details.readings.append(MeterReading(id: UUID().uuidString)); return next }
                         }
                     }
@@ -206,7 +190,7 @@ private struct AccessDevicesPanel: View {
                             if !locked { SmallKey(label: s.delete) { model.edit { var next = $0; next.details.accessDevices.removeAll { $0.id == device.id }; return next } } }
                         }
                     }
-                    if !locked { SmallKey(label: "+ \(s.accessDevices)", stretch: true) { model.edit { var next = $0; next.details.accessDevices.append(AccessDevice(id: UUID().uuidString)); return next } } }
+                    if !locked { IconKey(glyph: .add, label: "\(s.add) · \(s.accessDevices)") { model.edit { var next = $0; next.details.accessDevices.append(AccessDevice(id: UUID().uuidString)); return next } } }
                 }.padding(.top, 8)
             }
         }
@@ -250,7 +234,7 @@ private struct SupportingDocumentsPanel: View {
                         PillRow(options: DocumentKind.allCases.map { ($0, s.documentKind($0)) }, current: kind) { kind = $0 }
                         SmallKey(label: s.addDocument, stretch: true) { owner = p.id; importing = true }
                         Field(label: s.externalReference, value: reference) { reference = $0 }
-                        SmallKey(label: s.add, enabled: !reference.isBlank) {
+                        IconKey(glyph: .add, label: "\(s.add) · \(s.attachments)", enabled: !reference.isBlank) {
                             model.edit { var next = $0; next.details.attachments.append(SupportingDocument(id: UUID().uuidString, kind: kind, title: title, externalReference: reference)); return next }
                             reference = ""; title = ""
                         }
@@ -294,7 +278,7 @@ private struct FollowUpsPanel: View {
                             if !locked { SmallKey(label: s.delete) { model.edit { var next = $0; next.details.followUps.removeAll { $0.id == followUp.id }; return next } } }
                         }
                     }
-                    if !locked { SmallKey(label: "+ \(s.followUps)", stretch: true) { model.edit { var next = $0; next.details.followUps.append(FollowUp(id: UUID().uuidString)); return next } } }
+                    if !locked { IconKey(glyph: .add, label: "\(s.add) · \(s.followUps)") { model.edit { var next = $0; next.details.followUps.append(FollowUp(id: UUID().uuidString)); return next } } }
                 }.padding(.top, 8)
             }
         }
@@ -338,6 +322,8 @@ struct DocumentPreview: View {
     }
 }
 
+/// One missing item: a plain tappable line of body text, not a key, as Android 1.2.1 lists them.
+/// The line keeps a 44-point height so the tap target stays what the platform asks for.
 struct CompletionIssueKey: View {
     @Environment(LimenModel.self) private var model
     @Environment(\.str) private var s
@@ -347,11 +333,13 @@ struct CompletionIssueKey: View {
 
     var body: some View {
         Button(action: open) {
-            HStack {
-                Text(s.finalizationIssue(issue)).font(LimenType.bodyMedium).foregroundStyle(colors.ink).multilineTextAlignment(.leading)
-                Spacer()
-                Image(systemName: "chevron.forward").foregroundStyle(colors.inkDim)
-            }.padding(.vertical, 8).frame(minHeight: 44).contentShape(Rectangle())
+            Text(s.finalizationIssue(issue))
+                .font(LimenType.bodyMedium)
+                .foregroundStyle(colors.ink)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                .padding(.vertical, 6)
+                .contentShape(Rectangle())
         }.buttonStyle(.plain)
     }
 

@@ -98,17 +98,33 @@ public enum SwissAddressLookup {
     private static let session = URLSession(configuration: .ephemeral)
     private static let addressLabel = try? NSRegularExpression(pattern: "^(.+?)\\s+(\\d+[\\p{L}\\-/]*)\\s+(\\d{4})\\s+(.+)$")
 
+    /// What a lookup came back with. `failed` is the Android `Result.failed`: the service could not
+    /// be reached or answered with an error, which the screens report as a status line, as
+    /// distinct from a reachable service that simply knows no such address.
+    public struct Result: Equatable, Sendable {
+        public var matches: [SwissAddressCandidate] = []
+        public var failed = false
+        public init(matches: [SwissAddressCandidate] = [], failed: Bool = false) {
+            self.matches = matches
+            self.failed = failed
+        }
+    }
+
     public static func search(_ query: String) async -> [SwissAddressCandidate] {
+        await lookup(query).matches
+    }
+
+    public static func lookup(_ query: String) async -> Result {
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard trimmed.count >= 3 else { return [] }
+        guard trimmed.count >= 3 else { return Result() }
         guard let encoded = trimmed.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed),
-              let url = URL(string: "\(endpoint)?searchText=\(encoded)&type=locations&origins=address") else { return [] }
+              let url = URL(string: "\(endpoint)?searchText=\(encoded)&type=locations&origins=address") else { return Result() }
         var request = URLRequest(url: url)
         request.timeoutInterval = 4
         guard let (data, response) = try? await session.data(for: request),
               (response as? HTTPURLResponse).map({ (200..<300).contains($0.statusCode) }) ?? true,
-              let body = String(data: data, encoding: .utf8) else { return [] }
-        return parse(body)
+              let body = String(data: data, encoding: .utf8) else { return Result(failed: true) }
+        return Result(matches: parse(body))
     }
 
     public static func parse(_ body: String) -> [SwissAddressCandidate] {

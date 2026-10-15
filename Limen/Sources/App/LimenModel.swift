@@ -82,7 +82,6 @@ final class LimenModel {
     var libraryLoading = false
     var unreadableRecords: [Store.UnreadableRecord] = []
     var libraryGeneration = 0
-    var addressLookupEnabled = false
     var libraryProtectionEnabled = false
     var libraryUnlocked = false
     var libraryAuthenticationBusy = false
@@ -172,7 +171,8 @@ final class LimenModel {
         darkTheme = prefs.bool(forKey: keyDark)
         lang = Lang.from(prefs.string(forKey: keyLang))
         protocols = []
-        addressLookupEnabled = prefs.bool(forKey: "addressLookupEnabled")
+        // No "addressLookupEnabled" is read any more: 1.2.1 removed the lookup switch on Android,
+        // and a preference 1.2.0 (5) may have written is simply left unread, as Android leaves its own.
         libraryProtectionEnabled = prefs.bool(forKey: "libraryProtectionEnabled")
         if let bytes = prefs.data(forKey: "reusableIdentity"), let p = try? ProtocolJSON.decode(bytes) { reusableIdentity = p.sessionIdentity }
         refreshLibrary()

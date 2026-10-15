@@ -167,8 +167,9 @@ struct DateField: View {
                 }
             }
         }
+        // An undo glyph with the sentence as its accessible name, as Android 1.2.1 draws it.
         if impossible, !locked, let previous = model.lastValidInput(key: fieldKey ?? label) {
-            SmallKey(label: s.revertInput) { onChange(previous) }
+            IconKey(glyph: .undo, label: s.restoreLastValidDate) { onChange(previous) }
         }
         }
         // Keyed on the stored value: an accepted date, the picker, and a record opened fresh all
@@ -241,7 +242,7 @@ struct TimeField: View {
             }
         }
         if impossible, !locked, let previous = model.lastValidInput(key: fieldKey ?? label) {
-            SmallKey(label: s.revertInput) { onChange(previous) }
+            IconKey(glyph: .undo, label: s.restoreLastValidTime) { onChange(previous) }
         }
         }
         .onChange(of: stored, initial: true) { _, now in

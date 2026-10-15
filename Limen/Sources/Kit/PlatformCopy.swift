@@ -13,12 +13,14 @@ extension Str {
         }
     }
     var invalidInput: String { uiWords("Check this value", "Vérifiez cette valeur", "Wert überprüfen", "Verificare il valore", "Controllar questa valur") }
-    var revertInput: String { uiWords("Restore previous valid value", "Rétablir la valeur valide précédente", "Vorherigen gültigen Wert wiederherstellen", "Ripristina il valore valido precedente", "Restabilir la valur valida precedenta") }
+    // The three inline `s.words` of the Android screens, word for word: the undo keys of the date
+    // and time fields and the hub's one key under the missing data.
+    var restoreLastValidDate: String { uiWords("Restore last valid date", "Rétablir la dernière date valide", "Letztes gültiges Datum übernehmen", "Ripristina l’ultima data valida", "Restabilir l’ultima data valaivla") }
+    var restoreLastValidTime: String { uiWords("Restore last valid time", "Rétablir la dernière heure valide", "Letzte gültige Uhrzeit übernehmen", "Ripristina l’ultima ora valida", "Restabilir l’ultima ura valaivla") }
+    var showAll: String { uiWords("Show all", "Tout afficher", "Alle anzeigen", "Mostra tutto", "Mussar tut") }
     var plainArchive: String { uiWords("Create unencrypted archive", "Créer une archive non chiffrée", "Unverschlüsseltes Archiv erstellen", "Crea archivio non cifrato", "Crear archiv betg criptà") }
     var plainArchiveWarning: String { uiWords("Anyone with this file can read every selected record and photograph. Continue only if you intend to share an unencrypted copy.", "Toute personne disposant du fichier peut lire les dossiers et photos sélectionnés. Continuez uniquement si vous souhaitez une copie non chiffrée.", "Wer diese Datei hat, kann alle ausgewählten Protokolle und Fotos lesen. Nur fortfahren, wenn eine unverschlüsselte Kopie beabsichtigt ist.", "Chiunque abbia questo file può leggere tutti i verbali e le foto selezionati. Continuare solo se si desidera una copia non cifrata.", "Mintgin cun questa datoteca po leger ils protocols e las fotografias tschernidas. Cuntinuar mo sch'ina copia betg criptada è intenziunada.") }
     var libraryProtection: String { uiWords("Lock the library and settings; keep the current handover available", "Verrouiller les dossiers et réglages ; garder la remise en cours accessible", "Bibliothek und Einstellungen sperren; aktuelle Übergabe bleibt zugänglich", "Blocca raccolta e impostazioni; la consegna in corso resta accessibile", "Serrar la biblioteca e las configuraziuns; la surdada actuala resta accessibla") }
-    var acknowledgeReview: String { uiWords("I reviewed the complete document", "J’ai relu le document complet", "Ich habe das vollständige Dokument geprüft", "Ho verificato il documento completo", "Jau hai controllà il document cumplet") }
-    var participantNotice: String { uiWords("Privacy information shown to the participants", "Information de confidentialité présentée aux participants", "Datenschutzinformation den Beteiligten gezeigt", "Informativa privacy mostrata ai partecipanti", "Infurmaziun da protecziun da datas mussada als participants") }
     var documentTitle: String { uiWords("Document title", "Titre du document", "Dokumenttitel", "Titolo del documento", "Titel dal document") }
     var originalEvidence: String { uiWords("Original evidence", "Preuve originale", "Originalbeleg", "Prova originale", "Cumprova originala") }
     var cameraSettings: String { uiWords("Open Settings", "Ouvrir les réglages", "Einstellungen öffnen", "Apri Impostazioni", "Avrir las configuraziuns") }

@@ -231,7 +231,6 @@ struct SignStep: View {
                             }
                             Field(label: s.unilateralNote, value: p.unilateralNote, singleLine: false) { v in model.edit { var x = $0; x.unilateralNote = v; return x } }
                         }
-                        Text(s.reservationBeforeSign).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
                         CompletePreviewPanel(p: p)
                         ForEach(CompletionRules.requiredRecordParticipants(p, fallbackRole: model.myRole), id: \.uiKey) { party in
                             SignRow(p: p, party: party, plane: .record) { padTarget = ParticipantTarget(party: party) }

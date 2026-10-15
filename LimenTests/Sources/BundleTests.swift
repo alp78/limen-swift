@@ -32,8 +32,8 @@ final class BundleTests: XCTestCase {
     /// Settings pane and every crash report read.
     func testTheBundleCarriesTheProjectsVersion() {
         let info = Bundle.main.infoDictionary
-        XCTAssertEqual(info?["CFBundleShortVersionString"] as? String, "1.2.0")
-        XCTAssertEqual(info?["CFBundleVersion"] as? String, "5")
+        XCTAssertEqual(info?["CFBundleShortVersionString"] as? String, "1.2.2")
+        XCTAssertEqual(info?["CFBundleVersion"] as? String, "6")
     }
 
     func testAuditIdentityAndLocalizedSystemPurposes() throws {

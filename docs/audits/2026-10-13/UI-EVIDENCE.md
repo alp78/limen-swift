@@ -1,5 +1,7 @@
 # Visible workflow and accessibility evidence
 
+Superseded in part on 15 October 2026 for the new-session form, the hub, the dossier's foot and privacy panel, the masthead, the room actions, the signature step and the records list, which were simplified to Android 1.2.2; [the 1.2.2 handoff](../../releases/1.2.2/HANDOFF.md) carries that pass's own runs and screenshots.
+
 Recorded 14 October 2026 against the uncommitted Android 1.2 parity/audit update based on Swift commit `12324623dc427ca92ca5342af9b7177c331ed394`. These are synthetic engineering acceptance runs. Their durations are test execution times, not measured human task times. All reset/demo launches target the isolated Debug bundle `dev.peringer.limen.audit`; production records were not reset.
 
 ## Executed workflows

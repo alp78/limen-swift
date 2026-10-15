@@ -139,8 +139,8 @@ final class SmokeTest: XCTestCase {
         XCTAssertTrue(element(app, "Required throughout the canton in the 2026 official snapshot").waitForExistence(timeout: 10))
         shoot(app, "12-legal-overlay")
         app.buttons[s.back].firstMatch.tap()
-        XCTAssertTrue(app.buttons[s.hubClose].waitForExistence(timeout: 10))
-        app.buttons[s.hubClose].tap()
+        XCTAssertTrue(element(app, s.hubRecordLead).waitForExistence(timeout: 10))
+        element(app, s.hubRecordLead).tap()
         XCTAssertTrue(element(app, "Object").waitForExistence(timeout: 10))
         shoot(app, "13-review")
         let preview = app.buttons["preview-document"]

@@ -111,6 +111,7 @@ enum LimenType {
     static let labelSmall = sans(12, .medium, like: .caption)
     static let key = sans(17, .semibold, like: .body)
     static let smallKey = sans(13, .semibold, like: .footnote)
+    static let actionKey = sans(15, .semibold, like: .subheadline)
     static let chip = sans(12, .medium, like: .caption)
     static let doorTitle = sans(15, .bold, like: .subheadline)
     static let rowTitle = sans(14, .bold, like: .subheadline)
