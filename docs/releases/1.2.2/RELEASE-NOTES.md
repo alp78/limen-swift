@@ -63,7 +63,7 @@ Commencez un état des lieux, choisissez votre côté et touchez Valider. Rempli
 
 Les deux points que je souhaite le plus voir testés : le PDF A4 avec son annexe photographique, et la sauvegarde protégée par mot de passe, y compris sa restauration sur un second téléphone.
 
-Signalez-moi tout ce qui se lit mal dans votre langue, toute règle cantonale qui ne correspond pas à votre pratique, et tout ce que l'application permet alors qu'une remise ne le devrait pas.
+Signalez-moi tout ce qui se lit mal dans votre langue, toute règle cantonale qui ne correspond pas à votre pratique, et tout ce que l’application permet alors qu’une remise ne le devrait pas.
 ```
 
 ### de-DE
@@ -87,5 +87,5 @@ Aprite un verbale, scegliete la vostra parte e toccate Conferma. Compilate il do
 
 I due punti che mi interessano di più: il PDF A4 con il suo allegato fotografico, e il backup protetto da password, compreso il ripristino su un secondo telefono.
 
-Segnalatemi tutto ciò che si legge male nella vostra lingua, ogni regola cantonale che non corrisponde alla vostra pratica, e tutto ciò che l'applicazione permette mentre una consegna non dovrebbe permetterlo.
+Segnalatemi tutto ciò che si legge male nella vostra lingua, ogni regola cantonale che non corrisponde alla vostra pratica, e tutto ciò che l’applicazione permette mentre una consegna non dovrebbe permetterlo.
 ```
