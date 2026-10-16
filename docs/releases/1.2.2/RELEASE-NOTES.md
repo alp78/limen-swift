@@ -36,4 +36,56 @@ Formulars pli simpels. Ils buttuns èn in simbol ed in pled a la fin da mintga f
 
 ## Where they go, when the owner decides to upload
 
-The App Store Connect locales of the app are `en-US`, `fr-FR`, `de-DE` and `it` (not `it-IT`, see the vault's environment note). "What's New" is written per `appStoreVersionLocalizations` once a 1.2.2 version exists; "What to Test" per `betaBuildLocalizations` once the build is up. Neither exists yet: no archive was uploaded and no version was created by this pass.
+The App Store Connect locales of the app are `en-US`, `fr-FR`, `de-DE` and `it` (not `it-IT`, see the vault's environment note). "What's New" is written per `appStoreVersionLocalizations` once a 1.2.2 version exists; "What to Test" per `betaBuildLocalizations` once the build is up. The owner uploaded build 6 on 15 October 2026 (delivery `217c7844-67da-40c7-ac78-68e7bea2f70d`) and Apple processed it as valid; no 1.2.2 App Store version exists yet.
+
+## TestFlight "What to Test" for build 6
+
+Build 4's notes, which never reached an external tester, with the second paragraph renamed for the 1.2.2 screens. Build 6 is the first build the Agencies group will see, so it still opens with "First external build".
+
+### en-US
+
+```
+First external build. Put it through a real handover if you can, a realistic one if not.
+
+Start a record, pick your side and press Validate. Fill the dossier (address, parties, contract, deposit, meters, keys), add a defect with photographs to a room, then open RECORD: review, have both parties sign, finalize and export.
+
+The two things I most want tested: the A4 PDF with its photograph annex, and the password-protected backup, including restoring it on a second phone.
+
+Please report anything that reads wrong in your language, any cantonal rule that does not match your practice, and anything the app lets you do that a handover should not allow.
+```
+
+### fr-FR
+
+```
+Première version externe. À passer sur une vraie remise si possible, sinon sur une remise réaliste.
+
+Commencez un état des lieux, choisissez votre côté et touchez Valider. Remplissez le dossier (adresse, parties, bail, dépôt, compteurs, clés), ajoutez un défaut avec photographies dans une pièce, puis ouvrez CONSTAT : relisez, faites signer les deux parties, finalisez et exportez.
+
+Les deux points que je souhaite le plus voir testés : le PDF A4 avec son annexe photographique, et la sauvegarde protégée par mot de passe, y compris sa restauration sur un second téléphone.
+
+Signalez-moi tout ce qui se lit mal dans votre langue, toute règle cantonale qui ne correspond pas à votre pratique, et tout ce que l'application permet alors qu'une remise ne le devrait pas.
+```
+
+### de-DE
+
+```
+Erste externe Fassung. Wenn möglich bei einer echten Übergabe einsetzen, sonst bei einer realistischen.
+
+Beginnen Sie ein Protokoll, wählen Sie Ihre Seite und tippen Sie auf Bestätigen. Füllen Sie das Dossier (Adresse, Parteien, Vertrag, Kaution, Zähler, Schlüssel), fügen Sie in einem Raum einen Mangel mit Fotografien hinzu und öffnen Sie dann PROTOKOLL: durchsehen, beide Parteien unterschreiben lassen, abschliessen und exportieren.
+
+Die zwei Punkte, die mich am meisten interessieren: das A4-PDF mit seinem Fotoanhang, und die passwortgeschützte Sicherung, samt Wiederherstellung auf einem zweiten Telefon.
+
+Melden Sie mir alles, was sich in Ihrer Sprache falsch liest, jede kantonale Regel, die Ihrer Praxis nicht entspricht, und alles, was die App zulässt, obwohl eine Übergabe es nicht sollte.
+```
+
+### it
+
+```
+Prima versione esterna. Se possibile provatela su una consegna reale, altrimenti su una realistica.
+
+Aprite un verbale, scegliete la vostra parte e toccate Conferma. Compilate il dossier (indirizzo, parti, contratto, deposito, contatori, chiavi), aggiungete un difetto con fotografie in un locale, poi aprite VERBALE: rilettura, firma di entrambe le parti, finalizzazione ed esportazione.
+
+I due punti che mi interessano di più: il PDF A4 con il suo allegato fotografico, e il backup protetto da password, compreso il ripristino su un secondo telefono.
+
+Segnalatemi tutto ciò che si legge male nella vostra lingua, ogni regola cantonale che non corrisponde alla vostra pratica, e tutto ciò che l'applicazione permette mentre una consegna non dovrebbe permetterlo.
+```
