@@ -93,12 +93,22 @@ The thirty photographs of the 1.2.5 measurement are still in the audit app's `Do
 
 1. Decide on the two screen colours if Android's are not wanted on the iPhone: `LimenPalette.warningOutline` and `LimenPalette.disabledInk`, two constants, read by the theme and the paper alike.
 2. Export the demo record on the Pixel and on the iPhone and compare page by page: the sections and their order, the contents entries, the panels with their pills and chips, the annex plates and their order. The page breaks may differ where the two faces wrap differently.
-3. Upload build 8 and write the five-language notes and the TestFlight note from [RELEASE-NOTES.md](RELEASE-NOTES.md).
+3. Upload build 8 and write the five-language notes and the TestFlight note from [RELEASE-NOTES.md](RELEASE-NOTES.md). Done the same evening on the owner's request, recorded below.
+
+## Upload, 21 October 2026
+
+On the owner's request after commit `d112d8f`, with the tree clean. Build 8 was archived in Release from that commit (`DD-release/Limen-1.2.6-8.xcarchive`, gitignored) and exported with `method: app-store-connect` and `manageAppVersionAndBuildNumber: false`, so Xcode could not renumber it: Apple Distribution, team KDSZB7N44K, `dev.peringer.limen` 1.2.6 (8), iOS 17.0, 10,421,686 bytes. `altool --validate-app` and `--upload-app` both passed (delivery `9fa56942-a00b-411d-a728-e8d4531a4915`), and Apple reported the build VALID two minutes later.
+
+Then, over the App Store Connect API, each write read back afterwards rather than taken from the console: the export compliance answer `usesNonExemptEncryption: false`, the same as builds 4 and 6 and still the owner's own determination; the "What to Test" notes from [RELEASE-NOTES.md](RELEASE-NOTES.md) in `en-US`, `fr-FR`, `de-DE` and `it`, compared character for character after the write; the build attached to the internal Owner group and the external Agencies group; and a Beta App Review submission, `WAITING_FOR_REVIEW` since 22:20. Until Apple approves it the Agencies testers and the public link keep build 6, which Apple approved on its review of 16 October. On the owner's choice the App Store version that had sat at 1.1.2 in Prepare for Submission is now 1.2.6 with build 8 attached; it is not submitted for App Store review, and the questionnaire and the agreement that gate a sale are still open. Apple refused the "What's New" text on it, `409 STATE_ERROR`, because an app's first store version has none, so the release notes wait for the version after the first one on sale. The build expires on 19 January 2027. The statuses and the logs are in [evidence/upload-2026-10-21.json](evidence/upload-2026-10-21.json), [evidence/altool-validate.log](evidence/altool-validate.log), [evidence/altool-upload.log](evidence/altool-upload.log) and [evidence/testflight-writes.log](evidence/testflight-writes.log).
 
 ## Git handover
 
-Not executed. One line, one message, no body, no attribution. `ThirdParty/` and `DD*/` are ignored.
+The line below was run by the owner as `d112d8f`. The upload record that followed is committed by the second line. One line each, one message, no body, no attribution. `ThirdParty/` and `DD*/` are ignored.
 
 ```
 cd /Users/aperi/DEV/SWIFT/limen && git add CLAUDE.md Project.swift Limen LimenKit LimenKitTests LimenTests LimenUITests docs tools && git commit -m "Follow Android 1.2.6: draw the exported record in the app's own style from a shared palette, with a cover and a verified contents list, one amber panel per room with its findings inside, the annex in the same panels, and 1.2.6 (8) verified on the iPhone" && git push
+```
+
+```
+cd /Users/aperi/DEV/SWIFT/limen && git add CLAUDE.md docs && git commit -m "Record the upload of 1.2.6 (8) to TestFlight, its Beta App Review submission and store version 1.2.6" && git push
 ```

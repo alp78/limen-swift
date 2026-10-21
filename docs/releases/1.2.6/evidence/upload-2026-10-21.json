@@ -1,0 +1,37 @@
+{
+  "sourceCommit": "d112d8f674c7e6edc6aa93a8abd187b28e1ef5c6",
+  "sourceTreeDirty": false,
+  "archive": "DD-release/Limen-1.2.6-8.xcarchive (gitignored build product)",
+  "exportOptions": "method app-store-connect, manageAppVersionAndBuildNumber false, team KDSZB7N44K, automatic signing",
+  "ipa": {
+    "path": "DD-release/export-1.2.6-8-store/Limen.ipa",
+    "bytes": 10421686,
+    "sha256": "9f3563da44904b342d6bbd55b2552b07a63b53346374f1a2190611d43760486a",
+    "bundleIdentifier": "dev.peringer.limen",
+    "shortVersion": "1.2.6",
+    "build": "8",
+    "minimumOS": "17.0",
+    "certificate": "Apple Distribution, team KDSZB7N44K",
+    "profile": "iOS Team Store Provisioning Profile: dev.peringer.limen"
+  },
+  "validate": "VERIFY SUCCEEDED with no errors",
+  "upload": "UPLOAD SUCCEEDED with no errors",
+  "deliveryUUID": "9fa56942-a00b-411d-a728-e8d4531a4915",
+  "readBackFromTheApi": {
+    "build": {
+      "id": "9fa56942-a00b-411d-a728-e8d4531a4915",
+      "uploadedDate": "2026-10-21T13:18:43-07:00",
+      "processingState": "VALID",
+      "usesNonExemptEncryption": false,
+      "expirationDate": "2027-01-19T12:18:43-08:00",
+      "internalBuildState": "IN_BETA_TESTING",
+      "externalBuildState": "WAITING_FOR_BETA_REVIEW"
+    },
+    "betaBuildLocalizations": ["en-US", "fr-FR", "de-DE", "it"],
+    "betaGroups": {"Owner": "builds 8, 6, 4", "Agencies": "builds 8, 6, 4, public link enabled"},
+    "betaAppReviewSubmission": {"betaReviewState": "WAITING_FOR_REVIEW", "submittedDate": "2026-10-21T13:20:21-07:00"},
+    "appStoreVersion": {"versionString": "1.2.6 (renamed from 1.1.2)", "appStoreState": "PREPARE_FOR_SUBMISSION", "build": "8"},
+    "whatsNew": "refused for en-US with 409 STATE_ERROR: Attribute 'whatsNew' cannot be edited at this time (an app's first store version has no What's New); the other three locales were not tried",
+    "build6": {"betaReviewState": "APPROVED", "externalBuildState": "IN_BETA_TESTING"}
+  }
+}
