@@ -1,0 +1,57 @@
+Simulator iPhone 17 Pro, iOS 26.5, Debug, 21 October 2026: SmokeTest, ParityJourneyTest, StoreShotsTest and AnnexShotsTest after the redesign (test-without-building on the bundles built for the unit run).
+
+Test Suite 'Selected tests' started at 2026-10-21 21:19:48.024.
+Test Suite 'LimenUITests.xctest' started at 2026-10-21 21:19:48.024.
+Test Suite 'AnnexShotsTest' started at 2026-10-21 21:19:48.024.
+Test Case '-[LimenUITests.AnnexShotsTest testTheMeasurementRecordsAnnexOnThePreview]' started.
+Test Case '-[LimenUITests.AnnexShotsTest testTheMeasurementRecordsAnnexOnThePreview]' skipped (30.333 seconds).
+Test Suite 'AnnexShotsTest' passed at 2026-10-21 21:20:18.359.
+	 Executed 1 test, with 1 test skipped and 0 failures (0 unexpected) in 30.333 (30.334) seconds
+Test Suite 'ParityJourneyTest' started at 2026-10-21 21:20:18.359.
+Test Case '-[LimenUITests.ParityJourneyTest testAgencyStandaloneExitThenAmendment]' started.
+Test Case '-[LimenUITests.ParityJourneyTest testAgencyStandaloneExitThenAmendment]' passed (112.434 seconds).
+Test Case '-[LimenUITests.ParityJourneyTest testEmptyFormToDrawnSignaturesAndOpenedDocument]' started.
+Test Case '-[LimenUITests.ParityJourneyTest testEmptyFormToDrawnSignaturesAndOpenedDocument]' passed (73.726 seconds).
+Test Case '-[LimenUITests.ParityJourneyTest testInvalidDateSurvivesRelaunchAndHasExplicitRevert]' started.
+Test Case '-[LimenUITests.ParityJourneyTest testInvalidDateSurvivesRelaunchAndHasExplicitRevert]' passed (15.627 seconds).
+Test Case '-[LimenUITests.ParityJourneyTest testPrivateLandlordEntryThenSeededExit]' started.
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/ParityJourneyTest.swift:320: error: -[LimenUITests.ParityJourneyTest testPrivateLandlordEntryThenSeededExit] : Failed to get matching snapshot: No matches found for Elements matching predicate '"No physical key
+Test Case '-[LimenUITests.ParityJourneyTest testPrivateLandlordEntryThenSeededExit]' failed (98.773 seconds).
+Test Suite 'ParityJourneyTest' failed at 2026-10-21 21:25:18.922.
+	 Executed 4 tests, with 1 failure (0 unexpected) in 300.560 (300.563) seconds
+Test Suite 'SmokeTest' started at 2026-10-21 21:25:18.922.
+Test Case '-[LimenUITests.SmokeTest testTheLandingTheFormAndThePrivacyPage]' started.
+Test Case '-[LimenUITests.SmokeTest testTheLandingTheFormAndThePrivacyPage]' passed (33.822 seconds).
+Test Case '-[LimenUITests.SmokeTest testTheSeededDraftWalksEveryStep]' started.
+Test Case '-[LimenUITests.SmokeTest testTheSeededDraftWalksEveryStep]' passed (40.540 seconds).
+Test Suite 'SmokeTest' passed at 2026-10-21 21:26:33.286.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 74.362 (74.364) seconds
+Test Suite 'StoreShotsTest' started at 2026-10-21 21:26:33.286.
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInEnglish]' started.
+LIMEN_UI_TREE Attributes: Application, 0x1165fc3c0, pid: 66956, label: 'Limen'
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:130: error: -[LimenUITests.StoreShotsTest testStoreShotsInEnglish] : XCTAssertTrue failed - the record did not finalize in En
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInEnglish]' failed (86.014 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInFrench]' started.
+LIMEN_UI_TREE Attributes: Application, 0x1166497c0, pid: 67011, label: 'Limen'
+                  StaticText, 0x1165fc780, {{36.0, 517.0}, {96.3, 12.0}}, label: 'Avant la finalisation'
+                  Button, 0x1165fd900, {{36.0, 537.0}, {330.0, 56.0}}, label: 'Nommez le locataire et le bailleur / la régie'
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:130: error: -[LimenUITests.StoreShotsTest testStoreShotsInFrench] : XCTAssertTrue failed - the record did not finalize in Fr
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInFrench]' failed (86.495 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInGerman]' started.
+LIMEN_UI_TREE Attributes: Application, 0x11664d400, pid: 67053, label: 'Limen'
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:130: error: -[LimenUITests.StoreShotsTest testStoreShotsInGerman] : XCTAssertTrue failed - the record did not finalize in De
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInGerman]' failed (85.881 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInItalian]' started.
+LIMEN_UI_TREE Attributes: Application, 0x116678f00, pid: 67147, label: 'Limen'
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:130: error: -[LimenUITests.StoreShotsTest testStoreShotsInItalian] : XCTAssertTrue failed - the record did not finalize in It
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInItalian]' failed (85.540 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInRomansh]' started.
+LIMEN_UI_TREE Attributes: Application, 0x11667c000, pid: 67193, label: 'Limen'
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/StoreShotsTest.swift:130: error: -[LimenUITests.StoreShotsTest testStoreShotsInRomansh] : XCTAssertTrue failed - the record did not finalize in Rm
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInRomansh]' failed (85.899 seconds).
+Test Suite 'StoreShotsTest' failed at 2026-10-21 21:33:43.119.
+	 Executed 5 tests, with 5 failures (0 unexpected) in 429.829 (429.833) seconds
+Test Suite 'LimenUITests.xctest' failed at 2026-10-21 21:33:43.120.
+	 Executed 12 tests, with 1 test skipped and 6 failures (0 unexpected) in 835.083 (835.096) seconds
+Test Suite 'Selected tests' failed at 2026-10-21 21:33:43.121.
+	 Executed 12 tests, with 1 test skipped and 6 failures (0 unexpected) in 835.083 (835.097) seconds

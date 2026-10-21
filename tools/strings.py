@@ -191,8 +191,9 @@ class Parser:
         return self.renamed.get(name, name)
 
     def if_else(self) -> str:
-        # The one shape Strings.kt uses besides `when`: `if (param == Enum.CASE) a else b`, which
-        # is a ternary over an enum case in Swift. Anything else here is a generator gap, and it
+        # The two shapes the Kotlin strings use besides `when`: `if (param == Enum.CASE) a else b`,
+        # a ternary over an enum case in Swift, and since 1.2.6 `if (n == 1) a else b`, a ternary
+        # over a number (the singular of a count). Anything else here is a generator gap, and it
         # stops rather than guessing.
         self.expect("if")
         self.expect("(")
@@ -201,7 +202,13 @@ class Parser:
         if not self.peek("=="):
             raise SystemExit(f"if without == at {self.pos}: {self.text[self.pos:self.pos + 40]!r}")
         self.pos += 2
-        case = self.reference(self.dotted())
+        self.skip_ws()
+        literal = re.match(r"\d+", self.text[self.pos:])
+        if literal:
+            self.pos += literal.end()
+            case = literal.group(0)
+        else:
+            case = self.reference(self.dotted())
         self.expect(")")
         then = self.expression()
         self.skip_ws()

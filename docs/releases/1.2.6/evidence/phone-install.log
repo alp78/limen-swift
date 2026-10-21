@@ -1,0 +1,25 @@
+== make device Wed Oct 21 21:14:27 CEST 2026
+# The destination names the phone rather than 'generic/platform=iOS': a free team registers a
+# device only when the build is aimed at it, and without that there is no profile to sign with.
+set -o pipefail && xcodebuild -workspace Limen.xcworkspace -scheme Limen \
+		-destination 'id=D5A6144A-6100-5A25-90E7-898D11325105' -configuration Release \
+		-derivedDataPath ./DD -allowProvisioningUpdates build | xcbeautify --quiet
+
+----- xcbeautify -----
+Version: 3.2.1
+----------------------
+
+[32;1mBuild Succeeded[0m
+xcrun devicectl device install app --device D5A6144A-6100-5A25-90E7-898D11325105 ./DD/Build/Products/Release-iphoneos/Limen.app
+App installed:
+• bundleID: dev.peringer.limen
+• installationURL: file:///private/var/containers/Bundle/Application/0D1CC6D5-2841-4B11-809B-9B24F26B6CC5/Limen.app/
+• launchServicesIdentifier: unknown
+• databaseUUID: 5FF4C820-790C-4AC4-A06B-E98797706C58
+• databaseSequenceNumber: 3584
+• options: 
+xcrun devicectl device process launch --device D5A6144A-6100-5A25-90E7-898D11325105 dev.peringer.limen
+Launched application with dev.peringer.limen bundle identifier.
+Limen                 dev.peringer.limen.audit               1.2.5     7             
+Limen                 dev.peringer.limen                     1.2.6     8             
+LimenUITests-Runner   dev.peringer.limen.uitests.xctrunner   1.0       1             

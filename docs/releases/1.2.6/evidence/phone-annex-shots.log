@@ -1,0 +1,796 @@
+== annex shots Wed Oct 21 21:16:56 CEST 2026
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace Limen.xcworkspace -scheme AllTests -destination id=00008150-001074183A7B401C -derivedDataPath ./DD "-only-testing:LimenUITests/AnnexShotsTest" test-without-building
+
+2026-10-21 21:16:59.199 xcodebuild[65911:533426] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-21 21:16:59.858031+0200 LimenUITests-Runner[24727:6116808] [Default] Running tests...
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'Selected tests' started at 2026-10-21 21:17:00.273.
+Test Suite 'LimenUITests.xctest' started at 2026-10-21 21:17:00.273.
+Test Suite 'AnnexShotsTest' started at 2026-10-21 21:17:00.274.
+Test Case '-[LimenUITests.AnnexShotsTest testTheMeasurementRecordsAnnexOnThePreview]' started.
+    t =     0.00s Start Test at 2026-10-21 21:17:00.274
+    t =     0.02s Set Up
+    t =     0.02s Open dev.peringer.limen.audit
+    t =     0.02s     Launch dev.peringer.limen.audit
+2026-10-21 21:17:00.390 xcodebuild[65911:533426] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-21 21:17:00.391 xcodebuild[65911:533426] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-21 21:17:01.687 xcodebuild[65911:533426] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.79s         Setting up automation session
+    t =     1.92s         Wait for dev.peringer.limen.audit to idle
+    t =     2.97s Waiting 5.0s for "NOUVEL ÉTAT DES LIEUX" Button to exist
+    t =     3.99s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =     3.99s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =     4.00s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =     4.07s             Find: Descendants matching type Button
+    t =     4.07s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =     4.07s         Capturing element debug description
+    t =     5.00s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =     5.00s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =     5.01s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =     5.05s             Find: Descendants matching type Button
+    t =     5.05s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =     5.05s         Capturing element debug description
+    t =     5.98s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =     5.98s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =     5.99s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =     6.02s             Find: Descendants matching type Button
+    t =     6.02s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =     6.02s         Capturing element debug description
+    t =     7.05s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =     7.06s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =     7.06s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =     7.10s             Find: Descendants matching type Button
+    t =     7.10s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =     7.10s         Capturing element debug description
+    t =     7.97s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =     7.97s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =     7.98s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =     8.01s             Find: Descendants matching type Button
+    t =     8.01s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =     8.02s         Capturing element debug description
+    t =     8.02s     Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =     8.02s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =     8.05s         Find: Descendants matching type Button
+    t =     8.05s         Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =     8.05s Collecting debug information to assist test failure triage
+    t =     8.05s     Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =     8.10s Checking existence of `"TERMINÉ" Button`
+    t =     8.10s     Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =     8.13s Checking existence of `"RETOUR" Button`
+    t =     8.13s     Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =     8.16s Tap "RETOUR" Button
+    t =     8.16s     Wait for dev.peringer.limen.audit to idle
+    t =     8.17s     Find the "RETOUR" Button
+    t =     8.17s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =     8.20s     Check for interrupting elements affecting "arrow.backward" Button
+    t =     8.22s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =     8.25s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =     8.25s     Synthesize event
+    t =     8.56s     Wait for dev.peringer.limen.audit to idle
+    t =     8.57s Waiting 5.0s for "NOUVEL ÉTAT DES LIEUX" Button to exist
+    t =     9.60s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =     9.60s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =     9.60s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =     9.65s             Find: Descendants matching type Button
+    t =     9.65s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =     9.65s         Capturing element debug description
+    t =    10.58s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    10.58s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    10.59s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    10.63s             Find: Descendants matching type Button
+    t =    10.63s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    10.63s         Capturing element debug description
+    t =    11.66s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    11.66s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    11.66s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    11.70s             Find: Descendants matching type Button
+    t =    11.70s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    11.71s         Capturing element debug description
+    t =    12.63s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    12.63s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    12.64s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    12.67s             Find: Descendants matching type Button
+    t =    12.68s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    12.68s         Capturing element debug description
+    t =    13.57s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    13.57s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    13.58s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    13.62s             Find: Descendants matching type Button
+    t =    13.62s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    13.62s         Capturing element debug description
+    t =    13.63s     Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    13.63s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    13.66s         Find: Descendants matching type Button
+    t =    13.66s         Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    13.67s Collecting debug information to assist test failure triage
+    t =    13.67s     Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    13.72s Checking existence of `"TERMINÉ" Button`
+    t =    13.73s     Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    13.76s Checking existence of `"RETOUR" Button`
+    t =    13.77s     Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    13.80s Tap "RETOUR" Button
+    t =    13.80s     Wait for dev.peringer.limen.audit to idle
+    t =    13.81s     Find the "RETOUR" Button
+    t =    13.81s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    13.85s     Check for interrupting elements affecting "arrow.backward" Button
+    t =    13.87s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    13.90s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    13.90s     Synthesize event
+    t =    14.20s     Wait for dev.peringer.limen.audit to idle
+    t =    14.21s Waiting 5.0s for "NOUVEL ÉTAT DES LIEUX" Button to exist
+    t =    15.25s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    15.25s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    15.26s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    15.36s             Find: Descendants matching type Button
+    t =    15.36s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    15.37s         Capturing element debug description
+    t =    16.29s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    16.29s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    16.30s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    16.39s             Find: Descendants matching type Button
+    t =    16.40s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    16.40s         Capturing element debug description
+    t =    17.22s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    17.23s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    17.23s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    17.33s             Find: Descendants matching type Button
+    t =    17.33s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    17.34s         Capturing element debug description
+    t =    18.26s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    18.26s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    18.26s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    18.36s             Find: Descendants matching type Button
+    t =    18.36s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    18.37s         Capturing element debug description
+    t =    19.22s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    19.22s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    19.23s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    19.32s             Find: Descendants matching type Button
+    t =    19.32s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    19.33s         Capturing element debug description
+    t =    19.33s     Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    19.33s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    19.40s         Find: Descendants matching type Button
+    t =    19.40s         Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    19.41s Collecting debug information to assist test failure triage
+    t =    19.41s     Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    19.51s Checking existence of `"TERMINÉ" Button`
+    t =    19.51s     Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    19.57s Checking existence of `"RETOUR" Button`
+    t =    19.57s     Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    19.63s Tap "RETOUR" Button
+    t =    19.63s     Wait for dev.peringer.limen.audit to idle
+    t =    19.64s     Find the "RETOUR" Button
+    t =    19.64s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    19.70s     Check for interrupting elements affecting "arrow.backward" Button
+    t =    19.71s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    19.76s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    19.76s     Synthesize event
+    t =    20.07s     Wait for dev.peringer.limen.audit to idle
+    t =    20.08s Waiting 5.0s for "NOUVEL ÉTAT DES LIEUX" Button to exist
+    t =    21.10s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    21.10s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    21.11s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    21.15s             Find: Descendants matching type Button
+    t =    21.15s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    21.16s         Capturing element debug description
+    t =    22.09s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    22.09s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    22.10s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    22.14s             Find: Descendants matching type Button
+    t =    22.14s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    22.14s         Capturing element debug description
+    t =    23.17s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    23.18s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    23.18s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    23.22s             Find: Descendants matching type Button
+    t =    23.22s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    23.23s         Capturing element debug description
+    t =    24.14s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    24.14s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    24.15s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    24.19s             Find: Descendants matching type Button
+    t =    24.19s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    24.19s         Capturing element debug description
+    t =    25.08s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    25.08s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    25.09s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    25.13s             Find: Descendants matching type Button
+    t =    25.13s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    25.13s         Capturing element debug description
+    t =    25.14s     Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    25.14s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    25.17s         Find: Descendants matching type Button
+    t =    25.18s         Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    25.18s Collecting debug information to assist test failure triage
+    t =    25.18s     Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    25.24s Checking existence of `"TERMINÉ" Button`
+    t =    25.24s     Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    25.28s Checking existence of `"RETOUR" Button`
+    t =    25.29s     Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    25.32s Tap "RETOUR" Button
+    t =    25.32s     Wait for dev.peringer.limen.audit to idle
+    t =    25.33s     Find the "RETOUR" Button
+    t =    25.33s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    25.37s     Check for interrupting elements affecting "arrow.backward" Button
+    t =    25.39s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    25.42s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    25.42s     Synthesize event
+    t =    25.73s     Wait for dev.peringer.limen.audit to idle
+    t =    25.75s Waiting 5.0s for "NOUVEL ÉTAT DES LIEUX" Button to exist
+    t =    26.78s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    26.78s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    26.78s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    26.81s             Find: Descendants matching type Button
+    t =    26.81s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    26.82s Waiting 5.0s for "NOUVEL ÉTAT DES LIEUX" Button to exist
+    t =    27.84s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    27.84s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    27.85s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    27.88s             Find: Descendants matching type Button
+    t =    27.88s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    27.88s Waiting 30.0s for "NOUVEL ÉTAT DES LIEUX" Button to exist
+    t =    28.91s     Checking `Expect predicate `existsNoRetry == 1` for object "NOUVEL ÉTAT DES LIEUX" Button`
+    t =    28.91s         Checking existence of `"NOUVEL ÉTAT DES LIEUX" Button`
+    t =    28.92s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    28.94s             Find: Descendants matching type Button
+    t =    28.95s             Find: Elements matching predicate '"NOUVEL ÉTAT DES LIEUX" IN identifiers'
+    t =    28.95s Tap "MES ÉTATS DES LIEUX" Button
+    t =    28.95s     Wait for dev.peringer.limen.audit to idle
+    t =    28.96s     Find the "MES ÉTATS DES LIEUX" Button
+    t =    28.96s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    28.98s         Find: Descendants matching type Button
+    t =    28.98s         Find: Elements matching predicate '"MES ÉTATS DES LIEUX" IN identifiers'
+    t =    28.98s     Check for interrupting elements affecting "MES ÉTATS DES LIEUX" Button
+    t =    29.00s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    29.02s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    29.03s     Synthesize event
+    t =    29.33s     Wait for dev.peringer.limen.audit to idle
+    t =    29.34s Waiting 15.0s for Button (First Match) to exist
+    t =    30.36s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =    30.36s         Checking existence of `Button (First Match)`
+    t =    30.37s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    30.42s Tap Button (First Match)
+    t =    30.42s     Wait for dev.peringer.limen.audit to idle
+    t =    30.43s     Find the Button (First Match)
+    t =    30.43s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    30.49s     Check for interrupting elements affecting "Avenue de la Mesure 30, Entrée · 21/10/2026 · 1003 Lausanne, FINALISÉ" Button
+    t =    30.51s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    30.54s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    30.55s     Synthesize event
+    t =    30.86s     Wait for dev.peringer.limen.audit to idle
+    t =    30.87s Waiting 30.0s for Button (First Match) to exist
+    t =    31.89s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =    31.89s         Checking existence of `Button (First Match)`
+    t =    31.89s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    31.94s Tap Button (First Match)
+    t =    31.94s     Wait for dev.peringer.limen.audit to idle
+    t =    31.94s     Find the Button (First Match)
+    t =    31.95s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    31.99s     Check for interrupting elements affecting "CONSTAT, Relecture, signatures et export, Finalisé" Button
+    t =    32.01s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    32.04s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    32.04s     Synthesize event
+    t =    32.35s     Wait for dev.peringer.limen.audit to idle
+    t =    32.36s Waiting 30.0s for "EXPORTER LE PDF" Button to exist
+    t =    33.39s     Checking `Expect predicate `existsNoRetry == 1` for object "EXPORTER LE PDF" Button`
+    t =    33.39s         Checking existence of `"EXPORTER LE PDF" Button`
+    t =    33.39s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    33.43s             Find: Descendants matching type Button
+    t =    33.43s             Find: Elements matching predicate '"EXPORTER LE PDF" IN identifiers'
+    t =    33.44s Tap "EXPORTER LE PDF" Button
+    t =    33.44s     Wait for dev.peringer.limen.audit to idle
+    t =    33.44s     Find the "EXPORTER LE PDF" Button
+    t =    33.45s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    33.48s         Find: Descendants matching type Button
+    t =    33.48s         Find: Elements matching predicate '"EXPORTER LE PDF" IN identifiers'
+    t =    33.48s     Check for interrupting elements affecting "EXPORTER LE PDF" Button
+    t =    33.50s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    33.52s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    33.53s     Synthesize event
+    t =    33.83s     Wait for dev.peringer.limen.audit to idle
+    t =    33.84s Waiting 120.0s for "OUVRIR" Button to exist
+    t =    34.87s     Checking `Expect predicate `existsNoRetry == 1` for object "OUVRIR" Button`
+    t =    34.87s         Checking existence of `"OUVRIR" Button`
+    t =    34.88s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    34.90s         Capturing element debug description
+    t =    35.92s     Checking `Expect predicate `existsNoRetry == 1` for object "OUVRIR" Button`
+    t =    35.92s         Checking existence of `"OUVRIR" Button`
+    t =    35.93s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    36.00s Checking existence of `"OUVRIR" Button`
+    t =    36.01s     Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    36.05s Find the "OUVRIR" Button
+    t =    36.06s     Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    36.12s Tap "arrow.up.forward.square" Button
+    t =    36.12s     Wait for dev.peringer.limen.audit to idle
+    t =    36.12s     Find the "arrow.up.forward.square" Button
+    t =    36.13s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    36.17s     Check for interrupting elements affecting "arrow.up.forward.square" Button
+    t =    36.19s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    36.22s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    36.22s     Synthesize event
+    t =    36.52s     Wait for dev.peringer.limen.audit to idle
+    t =    36.96s Waiting 30.0s for NavigationBar (First Match) to exist
+    t =    37.97s     Checking `Expect predicate `existsNoRetry == 1` for object NavigationBar (First Match)`
+    t =    37.97s         Checking existence of `NavigationBar (First Match)`
+    t =    37.98s             Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    42.25s Added attachment named 'annex-00'
+    t =    42.25s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    42.25s     Wait for dev.peringer.limen.audit to idle
+    t =    42.25s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    42.25s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    42.35s     Check for interrupting elements affecting "Limen" Application
+    t =    42.36s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    42.43s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    42.44s     Synthesize event
+    t =    42.88s     Wait for dev.peringer.limen.audit to idle
+    t =    44.94s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    44.94s     Wait for dev.peringer.limen.audit to idle
+    t =    44.95s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    44.96s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    45.10s     Check for interrupting elements affecting "Limen" Application
+    t =    45.10s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    45.18s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    45.19s     Synthesize event
+    t =    45.63s     Wait for dev.peringer.limen.audit to idle
+    t =    47.80s Added attachment named 'annex-02'
+    t =    47.80s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    47.80s     Wait for dev.peringer.limen.audit to idle
+    t =    47.80s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    47.81s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    47.91s     Check for interrupting elements affecting "Limen" Application
+    t =    47.91s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    47.98s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    47.99s     Synthesize event
+    t =    48.46s     Wait for dev.peringer.limen.audit to idle
+    t =    50.48s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    50.48s     Wait for dev.peringer.limen.audit to idle
+    t =    50.49s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    50.49s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    50.62s     Check for interrupting elements affecting "Limen" Application
+    t =    50.63s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    50.71s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    50.72s     Synthesize event
+    t =    51.16s     Wait for dev.peringer.limen.audit to idle
+    t =    53.31s Added attachment named 'annex-04'
+    t =    53.32s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    53.32s     Wait for dev.peringer.limen.audit to idle
+    t =    53.32s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    53.32s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    53.40s     Check for interrupting elements affecting "Limen" Application
+    t =    53.41s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    53.47s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    53.47s     Synthesize event
+    t =    53.91s     Wait for dev.peringer.limen.audit to idle
+    t =    55.95s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    55.95s     Wait for dev.peringer.limen.audit to idle
+    t =    55.96s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    55.96s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    56.07s     Check for interrupting elements affecting "Limen" Application
+    t =    56.07s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    56.13s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    56.14s     Synthesize event
+    t =    56.57s     Wait for dev.peringer.limen.audit to idle
+    t =    58.74s Added attachment named 'annex-06'
+    t =    58.74s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    58.74s     Wait for dev.peringer.limen.audit to idle
+    t =    58.74s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    58.75s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    58.81s     Check for interrupting elements affecting "Limen" Application
+    t =    58.82s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    58.86s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    58.86s     Synthesize event
+    t =    59.29s     Wait for dev.peringer.limen.audit to idle
+    t =    61.33s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    61.33s     Wait for dev.peringer.limen.audit to idle
+    t =    61.34s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    61.34s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    61.45s     Check for interrupting elements affecting "Limen" Application
+    t =    61.46s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    61.52s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    61.52s     Synthesize event
+    t =    61.95s     Wait for dev.peringer.limen.audit to idle
+    t =    64.11s Added attachment named 'annex-08'
+    t =    64.11s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    64.11s     Wait for dev.peringer.limen.audit to idle
+    t =    64.12s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    64.12s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    64.17s     Check for interrupting elements affecting "Limen" Application
+    t =    64.18s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    64.21s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    64.22s     Synthesize event
+    t =    64.65s     Wait for dev.peringer.limen.audit to idle
+    t =    66.68s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    66.68s     Wait for dev.peringer.limen.audit to idle
+    t =    66.69s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    66.69s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    66.80s     Check for interrupting elements affecting "Limen" Application
+    t =    66.81s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    66.86s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    66.86s     Synthesize event
+    t =    67.30s     Wait for dev.peringer.limen.audit to idle
+    t =    69.47s Added attachment named 'annex-10'
+    t =    69.47s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    69.47s     Wait for dev.peringer.limen.audit to idle
+    t =    69.48s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    69.48s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    69.53s     Check for interrupting elements affecting "Limen" Application
+    t =    69.54s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    69.57s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    69.57s     Synthesize event
+    t =    70.00s     Wait for dev.peringer.limen.audit to idle
+    t =    72.05s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    72.05s     Wait for dev.peringer.limen.audit to idle
+    t =    72.06s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    72.06s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    72.16s     Check for interrupting elements affecting "Limen" Application
+    t =    72.17s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    72.22s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    72.23s     Synthesize event
+    t =    72.66s     Wait for dev.peringer.limen.audit to idle
+    t =    74.87s Added attachment named 'annex-12'
+    t =    74.88s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    74.88s     Wait for dev.peringer.limen.audit to idle
+    t =    74.88s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    74.88s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    74.93s     Check for interrupting elements affecting "Limen" Application
+    t =    74.94s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    74.98s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    74.98s     Synthesize event
+    t =    75.41s     Wait for dev.peringer.limen.audit to idle
+    t =    77.47s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    77.47s     Wait for dev.peringer.limen.audit to idle
+    t =    77.48s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    77.48s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    77.59s     Check for interrupting elements affecting "Limen" Application
+    t =    77.60s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    77.65s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    77.66s     Synthesize event
+    t =    78.09s     Wait for dev.peringer.limen.audit to idle
+    t =    80.27s Added attachment named 'annex-14'
+    t =    80.27s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    80.27s     Wait for dev.peringer.limen.audit to idle
+    t =    80.27s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    80.27s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    80.32s     Check for interrupting elements affecting "Limen" Application
+    t =    80.33s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    80.37s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    80.37s     Synthesize event
+    t =    80.81s     Wait for dev.peringer.limen.audit to idle
+    t =    82.82s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    82.82s     Wait for dev.peringer.limen.audit to idle
+    t =    82.83s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    82.83s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    82.94s     Check for interrupting elements affecting "Limen" Application
+    t =    82.95s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    83.00s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    83.01s     Synthesize event
+    t =    83.44s     Wait for dev.peringer.limen.audit to idle
+    t =    85.62s Added attachment named 'annex-16'
+    t =    85.62s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    85.62s     Wait for dev.peringer.limen.audit to idle
+    t =    85.62s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    85.62s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    85.67s     Check for interrupting elements affecting "Limen" Application
+    t =    85.68s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    85.72s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    85.72s     Synthesize event
+    t =    86.16s     Wait for dev.peringer.limen.audit to idle
+    t =    88.20s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    88.20s     Wait for dev.peringer.limen.audit to idle
+    t =    88.21s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    88.22s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    88.32s     Check for interrupting elements affecting "Limen" Application
+    t =    88.33s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    88.38s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    88.39s     Synthesize event
+    t =    88.82s     Wait for dev.peringer.limen.audit to idle
+    t =    90.96s Added attachment named 'annex-18'
+    t =    90.97s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    90.97s     Wait for dev.peringer.limen.audit to idle
+    t =    90.97s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    90.97s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    91.03s     Check for interrupting elements affecting "Limen" Application
+    t =    91.03s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    91.07s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    91.08s     Synthesize event
+    t =    91.50s     Wait for dev.peringer.limen.audit to idle
+    t =    93.52s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    93.52s     Wait for dev.peringer.limen.audit to idle
+    t =    93.53s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    93.53s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    93.64s     Check for interrupting elements affecting "Limen" Application
+    t =    93.65s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    93.70s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    93.71s     Synthesize event
+    t =    94.13s     Wait for dev.peringer.limen.audit to idle
+    t =    96.32s Added attachment named 'annex-20'
+    t =    96.32s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    96.32s     Wait for dev.peringer.limen.audit to idle
+    t =    96.33s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    96.33s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    96.38s     Check for interrupting elements affecting "Limen" Application
+    t =    96.39s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    96.43s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    96.43s     Synthesize event
+    t =    96.87s     Wait for dev.peringer.limen.audit to idle
+    t =    98.89s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =    98.89s     Wait for dev.peringer.limen.audit to idle
+    t =    98.90s     Find the Target Application 'dev.peringer.limen.audit'
+    t =    98.90s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    99.01s     Check for interrupting elements affecting "Limen" Application
+    t =    99.02s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =    99.07s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =    99.08s     Synthesize event
+    t =    99.51s     Wait for dev.peringer.limen.audit to idle
+    t =   101.70s Added attachment named 'annex-22'
+    t =   101.70s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   101.70s     Wait for dev.peringer.limen.audit to idle
+    t =   101.70s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   101.70s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   101.76s     Check for interrupting elements affecting "Limen" Application
+    t =   101.76s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   101.80s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   101.81s     Synthesize event
+    t =   102.24s     Wait for dev.peringer.limen.audit to idle
+    t =   104.29s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   104.29s     Wait for dev.peringer.limen.audit to idle
+    t =   104.30s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   104.30s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   104.41s     Check for interrupting elements affecting "Limen" Application
+    t =   104.42s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   104.48s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   104.49s     Synthesize event
+    t =   104.92s     Wait for dev.peringer.limen.audit to idle
+    t =   107.13s Added attachment named 'annex-24'
+    t =   107.13s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   107.13s     Wait for dev.peringer.limen.audit to idle
+    t =   107.14s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   107.14s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   107.20s     Check for interrupting elements affecting "Limen" Application
+    t =   107.21s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   107.25s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   107.25s     Synthesize event
+    t =   107.68s     Wait for dev.peringer.limen.audit to idle
+    t =   109.69s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   109.69s     Wait for dev.peringer.limen.audit to idle
+    t =   109.70s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   109.70s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   109.81s     Check for interrupting elements affecting "Limen" Application
+    t =   109.82s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   109.87s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   109.88s     Synthesize event
+    t =   110.31s     Wait for dev.peringer.limen.audit to idle
+    t =   112.49s Added attachment named 'annex-26'
+    t =   112.49s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   112.49s     Wait for dev.peringer.limen.audit to idle
+    t =   112.49s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   112.49s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   112.55s     Check for interrupting elements affecting "Limen" Application
+    t =   112.55s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   112.60s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   112.60s     Synthesize event
+    t =   113.02s     Wait for dev.peringer.limen.audit to idle
+    t =   115.07s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   115.07s     Wait for dev.peringer.limen.audit to idle
+    t =   115.08s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   115.09s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   115.19s     Check for interrupting elements affecting "Limen" Application
+    t =   115.20s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   115.26s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   115.27s     Synthesize event
+    t =   115.70s     Wait for dev.peringer.limen.audit to idle
+    t =   117.90s Added attachment named 'annex-28'
+    t =   117.90s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   117.90s     Wait for dev.peringer.limen.audit to idle
+    t =   117.90s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   117.90s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   117.96s     Check for interrupting elements affecting "Limen" Application
+    t =   117.97s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   118.00s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   118.00s     Synthesize event
+    t =   118.44s     Wait for dev.peringer.limen.audit to idle
+    t =   120.49s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   120.49s     Wait for dev.peringer.limen.audit to idle
+    t =   120.50s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   120.51s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   120.61s     Check for interrupting elements affecting "Limen" Application
+    t =   120.62s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   120.68s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   120.68s     Synthesize event
+    t =   121.12s     Wait for dev.peringer.limen.audit to idle
+    t =   123.30s Added attachment named 'annex-30'
+    t =   123.31s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   123.31s     Wait for dev.peringer.limen.audit to idle
+    t =   123.31s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   123.31s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   123.36s     Check for interrupting elements affecting "Limen" Application
+    t =   123.36s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   123.40s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   123.40s     Synthesize event
+    t =   123.83s     Wait for dev.peringer.limen.audit to idle
+    t =   125.89s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   125.89s     Wait for dev.peringer.limen.audit to idle
+    t =   125.90s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   125.91s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   126.00s     Check for interrupting elements affecting "Limen" Application
+    t =   126.01s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   126.06s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   126.07s     Synthesize event
+    t =   126.50s     Wait for dev.peringer.limen.audit to idle
+    t =   127.14s Added attachment named 'annex-32'
+    t =   127.14s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   127.14s     Wait for dev.peringer.limen.audit to idle
+    t =   127.14s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   127.14s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   127.22s     Check for interrupting elements affecting "Limen" Application
+    t =   127.23s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   127.27s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   127.27s     Synthesize event
+    t =   127.70s     Wait for dev.peringer.limen.audit to idle
+    t =   128.18s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   128.18s     Wait for dev.peringer.limen.audit to idle
+    t =   128.18s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   128.19s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   128.29s     Check for interrupting elements affecting "Limen" Application
+    t =   128.30s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   128.38s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   128.38s     Synthesize event
+    t =   128.82s     Wait for dev.peringer.limen.audit to idle
+    t =   129.44s Added attachment named 'annex-34'
+    t =   129.44s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   129.44s     Wait for dev.peringer.limen.audit to idle
+    t =   129.44s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   129.44s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   129.52s     Check for interrupting elements affecting "Limen" Application
+    t =   129.52s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   129.57s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   129.57s     Synthesize event
+    t =   130.00s     Wait for dev.peringer.limen.audit to idle
+    t =   130.48s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   130.48s     Wait for dev.peringer.limen.audit to idle
+    t =   130.49s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   130.49s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   130.59s     Check for interrupting elements affecting "Limen" Application
+    t =   130.60s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   130.69s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   130.69s     Synthesize event
+    t =   131.14s     Wait for dev.peringer.limen.audit to idle
+    t =   131.73s Added attachment named 'annex-36'
+    t =   131.74s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   131.74s     Wait for dev.peringer.limen.audit to idle
+    t =   131.74s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   131.74s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   131.82s     Check for interrupting elements affecting "Limen" Application
+    t =   131.82s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   131.87s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   131.87s     Synthesize event
+    t =   132.30s     Wait for dev.peringer.limen.audit to idle
+    t =   132.78s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   132.78s     Wait for dev.peringer.limen.audit to idle
+    t =   132.79s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   132.79s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   132.89s     Check for interrupting elements affecting "Limen" Application
+    t =   132.90s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   132.98s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   132.98s     Synthesize event
+    t =   133.43s     Wait for dev.peringer.limen.audit to idle
+    t =   134.04s Added attachment named 'annex-38'
+    t =   134.04s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   134.04s     Wait for dev.peringer.limen.audit to idle
+    t =   134.04s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   134.04s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   134.12s     Check for interrupting elements affecting "Limen" Application
+    t =   134.13s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   134.17s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   134.18s     Synthesize event
+    t =   134.61s     Wait for dev.peringer.limen.audit to idle
+    t =   135.09s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   135.09s     Wait for dev.peringer.limen.audit to idle
+    t =   135.10s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   135.11s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   135.21s     Check for interrupting elements affecting "Limen" Application
+    t =   135.22s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   135.31s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   135.31s     Synthesize event
+    t =   135.76s     Wait for dev.peringer.limen.audit to idle
+    t =   136.37s Added attachment named 'annex-40'
+    t =   136.37s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   136.37s     Wait for dev.peringer.limen.audit to idle
+    t =   136.37s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   136.37s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   136.44s     Check for interrupting elements affecting "Limen" Application
+    t =   136.45s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   136.50s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   136.50s     Synthesize event
+    t =   136.93s     Wait for dev.peringer.limen.audit to idle
+    t =   137.41s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   137.41s     Wait for dev.peringer.limen.audit to idle
+    t =   137.42s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   137.42s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   137.53s     Check for interrupting elements affecting "Limen" Application
+    t =   137.54s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   137.62s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   137.62s     Synthesize event
+    t =   138.07s     Wait for dev.peringer.limen.audit to idle
+    t =   138.66s Added attachment named 'annex-42'
+    t =   138.66s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   138.66s     Wait for dev.peringer.limen.audit to idle
+    t =   138.66s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   138.67s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   138.74s     Check for interrupting elements affecting "Limen" Application
+    t =   138.75s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   138.80s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   138.80s     Synthesize event
+    t =   139.22s     Wait for dev.peringer.limen.audit to idle
+    t =   139.71s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   139.71s     Wait for dev.peringer.limen.audit to idle
+    t =   139.72s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   139.72s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   139.82s     Check for interrupting elements affecting "Limen" Application
+    t =   139.83s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   139.91s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   139.92s     Synthesize event
+    t =   140.36s     Wait for dev.peringer.limen.audit to idle
+    t =   140.97s Added attachment named 'annex-44'
+    t =   140.97s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   140.97s     Wait for dev.peringer.limen.audit to idle
+    t =   140.97s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   140.97s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   141.05s     Check for interrupting elements affecting "Limen" Application
+    t =   141.05s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   141.10s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   141.11s     Synthesize event
+    t =   141.54s     Wait for dev.peringer.limen.audit to idle
+    t =   142.01s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   142.01s     Wait for dev.peringer.limen.audit to idle
+    t =   142.02s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   142.02s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   142.12s     Check for interrupting elements affecting "Limen" Application
+    t =   142.13s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   142.21s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   142.22s     Synthesize event
+    t =   142.66s     Wait for dev.peringer.limen.audit to idle
+    t =   143.27s Added attachment named 'annex-46'
+    t =   143.27s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   143.27s     Wait for dev.peringer.limen.audit to idle
+    t =   143.27s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   143.27s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   143.35s     Check for interrupting elements affecting "Limen" Application
+    t =   143.36s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   143.40s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   143.41s     Synthesize event
+    t =   143.84s     Wait for dev.peringer.limen.audit to idle
+    t =   144.32s Swipe up Target Application 'dev.peringer.limen.audit'
+    t =   144.33s     Wait for dev.peringer.limen.audit to idle
+    t =   144.34s     Find the Target Application 'dev.peringer.limen.audit'
+    t =   144.34s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   144.44s     Check for interrupting elements affecting "Limen" Application
+    t =   144.46s         Requesting snapshot of accessibility hierarchy for app with pid 24728
+    t =   144.54s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+    t =   144.55s     Synthesize event
+    t =   144.99s     Wait for dev.peringer.limen.audit to idle
+    t =   145.58s Added attachment named 'annex-48'
+    t =   145.58s Tear Down
+Test Case '-[LimenUITests.AnnexShotsTest testTheMeasurementRecordsAnnexOnThePreview]' passed (145.997 seconds).
+Test Suite 'AnnexShotsTest' passed at 2026-10-21 21:19:26.272.
+	 Executed 1 test, with 0 failures (0 unexpected) in 145.997 (145.998) seconds
+Test Suite 'LimenUITests.xctest' passed at 2026-10-21 21:19:26.273.
+	 Executed 1 test, with 0 failures (0 unexpected) in 145.997 (146.000) seconds
+Test Suite 'Selected tests' passed at 2026-10-21 21:19:26.274.
+	 Executed 1 test, with 0 failures (0 unexpected) in 145.997 (146.001) seconds
+2026-10-21 21:19:26.346 xcodebuild[65911:533426] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-21 21:19:26.346 xcodebuild[65911:533426] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-21 21:19:26.380 xcodebuild[65911:533426] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-21 21:19:26.380 xcodebuild[65911:533426] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-21 21:19:26.696 xcodebuild[65911:533426] [MT] IDETestOperationsObserverDebug: 148.836 elapsed -- Testing started completed.
+2026-10-21 21:19:26.696 xcodebuild[65911:533426] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-21 21:19:26.696 xcodebuild[65911:533426] [MT] IDETestOperationsObserverDebug: 148.836 sec, +148.836 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/aperi/DEV/SWIFT/limen/DD/Logs/Test/Test-AllTests-2026.10.21_21-16-57-+0200.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

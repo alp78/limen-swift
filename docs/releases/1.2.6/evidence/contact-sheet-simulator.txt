@@ -1,0 +1,15 @@
+contact_sheet.py (PyMuPDF 1.28.5) on the simulator's renderings, 21 October 2026: every page as a tile, the cover's contents read back and each named page checked for its title, the fonts, the image objects
+
+== sample-de.pdf
+contact sheet docs-out/sample-de.contact.png (2 pages, 154324 bytes)
+page sizes: [(595, 842)]
+contents entries read: 5; entries whose named page does not carry the title: 0
+fonts: ['AAAAAB+.SFUI-Regular_wdth_opsz433333_GRAD_wght2BC0000', 'AAAAAC+.SFUI-Regular_wdth_opsz14CCCC_GRAD_wght2BC0000', 'AAAAAD+.SFUI-Regular_wdth_opsz219999_GRAD_wght2BC0000', 'AAAAAE+.SFUI-Regular_wdth_opsz199999_GRAD_wght', 'AAAAAF+.SFUI-Regular_wdth_opsz199999_GRAD_wght', 'AAAAAG+.SFUI-Regular_wdth_opsz133333_GRAD_wght1FE0000', 'AAAAAH+.SFUI-Regular_wdth_opsz133333_GRAD_wght', 'AAAAAI+.SFUI-Regular_wdth_opsz180000_GRAD_wght', 'AAAAAJ+.SFUI-Regular_wdth_opsz180000_GRAD_wght1FE0000']
+image objects placed: 2, with a soft mask: 2
+
+== six-rooms-fr.pdf
+contact sheet docs-out/six-rooms-fr.contact.png (44 pages, 4832064 bytes)
+page sizes: [(595, 842)]
+contents entries read: 23; entries whose named page does not carry the title: 0
+fonts: ['AAAAAB+.SFUI-Regular_wdth_opsz433333_GRAD_wght2BC0000', 'AAAAAC+.SFUI-Regular_wdth_opsz14CCCC_GRAD_wght2BC0000', 'AAAAAD+.SFUI-Regular_wdth_opsz219999_GRAD_wght2BC0000', 'AAAAAE+.SFUI-Regular_wdth_opsz199999_GRAD_wght', 'AAAAAF+.SFUI-Regular_wdth_opsz199999_GRAD_wght', 'AAAAAG+.SFUI-Regular_wdth_opsz133333_GRAD_wght1FE0000', 'AAAAAH+.SFUI-Regular_wdth_opsz133333_GRAD_wght', 'AAAAAI+.SFUI-Regular_wdth_opsz133333_GRAD_wght', 'AAAAAJ+.SFUI-Regular_wdth_opsz180000_GRAD_wght', 'AAAAAK+.SFUI-Regular_wdth_opsz180000_GRAD_wght1FE0000', 'AAAAAL+.SFUI-Regular_wdth_opsz133333_GRAD_wght1FE0000', 'AAAAAM+.SFUI-Regular_wdth_opsz199999_GRAD_wght2BC0000']
+image objects placed: 82, with a soft mask: 46

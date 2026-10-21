@@ -1,0 +1,11 @@
+make check-generated, 21 October 2026, LIMEN_ANDROID=/Users/aperi/DEV/ANDROID/limen at 8254bdc
+python3 tools/schema.py --check
+26 constructors, 243 fields
+python3 tools/strings.py --check
+385 declarations (335 core, 50 extensions), 2 iOS overrides
+python3 -m unittest discover -s tools -p 'test_*.py'
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.000s
+
+OK

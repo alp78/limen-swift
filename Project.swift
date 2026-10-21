@@ -17,12 +17,13 @@ let baseSettings: SettingsDictionary = [
     // Android tinted the caret, the selection handles and every system widget from the
     // navy action colour; on iOS that is the accent colour, so it carries the same values.
     "ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME": "AccentColor",
-    // The name follows Android (1.2.5, versionCode 10): the version that reads repacked backups
-    // has the same number on both platforms, so "restores in Limen 1.2.5 or later" is true on
-    // each. The build number is this project's own sequence, with no 1.2.1, 1.2.3 or 1.2.4: 4 and
-    // 6 were uploaded, 5 was archived and never uploaded, so 7 is the next.
-    "MARKETING_VERSION": "1.2.5",
-    "CURRENT_PROJECT_VERSION": "7",
+    // The name follows Android (1.2.6, versionCode 11): the version that prints the record in the
+    // app's own style has the same number on both platforms, as 1.2.5, the version that reads
+    // repacked backups, did. The build number is this project's own sequence, with no 1.2.1, 1.2.3
+    // or 1.2.4: 4 and 6 were uploaded, 5 was archived and never uploaded, 7 was built in Release
+    // and not uploaded, so 8 is the next.
+    "MARKETING_VERSION": "1.2.6",
+    "CURRENT_PROJECT_VERSION": "8",
     // The owner's own Apple Account (aperinger@proton.me), which is the one that will hold the
     // paid membership: an Individual enrollment needs no company, and Apple publishes the
     // enrolled legal name rather than any trade name. Pinning the team keeps a build from being

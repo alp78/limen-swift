@@ -1,0 +1,304 @@
+Simulator iPhone 17 Pro, iOS 26.5, Debug, 21 October 2026. LimenKitTests and LimenTests (every suite), then ExportTests once more after the Android sample was added as the palette case.
+
+Test Suite 'All tests' started at 2026-10-21 21:07:16.109.
+Test Suite 'All tests' passed at 2026-10-21 21:07:16.110.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+✔ Test everyRowOfTheSharedTableHoldsLongEdgeExactAndShortEdgeWithinOnePixel() passed after 0.001 seconds.
+✔ Test aPictureSmallerThanItsBoxIsNeverEnlarged() passed after 0.001 seconds.
+✔ Test uprightSizeAndUprightDecodeFollowTheHeaderAndTheOrientation() passed after 3.470 seconds.
+✔ Suite AnnexPlateTests passed after 3.471 seconds.
+✔ Test everyPlateAppearsExactlyOnceAndNothingElse() passed after 0.001 seconds.
+✔ Test sectionsFollowTheWalkthroughOverviewThenFindingsThenObjects() passed after 0.001 seconds.
+✔ Test aCardSaysWhereItBelongsWhatItShowsAndWhenItWasTaken() passed after 0.001 seconds.
+✔ Suite AnnexContentTests passed after 0.002 seconds.
+✔ Test scopedArchivesIncludeOnlyReferencedEvidenceAttachmentsAndRetainedCopies() passed after 0.023 seconds.
+✔ Test explicitRepairQuarantinesCorruptOriginalAndPreservesHealthyRecords() passed after 0.010 seconds.
+✔ Test authenticationFailureInstallsNothing() passed after 0.129 seconds.
+✔ Test centralSizesOffsetsNamesAndSymlinksAreValidatedBeforeAllocation() passed after 0.006 seconds.
+✔ Test missingRetainedCopiesCanBeExplicitlyRepairedAndMissingCompanionsBlockBackup() passed after 0.020 seconds.
+✔ Suite ArchiveParityTests passed after 0.190 seconds.
+✔ Test aJpegPhotographGoesInRepackedAndComesBackByteForByte() passed after 0.018 seconds.
+✔ Test aJpegThatWouldNotComeBackExactlyGoesInAsItIsAndTheBackupStaysVersionOne() passed after 0.013 seconds.
+✔ Test aRepackedPhotographThatDoesNotRebuildInstallsNothing() passed after 0.012 seconds.
+✔ Test aBackupPastTheOldCapSavesAndRestoresEncryptedAndPlain() passed after 20.156 seconds.
+LIMEN_ZIP64_OUTPUT /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/3A4AD040-E68C-4288-AEC3-716239BCE7D6/tmp/limen-tests-1371704B-F1BB-4532-BFFD-A5438506A414/zip64.zip
+✔ Test zip64RecordsAreWrittenPastTheThresholdAndReadBack() passed after 0.002 seconds.
+✔ Test aZip64ArchiveWrittenByPythonIsReadWithItsLocalHeaderFields() passed after 0.005 seconds.
+✔ Test streamedEntriesInflateInPiecesAndALyingSizeIsRefused() passed after 0.015 seconds.
+✔ Suite ArchiveSizeAndPackingTests passed after 20.225 seconds.
+✔ Test roundTripRestoresProtocolAndEvidenceWithoutOverwriting() passed after 0.106 seconds.
+✔ Test roundTripSurvivesAnArchiveLargerThanOneReadOfTheDecryptLoop() passed after 0.450 seconds.
+✔ Test restoreRejectsARecordWhoseEvidenceIsMissing() passed after 0.037 seconds.
+✔ Test restoreRejectsPathTraversal() passed after 0.001 seconds.
+✔ Test exportIgnoresStrayFilesThatAreNotArchiveEntries() passed after 0.066 seconds.
+✔ Test encryptedBackupDoesNotExposeProtocolOrEvidenceText() passed after 0.033 seconds.
+✔ Test wrongPasswordCannotRestoreEncryptedBackup() passed after 0.061 seconds.
+✔ Test legacyPlainZipRemainsImportable() passed after 0.004 seconds.
+✔ Test emptyPasswordWritesAPlainArchiveThatRestoresWithoutOne() passed after 0.004 seconds.
+✔ Test theStreamingCipherAgreesWithCryptoKitAtEveryAssociatedDataLength() passed after 0.007 seconds.
+✔ Test theStreamingCipherAgreesWithCryptoKit() passed after 0.024 seconds.
+✔ Test theZipWriterAndReaderRoundTripAndInflate() passed after 0.001 seconds.
+✔ Suite ArchiveTests passed after 0.800 seconds.
+✔ Test androidCanonicalBytesAndFingerprintsAgreeForEveryRecordStage() passed after 0.031 seconds.
+LIMEN_SWIFT_COMPAT_OUTPUT /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/3A4AD040-E68C-4288-AEC3-716239BCE7D6/tmp/limen-tests-6C084C39-1212-4A8C-ACF2-A3BBFE8D7173
+✔ Test androidPlainAndEncryptedArchivesRestoreAndReexportForJvmVerification() passed after 0.472 seconds.
+✔ Test deterministicJvmEnvelopeVectorMatchesSwiftWithUnicodePasswordAndChunkBoundaries() passed after 0.175 seconds.
+✔ Test originalHeicBytesDecodeWithoutReencoding() passed after 0.045 seconds.
+✔ Suite CrossPlatformTests passed after 0.724 seconds.
+✔ Test everyExifOrientationDecodesWithTheExpectedUprightDimensions() passed after 0.010 seconds.
+✔ Test rotatedPortraitSamplingUsesTheDisplayedWidth() passed after 0.001 seconds.
+✔ Test missingEmptyHeaderOnlyTruncatedAndHashMismatchHaveNamedFailures() passed after 0.003 seconds.
+✔ Test mediaTypeComesFromBytesAndDocumentsHaveContentAndSizeValidation() passed after 7.497 seconds.
+✔ Test symlinkedEvidenceCannotBeHashedOrImported() passed after 0.005 seconds.
+✔ Suite EvidenceTests passed after 7.518 seconds.
+✔ Test validatesAndFormatsNumbersForTheirSelectedCountry() passed after 0.012 seconds.
+✔ Test acceptsTheOwnCountryCodeWithoutAPlusSign() passed after 0.001 seconds.
+✔ Test aRegionSharingItsCallingCodeFormatsWithTheMainCountrysRules() passed after 0.001 seconds.
+✔ Test rejectsAValidNumberWhenItDoesNotMatchTheSelectedCountry() passed after 0.001 seconds.
+✔ Test theExampleIsWrittenTheLocalWay() passed after 0.001 seconds.
+✔ Test theCountryListCoversTheWorldAndSortsByEnglishName() passed after 0.002 seconds.
+✔ Test acceptsACompleteForeignAddress() passed after 0.001 seconds.
+✔ Test quickDraftAcceptsShortOnePartNamesWithoutOptionalContacts() passed after 0.001 seconds.
+✔ Test parsesOfficialAddressSearchResults() passed after 0.001 seconds.
+✔ Suite InternationalIdentityTests passed after 0.015 seconds.
+✔ Test everyEnumSpeaksEveryLanguage() passed after 0.001 seconds.
+✔ Test noEszettAnywhereInGerman() passed after 0.001 seconds.
+✔ Test theGeneratedStringsFollowTheAndroidOnes() passed after 0.001 seconds.
+✔ Test theDefaultLanguageFollowsTheHandsetAndSwissGermanReadsGerman() passed after 0.001 seconds.
+✔ Test nothingShipsWithAnEmDash() passed after 0.001 seconds.
+✔ Suite StringsTests passed after 0.002 seconds.
+✔ Test aJpegRepacksSmallerAndUnpacksToTheSameBytes() passed after 0.247 seconds.
+✔ Test aJpegXlFromTheReferenceEncoderUnpacksToItsJpeg() passed after 0.103 seconds.
+✔ Test aBackupRepackedByLibjxlRestoresByteForByte() passed after 0.383 seconds.
+✔ Suite JpegXLTests passed after 0.734 seconds.
+✔ Test everyNestedSerializableTypeIsActuallyInstantiatedByTheFixture() passed after 0.001 seconds.
+✔ Test topLevelFieldsAddedAfterTheDossierNeverReachTheCanonicalJson() passed after 0.001 seconds.
+✔ Test nestedFieldsNeverReachTheCanonicalJsonEitherWhenTheirTypeIsPresent() passed after 0.001 seconds.
+✔ Test theCanonicalTextSpellsTheFieldsInDeclarationOrderWithDefaultsOut() passed after 0.001 seconds.
+✔ Test aDefectWithNoItemWritesItemAsNullInTheCanonicalText() passed after 0.001 seconds.
+✔ Test aRecordWithoutObjectsFingerprintsExactlyAsItAlwaysDid() passed after 0.002 seconds.
+✔ Test theCanonicalFingerprintOfAFixedRecordHasNotMoved() passed after 0.001 seconds.
+✔ Test objectPhotosAreEvidenceToo() passed after 0.002 seconds.
+✔ Test anOlderRecordAnswersItsDossierFromItsContent() passed after 0.001 seconds.
+✔ Test anEmptyOlderRecordCarriesNoComponents() passed after 0.001 seconds.
+✔ Test anExplicitDossierOverridesWhatTheContentSuggests() passed after 0.001 seconds.
+✔ Test onlyOlderRoomsCarryTheItemGrid() passed after 0.001 seconds.
+✔ Test removingTheLastComponentIsRememberedRatherThanDerivedBack() passed after 0.001 seconds.
+✔ Test aRecordThatChoseItsComponentsBeforeTheFlagExistedStillAnswersFromItsList() passed after 0.001 seconds.
+✔ Test aFindingIsUntouchedOnlyWhileItCarriesNothingButItsPlace() passed after 0.001 seconds.
+✔ Suite LegacyCompatTests passed after 0.008 seconds.
+✔ Test thePlanFollowsThePaperCanonWithRoomsAndAnnexSectionsBeneathTheirHeadings() passed after 0.001 seconds.
+✔ Test aBareRecordPlansOnlyTheSignatures() passed after 0.001 seconds.
+✔ Test strayFindingsAreThoseWithoutARoomOrAListedObjectInRecordOrder() passed after 0.001 seconds.
+✔ Test aRoomWithoutANameIsPlannedUnderItsKind() passed after 0.001 seconds.
+✔ Suite OutlineTests passed after 0.001 seconds.
+✔ Test aPanelThatFitsIsOneSegmentOnTheCurrentPage() passed after 0.001 seconds.
+✔ Test rowsFillThePageGreedilyAndTheRestContinuesOnTheNext() passed after 0.001 seconds.
+✔ Test aPanelThatWouldOpenWithOneRowMovesWholeToAFreshPage() passed after 0.001 seconds.
+✔ Test aOneRowPanelOpensWithItsOneRowWhereItFits() passed after 0.001 seconds.
+✔ Test aRowKeptWithItsSuccessorNeverEndsASegment() passed after 0.001 seconds.
+✔ Test aPanelLeftWithOneRowAfterItsKeptRowsMoveOpensOnAFreshPageInstead() passed after 0.001 seconds.
+✔ Test aKeptRowStillOpensASegmentWhenNothingElseFitsOnAFreshPage() passed after 0.001 seconds.
+✔ Test aPanelTallerThanTwoPagesGivesThreeSegmentsTheLaterOnesContinued() passed after 0.003 seconds.
+✔ Test aRowTallerThanAPageIsPlacedAloneOnAFreshPage() passed after 0.001 seconds.
+✔ Test noRowsStillGivesOneSegmentSoAnEmptyPanelDraws() passed after 0.001 seconds.
+✔ Test theSameHeightsBreakInTheSamePlacesTwice() passed after 0.001 seconds.
+✔ Suite PaginatorTests passed after 0.004 seconds.
+✔ Test everyCantonHasDatedInitialFormAndCommonAuthorityGuidance() passed after 0.002 seconds.
+✔ Test neLocalityCategoriesExcludeHalfRoomsAndNeverGuessUnknownLocality() passed after 0.001 seconds.
+✔ Test vaudDistrictAndDepositTriggersAreIndependent() passed after 0.001 seconds.
+✔ Test eachUnresolvedCheckNeedsItsOwnExplanation() passed after 0.001 seconds.
+✔ Test frozenAndLegacyResolversKeepTheirMeaningWithoutMutation() passed after 0.001 seconds.
+✔ Test onlyDependentLegalChecksAreInvalidated() passed after 0.001 seconds.
+✔ Test everyParticipantNeedsTheirOwnOutcomeReservationAndDelivery() passed after 0.003 seconds.
+✔ Test independentTenantPositionsRetainClaimAndCosts() passed after 0.001 seconds.
+✔ Test invalidDraftDatesNumbersAndResidualValuesBlockCompletion() passed after 0.001 seconds.
+✔ Test honestScopeNoDepositAndUnavailableRoomsAreRecordable() passed after 0.001 seconds.
+✔ Test exitSeedPreservesCoTenantsAndContractualLandlord() passed after 0.001 seconds.
+✔ Suite ParityRulesTests passed after 0.011 seconds.
+✔ Test theScaleCarriesTheAppsTokensOntoThePage() passed after 0.001 seconds.
+✔ Test theGridIsA4AtOneHundredAndFiftyDpi() passed after 0.001 seconds.
+✔ Test everyColourIsTheScreensColour() passed after 0.001 seconds.
+✔ Test theRecordIsSetInTheAppsFamilyAndNeverInAMonospace() passed after 0.001 seconds.
+✔ Suite PdfTokensTests passed after 0.001 seconds.
+✔ Test storedIsIsoAndShownIsSwiss() passed after 0.001 seconds.
+✔ Test aDayThatDoesNotExistIsNotADate() passed after 0.001 seconds.
+✔ Test theLeapDayIsADateEveryFourthYear() passed after 0.001 seconds.
+✔ Test anIncompleteDateIsNotYetAnAnswer() passed after 0.001 seconds.
+✔ Test theMaskPutsTheSeparatorsBackWhereverTypingStarted() passed after 0.001 seconds.
+✔ Test whatWasNeverADatePassesThroughInsteadOfBeingLost() passed after 0.001 seconds.
+✔ Test timeIsTwentyFourHourAndChecked() passed after 0.001 seconds.
+✔ Suite SwissDateTests passed after 0.001 seconds.
+✔ Test weekendDoesNotCount() passed after 0.001 seconds.
+✔ Test midweekRunsStraightThrough() passed after 0.001 seconds.
+✔ Test holidaysAreSkippedWhenGiven() passed after 0.001 seconds.
+✔ Test returnDueShiftsSundayOrRecognizedHolidayButNotSaturday() passed after 0.001 seconds.
+✔ Test planningDateRequiresActualTransferAndRecordedClause() passed after 0.001 seconds.
+✔ Test depositBackstopIsOneYear() passed after 0.001 seconds.
+✔ Test workingDayPredicate() passed after 0.001 seconds.
+✔ Test theEpochDayRoundTripsAndTheWeekdayIsJavas() passed after 0.001 seconds.
+✔ Suite ClocksTests passed after 0.001 seconds.
+✔ Test halfLifeIsHalfShare() passed after 0.001 seconds.
+✔ Test pastLifespanIsZeroHoweverRealTheDamage() passed after 0.001 seconds.
+✔ Test brandNewIsFullShare() passed after 0.001 seconds.
+✔ Test negativeAgeIsInvalidRatherThanANewReplacement() passed after 0.001 seconds.
+✔ Test zeroLifespanNeverDivides() passed after 0.001 seconds.
+✔ Test zeroOrNegativeCostIsZero() passed after 0.001 seconds.
+✔ Test theAslocaWallpaperExample() passed after 0.001 seconds.
+✔ Test shippedTableHoldsTheCanonicalValues() passed after 0.001 seconds.
+✔ Suite ZeitwertTests passed after 0.001 seconds.
+✔ Test everyRoomKindStartsWithRows() passed after 0.001 seconds.
+✔ Test noTemplateRepeatsARow() passed after 0.001 seconds.
+✔ Test theKitchenKnowsItsAppliances() passed after 0.001 seconds.
+✔ Test theBathroomKnowsItsFittings() passed after 0.001 seconds.
+✔ Test theWalkStartsAtTheDoorAndEndsAtTheMailbox() passed after 0.001 seconds.
+✔ Suite TemplatesTests passed after 0.001 seconds.
+✔ Test recognizesListedInsurersByTheCertificateName() passed after 0.001 seconds.
+✔ Test preservesAnUnlistedInsurerAsOther() passed after 0.001 seconds.
+✔ Suite CautionProviderTests passed after 0.001 seconds.
+✔ Test vaudRulvSelectsThePreviousAndCurrentBindingPeriods() passed after 0.001 seconds.
+✔ Test romandFrameworkIsContractualOutsideThatRule() passed after 0.001 seconds.
+✔ Suite LegalProfileTests passed after 0.001 seconds.
+✔ Test initialRentFormUsesOnlyTheDated2026OfficialSnapshot() passed after 0.002 seconds.
+✔ Test initialRentFormUsesLeaseConclusionDateNotTheLaterHandover() passed after 0.001 seconds.
+✔ Test vaudEntryAndExitReceiveDifferentChecksWithoutForkingTheFlow() passed after 0.001 seconds.
+✔ Test missingAndExceptionalOutcomesStayRecordableButNeedAnExplanation() passed after 0.001 seconds.
+✔ Suite LegalOverlayTests passed after 0.002 seconds.
+✔ Test aRoomContributesItsFindingsAndNothingElse() passed after 0.001 seconds.
+✔ Test aRoomWithNothingWrongInItContributesNothing() passed after 0.003 seconds.
+✔ Test numberingIsThePositionInTheWholeRecordNotWithinTheRoom() passed after 0.001 seconds.
+✔ Test aFindingAboutAnObjectIsNotAFindingAboutARoom() passed after 0.001 seconds.
+✔ Test everyFindingReachesExactlyOnePlaceOnThePaper() passed after 0.001 seconds.
+✔ Test aFindingWhoseRoomIsGoneStillReachesThePaper() passed after 0.001 seconds.
+✔ Test theAnnexCitesFindingsByNumberAndObjectsByName() passed after 0.001 seconds.
+✔ Test aRecordWithoutPhotographsHasNoAnnex() passed after 0.001 seconds.
+✔ Test evidenceMetadataAloneStillReachesTheAnnex() passed after 0.001 seconds.
+✔ Suite ReportTests passed after 0.005 seconds.
+✔ Test fingerprintCoversTheFrozenRecordAndOriginalEvidence() passed after 0.006 seconds.
+✔ Test inkOnlyAppliesToTheRevisionItSaw() passed after 0.001 seconds.
+✔ Test missingEvidenceFailsClosed() passed after 0.001 seconds.
+✔ Suite ProtocolIntegrityTests passed after 0.007 seconds.
+✔ Test bothHandoffsWorkForTenantPrivateLandlordAndAgency() passed after 0.004 seconds.
+✔ Test unilateralRecordRequiresItsReasonAndOnlyThePresentSideOutcome() passed after 0.001 seconds.
+✔ Test uncheckedScopeAndInconsistentKeysBlockFinalization() passed after 0.001 seconds.
+✔ Test aSelectedDepositNeedsItsIdentifyingDetails() passed after 0.001 seconds.
+✔ Test applicableOverlayChecksBlockFinalizationUntilTheyAreRecorded() passed after 0.001 seconds.
+✔ Test removingTheKeysCardNeedsAnExplanation() passed after 0.001 seconds.
+✔ Test theKeysCardStillDemandsAnOutcomeWhileItIsOnTheRecord() passed after 0.001 seconds.
+✔ Test theKeysChipAgreesWithTheGate() passed after 0.001 seconds.
+✔ Test anEmptyInspectionAsksForARoomRatherThanForConfirmation() passed after 0.001 seconds.
+✔ Test aOneSidedRecordWithNoKnownSideFallsBackToBothSignatures() passed after 0.001 seconds.
+✔ Suite CompletionRulesTests passed after 0.010 seconds.
+✔ Test nonNullableTypesRejectNullCoercionsFractionsAndOverflow() passed after 0.003 seconds.
+✔ Test nullAndMissingHaveDifferentMeaningAndLongsStayExact() passed after 0.001 seconds.
+✔ Test duplicateKeysUnknownFieldsAndFutureSchemasAreRecoverablyRejected() passed after 0.004 seconds.
+✔ Test nestedMapOrderSurvivesWhitespaceEscapesAndQuotedMapNames() passed after 0.001 seconds.
+✔ Test fingerprintedChangingDefaultsArePinnedInStoredFiles() passed after 0.001 seconds.
+✔ Test nestingDepthHasABoundedFailureAndSizeHasNone() passed after 0.550 seconds.
+✔ Suite SchemaTests passed after 0.560 seconds.
+✔ Test roundTripKeepsEverything() passed after 0.004 seconds.
+✔ Test listSortsNewestFirst() passed after 0.006 seconds.
+✔ Test unsupportedFieldsAreReportedWithoutRewritingTheOriginal() passed after 0.011 seconds.
+✔ Test corruptFileRemainsVisibleInTheCatalogue() passed after 0.005 seconds.
+✔ Test deleteTakesPhotosAndInkWithIt() passed after 0.003 seconds.
+✔ Test signedMeansRecordPlaneAndRefusalDoesNotCount() passed after 0.001 seconds.
+✔ Test theStoreOmitsDefaultsAndKeepsTheRequiredFields() passed after 0.001 seconds.
+✔ Test theMapsKeepTheirRecordedOrderThroughTheFile() passed after 0.001 seconds.
+✔ Test kotlinEscapesAreWrittenAndReadBack() passed after 0.001 seconds.
+✔ Test staleAndDivergentWritesCannotReplaceARevision() passed after 0.016 seconds.
+✔ Test lastGoodRecoveryPreservesTheCorruptOriginal() passed after 0.011 seconds.
+✔ Test filenameIdentityAndTraversalAreRejected() passed after 0.006 seconds.
+✔ Test firstSaveFailureCanBeRetriedWithoutLosingTheValue() passed after 0.009 seconds.
+✔ Test higherSequencesCannotChangeFinalizedFactsButCanRecordDistribution() passed after 0.002 seconds.
+✔ Suite StoreTests passed after 0.079 seconds.
+✔ Test run with 181 tests in 27 suites passed after 34.386 seconds.
+Test Suite 'All tests' started at 2026-10-21 21:07:51.863.
+Test Suite 'LimenTests.xctest' started at 2026-10-21 21:07:51.863.
+Test Suite 'BundleTests' started at 2026-10-21 21:07:51.863.
+Test Case '-[LimenTests.BundleTests testAuditIdentityAndLocalizedSystemPurposes]' started.
+Test Case '-[LimenTests.BundleTests testAuditIdentityAndLocalizedSystemPurposes]' passed (0.003 seconds).
+Test Case '-[LimenTests.BundleTests testEveryCantonFlagReachedTheBundle]' started.
+Test Case '-[LimenTests.BundleTests testEveryCantonFlagReachedTheBundle]' passed (0.007 seconds).
+Test Case '-[LimenTests.BundleTests testTheBundleCarriesTheProjectsVersion]' started.
+Test Case '-[LimenTests.BundleTests testTheBundleCarriesTheProjectsVersion]' passed (0.001 seconds).
+Test Case '-[LimenTests.BundleTests testTheThirdPartyNoticeReachedTheBundle]' started.
+Test Case '-[LimenTests.BundleTests testTheThirdPartyNoticeReachedTheBundle]' passed (0.001 seconds).
+Test Suite 'BundleTests' passed at 2026-10-21 21:07:51.876.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.011 (0.013) seconds
+Test Suite 'LimenTests.xctest' passed at 2026-10-21 21:07:51.876.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.011 (0.013) seconds
+Test Suite 'All tests' passed at 2026-10-21 21:07:51.877.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.011 (0.014) seconds
+LIMEN_ICON_WRITTEN /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/3A4AD040-E68C-4288-AEC3-716239BCE7D6/tmp/limen-icon-1024.png
+✔ Test writeTheAppIcon() passed after 0.067 seconds.
+✔ Test theSealIsWholeOnAFullTile() passed after 0.033 seconds.
+✔ Suite AppIconTests passed after 0.101 seconds.
+✔ Test deletedRecordCannotBeResurrectedByALateExport() passed after 0.008 seconds.
+✔ Test replacementWithTheSameIdCannotReceiveAnEarlierFingerprintExport() passed after 0.006 seconds.
+✔ Test documentIntakeUsesDecodedMimeForTheRetainedExtension() passed after 0.005 seconds.
+✔ Suite ExportLifecycleTests passed after 0.021 seconds.
+✔ Test pdfGlyphPixelsAppearAboveTheirBaselineAndLongTokensStayInsideTheColumn() passed after 0.006 seconds.
+✔ Test theProfessionalRecordExportsAsAReadablePdfInEveryLanguage() passed after 0.813 seconds.
+LIMEN_DOCUMENT_SAMPLE /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/3A4AD040-E68C-4288-AEC3-716239BCE7D6/tmp/limen-export-252CC776-2035-4181-B2BC-39404BB5D734/synthetic-fr pages=6
+LIMEN_DOCUMENT_SAMPLE /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/3A4AD040-E68C-4288-AEC3-716239BCE7D6/tmp/limen-export-252CC776-2035-4181-B2BC-39404BB5D734/synthetic-en pages=6
+LIMEN_DOCUMENT_SAMPLE /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/3A4AD040-E68C-4288-AEC3-716239BCE7D6/tmp/limen-export-252CC776-2035-4181-B2BC-39404BB5D734/synthetic-de pages=7
+LIMEN_DOCUMENT_SAMPLE /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/3A4AD040-E68C-4288-AEC3-716239BCE7D6/tmp/limen-export-252CC776-2035-4181-B2BC-39404BB5D734/synthetic-it pages=6
+LIMEN_DOCUMENT_SAMPLE /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/3A4AD040-E68C-4288-AEC3-716239BCE7D6/tmp/limen-export-252CC776-2035-4181-B2BC-39404BB5D734/synthetic-rm pages=6
+✔ Test completePreviewAndRetainedOutputsCarryEveryParticipantAndEscapedEvidence() passed after 0.881 seconds.
+✔ Test aDraftIsRefusedAndTamperedEvidenceIsRefused() passed after 0.017 seconds.
+✔ Test draftPreviewNamesEveryMissingOutcomeWithoutClaimingFinalizationOrDepositRelease() passed after 0.481 seconds.
+✔ Test annexPlatesAreOneJpegEachAtTheirPlateSizeSharedWithTheHtmlAndCarryNoHash() passed after 2.337 seconds.
+LIMEN_DOCUMENT_FONTS ["AAAAAB+.SFUI-Regular_wdth_opsz433333_GRAD_wght2BC0000", "AAAAAC+.SFUI-Regular_wdth_opsz14CCCC_GRAD_wght2BC0000", "AAAAAD+.SFUI-Regular_wdth_opsz219999_GRAD_wght2BC0000", "AAAAAE+.SFUI-Regular_wdth_opsz199999_GRAD_wght", "AAAAAF+.SFUI-Regular_wdth_opsz199999_GRAD_wght", "AAAAAG+.SFUI-Regular_wdth_opsz133333_GRAD_wght1FE0000", "AAAAAH+.SFUI-Regular_wdth_opsz133333_GRAD_wght", "AAAAAI+.SFUI-Regular_wdth_opsz180000_GRAD_wght", "AAAAAJ+.SFUI-Regular_wdth_opsz180000_GRAD_wght1FE0000", "AAAAAK+.SFUI-Regular_wdth_opsz133333_GRAD_wght1FE0000", "AAAAAL+.SFUI-Regular_wdth_opsz199999_GRAD_wght2BC0000", "AAAAAM+.SFUI-Regular_wdth_opsz133333_GRAD_wght"]
+LIMEN_DOCUMENT_OUT /private/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/docs-out/palette-de pages=5
+✔ Test theRecordIsDrawnInTheAppsPaletteAndFamilyOnEveryPage() passed after 0.136 seconds.
+LIMEN_DOCUMENT_OUT /private/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/docs-out/six-rooms-fr pages=44
+✔ Test aRecordOfSixRoomsWithPhotographsExportsWithItsContentsOnThePagesItNames() passed after 3.132 seconds.
+✔ Test allThreeActorsCompleteEntryAndExitWithTwoSignaturesAndPdf() passed after 0.732 seconds.
+✔ Test theModelWalksASessionFromTheFormToTheDocument() passed after 0.023 seconds.
+✔ Suite ExportTests passed after 8.564 seconds.
+​✔ Suite MeasurementTests passed after 0.001 seconds.
+​✔ Test sameOwnerIdInAnotherRecordCannotReceiveAnEarlierPhoto(amendment:) with 2 test cases passed after 0.007 seconds.
+✔ Test removedOwnerCannotReceiveOrStrandAnIncomingPhoto() passed after 0.003 seconds.
+✔ Test finalizationBeforeIntakeCompletesRejectsTheNewEvidence() passed after 0.003 seconds.
+✔ Test privateCaptureCleanupLeavesEveryOtherOperationAlone() passed after 0.005 seconds.
+✔ Test successfulIntakeRetainsExactBytesHashAndSeparateCaptureMetadata() passed after 0.004 seconds.
+✔ Suite PhotoIntakeOwnershipTests passed after 0.025 seconds.
+✔ Test exportMergesAReceiptChangedBehindAnOperationBarrier() passed after 0.006 seconds.
+✔ Test exportCannotStampADifferentOpenRecord() passed after 0.007 seconds.
+✔ Test firstSaveFailureRetainsDraftAndCanBeRetried() passed after 0.007 seconds.
+✔ Test clearingReservationIsDurableAndRequiresNamedConsent() passed after 0.005 seconds.
+✔ Test undoDoesNotRollBackTheSaveSequence() passed after 0.004 seconds.
+✔ Test materialEditConsentPreservesAConcurrentFlushSequence() passed after 0.007 seconds.
+✔ Test anOlderPreviewCannotApproveNewContent() passed after 0.003 seconds.
+✔ Test seededExitCarriesAccessInventoryAndAgreedTimingWithoutOldEvidence() passed after 0.003 seconds.
+✔ Suite RemediationModelTests passed after 0.046 seconds.
+✔ Test run with 29 tests in 6 suites passed after 8.760 seconds.
+
+== ExportTests rerun
+Test Suite 'Selected tests' started at 2026-10-21 21:13:15.757.
+Test Suite 'LimenTests.xctest' started at 2026-10-21 21:13:15.757.
+Test Suite 'LimenTests.xctest' passed at 2026-10-21 21:13:15.757.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+Test Suite 'Selected tests' passed at 2026-10-21 21:13:15.758.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+✔ Test pdfGlyphPixelsAppearAboveTheirBaselineAndLongTokensStayInsideTheColumn() passed after 0.008 seconds.
+✔ Test theProfessionalRecordExportsAsAReadablePdfInEveryLanguage() passed after 0.822 seconds.
+LIMEN_DOCUMENT_SAMPLE /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/BFC1C3BB-AFB7-4D07-8BE8-A84F1BDA4805/tmp/limen-export-EC83BCF2-1309-448E-8FD4-71A8EBBCB34D/synthetic-fr pages=6
+LIMEN_DOCUMENT_SAMPLE /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/BFC1C3BB-AFB7-4D07-8BE8-A84F1BDA4805/tmp/limen-export-EC83BCF2-1309-448E-8FD4-71A8EBBCB34D/synthetic-en pages=6
+LIMEN_DOCUMENT_SAMPLE /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/BFC1C3BB-AFB7-4D07-8BE8-A84F1BDA4805/tmp/limen-export-EC83BCF2-1309-448E-8FD4-71A8EBBCB34D/synthetic-de pages=7
+LIMEN_DOCUMENT_SAMPLE /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/BFC1C3BB-AFB7-4D07-8BE8-A84F1BDA4805/tmp/limen-export-EC83BCF2-1309-448E-8FD4-71A8EBBCB34D/synthetic-it pages=6
+LIMEN_DOCUMENT_SAMPLE /Users/aperi/Library/Developer/CoreSimulator/Devices/6F9172CC-DF86-4F05-9EB3-42E8E287668F/data/Containers/Data/Application/BFC1C3BB-AFB7-4D07-8BE8-A84F1BDA4805/tmp/limen-export-EC83BCF2-1309-448E-8FD4-71A8EBBCB34D/synthetic-rm pages=6
+✔ Test completePreviewAndRetainedOutputsCarryEveryParticipantAndEscapedEvidence() passed after 0.888 seconds.
+✔ Test aDraftIsRefusedAndTamperedEvidenceIsRefused() passed after 0.017 seconds.
+✔ Test draftPreviewNamesEveryMissingOutcomeWithoutClaimingFinalizationOrDepositRelease() passed after 0.485 seconds.
+✔ Test annexPlatesAreOneJpegEachAtTheirPlateSizeSharedWithTheHtmlAndCarryNoHash() passed after 2.354 seconds.
+LIMEN_MEASURE_SAMPLE {"bytes":154324,"pages":2,"seconds":0.042064792}
+LIMEN_DOCUMENT_FONTS ["AAAAAB+.SFUI-Regular_wdth_opsz433333_GRAD_wght2BC0000", "AAAAAC+.SFUI-Regular_wdth_opsz14CCCC_GRAD_wght2BC0000", "AAAAAD+.SFUI-Regular_wdth_opsz219999_GRAD_wght2BC0000", "AAAAAE+.SFUI-Regular_wdth_opsz199999_GRAD_wght", "AAAAAF+.SFUI-Regular_wdth_opsz199999_GRAD_wght", "AAAAAG+.SFUI-Regular_wdth_opsz133333_GRAD_wght1FE0000", "AAAAAH+.SFUI-Regular_wdth_opsz133333_GRAD_wght", "AAAAAI+.SFUI-Regular_wdth_opsz180000_GRAD_wght", "AAAAAJ+.SFUI-Regular_wdth_opsz180000_GRAD_wght1FE0000"]
+LIMEN_DOCUMENT_OUT /private/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/docs-out/sample-de pages=2
+✔ Test theRecordIsDrawnInTheAppsPaletteAndFamilyOnEveryPage() passed after 0.050 seconds.
+LIMEN_DOCUMENT_OUT /private/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/docs-out/six-rooms-fr pages=44
+✔ Test aRecordOfSixRoomsWithPhotographsExportsWithItsContentsOnThePagesItNames() passed after 3.078 seconds.
+✔ Test allThreeActorsCompleteEntryAndExitWithTwoSignaturesAndPdf() passed after 0.725 seconds.
+✔ Test theModelWalksASessionFromTheFormToTheDocument() passed after 0.024 seconds.
+✔ Suite ExportTests passed after 8.458 seconds.
+✔ Test run with 10 tests in 1 suite passed after 8.458 seconds.

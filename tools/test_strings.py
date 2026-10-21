@@ -26,6 +26,11 @@ fun Str.local(canton: dev.peringer.limen.data.SwissCanton?) = when (canton) {
             with self.subTest(source=source), self.assertRaises(SystemExit):
                 parse_declarations(source)
 
+    def test_a_count_picks_its_singular_by_number(self):
+        declarations = parse_declarations('fun Str.defectCount(n: Int): String = when (lang) {\n  Lang.En -> if (n == 1) "1 defect" else "$n defects"\n  Lang.Fr -> if (n == 1) "1 défaut" else "$n défauts"\n}')
+        self.assertEqual(declarations[0]['params'], [('n', 'Int')])
+        self.assertIn('case .en: return n == 1 ? "1 defect" : "\\(n) defects"', declarations[0]['value'])
+
     def test_collision_property_and_function(self):
         declarations = parse_declarations('val furniture = "word"\nfun furniture(f: Furniture) = when (f) { Furniture.Bed -> furniture }')
         self.assertEqual(declarations[0]['name'], 'furnitureLabel')

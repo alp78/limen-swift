@@ -1,10 +1,11 @@
 import LimenKit
 import XCTest
 
-/// The photo annex as the phone shows it: the record `MeasurementTests` left in the audit store,
-/// opened from the records list to its document, and the preview paged down through the annex
-/// with a screenshot every other swipe. Skipped when that record is not in the store, so the
-/// suite stays green on a fresh simulator.
+/// The document as the phone shows it: the record `MeasurementTests` left in the audit store,
+/// opened from the records list to its document, and the preview paged down from the cover
+/// through the room panels and the signatures into the annex, with a screenshot every other
+/// swipe. Skipped when that record is not in the store, so the suite stays green on a fresh
+/// simulator.
 @MainActor
 final class AnnexShotsTest: XCTestCase {
     private let s = Str(.fr)

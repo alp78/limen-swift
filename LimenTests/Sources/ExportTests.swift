@@ -13,7 +13,7 @@ import UniformTypeIdentifiers
     @Test func pdfGlyphPixelsAppearAboveTheirBaselineAndLongTokensStayInsideTheColumn() throws {
         let sheet = try PdfExport.Sheet(s: Str(.en), reference: "pixel-test", total: 1)
         sheet.newPage()
-        sheet.text("F", 200, 200, sheet.titleInk)
+        sheet.text("F", 200, 200, sheet.paints.display.tinted(PdfTokens.ink))
         let pass = try sheet.close()
         let data = try #require(pass.data)
         let provider = try #require(CGDataProvider(data: data as CFData))
@@ -41,10 +41,10 @@ import UniformTypeIdentifiers
         #expect(darkPixels(yRange: 150..<200) > 100, "Upright F must lie above its baseline")
         #expect(darkPixels(yRange: 201..<250) == 0, "An inverted glyph falls below its baseline")
         for token in [String(repeating: "A9", count: 32), "https://example.invalid/" + String(repeating: "longpath", count: 20)] {
-            let lines = sheet.wrapLines(token, sheet.body, 300)
+            let lines = PdfExport.TextMeasure.wrapLines(token, sheet.paints.body, 300)
             #expect(lines.count > 1)
             #expect(lines.joined() == token)
-            #expect(lines.allSatisfy { sheet.body.width($0) <= 300 })
+            #expect(lines.allSatisfy { sheet.paints.body.width($0) <= 300 })
         }
     }
 
@@ -277,20 +277,24 @@ import UniformTypeIdentifiers
                 defer { document.discard() }
                 let pdf = flattened(try #require(PDFDocument(url: document.pdf)?.string))
                 let html = String(decoding: try Data(contentsOf: document.html), as: UTF8.self)
+                // The status pill says draft, in capitals on the paper, and the draft mark is the
+                // reference on every page in place of a LIMEN number.
                 #expect(pdf.contains(strings.previewDraft.uppercased()))
-                #expect(html.contains("<h1>\(strings.previewDraft)</h1>"))
+                #expect(html.contains("<span class=\"pill dim\">\(strings.previewDraft)</span>"))
                 #expect(!pdf.contains(strings.pdfFinalized.uppercased()))
-                #expect(!html.contains("<h2>\(strings.pdfFinalized)</h2>"))
+                #expect(!html.contains(">\(strings.pdfFinalized)<"))
                 for text in [pdf, html] {
                     #expect(!text.contains(strings.fingerprint))
                     #expect(!text.contains("LIMEN-"))
-                    #expect(!text.contains(strings.releaseTitle.uppercased()))
-                    #expect(!text.contains(strings.releaseTitle))
+                    // An exit whose deposit is still to verify says so under the release title, as
+                    // Android 1.2.6 prints it, and claims no release.
                     #expect(!text.contains(strings.releaseBank))
                     #expect(!text.contains(strings.releaseInsurance))
+                    #expect(text.contains(strings.toVerify))
                     for party in draft.parties.dropFirst() {
-                        #expect(text.contains("\(strings.role(party.role)) · \(party.signerName()) · \(strings.notSigned)"))
+                        #expect(text.contains("\(party.signerName()) (\(strings.role(party.role)))"))
                     }
+                    #expect(text.contains(strings.notSigned))
                     #expect(text.contains("Pending landlord reservation"))
                     #expect(text.contains("Independent pending reservation"))
                 }
@@ -298,7 +302,7 @@ import UniformTypeIdentifiers
                     #expect(pdf.contains(flattened(strings.refusedNote)))
                     #expect(html.contains(strings.refusedNote))
                 } else {
-                    #expect(html.contains("alt=\"\(outcome.name)\""))
+                    #expect(html.contains("alt=\"\(strings.signRecordTitle): \(outcome.name)\""))
                 }
             }
         }
@@ -410,11 +414,163 @@ import UniformTypeIdentifiers
         #expect(!pdfText.contains("SHA-256") && !html.contains("SHA-256"))
         #expect(pdfText.contains(record.evidenceFingerprint) && html.contains(record.evidenceFingerprint))
         #expect(pdfText.contains("LIMEN-\(record.evidenceFingerprint.prefix(16))"))
-        // The sections by room, the legends with their where, number, title and meta.
-        #expect(html.contains("<h3>\(s.room(.room))</h3>"))
+        // The sections by room, the legends with their where, number, title and meta, and the
+        // room's panel pointing at the page its section opens on.
+        #expect(html.contains(">\(s.room(.room))</h2>"))
+        #expect(html.contains("<li class=\"chip\">\(s.pdfDefectAnnex): \(s.pdfPage) "))
         #expect(html.contains("<small>\(s.room(.room))</small><br><strong>1. Scratch 14 cm long on the lower north-facing window frame</strong>"))
         #expect(html.contains("<strong>\(s.overviewPhotos)</strong>"))
-        #expect(pdfText.contains(s.pdfDefectAnnex.uppercased()) && pdfText.contains("\(s.photos): 4"))
+        #expect(pdfText.contains(s.pdfDefectAnnex) && pdfText.contains("\(s.photos): 4".uppercased()))
+    }
+
+    /// A page rendered to pixels, rows from the top, four bytes per pixel.
+    private func render(_ page: CGPDFPage, width: Int, height: Int) throws -> [UInt8] {
+        let context = try #require(CGContext(data: nil, width: width, height: height, bitsPerComponent: 8, bytesPerRow: width * 4,
+            space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue))
+        context.setFillColor(UIColor.white.cgColor)
+        context.fill(CGRect(x: 0, y: 0, width: width, height: height))
+        let box = page.getBoxRect(.mediaBox)
+        context.scaleBy(x: CGFloat(width) / box.width, y: CGFloat(height) / box.height)
+        context.drawPDFPage(page)
+        let pixels = try #require(context.data).assumingMemoryBound(to: UInt8.self)
+        return Array(UnsafeBufferPointer(start: pixels, count: width * height * 4))
+    }
+
+    /// Android's device sample: an exit in Aarau with one inspected kitchen, one charged finding
+    /// with a cost note, the keys card and one canton check, which the Pixel prints on two pages.
+    private func androidSample(store: Store) throws -> HandoverProtocol {
+        var p = HandoverProtocol(id: "remediation-sample", kind: .exit, createdEpochMs: 1)
+        p.sessionRole = .landlord
+        p.address = "Auditstrasse 1"
+        p.place = "5000 Aarau"
+        p.objectCanton = .ag
+        p.handoverDate = "2026-10-13"
+        p.handoverTime = "12:00"
+        p.contract.conclusionDate = "2026-10-01"
+        p.parties = [Party(.tenant, name: "Test Tenant"), Party(.landlord, name: "Test Owner")]
+        p.rooms = [Room(id: "r1", kind: .kitchen, inspected: true)]
+        p.roomSetupComplete = true
+        p.defects = [Defect(id: "d1", roomId: "r1", item: .walls, text: "Scratch beside the door", chargedToTenant: true, costNote: "CHF 100 estimate")]
+        p.dossier = [.keys]
+        p.dossierChosen = true
+        p.keys = [KeyCount(.apartment, count: 2)]
+        p.keyTransfer = .allTransferred
+        p.legalOverlay = LegalOverlayRecord().withStatus(.leaseAndLocalTiming, .confirmed)
+        p.finalizedEpochMs = 1
+        p.evidenceFingerprint = try ProtocolIntegrity.fingerprint(p, photoDir: store.photoDir(p.id), signatureDir: store.signatureDir(p.id))
+        return p
+    }
+
+    /// Keeps a rendered document where LIMEN_DOCUMENT_OUT points, absolute on the simulator or
+    /// relative to the app's Documents on the phone, for the eye and the page checks.
+    private func keep(_ rendered: PdfExport.Document, as name: String) throws {
+        guard let out = ProcessInfo.processInfo.environment["LIMEN_DOCUMENT_OUT"] else { return }
+        let dir = out.hasPrefix("/") ? URL(fileURLWithPath: out) : AppFiles.documents.appendingPathComponent(out)
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        for (source, file) in [(rendered.pdf, "\(name).pdf"), (rendered.html, "\(name).html")] {
+            try? FileManager.default.removeItem(at: dir.appendingPathComponent(file))
+            try FileManager.default.copyItem(at: source, to: dir.appendingPathComponent(file))
+        }
+        print("LIMEN_DOCUMENT_OUT \(dir.appendingPathComponent(name).path) pages=\(rendered.pages)")
+    }
+
+    /// The record in the app's own palette and face, as Android's device test asserts it: the
+    /// system face and never a typewriter one, every page A4, the cover's navy banner over white
+    /// paper with the first panel in the plate grey. Core Graphics subsets the face and names it
+    /// by its PostScript name, which is what the file carries; the names are printed.
+    @Test func theRecordIsDrawnInTheAppsPaletteAndFamilyOnEveryPage() throws {
+        let root = try scratch()
+        let store = Store(root: root)
+        let record = try androidSample(store: store)
+        let clock = ContinuousClock()
+        var drawn: PdfExport.Document?
+        let elapsed = try clock.measure {
+            drawn = try PdfExport.document(record, Str(.de), photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id), scratch: root)
+        }
+        let rendered = try #require(drawn)
+        defer { rendered.discard() }
+        // The Pixel prints this record on two pages in 222 KB; the iPhone's figures are compared in the handoff.
+        let bytes = (try? FileManager.default.attributesOfItem(atPath: rendered.pdf.path)[.size] as? Int) ?? 0
+        print("LIMEN_MEASURE_SAMPLE {\"bytes\":\(bytes),\"pages\":\(rendered.pages),\"seconds\":\(Double(elapsed.components.seconds) + Double(elapsed.components.attoseconds) / 1e18)}")
+        let pdf = try Data(contentsOf: rendered.pdf)
+        let latin = try #require(String(data: pdf, encoding: .isoLatin1))
+        let fonts = try NSRegularExpression(pattern: #"/(?:BaseFont|FontName)\s*/([A-Za-z0-9+\-_,.]+)"#)
+            .matches(in: latin, range: NSRange(latin.startIndex..., in: latin))
+            .compactMap { Range($0.range(at: 1), in: latin) }
+            .map { String(latin[$0]) }
+        #expect(!fonts.isEmpty)
+        #expect(fonts.allSatisfy { !$0.lowercased().contains("mono") && !$0.lowercased().contains("courier") }, "\(fonts)")
+        // The system face: San Francisco, which Core Graphics names SF after the subset prefix.
+        #expect(fonts.contains { $0.contains("SF") || $0.contains("AppleSystemUIFont") }, "\(fonts)")
+        print("LIMEN_DOCUMENT_FONTS \(Set(fonts).sorted())")
+        let document = try #require(CGPDFDocument(rendered.pdf as CFURL))
+        #expect(document.numberOfPages >= 2)
+        for index in 1...document.numberOfPages {
+            let box = try #require(document.page(at: index)).getBoxRect(.mediaBox)
+            #expect(abs(box.width - 595) < 0.5 && abs(box.height - 842) < 0.5, "page \(index)")
+        }
+        let cover = try render(try #require(document.page(at: 1)), width: 595, height: 842)
+        func near(_ x: Int, _ y: Int, _ r: Int, _ g: Int, _ b: Int) -> Bool {
+            let i = (y * 595 + x) * 4
+            return abs(Int(cover[i]) - r) <= 6 && abs(Int(cover[i + 1]) - g) <= 6 && abs(Int(cover[i + 2]) - b) <= 6
+        }
+        #expect(near(297, 130, 0x23, 0x33, 0x50), "the banner is navy")
+        #expect(near(528, 283, 0xE7, 0xE9, 0xEE), "the first panel is the plate grey")
+        #expect(near(10, 10, 0xFF, 0xFF, 0xFF), "the paper is white")
+        try keep(rendered, as: "sample-de")
+    }
+
+    /// Android's six-room record: three findings per room with two photographs each, which
+    /// exercises the panels splitting across pages and the contents check the export itself
+    /// makes. At least eight pages, every one A4, and the room panels citing their annex pages.
+    @Test func aRecordOfSixRoomsWithPhotographsExportsWithItsContentsOnThePagesItNames() throws {
+        let root = try scratch()
+        let store = Store(root: root)
+        var record = try professionalRecord(store: store)
+        let photos = store.photoDir(record.id)
+        var rooms: [Room] = []
+        var defects: [Defect] = []
+        for i in 1...6 {
+            let room = Room(id: "room\(i)", kind: RoomKind.allCases[i % RoomKind.allCases.count], name: "Room \(i)", inspected: true)
+            rooms.append(room)
+            for n in 1...3 {
+                var files: [String] = []
+                var evidence: [PhotoEvidence] = []
+                for k in 1...2 {
+                    let name = "\(room.id)-\(n)-\(k).jpg"
+                    try photograph(photos.appendingPathComponent(name), width: 640, height: 480, seed: UInt64(i * 100 + n * 10 + k))
+                    files.append(name)
+                    evidence.append(PhotoEvidence(name, sha256: try ProtocolIntegrity.fileHash(photos.appendingPathComponent(name)), capturedEpochMs: 1_761_030_000_000, source: .camera))
+                }
+                defects.append(Defect(id: "\(room.id)-d\(n)", roomId: room.id, item: .walls,
+                    text: "Finding \(n) in \(room.name), described at some length so that the row wraps onto a second line",
+                    photos: files, photoEvidence: evidence, chargedToTenant: n == 1, fixBy: .tenant, costNote: "CHF \(100 * n)"))
+            }
+        }
+        record.rooms = rooms
+        record.defects = defects
+        record.objects = []
+        record.evidenceFingerprint = try ProtocolIntegrity.fingerprint(record, photoDir: photos, signatureDir: store.signatureDir(record.id))
+        let s = Str(.fr)
+        // The export itself refuses a document whose drawn sections or pages differ from the counted ones.
+        let rendered = try PdfExport.document(record, s, photoDir: photos, signatureDir: store.signatureDir(record.id), scratch: root)
+        defer { rendered.discard() }
+        #expect(rendered.pages >= 8, "\(rendered.pages) pages")
+        let document = try #require(CGPDFDocument(rendered.pdf as CFURL))
+        for index in 1...document.numberOfPages {
+            let box = try #require(document.page(at: index)).getBoxRect(.mediaBox)
+            #expect(abs(box.width - 595) < 0.5 && abs(box.height - 842) < 0.5, "page \(index)")
+        }
+        let html = String(decoding: try Data(contentsOf: rendered.html), as: UTF8.self)
+        #expect(html.contains("<nav class=\"contents\""))
+        #expect(html.contains("<li class=\"l1\"><a href=\"#c"))
+        #expect(html.contains("<section class=\"panel warning\""))
+        #expect(html.contains("<span class=\"pill warning\">\(s.defectCount(3))</span>"))
+        #expect(html.contains("<li class=\"chip active\">\(s.chargedToTenant)</li>"))
+        #expect(html.contains("<li class=\"chip\">\(s.pdfDefectAnnex): \(s.pdfPage) "))
+        let pdfText = try #require(PDFDocument(url: rendered.pdf)?.string)
+        #expect(pdfText.contains("Room 6") && pdfText.contains(s.contents.uppercased()))
+        try keep(rendered, as: "six-rooms-fr")
     }
 
     /// The Android matrix: every actor and both handovers finalize and export with two signatures.

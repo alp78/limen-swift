@@ -32,15 +32,17 @@ struct LimenColors: Equatable {
     let disabledInk: Color
     let isDark: Bool
 
+    /// The day values live in `LimenPalette`, which the printed record reads too, so the screen
+    /// and the paper cannot drift: a navy changed there changes both.
     static let day = LimenColors(
-        plate: Color(hex: 0xF6F7F9), plateRaised: Color(hex: 0xE7E9EE), input: Color(hex: 0xEFF1F4), plateEdge: Color(hex: 0xD7DAE0),
-        actionOutline: Color(hex: 0x233350), action: Color(hex: 0x233350), landing: Color(hex: 0x233350),
-        ink: Color(hex: 0x1A1D23), inkDim: Color(hex: 0x5B6472), onInk: .white,
-        seal: Color(hex: 0x233350), onSeal: .white,
-        warning: Color(hex: 0xFCEBD2), warningOutline: Color(hex: 0xB26A00),
-        positive: Color(hex: 0x287A42), onPositive: .white,
-        danger: Color(hex: 0xFDE8E8), dangerOutline: Color(hex: 0xC94242),
-        disabled: Color(hex: 0xE7E9EE), disabledInk: Color(hex: 0x586272), isDark: false
+        plate: Color(hex: LimenPalette.plate), plateRaised: Color(hex: LimenPalette.plateRaised), input: Color(hex: LimenPalette.input), plateEdge: Color(hex: LimenPalette.plateEdge),
+        actionOutline: Color(hex: LimenPalette.navy), action: Color(hex: LimenPalette.navy), landing: Color(hex: LimenPalette.navy),
+        ink: Color(hex: LimenPalette.ink), inkDim: Color(hex: LimenPalette.inkDim), onInk: .white,
+        seal: Color(hex: LimenPalette.navy), onSeal: .white,
+        warning: Color(hex: LimenPalette.warning), warningOutline: Color(hex: LimenPalette.warningOutline),
+        positive: Color(hex: LimenPalette.positive), onPositive: .white,
+        danger: Color(hex: LimenPalette.danger), dangerOutline: Color(hex: LimenPalette.dangerOutline),
+        disabled: Color(hex: LimenPalette.plateRaised), disabledInk: Color(hex: LimenPalette.disabledInk), isDark: false
     )
 
     static let night = LimenColors(

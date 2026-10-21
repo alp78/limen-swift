@@ -681,6 +681,18 @@ public struct Str: Sendable {
     public var translationNotice: String { pick("Document labels are translated; entered statements remain in their original language.", "Les rubriques sont traduites ; les déclarations saisies restent dans leur langue d’origine.", "Rubriken werden übersetzt; erfasste Aussagen bleiben in ihrer Originalsprache.", "Le rubriche sono tradotte; le dichiarazioni inserite restano nella lingua originale.", "Las rubricas vegnan translatadas; las decleraziuns endatadas restan en lur lingua originala.") }
     public var understoodLanguage: String { pick("Language understood by the participants", "Langue comprise par les participants", "Von den Beteiligten verstandene Sprache", "Lingua compresa dai partecipanti", "Lingua chapida dals participants") }
     public var accessibleCopy: String { pick("HTML copy", "Copie HTML", "HTML-Kopie", "Copia HTML", "Copia HTML") }
+    public var contents: String { pick("Contents", "Sommaire", "Inhalt", "Indice", "Cuntegn") }
+    public var continued: String { pick("Continued", "Suite", "Fortsetzung", "Continua", "Cuntinuaziun") }
+    public var costSignatureTitle: String { pick("Historical cost signature", "Signature historique relative aux frais", "Historische Kostenunterschrift", "Firma storica relativa ai costi", "Suttascripziun istorica davart ils custs") }
+    public func defectCount(_ n: Int) -> String {
+        switch lang {
+        case .en: return n == 1 ? "1 defect" : "\(n) defects"
+        case .fr: return n == 1 ? "1 défaut" : "\(n) défauts"
+        case .de: return n == 1 ? "1 Mangel" : "\(n) Mängel"
+        case .it: return n == 1 ? "1 difetto" : "\(n) difetti"
+        case .rm: return n == 1 ? "1 mancanza" : "\(n) mancanzas"
+        }
+    }
     public var signatureEditWarning: String { pick("Editing this record requires these people to review and sign again:", "La modification exige une nouvelle lecture et signature de ces personnes :", "Nach der Änderung müssen diese Personen erneut prüfen und unterschreiben:", "La modifica richiede una nuova verifica e firma di queste persone:", "La midada pretenda ina nova lectura e suttascripziun da questas persunas:") }
     public func depositLocal(_ canton: SwissCanton?) -> String {
         switch canton {

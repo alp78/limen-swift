@@ -1,0 +1,59 @@
+pdfimages -list and pdffonts on the simulator's renderings (ExportTests, 21 October 2026)
+
+== sample-de.pdf (154324 bytes)
+name                                 type              encoding         emb sub uni object ID
+------------------------------------ ----------------- ---------------- --- --- --- ---------
+AAAAAB+.SFUI-Regular_wdth_opsz433333_GRAD_wght2BC0000 TrueType          MacRoman         yes yes no       7  0
+AAAAAC+.SFUI-Regular_wdth_opsz14CCCC_GRAD_wght2BC0000 TrueType          MacRoman         yes yes no       8  0
+AAAAAD+.SFUI-Regular_wdth_opsz219999_GRAD_wght2BC0000 TrueType          MacRoman         yes yes no       9  0
+AAAAAE+.SFUI-Regular_wdth_opsz199999_GRAD_wght TrueType          MacRoman         yes yes no      10  0
+AAAAAF+.SFUI-Regular_wdth_opsz199999_GRAD_wght TrueType          WinAnsi          yes yes yes     11  0
+AAAAAG+.SFUI-Regular_wdth_opsz133333_GRAD_wght1FE0000 TrueType          MacRoman         yes yes no      12  0
+AAAAAH+.SFUI-Regular_wdth_opsz133333_GRAD_wght TrueType          MacRoman         yes yes no      13  0
+AAAAAI+.SFUI-Regular_wdth_opsz180000_GRAD_wght TrueType          MacRoman         yes yes no      14  0
+AAAAAJ+.SFUI-Regular_wdth_opsz180000_GRAD_wght1FE0000 TrueType          MacRoman         yes yes no      22  0
+page   num  type   width height color comp bpc  enc interp  object ID x-ppi y-ppi size ratio
+--------------------------------------------------------------------------------------------
+   1     0 image     256   256  icc     3   8  image  yes        6  0   300   300 98.3K  51%
+   1     1 smask     256   256  gray    1   8  image  yes        6  0   300   300 2673B 4.1%
+   2     2 image     256   256  icc     3   8  image  yes        6  0  1067  1067 98.3K  51%
+   2     3 smask     256   256  gray    1   8  image  yes        6  0  1067  1067 2673B 4.1%
+...
+image kinds (type enc smask):
+   2 image image
+   2 smask image
+
+== six-rooms-fr.pdf (4832064 bytes)
+name                                 type              encoding         emb sub uni object ID
+------------------------------------ ----------------- ---------------- --- --- --- ---------
+AAAAAB+.SFUI-Regular_wdth_opsz433333_GRAD_wght2BC0000 TrueType          MacRoman         yes yes no       7  0
+AAAAAC+.SFUI-Regular_wdth_opsz14CCCC_GRAD_wght2BC0000 TrueType          MacRoman         yes yes no       8  0
+AAAAAD+.SFUI-Regular_wdth_opsz219999_GRAD_wght2BC0000 TrueType          MacRoman         yes yes no       9  0
+AAAAAE+.SFUI-Regular_wdth_opsz199999_GRAD_wght TrueType          MacRoman         yes yes no      10  0
+AAAAAF+.SFUI-Regular_wdth_opsz199999_GRAD_wght TrueType          WinAnsi          yes yes yes     11  0
+AAAAAG+.SFUI-Regular_wdth_opsz133333_GRAD_wght1FE0000 TrueType          MacRoman         yes yes no      12  0
+AAAAAH+.SFUI-Regular_wdth_opsz133333_GRAD_wght TrueType          MacRoman         yes yes no      13  0
+AAAAAI+.SFUI-Regular_wdth_opsz133333_GRAD_wght TrueType          WinAnsi          yes yes yes     14  0
+AAAAAJ+.SFUI-Regular_wdth_opsz180000_GRAD_wght TrueType          MacRoman         yes yes no      22  0
+AAAAAK+.SFUI-Regular_wdth_opsz180000_GRAD_wght1FE0000 TrueType          MacRoman         yes yes no      23  0
+AAAAAL+.SFUI-Regular_wdth_opsz133333_GRAD_wght1FE0000 TrueType          WinAnsi          yes yes yes     44  0
+AAAAAM+.SFUI-Regular_wdth_opsz199999_GRAD_wght2BC0000 TrueType          MacRoman         yes yes no      53  0
+page   num  type   width height color comp bpc  enc interp  object ID x-ppi y-ppi size ratio
+--------------------------------------------------------------------------------------------
+   1     0 image     256   256  icc     3   8  image  yes        6  0   300   300 98.3K  51%
+   1     1 smask     256   256  gray    1   8  image  yes        6  0   300   300 2673B 4.1%
+   2     2 image     256   256  icc     3   8  image  yes        6  0  1067  1067 98.3K  51%
+   2     3 smask     256   256  gray    1   8  image  yes        6  0  1067  1067 2673B 4.1%
+   3     4 image     256   256  icc     3   8  image  yes        6  0  1067  1067 98.3K  51%
+   3     5 smask     256   256  gray    1   8  image  yes        6  0  1067  1067 2673B 4.1%
+   4     6 image     256   256  icc     3   8  image  yes        6  0  1067  1067 98.3K  51%
+   4     7 smask     256   256  gray    1   8  image  yes        6  0  1067  1067 2673B 4.1%
+   5     8 image     256   256  icc     3   8  image  yes        6  0  1067  1067 98.3K  51%
+   5     9 smask     256   256  gray    1   8  image  yes        6  0  1067  1067 2673B 4.1%
+   6    10 image     256   256  icc     3   8  image  yes        6  0  1067  1067 98.3K  51%
+   6    11 smask     256   256  gray    1   8  image  yes        6  0  1067  1067 2673B 4.1%
+...
+image kinds (type enc smask):
+  46 image image
+  36 image jpeg
+  46 smask image

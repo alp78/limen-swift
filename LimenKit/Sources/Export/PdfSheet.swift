@@ -3,33 +3,63 @@ import Foundation
 import UIKit
 
 extension PdfExport {
+    /// A panel's look: the app's raised panel, or its amber warning panel.
+    enum Tone: String {
+        case raised, warning
+    }
+
+    /// Seal: navy, white lettering. Warning: amber. Dim: the input grey. Paper: white on the navy banner.
+    enum PillTone: String {
+        case seal, warning, dim, paper
+    }
+
+    struct Pill {
+        let text: String
+        let tone: PillTone
+
+        init(_ text: String, _ tone: PillTone) {
+            self.text = text
+            self.tone = tone
+        }
+    }
+
+    /// The app's panel on paper: a title in small capitals, a pill at the right, blocks under
+    /// them. `inContents` lists it on the cover at `level`; `key` names it to the annex.
+    struct Panel {
+        let title: String
+        let blocks: [any Block]
+        let pill: Pill?
+        let tone: Tone
+        let inContents: Bool
+        let level: Int
+        let key: String?
+
+        init(_ title: String, _ blocks: [any Block], pill: Pill? = nil, tone: Tone = .raised, inContents: Bool = true, level: Int = 0, key: String? = nil) {
+            self.title = title
+            self.blocks = blocks
+            self.pill = pill
+            self.tone = tone
+            self.inContents = inContents
+            self.level = level
+            self.key = key
+        }
+    }
+
+    /// Where a section opened: its title, its page, its depth in the contents, and the key the annex knows it by.
+    struct Mark: Equatable {
+        let title: String
+        let page: Int
+        let level: Int
+        let key: String?
+    }
+
     struct RenderPass {
         /// The PDF's bytes when the sheet drew into memory, which only the counting pass and the
         /// glyph test do; a sheet drawing into a file leaves this nil.
         let data: Data?
         let pages: Int
-        /// The page each annex section started on, in order, for the contents list.
-        let sectionStarts: [Int]
-    }
-
-    // MARK: The sheet: cursor, page breaks, footer
-
-    /// A face at a size, the Paint of the Android sheet: sans or mono, regular or bold, in ink or grey.
-    struct Ink {
-        let font: UIFont
-        let colour: UIColor
-        var kern: CGFloat = 0
-        var size: CGFloat { font.pointSize }
-
-        func width(_ text: String) -> CGFloat {
-            (text as NSString).size(withAttributes: attributes).width
-        }
-
-        var attributes: [NSAttributedString.Key: Any] {
-            var attributes: [NSAttributedString.Key: Any] = [.font: font, .foregroundColor: colour]
-            if kern != 0 { attributes[.kern] = kern }
-            return attributes
-        }
+        /// Every section as it opened, in order: the contents and the check between the passes.
+        let marks: [Mark]
     }
 
     /// Where a sheet's pages go: into a file beside its HTML and the spool of plate JPEGs, or into
@@ -39,65 +69,54 @@ extension PdfExport {
         case memory
     }
 
+    /// The pages: cursor, running header, footer, and the one way a section draws anything, which
+    /// is a `panel` or a `heading`. Every page after the cover carries the record's kind, its
+    /// address and its reference, so a sheet separated from the rest still says what it belongs
+    /// to; the footer's "n / N" is the tamper evidence paper has always used.
     final class Sheet {
+        static let pillPad: CGFloat = 16
+
         let s: Str
         let reference: String
+        private let kindLine: String
+        private let addressLine: String
         let total: Int
-        /// The pages the annex sections started on in the counting pass, printed by the drawing pass.
-        let contents: [Int]
+        let paints = Paints()
+        let html: HtmlSink?
+        let spool: URL?
+        /// The seal, decoded once per pass and drawn on every page from the same image, which the
+        /// PDF context then embeds once.
+        let logo: CGImage?
+        /// The page each annex section opened on in the counting pass, by section key; empty while counting.
+        let annexPages: [String: Int]
+        private(set) var marks: [Mark] = []
+        private(set) var pageNo = 0
+        private var pageOpen = false
+        var onPage: Bool { pageOpen }
+        var y: CGFloat = 0
+        var plateCount = 0
+        var renderingFailed = false
+        /// The width inside a panel.
+        let inner = PdfTokens.width - 2 * PdfTokens.margin - 2 * PdfTokens.panelPad
         private let data = NSMutableData()
         private var consumer: CGDataConsumer?
         private var pdf: CGContext?
-        var y: CGFloat = 0
-        var pageNo = 0
-        private var pageOpen = false
-        let html: HtmlSink?
-        let spool: URL?
-        var plateCount = 0
-        var sectionStarts: [Int] = []
-        var suppressHTML = false
-        var renderingFailed = false
 
-        let black = UIColor.black
-        let grey = UIColor(red: 90 / 255, green: 90 / 255, blue: 90 / 255, alpha: 1)
-        let titleInk: Ink
-        let section: Ink
-        let label: Ink
-        let value: Ink
-        let body: Ink
-        let small: Ink
-        // The photo annex: a room's title over a heavy rule, then framed cards with a bold legend,
-        // at the Android sheet's sizes.
-        let roomTitle: Ink
-        let strong: Ink
-        let legendLabel: Ink
-        let badgeText: Ink
-        let ruleColour = UIColor(red: 200 / 255, green: 200 / 255, blue: 200 / 255, alpha: 1)
-        let heavyRuleColour = UIColor(red: 21 / 255, green: 32 / 255, blue: 45 / 255, alpha: 1)
-        let frameColour = UIColor(red: 185 / 255, green: 185 / 255, blue: 185 / 255, alpha: 1)
-        let hairlineColour = UIColor(red: 215 / 255, green: 215 / 255, blue: 215 / 255, alpha: 1)
-
-        init(s: Str, reference: String, total: Int, output: Output = .memory, contents: [Int] = []) throws {
+        init(s: Str, reference: String, kindLine: String = "", addressLine: String = "", total: Int,
+             output: Output = .memory, logo: CGImage? = nil, annexPages: [String: Int] = [:]) throws {
             self.s = s
             self.reference = reference
+            self.kindLine = kindLine
+            self.addressLine = addressLine
             self.total = total
-            self.contents = contents
-            titleInk = Ink(font: .monospacedSystemFont(ofSize: 40, weight: .bold), colour: black)
-            section = Ink(font: .systemFont(ofSize: 26, weight: .bold), colour: black)
-            label = Ink(font: .systemFont(ofSize: 23), colour: grey)
-            value = Ink(font: .monospacedSystemFont(ofSize: 26, weight: .regular), colour: black)
-            body = Ink(font: .systemFont(ofSize: 26), colour: black)
-            small = Ink(font: .systemFont(ofSize: 22), colour: grey)
-            roomTitle = Ink(font: .systemFont(ofSize: 36, weight: .bold), colour: black, kern: 0.04 * 36)
-            strong = Ink(font: .systemFont(ofSize: 27, weight: .bold), colour: black)
-            legendLabel = Ink(font: .systemFont(ofSize: 20), colour: grey)
-            badgeText = Ink(font: .systemFont(ofSize: 23, weight: .bold), colour: .white)
+            self.logo = logo
+            self.annexPages = annexPages
             switch output {
             case .files(let pdfURL, let htmlURL, let spoolURL):
                 try FileManager.default.createDirectory(at: spoolURL, withIntermediateDirectories: true)
                 guard let consumer = CGDataConsumer(url: pdfURL as CFURL) else { throw ExportError.rendering }
                 self.consumer = consumer
-                html = try HtmlSink(url: htmlURL, language: s.lang, title: reference)
+                html = try HtmlSink(url: htmlURL, language: s.lang, title: "Limen \(reference)")
                 spool = spoolURL
             case .memory:
                 guard let consumer = CGDataConsumer(data: data) else { throw ExportError.rendering }
@@ -109,7 +128,7 @@ extension PdfExport {
             self.pdf = pdf
         }
 
-        func newPage() {
+        func newPage(cover: Bool = false) {
             finish()
             pageNo += 1
             guard let pdf else { return }
@@ -119,23 +138,35 @@ extension PdfExport {
             // units, so the page is flipped and scaled once here and every drawing call below
             // reads exactly like the Android one.
             pdf.translateBy(x: 0, y: a4.height)
-            pdf.scaleBy(x: a4.width / pageWidth, y: -a4.height / pageHeight)
-            pdf.setFillColor(UIColor.white.cgColor)
-            pdf.fill(CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight))
+            pdf.scaleBy(x: a4.width / PdfTokens.width, y: -a4.height / PdfTokens.height)
+            pdf.setFillColor(paints.paperFill.cgColor)
+            pdf.fill(CGRect(x: 0, y: 0, width: PdfTokens.width, height: PdfTokens.height))
             pageOpen = true
-            y = margin
+            if cover {
+                y = PdfTokens.margin
+            } else {
+                runningHeader()
+                y = PdfTokens.headerBottom
+            }
+        }
+
+        private func runningHeader() {
+            if let logo { image(logo, in: CGRect(x: PdfTokens.margin, y: 48, width: 36, height: 36)) }
+            text(kindLine.uppercased(), PdfTokens.margin + 50, 76, paints.labelSmall)
+            let address = TextMeasure.ellipsize(addressLine, paints.small, 700)
+            text(address, PdfTokens.width - PdfTokens.margin - paints.small.width(address), 62, paints.small)
+            text(reference, PdfTokens.width - PdfTokens.margin - paints.small.width(reference), 88, paints.small)
+            line(PdfTokens.margin, 102, PdfTokens.width - PdfTokens.margin, 102, paints.edge, 1.5)
         }
 
         func finish() {
             guard pageOpen, let pdf else { return }
-            let wasSuppressed = suppressHTML
-            suppressHTML = true
-            defer { suppressHTML = wasSuppressed }
-            // The footer: the instrument's name and the page, quietly.
-            line(margin, pageHeight - foot - 14, pageWidth - margin, pageHeight - foot - 14, ruleColour, 1.5)
-            text("Limen · \(reference)", margin, pageHeight - foot + 8, small)
+            let rule = PdfTokens.height - PdfTokens.foot - 14
+            line(PdfTokens.margin, rule, PdfTokens.width - PdfTokens.margin, rule, paints.edge, 1.5)
+            let baseline = PdfTokens.height - PdfTokens.foot + 8
+            text(reference, PdfTokens.margin, baseline, paints.small)
             let pageText = total > 0 ? "\(s.pdfPage) \(pageNo) / \(total)" : "\(s.pdfPage) \(pageNo)"
-            text(pageText, pageWidth - margin - small.width(pageText), pageHeight - foot + 8, small)
+            text(pageText, PdfTokens.width - PdfTokens.margin - paints.small.width(pageText), baseline, paints.small)
             pdf.endPage()
             pageOpen = false
         }
@@ -145,24 +176,130 @@ extension PdfExport {
             pdf?.closePDF()
             try html?.finish()
             guard !renderingFailed, pdf != nil else { throw ExportError.rendering }
-            return RenderPass(data: html == nil ? data as Data : nil, pages: pageNo, sectionStarts: sectionStarts)
+            return RenderPass(data: html == nil ? data as Data : nil, pages: pageNo, marks: marks)
         }
 
         /// Guarantees `need` vertical units, breaking the page when they are not there.
         func ensure(_ need: CGFloat) {
-            if !pageOpen || y + need > pageHeight - foot - 30 { newPage() }
+            if !pageOpen || y + need > PdfTokens.bottom { newPage() }
         }
 
         func gap(_ v: CGFloat) { y += v }
 
+        /// Records where a section opened and returns the anchor its HTML carries.
+        @discardableResult
+        func mark(_ title: String, level: Int, key: String? = nil) -> String {
+            marks.append(Mark(title: title, page: pageNo, level: level, key: key))
+            return anchor(marks.count - 1)
+        }
+
+        func anchor(_ index: Int) -> String { "c\(index)" }
+
+        /// Draws `pill` with its right edge at `right`, and returns its width.
+        @discardableResult
+        func pill(_ pill: Pill, right: CGFloat, top: CGFloat) -> CGFloat {
+            let text = pill.text.uppercased()
+            let face: Face
+            switch pill.tone {
+            case .seal: face = paints.pillSeal
+            case .warning: face = paints.pillWarning
+            case .dim: face = paints.pillDim
+            case .paper: face = paints.pillPaper
+            }
+            let width = face.width(text) + 2 * Sheet.pillPad
+            let box = CGRect(x: right - width, y: top, width: width, height: PdfTokens.pillHeight)
+            switch pill.tone {
+            case .seal:
+                fillRound(box, radius: PdfTokens.pillRadius, paints.navyFill)
+            case .warning:
+                fillRound(box, radius: PdfTokens.pillRadius, paints.warningFill)
+                strokeRound(box.insetBy(dx: PdfTokens.border / 2, dy: PdfTokens.border / 2), radius: PdfTokens.pillRadius, paints.warningOutline, PdfTokens.border)
+            case .dim:
+                fillRound(box, radius: PdfTokens.pillRadius, paints.inputFill)
+            case .paper:
+                fillRound(box, radius: PdfTokens.pillRadius, paints.paperFill)
+            }
+            self.text(text, right - width + Sheet.pillPad, top + face.baseline(PdfTokens.pillHeight), face)
+            return width
+        }
+
+        /// A section heading over a navy rule, the hub door's title: for a group of panels.
+        func heading(_ title: String, level: Int = 0, pill: Pill? = nil, key: String? = nil) {
+            ensure(PdfTokens.headingNeed)
+            let anchor = mark(title, level: level, key: key)
+            html?.heading(title, anchor: anchor)
+            let line = paints.line(of: .title)
+            var max = PdfTokens.width - 2 * PdfTokens.margin
+            if let pill { max -= self.pill(pill, right: PdfTokens.width - PdfTokens.margin, top: y + (line - PdfTokens.pillHeight) / 2) + 20 }
+            text(TextMeasure.ellipsize(title, paints.title, max), PdfTokens.margin, y + paints.title.baseline(line), paints.title)
+            y += line + 10
+            self.line(PdfTokens.margin, y, PdfTokens.width - PdfTokens.margin, y, paints.navy, PdfTokens.border)
+            y += 24
+        }
+
+        /// Draws `panel`, whole when it fits the space left, otherwise in closed segments, each a
+        /// complete panel with the title repeated and a "continued" pill, so no page ends on an
+        /// open shape. The HTML is written once, before the first segment.
+        func panel(_ panel: Panel) {
+            let rows = panel.blocks.flatMap { $0.rows(paints, width: inner) }
+            let chrome = 2 * PdfTokens.panelPad + PdfTokens.pillHeight + PdfTokens.labelGap
+            let available = pageOpen ? PdfTokens.bottom - y - chrome : -1
+            let full = PdfTokens.bottom - PdfTokens.headerBottom - chrome
+            let segments = Paginator.segments(rows.map { Paginator.Slot($0.height, keepWithNext: $0.keepWithNext) }, available: available, full: full)
+            if let html {
+                let anchor = panel.inContents ? anchor(marks.count) : nil
+                html.panel(panel.title, tone: panel.tone.rawValue, pill: panel.pill?.text, pillTone: panel.pill?.tone.rawValue, anchor: anchor) {
+                    for block in panel.blocks { block.html(html) }
+                }
+            }
+            for segment in segments {
+                if segment.newPageBefore || !pageOpen { newPage() }
+                let height = chrome + rows[segment.from..<segment.to].reduce(0) { $0 + $1.height }
+                frame(top: y, height: height, tone: panel.tone, radius: PdfTokens.panelRadius)
+                if !segment.continued, panel.inContents { mark(panel.title, level: panel.level, key: panel.key) }
+                let left = PdfTokens.margin + PdfTokens.panelPad
+                let top = y + PdfTokens.panelPad
+                let pill = segment.continued ? Pill(s.continued, .dim) : panel.pill
+                var titleMax = inner
+                if let pill { titleMax -= self.pill(pill, right: PdfTokens.width - PdfTokens.margin - PdfTokens.panelPad, top: top) + 20 }
+                // A room's panel is titled like a hub door, in the bold label; a component's like a panel.
+                let titleFace = panel.level > 0 ? paints.labelLarge : paints.labelSmall
+                text(TextMeasure.ellipsize(panel.title.uppercased(), titleFace, titleMax), left, top + titleFace.baseline(PdfTokens.pillHeight), titleFace)
+                var rowTop = top + PdfTokens.pillHeight + PdfTokens.labelGap
+                for i in segment.from..<segment.to {
+                    rows[i].draw(self, left, rowTop)
+                    rowTop += rows[i].height
+                }
+                y += height + PdfTokens.panelGap
+            }
+        }
+
+        /// The panel's shape: the fill, then the border inset by half its width so it stays inside the margin.
+        func frame(top: CGFloat, height: CGFloat, tone: Tone, radius: CGFloat, left: CGFloat = PdfTokens.margin, right: CGFloat = PdfTokens.width - PdfTokens.margin) {
+            let box = CGRect(x: left, y: top, width: right - left, height: height)
+            fillRound(box, radius: radius, tone == .warning ? paints.warningFill : paints.panelFill)
+            strokeRound(box.insetBy(dx: PdfTokens.border / 2, dy: PdfTokens.border / 2), radius: radius, tone == .warning ? paints.warningOutline : paints.navy, PdfTokens.border)
+        }
+
+        /// A block outside any panel, split row by row across pages.
+        func block(_ block: any Block) {
+            if let html { block.html(html) }
+            for row in block.rows(paints, width: PdfTokens.width - 2 * PdfTokens.margin) {
+                ensure(row.height)
+                row.draw(self, PdfTokens.margin, y)
+                y += row.height
+            }
+        }
+
+        // MARK: Drawing primitives, and nothing else: flat fills and strokes, lines, text, a bitmap
+
         /// Draws with the baseline at `baseline`, the way Canvas.drawText places its text.
-        func text(_ string: String, _ x: CGFloat, _ baseline: CGFloat, _ ink: Ink) {
-            if !suppressHTML { html?.text(string) }
+        func text(_ string: String, _ x: CGFloat, _ baseline: CGFloat, _ face: Face) {
             guard let pdf else { renderingFailed = true; return }
             UIGraphicsPushContext(pdf)
-            // NSString's UIKit drawing expects the top-down context established by newPage.
-            // A second local flip makes every glyph upside down while text extraction still passes.
-            (string as NSString).draw(at: CGPoint(x: x, y: baseline - ink.font.ascender), withAttributes: ink.attributes)
+            // NSString's UIKit drawing expects the top-down context established by newPage. A
+            // second local flip makes every glyph upside down while text extraction still passes.
+            (string as NSString).draw(at: CGPoint(x: x, y: baseline - face.font.ascender), withAttributes: face.attributes)
             UIGraphicsPopContext()
         }
 
@@ -175,160 +312,54 @@ extension PdfExport {
             pdf.strokePath()
         }
 
-        /// A stroked rectangle, square or rounded: the annex card's frame and the hairline round
-        /// its photograph.
-        func stroke(_ rect: CGRect, radius: CGFloat, _ colour: UIColor, _ width: CGFloat) {
-            guard let pdf else { return }
-            pdf.setStrokeColor(colour.cgColor)
-            pdf.setLineWidth(width)
-            pdf.addPath(CGPath(roundedRect: rect, cornerWidth: radius, cornerHeight: radius, transform: nil))
-            pdf.strokePath()
+        private func rounded(_ rect: CGRect, _ radius: CGFloat) -> CGPath {
+            let r = min(radius, rect.width / 2, rect.height / 2)
+            return CGPath(roundedRect: rect, cornerWidth: r, cornerHeight: r, transform: nil)
         }
 
-        func fill(_ rect: CGRect, radius: CGFloat, _ colour: UIColor) {
+        func fillRound(_ rect: CGRect, radius: CGFloat, _ colour: UIColor) {
             guard let pdf else { return }
             pdf.setFillColor(colour.cgColor)
-            pdf.addPath(CGPath(roundedRect: rect, cornerWidth: radius, cornerHeight: radius, transform: nil))
+            pdf.addPath(rounded(rect, radius))
             pdf.fillPath()
         }
 
-        /// A signature or the badge, drawn from its bitmap: the HTML copy takes a PNG of it.
-        func image(_ image: CGImage, in rect: CGRect, alt: String = "") {
-            if !suppressHTML, !alt.isEmpty, let png = UIImage(cgImage: image).pngData() {
-                html?.image(png: png, alt: alt)
-            }
-            draw(image, in: rect)
+        func strokeRound(_ rect: CGRect, radius: CGFloat, _ colour: UIColor, _ width: CGFloat) {
+            guard let pdf else { return }
+            pdf.setStrokeColor(colour.cgColor)
+            pdf.setLineWidth(width)
+            pdf.addPath(rounded(rect, radius))
+            pdf.strokePath()
         }
 
-        /// An annex plate: the JPEG file itself. A `CGImage` made from a JPEG data provider goes
-        /// into the PDF as its original DCT stream, so the page carries the very bytes the HTML
-        /// copy embeds, and nothing is re-encoded.
-        func plate(_ jpeg: URL, in rect: CGRect, card: AnnexContent.Card) {
-            guard let provider = CGDataProvider(url: jpeg as CFURL),
-                  let image = CGImage(jpegDataProviderSource: provider, decode: nil, shouldInterpolate: true, intent: .defaultIntent) else {
-                renderingFailed = true
-                return
-            }
-            do { try html?.plate(jpeg, card) } catch { renderingFailed = true }
-            draw(image, in: rect)
-        }
-
-        private func draw(_ image: CGImage, in rect: CGRect) {
+        /// A signature or the seal, drawn from its bitmap.
+        func image(_ image: CGImage, in rect: CGRect) {
             guard let pdf else { return }
             pdf.saveGState()
+            draw(image, in: rect, pdf)
+            pdf.restoreGState()
+        }
+
+        /// An annex plate: the JPEG file itself under a rounded clip. A `CGImage` made from a
+        /// JPEG data provider goes into the PDF as its original DCT stream, so the page carries
+        /// the very bytes the HTML copy embeds and nothing is re-encoded; the clip is a path in
+        /// the content stream and leaves the image object as it is.
+        func plate(_ jpeg: URL, in rect: CGRect, radius: CGFloat) -> Bool {
+            guard let pdf, let provider = CGDataProvider(url: jpeg as CFURL),
+                  let image = CGImage(jpegDataProviderSource: provider, decode: nil, shouldInterpolate: true, intent: .defaultIntent) else { return false }
+            pdf.saveGState()
+            pdf.addPath(rounded(rect, radius))
+            pdf.clip()
+            draw(image, in: rect, pdf)
+            pdf.restoreGState()
+            return true
+        }
+
+        private func draw(_ image: CGImage, in rect: CGRect, _ pdf: CGContext) {
             pdf.translateBy(x: rect.minX, y: rect.maxY)
             pdf.scaleBy(x: 1, y: -1)
             pdf.interpolationQuality = .high
             pdf.draw(image, in: CGRect(x: 0, y: 0, width: rect.width, height: rect.height))
-            pdf.restoreGState()
-        }
-
-        func sectionTitle(_ title: String) {
-            html?.heading(title)
-            let wasSuppressed = suppressHTML
-            suppressHTML = true
-            defer { suppressHTML = wasSuppressed }
-            ensure(60)
-            gap(16)
-            text(title.uppercased(), margin, y + section.size, section)
-            y += section.size + 8
-            line(margin, y, pageWidth - margin, y, ruleColour, 1.5)
-            gap(10)
-        }
-
-        func labeledRow(_ pairs: [(String, String)]) {
-            html?.fields(pairs)
-            let wasSuppressed = suppressHTML
-            suppressHTML = true
-            defer { suppressHTML = wasSuppressed }
-            let width = (pageWidth - 2 * margin) / CGFloat(pairs.count)
-            let columns = pairs.map { heading, entry in
-                (wrapLines(heading, label, width - 18), wrapLines(entry.ifBlank("–"), value, width - 18))
-            }
-            let labelLines = columns.map { $0.0.count }.max() ?? 0
-            let valueLines = columns.map { $0.1.count }.max() ?? 0
-            let labelStep = label.size + 5
-            let valueStep = value.size + 6
-            let need = CGFloat(labelLines) * labelStep + CGFloat(valueLines) * valueStep + 14
-            if need > pageHeight - margin - foot - 30 {
-                for (heading, entry) in pairs {
-                    wrapped(heading, label)
-                    wrapped(entry, value)
-                    gap(10)
-                }
-                return
-            }
-            ensure(need)
-            for (index, column) in columns.enumerated() {
-                let x = margin + CGFloat(index) * width
-                for (line, string) in column.0.enumerated() {
-                    text(string, x, y + label.size + CGFloat(line) * labelStep, label)
-                }
-                let valueTop = y + CGFloat(labelLines) * labelStep
-                for (line, string) in column.1.enumerated() {
-                    text(string, x, valueTop + value.size + CGFloat(line) * valueStep, value)
-                }
-            }
-            y += need
-        }
-
-        func wrapped(_ string: String, _ ink: Ink, x: CGFloat = margin, width: CGFloat = pageWidth - 2 * margin) {
-            if !suppressHTML { html?.text(string) }
-            let wasSuppressed = suppressHTML
-            suppressHTML = true
-            defer { suppressHTML = wasSuppressed }
-            for line in wrapLines(string, ink, width) {
-                ensure(ink.size + 10)
-                text(line, x, y + ink.size, ink)
-                y += ink.size + 7
-            }
-        }
-
-        func ellipsize(_ string: String, _ ink: Ink, _ width: CGFloat) -> String {
-            if ink.width(string) <= width { return string }
-            var t = string
-            while !t.isEmpty, ink.width("\(t)…") > width { t.removeLast() }
-            return "\(t)…"
-        }
-
-        func wrapLines(_ string: String, _ ink: Ink, _ width: CGFloat) -> [String] {
-            var out: [String] = []
-            for paragraph in string.split(separator: "\n", omittingEmptySubsequences: false) {
-                var line = ""
-                for word in paragraph.split(separator: " ", omittingEmptySubsequences: false).map(String.init) {
-                    if ink.width(word) > width {
-                        if !line.isEmpty {
-                            out.append(line)
-                            line = ""
-                        }
-                        var chunks: [String] = []
-                        var chunk = ""
-                        for character in word {
-                            let probe = chunk + String(character)
-                            if !chunk.isEmpty, ink.width(probe) > width {
-                                chunks.append(chunk)
-                                chunk = String(character)
-                            } else {
-                                chunk = probe
-                            }
-                        }
-                        if !chunk.isEmpty { chunks.append(chunk) }
-                        out.append(contentsOf: chunks.dropLast())
-                        line = chunks.last ?? ""
-                        continue
-                    }
-                    let probe = line.isEmpty ? word : "\(line) \(word)"
-                    if ink.width(probe) <= width {
-                        line = probe
-                    } else {
-                        if !line.isEmpty { out.append(line) }
-                        line = word
-                    }
-                }
-                out.append(line)
-            }
-            return out
         }
     }
-
 }
