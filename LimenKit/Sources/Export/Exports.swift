@@ -22,6 +22,48 @@ public enum Exports {
         return formatter.string(from: date)
     }
 
+    /// The document's name: the address and the handover's day, dashes between, nothing else.
+    /// The fingerprint, the language, the delivery revision and the export time used to follow,
+    /// and the owner found the name useless in Files and in a mail; they stay in the record's
+    /// export history, where they are read. Letters are folded to ASCII and anything else is a
+    /// dash, because the archive's name rule is ASCII and a Pixel restoring the record must take
+    /// the file. A record whose handover day is not set yet is named after the day of the export.
+    public static func documentName(address: String, handoverDate: String, now: Date) -> String {
+        let folded = address.applyingTransform(.stripDiacritics, reverse: false) ?? address
+        var slug = folded.unicodeScalars.map { scalar -> String in
+            ("A"..."Z").contains(scalar) || ("a"..."z").contains(scalar) || ("0"..."9").contains(scalar) ? String(scalar) : "-"
+        }.joined()
+        while slug.contains("--") { slug = slug.replacingOccurrences(of: "--", with: "-") }
+        slug = slug.trimmingCharacters(in: CharacterSet(charactersIn: "-"))
+        if slug.isEmpty { slug = "Limen" }
+        let day: String
+        if handoverDate.range(of: #"^\d{4}-\d{2}-\d{2}$"#, options: .regularExpression) != nil {
+            day = handoverDate
+        } else {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.dateFormat = "yyyy-MM-dd"
+            day = formatter.string(from: now)
+        }
+        return String(slug.prefix(80)) + "-" + day
+    }
+
+    /// `base`, or `base-2`, `base-3` and so on, the first that names no file with any of the
+    /// extensions in any of the folders: a second export of a record on the same day keeps the
+    /// earlier retained copy, because the history promises every exact copy.
+    public static func unusedName(_ base: String, in folders: [URL], extensions: [String] = ["pdf", "html"]) -> String {
+        var candidate = base
+        var counter = 2
+        func taken(_ name: String) -> Bool {
+            folders.contains { folder in extensions.contains { FileManager.default.fileExists(atPath: folder.appendingPathComponent(name + "." + $0).path) } }
+        }
+        while taken(candidate) {
+            candidate = "\(base)-\(counter)"
+            counter += 1
+        }
+        return candidate
+    }
+
     /// Documents/Limen, the folder Files shows under On My iPhone: the iOS shape of the
     /// Download/Limen collection the Android app writes into.
     public static var folder: URL {

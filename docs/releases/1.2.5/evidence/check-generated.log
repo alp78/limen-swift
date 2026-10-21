@@ -1,0 +1,10 @@
+python3 tools/schema.py --check
+26 constructors, 243 fields
+python3 tools/strings.py --check
+381 declarations (335 core, 46 extensions), 2 iOS overrides
+python3 -m unittest discover -s tools -p 'test_*.py'
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK

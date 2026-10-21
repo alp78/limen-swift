@@ -8,7 +8,7 @@ WORKSPACE := Limen.xcworkspace
 DEST := platform=iOS Simulator,id=$(SIM_ID)
 
 .DEFAULT_GOAL := help
-.PHONY: help strings schema check-generated phones marks gen build test kit-test lint fmt run icon shots device clean
+.PHONY: help strings schema check-generated phones marks deps jxl gen build test kit-test lint fmt run icon shots device clean
 
 help: ## Show this help
 	@grep -E '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-8s\033[0m %s\n", $$1, $$2}'
@@ -30,7 +30,16 @@ phones: ## Regenerate the phone number metadata from the pinned libphonenumber r
 marks: ## Copy the seal, the flags and the mark from the Android repository into the asset catalog
 	bash tools/sync-marks.sh
 
+deps: ## Fetch the pinned libjxl source into ThirdParty (never committed)
+	bash tools/fetch-deps.sh
+
+jxl: ## Build ThirdParty/LimenJxl.xcframework from the fetched source, for the iPhone and the simulator
+	bash tools/build-libjxl.sh
+
 gen: ## Regenerate the Xcode project from Project.swift
+	# The project links the libjxl XCFramework, so without it generation would fail with a path error
+	# instead of naming the two commands that put it there.
+	@test -d ThirdParty/LimenJxl.xcframework || { echo "libjxl is missing. Run: bash tools/fetch-deps.sh && bash tools/build-libjxl.sh"; exit 1; }
 	tuist generate --no-open
 
 build: ## Build the app for the simulator

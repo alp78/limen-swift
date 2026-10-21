@@ -13,19 +13,13 @@ public struct ArchiveImportResult: Hashable, Sendable {
 }
 
 public enum ArchiveError: Error, Equatable {
-    case notALimenArchive, invalidEntry(String), tooManyEntries, tooLarge, manifestMissing
+    case notALimenArchive, invalidEntry(String), manifestMissing
     case emptyPassword, randomUnavailable, unsupportedVersion, truncated, wrongPassword, destinationExists
     case unreadableRecord(String), insufficientStorage, missingExport(String)
-}
-
-/// Bounds apply before allocation as well as to bytes actually written. The envelope adds 54
-/// bytes to the 64 MiB ZIP ceiling, not another allowance for payload.
-enum ArchiveLimits {
-    static let payload: Int64 = 64 * 1024 * 1024
-    static let expanded: Int64 = 256 * 1024 * 1024
-    static let protocolBytes: Int64 = 8 * 1024 * 1024
-    static let entries = 20_000
-    static let entry: Int64 = 64 * 1024 * 1024
+    /// A version 2 backup holds repacked photographs and this build has nothing to rebuild them with.
+    case packedPhotographsUnsupported
+    /// A repacked photograph does not rebuild, so nothing of the backup is installed.
+    case packedPhotographUnreadable(String)
 }
 
 /// Sweep only files from an earlier run. Another live operation may be using the same cache.
@@ -42,12 +36,25 @@ enum ArchiveStaging {
     }
 }
 
+/// Versioned, local-only backup of protocol JSON and its original evidence files.
+///
+/// No size or count limit, on this side or on import: a cap of 64 MiB refused a single record of
+/// thirty camera originals, which weigh 69 MB, and the only bound a backup meets is the storage it
+/// is written to and restored onto, which `FreeSpace` asks for once per megabyte.
 enum ArchiveIO {
     static let manifest = "limen-archive.txt"
     static let marker = "LIMEN_ARCHIVE\nversion=1\n"
+    /// A backup holding repacked photographs. One with none stays version 1, which 1.2.4 and
+    /// earlier restore; those refuse version 2 as not a Limen archive, and install nothing.
+    static let markerPacked = "LIMEN_ARCHIVE\nversion=2\n"
+    /// `jpegxl/<record>/<file>` holds photograph `photos/<record>/<file>` repacked by a `JpegPacker`.
+    static let packed = "jpegxl"
+    private static let jpegStart: [UInt8] = [0xFF, 0xD8, 0xFF]
     private static let stagePrefix = ".archive-import-"
 
-    static func export(root: URL, to output: URL, protocolIds: Set<String>? = nil) throws {
+    /// Each JPEG photograph goes in repacked by `packer` when that comes out smaller and unpacks to
+    /// the very same bytes; anything else goes in as it is.
+    static func export(root: URL, to output: URL, protocolIds: Set<String>? = nil, packer: (any JpegPacker)? = JpegXL.loaded) throws {
         let store = Store(root: root)
         let catalogue = store.catalogue()
         if let failure = catalogue.unreadable.first(where: { (protocolIds?.contains($0.id) ?? true) }) {
@@ -59,15 +66,9 @@ enum ArchiveIO {
         let zip = try Zip.Writer(to: output)
         var completed = false
         defer { if !completed { try? FileManager.default.removeItem(at: output) } }
-        try zip.put(manifest, bytes: Data(marker.utf8))
-        var expanded = Int64(marker.utf8.count)
-        var entries = 1
+        var packedAny = false
         func put(_ name: String, _ file: URL) throws {
-            let size = Files.size(file)
             guard isAllowed(name), Files.isRegularFile(file) else { throw ArchiveError.invalidEntry(name) }
-            guard size <= (name.hasPrefix("protocols/") ? ArchiveLimits.protocolBytes : ArchiveLimits.entry) else { throw ArchiveError.tooLarge }
-            expanded += size; entries += 1
-            guard expanded <= ArchiveLimits.expanded, entries <= ArchiveLimits.entries else { throw ArchiveError.tooLarge }
             try zip.put(name, file: file)
         }
         for p in catalogue.records.filter({ (protocolIds?.contains($0.id) ?? true) }) {
@@ -79,7 +80,17 @@ enum ArchiveIO {
             }
             try put("protocols/\(p.id).json", root.appendingPathComponent("protocols/\(p.id).json"))
             for name in (p.allPhotoFiles() + p.details.attachments.map(\.file)).filter({ !$0.isBlank }).distinct() {
-                try put("photos/\(p.id)/\(name)", photos.appendingPathComponent(name))
+                let file = photos.appendingPathComponent(name)
+                guard isAllowed("photos/\(p.id)/\(name)"), Files.isRegularFile(file) else { throw ArchiveError.invalidEntry(name) }
+                // A pool per photograph: the JPEG, its repacked form and the check decode are
+                // each a few megabytes, and the loop runs on the main actor until the export ends.
+                let repacked = try autoreleasepool { packer == nil ? nil : try repack(packer.unsafelyUnwrapped, file) }
+                if let repacked {
+                    try zip.put("\(packed)/\(p.id)/\(name)", bytes: repacked, stored: true)
+                    packedAny = true
+                } else {
+                    try put("photos/\(p.id)/\(name)", file)
+                }
             }
             for name in p.signatures.map(\.file).filter({ !$0.isBlank }).distinct() {
                 try put("signatures/\(p.id)/\(name)", ink.appendingPathComponent(name))
@@ -88,38 +99,65 @@ enum ArchiveIO {
             guard validExports(p, directory: exports) else { throw ArchiveError.missingExport(p.id) }
             for name in exportNames(p, directory: exports) { try put("exports/\(p.id)/\(name)", exports.appendingPathComponent(name)) }
         }
+        // Last, because only now is it known whether anything was repacked.
+        try zip.put(manifest, bytes: Data((packedAny ? markerPacked : marker).utf8))
         try zip.finish()
         completed = true
     }
 
-    static func importArchive(root: URL, from input: URL, repairCorrupt: Bool = false) throws -> ArchiveImportResult {
+    /// `file` repacked, or nil when it is not a JPEG, does not come out smaller, or does not
+    /// unpack to the same bytes. libjxl's maintainers count about one JPEG in a hundred that it
+    /// refuses, and the check costs one unpack per photograph: a backup never holds a photograph
+    /// it cannot give back exactly. One photograph is held whole at a time, as on Android.
+    /// Above this a file is not a photograph a phone took, and it travels as it is: libjxl needs
+    /// the whole JPEG in memory to transcode it, and reading a gigabyte that starts with the JPEG
+    /// marker was the one place the export still held a file whole on the phone.
+    static let repackLimit: Int64 = 64 * 1024 * 1024
+
+    private static func repack(_ packer: any JpegPacker, _ file: URL) throws -> Data? {
+        // The first bytes alone, so a large supporting PDF is never read into memory to be skipped.
+        guard Files.size(file) <= repackLimit else { return nil }
+        let handle = try FileHandle(forReadingFrom: file)
+        defer { try? handle.close() }
+        guard let head = try handle.read(upToCount: 3), [UInt8](head) == jpegStart else { return nil }
+        let jpeg = try Data(contentsOf: file)
+        guard let repacked = packer.pack(jpeg), repacked.count < jpeg.count, packer.unpack(repacked) == jpeg else { return nil }
+        return repacked
+    }
+
+    static func importArchive(root: URL, from input: URL, repairCorrupt: Bool = false, packer: (any JpegPacker)? = JpegXL.loaded) throws -> ArchiveImportResult {
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         ArchiveStaging.sweep(root, prefix: stagePrefix)
         let stage = root.appendingPathComponent("\(stagePrefix)\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: stage, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: stage) }
-        try unpack(into: stage, from: input)
-        guard (try? String(contentsOf: stage.appendingPathComponent(manifest), encoding: .utf8)) == marker else { throw ArchiveError.notALimenArchive }
+        try unpack(into: stage, from: input, packer: packer)
+        let text = try? String(contentsOf: stage.appendingPathComponent(manifest), encoding: .utf8)
+        guard text == marker || text == markerPacked else { throw ArchiveError.notALimenArchive }
         return try installValidated(root: root, stage: stage, repairCorrupt: repairCorrupt)
     }
 
-    private static func unpack(into stage: URL, from input: URL) throws {
+    private static func unpack(into stage: URL, from input: URL, packer: (any JpegPacker)?) throws {
         let reader = try Zip.Reader(input)
         var seen = Set<String>()
-        var bytes: Int64 = 0
-        guard reader.entries.count <= ArchiveLimits.entries else { throw ArchiveError.tooManyEntries }
+        let space = FreeSpace(stage)
         for entry in reader.entries {
             let name = entry.name
-            guard !entry.isDirectory, isAllowed(name), seen.insert(name).inserted else { throw ArchiveError.invalidEntry(name) }
-            let target = stage.appendingPathComponent(name)
-            let ceiling = name.hasPrefix("protocols/") ? ArchiveLimits.protocolBytes : ArchiveLimits.entry
-            guard entry.uncompressedSize <= ceiling else { throw ArchiveError.tooLarge }
-            bytes += entry.uncompressedSize
-            guard bytes <= ArchiveLimits.expanded else { throw ArchiveError.tooLarge }
-            let free = (try? FileManager.default.attributesOfFileSystem(forPath: stage.path)[.systemFreeSize] as? NSNumber)?.int64Value
-            if let free, free < entry.uncompressedSize + 1024 * 1024 { throw ArchiveError.insufficientStorage }
-            try FileManager.default.createDirectory(at: target.deletingLastPathComponent(), withIntermediateDirectories: true)
-            try reader.read(entry).write(to: target)
+            // A repacked photograph unpacks to its original's place, and counts as that name.
+            let isPacked = name.hasPrefix("\(packed)/")
+            let path = isPacked ? "photos/" + name.dropFirst(packed.count + 1) : name
+            guard !entry.isDirectory, isAllowed(name), seen.insert(path).inserted else { throw ArchiveError.invalidEntry(name) }
+            let target = stage.appendingPathComponent(path)
+            if isPacked {
+                let bytes = try reader.read(entry)
+                guard let packer else { throw ArchiveError.packedPhotographsUnsupported }
+                guard let jpeg = packer.unpack(bytes) else { throw ArchiveError.packedPhotographUnreadable(name) }
+                try space.before(jpeg.count)
+                try FileManager.default.createDirectory(at: target.deletingLastPathComponent(), withIntermediateDirectories: true)
+                try jpeg.write(to: target)
+            } else {
+                try reader.extract(entry, to: target, space: space)
+            }
         }
         guard seen.contains(manifest) else { throw ArchiveError.manifestMissing }
     }
@@ -130,7 +168,7 @@ enum ArchiveIO {
         guard (2...3).contains(parts.count), parts.allSatisfy(EvidenceNames.isArchiveSafe) else { return false }
         switch parts[0] {
         case "protocols": return parts.count == 2 && parts[1].hasSuffix(".json")
-        case "photos", "signatures", "exports": return parts.count == 3
+        case "photos", "signatures", "exports", packed: return parts.count == 3
         default: return false
         }
     }

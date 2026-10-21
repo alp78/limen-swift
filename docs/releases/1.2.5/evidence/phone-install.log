@@ -1,0 +1,24 @@
+make device, 21 October 2026, iPhone 17 (00008150-001074183A7B401C / CoreDevice D5A6144A-6100-5A25-90E7-898D11325105), over the local network after the owner unlocked the phone
+Build Succeeded
+xcrun devicectl device install app --device D5A6144A-6100-5A25-90E7-898D11325105 ./DD/Build/Products/Release-iphoneos/Limen.app
+App installed:
+• bundleID: dev.peringer.limen
+• installationURL: file:///private/var/containers/Bundle/Application/ED985C4B-F63A-4A73-8884-68FC909A0F70/Limen.app/
+xcrun devicectl device process launch --device D5A6144A-6100-5A25-90E7-898D11325105 dev.peringer.limen
+Launched application with dev.peringer.limen bundle identifier.
+make device exit 0
+
+devicectl device info apps after the install:
+Name                  Bundle Identifier                      Version   Bundle Version
+Limen                 dev.peringer.limen                     1.2.5     7             
+Limen                 dev.peringer.limen.audit               1.2.2     6             
+LimenUITests-Runner   dev.peringer.limen.uitests.xctrunner   1.0       1             
+
+built app: 1.2.5 (7), TeamIdentifier=KDSZB7N44K, 14700 KB signed on disk
+
+Repeated with the final code (decrypt holdback, repack cap, document name), 20:29 on 21 October 2026:
+Build Succeeded
+App installed:
+• bundleID: dev.peringer.limen
+Launched application with dev.peringer.limen bundle identifier.
+make device exit 0

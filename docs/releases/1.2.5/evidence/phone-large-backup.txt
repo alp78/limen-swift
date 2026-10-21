@@ -1,0 +1,32 @@
+iPhone 17, iOS 26.6.2, Debug test bundles hosted in the audit app, 21 October 2026
+
+First run, before the decrypt fix (the 16-byte tag window carried as a slice of the chunk):
+LIMEN_LARGE_BACKUP megabytes=1024 availableMB=3262 export=121.1923279762268s restore=124.84377801418304s footprintBefore=49497056 footprintAfter=1123010272 grewMB=1023
+↳   grew → 1073513216
+↳ grew < 256 * 1024 * 1024 → false
+↳ the footprint grew by 1073513216 bytes
+✘ Test anEncryptedBackupLargerThanMemorySavesAndRestoresWithoutHoldingIt() recorded an issue at ArchiveSizeAndPackingTests.swift:155:9: Expectation failed: grew < 256 * 1024 * 1024
+
+The probe, each restore step alone over a 128 MB photograph, before the fix:
+LIMEN_IMPORT_PROBE zip-extract grewMB=0
+LIMEN_IMPORT_PROBE zip-extract-freespace grewMB=0
+LIMEN_IMPORT_PROBE copyItem grewMB=0
+LIMEN_IMPORT_PROBE moveItem grewMB=0
+LIMEN_IMPORT_PROBE readable grewMB=1
+LIMEN_IMPORT_PROBE fileHash grewMB=0
+LIMEN_IMPORT_PROBE unreadable grewMB=-2
+LIMEN_IMPORT_PROBE missingEvidence grewMB=0
+LIMEN_IMPORT_PROBE import-plain grewMB=1
+LIMEN_IMPORT_PROBE import-sealed grewMB=129
+
+After the fix, 256 MB with the probe, then the full size:
+phone-large8.log:LIMEN_LARGE_BACKUP_PHASE after-export footprint=47645664
+phone-large8.log:LIMEN_LARGE_BACKUP_PHASE after-import footprint=49038304
+phone-large8.log:LIMEN_LARGE_BACKUP megabytes=1024 availableMB=3329 export=122.34985601902008s restore=124.57099103927612s footprintBefore=47694816 footprintAfter=49038304 grewMB=1
+phone-large8.log:✔ Test run with 9 tests in 1 suite passed after 277.622 seconds.
+phone-large7.log:LIMEN_LARGE_BACKUP_PHASE after-export footprint=46613448
+phone-large7.log:LIMEN_LARGE_BACKUP_PHASE after-import footprint=48268232
+phone-large7.log:LIMEN_LARGE_BACKUP megabytes=256 availableMB=3329 export=29.22369396686554s restore=29.96523404121399s footprintBefore=46679008 footprintAfter=48268232 grewMB=1
+phone-large7.log:LIMEN_IMPORT_PROBE import-plain grewMB=1
+phone-large7.log:LIMEN_IMPORT_PROBE import-sealed grewMB=1
+phone-large7.log:✔ Test run with 9 tests in 1 suite passed after 112.160 seconds.

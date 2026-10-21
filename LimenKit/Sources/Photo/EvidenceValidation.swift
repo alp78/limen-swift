@@ -5,8 +5,9 @@ import UniformTypeIdentifiers
 
 /// Decoding is a separate boundary from hashing: historical fingerprints may cover any bytes,
 /// but a finalized or delivered document must actually display every referenced image.
+/// No size limit on a photograph or a document: a file is kept whole, however large, and the
+/// only bound it meets is the storage it is written to. The checks here are about content.
 public enum EvidenceValidation {
-    public static let maxIntakeBytes: Int64 = 32 * 1024 * 1024
     public struct UnrenderableEvidence: Error, LocalizedError, Equatable {
         public let files: [String]
         public var errorDescription: String? { "Evidence cannot be read: " + files.joined(separator: ", ") }
@@ -15,7 +16,7 @@ public enum EvidenceValidation {
 
     @discardableResult
     public static func validatePhoto(_ file: URL) throws -> String {
-        guard Files.isRegularFile(file), (1...maxIntakeBytes).contains(Files.size(file)),
+        guard Files.isRegularFile(file), Files.size(file) > 0,
               PhotoDecode.readable(file), let source = CGImageSourceCreateWithURL(file as CFURL, nil),
               let identifier = CGImageSourceGetType(source), let type = UTType(identifier as String),
               let mime = type.preferredMIMEType else { throw UnrenderableEvidence(files: [file.lastPathComponent]) }
@@ -24,7 +25,7 @@ public enum EvidenceValidation {
 
     @discardableResult
     public static func validateDocument(_ file: URL) throws -> String {
-        guard Files.isRegularFile(file), (1...maxIntakeBytes).contains(Files.size(file)) else {
+        guard Files.isRegularFile(file), Files.size(file) > 0 else {
             throw UnrenderableEvidence(files: [file.lastPathComponent])
         }
         if readablePDF(file) { return "application/pdf" }
@@ -65,8 +66,9 @@ public enum EvidenceValidation {
     }
 
     private static func readablePDF(_ file: URL) -> Bool {
+        // At least one page, and every page drawable; no upper bound, as Android asks for none.
         guard Files.isRegularFile(file), let pdf = CGPDFDocument(file as CFURL), !pdf.isEncrypted,
-              (1...1_000).contains(pdf.numberOfPages),
+              pdf.numberOfPages >= 1,
               let context = CGContext(data: nil, width: 64, height: 64, bitsPerComponent: 8, bytesPerRow: 0,
                   space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return false }
         for index in 1...pdf.numberOfPages {

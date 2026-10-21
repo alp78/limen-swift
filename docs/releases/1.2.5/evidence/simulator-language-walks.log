@@ -1,0 +1,24 @@
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/LanguageWalkTest.swift:213: error: -[LimenUITests.LanguageWalkTest testFrenchLargestAccessibility] : Failed to get matching snapshot: No matches found for Elements matching predicate '"ZH · Zürich" IN identifiers' from input {(
+Executed 18 tests, with 1 failure (0 unexpected) in 2017.448 (2017.464) seconds
+Executed 18 tests, with 1 failure (0 unexpected) in 2017.448 (2017.466) seconds
+Executed 18 tests, with 1 failure (0 unexpected) in 2017.448 (2017.467) seconds
+Test Case '-[LimenUITests.LanguageWalkTest testEnglishLandscape]' passed (95.528 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testEnglishLarge]' passed (80.590 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testEnglishLargestAccessibility]' passed (168.035 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testFrenchLarge]' passed (81.962 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testFrenchLargestAccessibility]' failed (91.710 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testGermanLarge]' passed (84.209 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testGermanLargestAccessibility]' passed (193.029 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testItalianLarge]' passed (81.586 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testItalianLargestAccessibility]' passed (166.515 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testRomanshLarge]' passed (80.518 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testRomanshLargestAccessibilityLandscape]' passed (210.889 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testRomanshLargestAccessibilitySignatureOnly]' passed (60.817 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testRomanshLargestAccessibility]' passed (246.989 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testTheWalkInEnglish]' passed (74.057 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testTheWalkInFrench]' passed (76.616 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testTheWalkInGerman]' passed (76.214 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testTheWalkInItalian]' passed (75.780 seconds).
+Test Case '-[LimenUITests.LanguageWalkTest testTheWalkInRomansh]' passed (72.404 seconds).
+rerun alone, after the batch, with nothing else on the Mac:
+Test Case '-[LimenUITests.LanguageWalkTest testFrenchLargestAccessibility]' passed (161.767 seconds).

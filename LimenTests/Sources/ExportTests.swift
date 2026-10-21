@@ -3,6 +3,7 @@ import Foundation
 import PDFKit
 import Testing
 import UIKit
+import UniformTypeIdentifiers
 @testable import Limen
 
 /// The document, end to end, on the record the Android instrumentation exports as its smoke: a
@@ -14,7 +15,8 @@ import UIKit
         sheet.newPage()
         sheet.text("F", 200, 200, sheet.titleInk)
         let pass = try sheet.close()
-        let provider = try #require(CGDataProvider(data: pass.data as CFData))
+        let data = try #require(pass.data)
+        let provider = try #require(CGDataProvider(data: data as CFData))
         let document = try #require(CGPDFDocument(provider))
         let page = try #require(document.page(at: 1))
         let width = 1240, height = 1754
@@ -199,9 +201,9 @@ import UIKit
         record.defects[0].participantPositions["tenant-two"] = TenantPosition(response: .normalWear, comment: "Independent position")
         record.evidenceFingerprint = try ProtocolIntegrity.fingerprint(record, photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id))
         for lang in Lang.allCases {
-            let rendered = try PdfExport.document(record, Str(lang), photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id))
-            let pdfText = try #require(PDFDocument(data: rendered.pdf)?.string)
-            let html = String(decoding: rendered.html, as: UTF8.self)
+            let rendered = try PdfExport.document(record, Str(lang), photoDir: store.photoDir(record.id), signatureDir: store.signatureDir(record.id), scratch: root)
+            let pdfText = try #require(PDFDocument(url: rendered.pdf)?.string)
+            let html = String(decoding: try Data(contentsOf: rendered.html), as: UTF8.self)
             for phrase in ["Second Tenant", "Independent reservation", "Example Agency", "Written mandate", "Water meter", "Prior report", "Independent position"] {
                 #expect(pdfText.contains(phrase), "\(lang): \(phrase)")
                 #expect(html.contains(phrase), "\(lang): \(phrase)")
@@ -210,8 +212,8 @@ import UIKit
             #expect(html.contains("&lt;script&gt;"))
             #expect(html.contains("lang=\"\(lang.rawValue.lowercased())\""))
             let sample = root.appendingPathComponent("synthetic-\(lang.rawValue.lowercased())")
-            try rendered.pdf.write(to: sample.appendingPathExtension("pdf"))
-            try rendered.html.write(to: sample.appendingPathExtension("html"))
+            try FileManager.default.moveItem(at: rendered.pdf, to: sample.appendingPathExtension("pdf"))
+            try FileManager.default.moveItem(at: rendered.html, to: sample.appendingPathExtension("html"))
             print("LIMEN_DOCUMENT_SAMPLE \(sample.path) pages=\(rendered.pages)")
         }
         let copy = try PdfExport.exportRetained(record, Str(.en), store: store, publicFolder: root.appendingPathComponent("public"))
@@ -271,9 +273,10 @@ import UIKit
                 signature.refused = refused
                 if refused { signature.file = "" }
                 draft.signatures = [signature]
-                let document = try PdfExport.document(draft, strings, photoDir: store.photoDir(draft.id), signatureDir: store.signatureDir(draft.id))
-                let pdf = flattened(try #require(PDFDocument(data: document.pdf)?.string))
-                let html = String(decoding: document.html, as: UTF8.self)
+                let document = try PdfExport.document(draft, strings, photoDir: store.photoDir(draft.id), signatureDir: store.signatureDir(draft.id), scratch: root)
+                defer { document.discard() }
+                let pdf = flattened(try #require(PDFDocument(url: document.pdf)?.string))
+                let html = String(decoding: try Data(contentsOf: document.html), as: UTF8.self)
                 #expect(pdf.contains(strings.previewDraft.uppercased()))
                 #expect(html.contains("<h1>\(strings.previewDraft)</h1>"))
                 #expect(!pdf.contains(strings.pdfFinalized.uppercased()))
@@ -299,6 +302,119 @@ import UIKit
                 }
             }
         }
+    }
+
+    /// A photograph of the kind a phone takes, larger than its plate and with a gradient and
+    /// noise so the JPEG has something to encode, written with an EXIF quarter turn.
+    private func photograph(_ file: URL, width: Int, height: Int, seed: UInt64, orientation: Int = 1) throws {
+        var pixels = [UInt8](repeating: 255, count: width * height * 4)
+        var state = seed
+        for y in 0..<height {
+            for x in 0..<width {
+                let offset = (y * width + x) * 4
+                state = state &* 6_364_136_223_846_793_005 &+ 1
+                let noise = Int(truncatingIfNeeded: state >> 58)
+                pixels[offset] = UInt8(clamping: 60 + (x * 150) / width + noise)
+                pixels[offset + 1] = UInt8(clamping: 80 + (y * 140) / height + noise)
+                pixels[offset + 2] = UInt8(clamping: 120 + ((x + y) * 90) / (width + height) + noise)
+            }
+        }
+        let provider = try #require(CGDataProvider(data: Data(pixels) as CFData))
+        let image = try #require(CGImage(width: width, height: height, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: width * 4,
+            space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipLast.rawValue),
+            provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent))
+        try FileManager.default.createDirectory(at: file.deletingLastPathComponent(), withIntermediateDirectories: true)
+        let destination = try #require(CGImageDestinationCreateWithURL(file as CFURL, UTType.jpeg.identifier as CFString, 1, nil))
+        CGImageDestinationAddImage(destination, image, [kCGImageDestinationLossyCompressionQuality: 0.92, kCGImagePropertyOrientation: orientation] as CFDictionary)
+        #expect(CGImageDestinationFinalize(destination))
+    }
+
+    private struct JpegStream {
+        let width: Int
+        let height: Int
+        let bytes: Data
+    }
+
+    /// The JPEG streams of a PDF: each /DCTDecode image object's dictionary and its bytes.
+    private func jpegStreams(_ pdf: Data) throws -> [JpegStream] {
+        let latin = try #require(String(data: pdf, encoding: .isoLatin1))
+        // Core Graphics writes the keys in its own order, the length ahead of the filter, so the
+        // whole dictionary is read and each key looked up in it.
+        let dictionary = try NSRegularExpression(pattern: #"<<([^<>]*?/Subtype\s*/Image[^<>]*?)>>\s*stream\r?\n"#, options: [.dotMatchesLineSeparators])
+        func number(_ key: String, in text: String) -> Int? {
+            guard let match = text.range(of: #"/\#(key)\s+(\d+)\b"#, options: .regularExpression) else { return nil }
+            return Int(text[match].split(whereSeparator: \.isWhitespace).last ?? "")
+        }
+        var streams: [JpegStream] = []
+        for match in dictionary.matches(in: latin, range: NSRange(latin.startIndex..., in: latin)) {
+            guard let inner = Range(match.range(at: 1), in: latin) else { continue }
+            let text = String(latin[inner])
+            guard text.contains("/DCTDecode"), let width = number("Width", in: text), let height = number("Height", in: text),
+                  let length = number("Length", in: text) else { continue }
+            // Every Latin-1 character is one byte and one UTF-16 unit, so the NSRange end is the byte
+            // offset of the stream. A Character count is not: Swift reads "\r\n" as one Character.
+            let byteStart = match.range.location + match.range.length
+            streams.append(JpegStream(width: width, height: height, bytes: pdf[byteStart..<(byteStart + length)]))
+        }
+        return streams
+    }
+
+    /// The annex as Android 1.2.4 prints it: each plate one JPEG at its plate size, the HTML copy
+    /// carrying the same bytes, no hash of a photograph or a document anywhere, and the
+    /// fingerprint and the reference still on the page.
+    @Test func annexPlatesAreOneJpegEachAtTheirPlateSizeSharedWithTheHtmlAndCarryNoHash() throws {
+        let root = try scratch()
+        let store = Store(root: root)
+        var record = try professionalRecord(store: store)
+        let photos = store.photoDir(record.id)
+        // A landscape capture larger than its plate, a portrait one taken sideways, and a room
+        // overview: three owners, three plate sizes.
+        try photograph(photos.appendingPathComponent("finding-wide.jpg"), width: 2400, height: 1800, seed: 3)
+        try photograph(photos.appendingPathComponent("finding-tall.jpg"), width: 1800, height: 1200, seed: 5, orientation: 6)
+        try photograph(photos.appendingPathComponent("room.jpg"), width: 1600, height: 1200, seed: 7)
+        func evidence(_ name: String) throws -> PhotoEvidence {
+            PhotoEvidence(name, sha256: try ProtocolIntegrity.fileHash(photos.appendingPathComponent(name)), capturedEpochMs: 1_761_030_000_000, source: .camera)
+        }
+        record.defects[0].photos += ["finding-wide.jpg", "finding-tall.jpg"]
+        record.defects[0].photoEvidence += [try evidence("finding-wide.jpg"), try evidence("finding-tall.jpg")]
+        record.details.roomPhotos["r1"] = [try evidence("room.jpg")]
+        record.details.attachments = [SupportingDocument(id: "lease", kind: .lease, title: "Lease", externalReference: "Held by the agency")]
+        record.evidenceFingerprint = try ProtocolIntegrity.fingerprint(record, photoDir: photos, signatureDir: store.signatureDir(record.id))
+        let s = Str(.fr)
+        let rendered = try PdfExport.document(record, s, photoDir: photos, signatureDir: store.signatureDir(record.id), scratch: root)
+        defer { rendered.discard() }
+        let pdf = try Data(contentsOf: rendered.pdf)
+        let html = String(decoding: try Data(contentsOf: rendered.html), as: UTF8.self)
+
+        let expected: [(name: String, fit: AnnexPlate.Fit)] = [("finding-wide.jpg", AnnexPlate.fit(2400, 1800)), ("finding-tall.jpg", AnnexPlate.fit(1200, 1800)),
+                                                              ("room.jpg", AnnexPlate.fit(1600, 1200)), ("window-scratch.jpg", AnnexPlate.fit(900, 600))]
+        let streams = try jpegStreams(pdf)
+        #expect(streams.count == expected.count, "\(streams.map { "\($0.width)x\($0.height)" })")
+        let embedded = try NSRegularExpression(pattern: #"src="data:image/jpeg;base64,([^"]+)""#)
+            .matches(in: html, range: NSRange(html.startIndex..., in: html))
+            .compactMap { Range($0.range(at: 1), in: html) }
+            .compactMap { Data(base64Encoded: String(html[$0])) }
+        #expect(embedded.count == expected.count)
+        for (name, fit) in expected {
+            #expect(streams.contains { $0.width == fit.pixelWidth && $0.height == fit.pixelHeight }, "\(name) at \(fit.pixelWidth) × \(fit.pixelHeight)")
+            let stream = try #require(streams.first { $0.width == fit.pixelWidth && $0.height == fit.pixelHeight })
+            let decoded = try #require(CGImageSourceCreateWithData(stream.bytes as CFData, nil).flatMap { CGImageSourceCreateImageAtIndex($0, 0, nil) })
+            #expect(decoded.width == fit.pixelWidth && decoded.height == fit.pixelHeight, "\(name)")
+            #expect(embedded.contains(stream.bytes), "\(name) is the same JPEG in the HTML copy")
+        }
+        let pdfText = try #require(PDFDocument(url: rendered.pdf)?.string)
+        for hash in record.allPhotoEvidence().map(\.sha256) + record.details.attachments.map(\.sha256) where !hash.isBlank {
+            #expect(!pdfText.contains(hash), "a photograph's hash on the page")
+            #expect(!html.contains(hash), "a photograph's hash in the HTML")
+        }
+        #expect(!pdfText.contains("SHA-256") && !html.contains("SHA-256"))
+        #expect(pdfText.contains(record.evidenceFingerprint) && html.contains(record.evidenceFingerprint))
+        #expect(pdfText.contains("LIMEN-\(record.evidenceFingerprint.prefix(16))"))
+        // The sections by room, the legends with their where, number, title and meta.
+        #expect(html.contains("<h3>\(s.room(.room))</h3>"))
+        #expect(html.contains("<small>\(s.room(.room))</small><br><strong>1. Scratch 14 cm long on the lower north-facing window frame</strong>"))
+        #expect(html.contains("<strong>\(s.overviewPhotos)</strong>"))
+        #expect(pdfText.contains(s.pdfDefectAnnex.uppercased()) && pdfText.contains("\(s.photos): 4"))
     }
 
     /// The Android matrix: every actor and both handovers finalize and export with two signatures.

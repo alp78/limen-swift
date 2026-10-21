@@ -1,0 +1,7 @@
+Release, generic/platform=iOS, arm64, unsigned (CODE_SIGNING_ALLOWED=NO), Xcode 27.1, 21 October 2026
+before: HEAD 69e7f72 (1.2.2 build 6)
+  Limen.app 14612 KB on disk; Limen binary 6746832 bytes; LimenKit.framework 2880 KB (binary 2167648 bytes)
+after: working tree (1.2.5 build 7)
+  Limen.app 16968 KB on disk; Limen binary 6745456 bytes; LimenKit.framework 5232 KB (binary 4578216 bytes)
+libjxl slice as linked: ThirdParty/LimenJxl.xcframework/ios-arm64 4412 KB (libLimenJxl.a with libjxl, brotli, highway, skcms)
+delta: +2356 KB on disk, +2410568 bytes in LimenKit's binary

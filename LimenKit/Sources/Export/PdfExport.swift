@@ -1,5 +1,6 @@
 import CoreGraphics
 import Foundation
+import ImageIO
 import UIKit
 import PDFKit
 
@@ -35,47 +36,83 @@ public enum PdfExport {
     static let margin: CGFloat = 90
     static let foot: CGFloat = 60
     static let a4 = CGSize(width: 595.276, height: 841.89)
+    /// An annex card: the frame's padding, which with the margins leaves `AnnexPlate.maxWidth`
+    /// for the photograph, the gap to a legend set beside it, the narrowest legend set beside
+    /// rather than below, and the space between cards.
+    static let framePad: CGFloat = 20
+    static let legendGap: CGFloat = 30
+    static let legendMin: CGFloat = 300
+    static let cardGap: CGFloat = 40
 
     public static func export(_ p: HandoverProtocol, _ s: Str, photoDir: URL, signatureDir: URL, folder: URL = Exports.folder, now: Date = Date()) throws -> ExportedFile {
         guard p.isFinalized() else { throw ExportError.notFinalized }
         guard ProtocolIntegrity.matches(p, photoDir: photoDir, signatureDir: signatureDir) else { throw ExportError.integrityMismatch }
-        let data = try render(p, s, photoDir: photoDir, signatureDir: signatureDir)
+        let rendered = try document(p, s, photoDir: photoDir, signatureDir: signatureDir)
+        defer { rendered.discard() }
         let kind = p.kind == .entry ? s.entry : s.exit
         let name = "limen-\(kind.lowercased().replacingOccurrences(of: " ", with: "-"))-\(Exports.stamp(now)).pdf"
-        return try Exports.write(name: name, in: folder) { url in try data.write(to: url) }
+        return try Exports.write(name: name, in: folder) { url in try FileManager.default.copyItem(at: rendered.pdf, to: url) }
     }
 
-    /// The document's bytes. Twice: the first pass only counts the sheets so the second can
-    /// number them "3 / 7". A form that names its own total is a form nobody can quietly take a
-    /// page out of, which is the tamper evidence paper has always used and people actually check.
-    public static func render(_ p: HandoverProtocol, _ s: Str, photoDir: URL, signatureDir: URL) throws -> Data {
-        try document(p, s, photoDir: photoDir, signatureDir: signatureDir).pdf
-    }
-
+    /// The document, rendered into two scratch files the caller moves or copies into place and
+    /// then discards. Files rather than bytes, because a record holds any number of photographs
+    /// and the PDF and its HTML copy are mostly those photographs.
     public struct Document: Sendable {
-        public let pdf: Data
-        public let html: Data
+        public let pdf: URL
+        public let html: URL
         public let pages: Int
 
-        public init(pdf: Data, html: Data, pages: Int) {
+        public init(pdf: URL, html: URL, pages: Int) {
             self.pdf = pdf
             self.html = html
             self.pages = pages
         }
+
+        /// Removes the scratch files once they have been copied where they belong.
+        public func discard() {
+            try? FileManager.default.removeItem(at: pdf)
+            try? FileManager.default.removeItem(at: html)
+        }
     }
 
-    public static func document(_ p: HandoverProtocol, _ s: Str, photoDir: URL, signatureDir: URL) throws -> Document {
+    /// Twice: the first pass only counts the sheets so the second can number them "3 / 7". A
+    /// form that names its own total is a form nobody can quietly take a page out of, which is
+    /// the tamper evidence paper has always used and people actually check. The counting pass
+    /// draws no photograph and writes no HTML; it reads each photograph's size from its header,
+    /// so both passes break the pages in the same places.
+    public static func document(_ p: HandoverProtocol, _ s: Str, photoDir: URL, signatureDir: URL, scratch: URL = AppFiles.scratch) throws -> Document {
         try EvidenceValidation.requireReadable(p, photoDir: photoDir, signatureDir: signatureDir)
         let reference = p.isFinalized() ? reference(p) : s.previewDraft
-        let counted = try build(p, s, photoDir: photoDir, signatureDir: signatureDir, reference: reference, total: 0)
-        let drawn = try build(p, s, photoDir: photoDir, signatureDir: signatureDir, reference: reference, total: counted.pages)
-        guard drawn.pages == counted.pages, let pdf = PDFDocument(data: drawn.data),
-              pdf.pageCount == drawn.pages, pdf.pageCount > 0, !(pdf.string ?? "").isEmpty else { throw ExportError.rendering }
-        return Document(pdf: drawn.data, html: Data(drawn.html.utf8), pages: drawn.pages)
+        let counted = try build(p, s, photoDir: photoDir, signatureDir: signatureDir, reference: reference, total: 0, output: .memory, contents: [])
+        try FileManager.default.createDirectory(at: scratch, withIntermediateDirectories: true)
+        let stem = scratch.appendingPathComponent("render-\(UUID().uuidString)")
+        let pdfURL = stem.appendingPathExtension("pdf")
+        let htmlURL = stem.appendingPathExtension("html")
+        let spool = stem.appendingPathExtension("plates")
+        // The plate JPEGs are needed until the PDF is closed, and never afterwards.
+        defer { try? FileManager.default.removeItem(at: spool) }
+        let drawn: RenderPass
+        do {
+            drawn = try build(p, s, photoDir: photoDir, signatureDir: signatureDir, reference: reference, total: counted.pages,
+                              output: .files(pdf: pdfURL, html: htmlURL, spool: spool), contents: counted.sectionStarts)
+        } catch {
+            try? FileManager.default.removeItem(at: pdfURL)
+            try? FileManager.default.removeItem(at: htmlURL)
+            throw error
+        }
+        // The page-count check reads the written file back, as the two passes have to agree
+        // and the reader that will open it has to agree with both.
+        guard drawn.pages == counted.pages, let pdf = PDFDocument(url: pdfURL),
+              pdf.pageCount == drawn.pages, pdf.pageCount > 0, !(pdf.string ?? "").isEmpty else {
+            try? FileManager.default.removeItem(at: pdfURL)
+            try? FileManager.default.removeItem(at: htmlURL)
+            throw ExportError.rendering
+        }
+        return Document(pdf: pdfURL, html: htmlURL, pages: drawn.pages)
     }
 
-    private static func build(_ p: HandoverProtocol, _ s: Str, photoDir: URL, signatureDir: URL, reference: String, total: Int) throws -> RenderPass {
-        let sheet = try Sheet(s: s, reference: reference, total: total)
+    private static func build(_ p: HandoverProtocol, _ s: Str, photoDir: URL, signatureDir: URL, reference: String, total: Int, output: Output, contents: [Int]) throws -> RenderPass {
+        let sheet = try Sheet(s: s, reference: reference, total: total, output: output, contents: contents)
         let cards = p.dossierCards()
         title(sheet, p, s)
         header(sheet, p, s)
@@ -600,45 +637,6 @@ public enum PdfExport {
             break
         }
     }
-
-    /// A plate's caption. A finding is cited by the number it prints under, which is what makes
-    /// the annex checkable against the body; an object is cited by name, because an object has
-    /// no number to cite.
-    private static func caption(_ plate: Report.Plate, _ s: Str) -> String {
-        switch plate.owner {
-        case .finding(let number): return "\(s.defects) \(number)"
-        case .supplied(let entry): return entry.displayName(s)
-        }
-    }
-
-    private static func annex(_ sheet: Sheet, _ p: HandoverProtocol, _ s: Str, _ photoDir: URL, measuring: Bool) {
-        var plates = Report.plates(p).map { ($0.file, caption($0, s), $0.sha256) }
-        for (roomId, photos) in p.details.roomPhotos.entries {
-            let room = p.rooms.first { $0.id == roomId }
-            let label = room.map { $0.name.ifBlank(s.room($0.kind)) } ?? roomId
-            plates += photos.map { ($0.file, label, $0.sha256) }
-        }
-        for meter in p.details.readings { plates += meter.photos.map { ($0.file, meter.label, $0.sha256) } }
-        if plates.isEmpty { return }
-        sheet.sectionTitle(s.pdfDefectAnnex)
-        let width = pageWidth - 2 * margin
-        for (file, caption, hash) in plates {
-            sheet.ensure(650)
-            if !measuring {
-                guard let image = PhotoDecode.sampled(photoDir.appendingPathComponent(file), targetWidth: Int(width)) else {
-                    sheet.renderingFailed = true
-                    continue
-                }
-                let scale = min(width / CGFloat(image.width), 530 / CGFloat(image.height))
-                sheet.image(image, in: CGRect(x: margin, y: sheet.y, width: CGFloat(image.width) * scale, height: CGFloat(image.height) * scale), alt: caption + " · " + file)
-            }
-            sheet.y += 540
-            sheet.wrapped(caption + " · " + file, sheet.body)
-            if !hash.isBlank { sheet.wrapped("SHA-256: " + hash, sheet.small) }
-            sheet.gap(12)
-        }
-    }
-
 }
 
 extension HandoverProtocol {

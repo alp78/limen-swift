@@ -73,11 +73,11 @@ import Testing
         let fake = root.appendingPathComponent("fake.pdf")
         try writeText("%PDF-1.4 incomplete", to: fake)
         #expect(throws: EvidenceValidation.UnrenderableEvidence.self) { try EvidenceValidation.validateDocument(fake) }
-        let huge = root.appendingPathComponent("too-large.png")
-        FileManager.default.createFile(atPath: huge.path, contents: nil)
-        let handle = try FileHandle(forWritingTo: huge)
-        try handle.truncate(atOffset: UInt64(EvidenceValidation.maxIntakeBytes + 1)); try handle.close()
-        #expect(throws: EvidenceValidation.UnrenderableEvidence.self) { try EvidenceValidation.validatePhoto(huge) }
+        // No size limit: a photograph far past the old 32 MiB cap is read like any other.
+        let large = root.appendingPathComponent("large.png")
+        _ = try testImage(to: large, width: 6000, height: 1500)
+        #expect(Files.size(large) > 0)
+        #expect(try EvidenceValidation.validatePhoto(large) == "image/png")
     }
 
     @Test func symlinkedEvidenceCannotBeHashedOrImported() throws {

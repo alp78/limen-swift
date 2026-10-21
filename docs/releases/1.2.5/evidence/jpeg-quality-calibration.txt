@@ -1,0 +1,25 @@
+ImageIO's JPEG quality against libjpeg's, 21 October 2026, on 8 of the 30 plates of the first measurement
+(the plates extracted with pdfimages -all, decoded with djpeg to PPM, re-encoded with cjpeg -quality 85, and with
+sips -s formatOptions N, which is ImageIO at N/100; luminance quantisation table read from each file's DQT)
+
+plate        ImageIO 0.85 (the app)  libjpeg q85  libjpeg q80  libjpeg q75
+img-006.jpg  273112                  139218       113463       95899
+img-008.jpg  707303                  419041       362940       315132
+img-011.jpg  585103                  341538       293666       256328
+img-020.jpg  918992                  524220       452413       391731
+img-021.jpg  789349                  431821       370428       318039
+img-035.jpg  171004                  94623        77326        66381
+
+all 30 plates: ImageIO 0.85 13,790,836 bytes (with the two ink PNGs and the seal: 13.5 MB of JPEG); libjpeg q85 7,596,081 bytes
+
+8 plates, same pixels:
+libjpeg q85:   2335205 bytes; luminance DQT mean 17.3 (q0=5, q1=3)
+ImageIO 0.60:  2261188 bytes (0.97 x libjpeg q85); luminance DQT mean 15.8 (q0=4, q1=4)
+ImageIO 0.65:  2712303 bytes (1.16 x); DQT mean 12.5
+ImageIO 0.70:  3333162 bytes (1.43 x); DQT mean 10.3
+ImageIO 0.75:  3530657 bytes (1.51 x); DQT mean 8.6
+ImageIO 0.80:  3668590 bytes (1.57 x); DQT mean 7.2
+ImageIO 0.85:  4087183 bytes (1.75 x); DQT mean 5.9 (q0=1, q1=1)
+
+Subsampling is 4:2:0 (Y 2x2, Cb/Cr 1x1) in every file of both encoders, so the gap is the quantisation alone.
+Decision: AnnexPlate.jpegQuality = 0.60 on ImageIO, which writes what Android's Bitmap.compress(JPEG, 85) writes.

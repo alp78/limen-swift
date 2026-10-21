@@ -50,7 +50,7 @@ Searched: every `Text(s.…)` in the app sources whose English is a sentence, ev
 
 ## Version
 
-`Project.swift` carries MARKETING_VERSION 1.2.2 and CURRENT_PROJECT_VERSION 6: the name follows Android, the build number is this project's own sequence (4 uploaded, 5 archived and never uploaded, so 6). `BundleTests` asserts the pair in the built bundle. Nothing was uploaded to TestFlight or App Store Connect, no version was created there, and the five-language release notes are prepared, not uploaded, in [RELEASE-NOTES.md](RELEASE-NOTES.md).
+`Project.swift` carries MARKETING_VERSION 1.2.2 and CURRENT_PROJECT_VERSION 6: the name follows Android, the build number is this project's own sequence (4 uploaded, 5 archived and never uploaded, so 6). `BundleTests` asserts the pair in the built bundle. Nothing was uploaded to TestFlight or App Store Connect, no version was created there, and the five-language release notes are prepared, not uploaded, in [RELEASE-NOTES.md](RELEASE-NOTES.md). Corrected 21 October 2026: later on 15 October the owner uploaded build 6 (delivery `217c7844-67da-40c7-ac78-68e7bea2f70d`), Apple processed it as valid, and on 16 October it went to the Owner and Agencies groups and into Beta App Review; [the 1.2.5 handoff](../1.2.5/HANDOFF.md) carries the record.
 
 ## Verification
 

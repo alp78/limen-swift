@@ -28,6 +28,10 @@ public enum Report {
         case finding(Int)
         /// A supplied object, cited by name, because an object has no number to cite.
         case supplied(ObjectEntry)
+        /// A room's overview photograph, cited by the room.
+        case overview(Room)
+        /// A meter reading's photograph, cited by the meter's label and identifier.
+        case meter(MeterReading)
     }
 
     /// This room's findings, and nothing else.
@@ -58,7 +62,9 @@ public enum Report {
             .map { Numbered(number: $0.offset + 1, defect: $0.element) }
     }
 
-    /// Every photograph on the record, findings first and then the supplied objects.
+    /// Every photograph on the record, as Android's `Report.plates` holds them: the findings, the
+    /// supplied objects, the room overviews in the order of the rooms, and the meters. The annex
+    /// prints every one of these exactly once.
     public static func plates(_ p: HandoverProtocol) -> [Plate] {
         var plates: [Plate] = []
         for (index, d) in p.defects.enumerated() {
@@ -71,6 +77,16 @@ public enum Report {
             for name in entry.photoFiles() {
                 let hash = entry.photoEvidence.first { $0.file == name }?.sha256 ?? ""
                 plates.append(Plate(file: name, sha256: hash, owner: .supplied(entry)))
+            }
+        }
+        for room in p.rooms {
+            for evidence in p.details.roomPhotos[room.id] ?? [] where !evidence.file.isBlank {
+                plates.append(Plate(file: evidence.file, sha256: evidence.sha256, owner: .overview(room)))
+            }
+        }
+        for reading in p.details.readings {
+            for evidence in reading.photos where !evidence.file.isBlank {
+                plates.append(Plate(file: evidence.file, sha256: evidence.sha256, owner: .meter(reading)))
             }
         }
         return plates

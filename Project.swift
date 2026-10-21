@@ -17,13 +17,12 @@ let baseSettings: SettingsDictionary = [
     // Android tinted the caret, the selection handles and every system widget from the
     // navy action colour; on iOS that is the accent colour, so it carries the same values.
     "ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME": "AccentColor",
-    // The name follows Android (1.2.2, versionCode 7); the build number is this project's own
-    // sequence, which has no 1.2.1: 4 was uploaded, 5 was archived and never uploaded, so 6 is
-    // the next. (An earlier comment here said 1.1.1 was pinned by the published privacy page
-    // naming the version its claims were checked against; none of the five notices names a
-    // version, so nothing holds the name back.)
-    "MARKETING_VERSION": "1.2.2",
-    "CURRENT_PROJECT_VERSION": "6",
+    // The name follows Android (1.2.5, versionCode 10): the version that reads repacked backups
+    // has the same number on both platforms, so "restores in Limen 1.2.5 or later" is true on
+    // each. The build number is this project's own sequence, with no 1.2.1, 1.2.3 or 1.2.4: 4 and
+    // 6 were uploaded, 5 was archived and never uploaded, so 7 is the next.
+    "MARKETING_VERSION": "1.2.5",
+    "CURRENT_PROJECT_VERSION": "7",
     // The owner's own Apple Account (aperinger@proton.me), which is the one that will hold the
     // paid membership: an Individual enrollment needs no company, and Apple publishes the
     // enrolled legal name rather than any trade name. Pinning the team keeps a build from being
@@ -39,11 +38,29 @@ let project = Project(
     options: .options(defaultKnownRegions: ["en", "fr", "de", "it", "rm"], developmentRegion: "en", disableSynthesizedResourceAccessors: true),
     settings: .settings(base: baseSettings),
     targets: [
+        // libjxl, the one piece of third-party code in the build, behind a C shim of two calls:
+        // the JPEG photographs in a backup are repacked losslessly as JPEG XL and rebuilt byte for
+        // byte on restore, as the Android app does since 1.2.5. The library arrives pinned through
+        // tools/fetch-deps.sh and is built into ThirdParty/LimenJxl.xcframework by
+        // tools/build-libjxl.sh; both are gitignored, and `make gen` names the commands when the
+        // tree is missing.
+        .target(
+            name: "LimenJxl",
+            destinations: .iOS,
+            product: .staticFramework,
+            bundleId: "dev.peringer.limen.jxl",
+            deploymentTargets: deployment,
+            sources: ["LimenJxl/Sources/**/*.c"],
+            headers: .headers(public: ["LimenJxl/Sources/include/*.h"]),
+            dependencies: [.xcframework(path: "ThirdParty/LimenJxl.xcframework")],
+            settings: .settings(base: baseSettings)
+        ),
+
         // Everything below the screens, mirroring the Android data, sense and photo packages
         // plus the strings and the PDF: the record and its JSON, the store, the archive and its
         // cipher, the fingerprint, the dates, the phone and address checks, the five languages
         // and the exported document. Foundation, CryptoKit, CommonCrypto, Compression, ImageIO
-        // and UIKit's PDF renderer only; no third-party code.
+        // and UIKit's PDF renderer, plus libjxl through LimenJxl for the backups.
         .target(
             name: "LimenKit",
             destinations: .iOS,
@@ -52,7 +69,10 @@ let project = Project(
             deploymentTargets: deployment,
             sources: ["LimenKit/Sources/**"],
             resources: ["LimenKit/Resources/**"],
-            settings: .settings(base: baseSettings)
+            dependencies: [.target(name: "LimenJxl")],
+            // libjxl is C++, and the static archive it comes in asks for the C++ runtime at the
+            // one place the symbols are resolved, which is this framework's own link.
+            settings: .settings(base: baseSettings.merging(["OTHER_LDFLAGS": "$(inherited) -lc++"]) { _, new in new })
         ),
 
         .target(
@@ -115,7 +135,9 @@ let project = Project(
             deploymentTargets: deployment,
             sources: ["LimenKitTests/Sources/**"],
             resources: [.folderReference(path: "LimenKitTests/Fixtures/Compatibility")],
-            dependencies: [.target(name: "LimenKit")],
+            // Hosted in the app, as LimenTests is: a tool-hosted test bundle cannot run on a
+            // phone, and the libjxl round trip and the larger-than-memory backup have to.
+            dependencies: [.target(name: "LimenKit"), .target(name: "Limen")],
             settings: .settings(base: baseSettings)
         ),
 

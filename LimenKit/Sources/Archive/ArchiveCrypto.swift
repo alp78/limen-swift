@@ -14,10 +14,8 @@ enum ArchiveCrypto {
     private static let ivBytes = 12
     private static let keyBytes = 32
     private static let iterations: UInt32 = 210_000
-    /// The same ceiling the unpacker applies, enforced before the unpacker ever sees the bytes.
-    private static let maxPlaintextBytes: Int64 = ArchiveLimits.payload
 
-    static func export(root: URL, password: String, to output: URL, protocolIds: Set<String>? = nil) throws {
+    static func export(root: URL, password: String, to output: URL, protocolIds: Set<String>? = nil, packer: (any JpegPacker)? = JpegXL.loaded) throws {
         var completed = false
         defer { if !completed { try? FileManager.default.removeItem(at: output) } }
         ArchiveStaging.sweep(AppFiles.scratch, prefix: "limen-export-")
@@ -25,7 +23,7 @@ enum ArchiveCrypto {
         // `importArchive` has always read, so an unprotected backup needs no new reader and no new
         // version. Whether to protect is the person's call; the screen says which they made.
         if password.isEmpty {
-            try ArchiveIO.export(root: root, to: output, protocolIds: protocolIds)
+            try ArchiveIO.export(root: root, to: output, protocolIds: protocolIds, packer: packer)
             completed = true
             return
         }
@@ -43,7 +41,7 @@ enum ArchiveCrypto {
         // the defer leaves it readable for good.
         let plain = AppFiles.scratch.appendingPathComponent("limen-export-\(UUID().uuidString).zip")
         defer { try? FileManager.default.removeItem(at: plain) }
-        try ArchiveIO.export(root: root, to: plain, protocolIds: protocolIds)
+        try ArchiveIO.export(root: root, to: plain, protocolIds: protocolIds, packer: packer)
         FileManager.default.createFile(atPath: output.path, contents: nil)
         let out = try FileHandle(forWritingTo: output)
         defer { try? out.close() }
@@ -51,22 +49,27 @@ enum ArchiveCrypto {
         let cipher = try AESGCMStream(key: key, iv: iv, aad: header)
         let input = try FileHandle(forReadingFrom: plain)
         defer { try? input.close() }
-        while let chunk = try input.read(upToCount: 256 * 1024), !chunk.isEmpty {
+        // A pool per chunk: the reads are autoreleased and the export is one synchronous call.
+        while try autoreleasepool(invoking: { () throws -> Bool in
+            guard let chunk = try input.read(upToCount: 256 * 1024), !chunk.isEmpty else { return false }
             try out.write(contentsOf: cipher.encrypt(chunk))
-        }
+            return true
+        }) {}
         try out.write(contentsOf: cipher.finalizeEncryption())
         try out.synchronize()
         completed = true
     }
 
-    /// Encrypted archives are preferred; version-1 plain ZIP files remain importable.
-    static func importArchive(root: URL, password: String, from input: URL, repairCorrupt: Bool = false) throws -> ArchiveImportResult {
-        guard Files.isRegularFile(input), Files.size(input) <= maxPlaintextBytes + 54 else { throw ArchiveError.tooLarge }
+    /// Encrypted archives are preferred; plain ZIP files remain importable. No size bound: the
+    /// one limit a restore meets is the free storage the decrypted copy and the unpacked stage
+    /// need, asked for as the bytes are written.
+    static func importArchive(root: URL, password: String, from input: URL, repairCorrupt: Bool = false, packer: (any JpegPacker)? = JpegXL.loaded) throws -> ArchiveImportResult {
+        guard Files.isRegularFile(input) else { throw ArchiveError.truncated }
         let probe = try FileHandle(forReadingFrom: input)
         defer { try? probe.close() }
         let prefix = try probe.read(upToCount: magic.count) ?? Data()
         if prefix != magic {
-            return try ArchiveIO.importArchive(root: root, from: input, repairCorrupt: repairCorrupt)
+            return try ArchiveIO.importArchive(root: root, from: input, repairCorrupt: repairCorrupt, packer: packer)
         }
         guard !password.isEmpty else { throw ArchiveError.emptyPassword }
         guard let versionByte = try probe.read(upToCount: 1)?.first, versionByte == version else { throw ArchiveError.unsupportedVersion }
@@ -89,26 +92,33 @@ enum ArchiveCrypto {
         defer { try? FileManager.default.removeItem(at: staged) }
         FileManager.default.createFile(atPath: staged.path, contents: nil)
         let out = try FileHandle(forWritingTo: staged)
-        var written: Int64 = 0
-        var tail = Data()
+        let space = FreeSpace(root)
+        // The last 16 bytes of the stream are the tag, not ciphertext: each chunk is decrypted up
+        // to that window and the window is carried to the next chunk as a copy of its own. A
+        // slice (`suffix`) of the chunk carried it before, and on the phone a slice keeps its
+        // whole storage alive and appends into it, so the restore held every chunk it had read:
+        // a 1 GiB backup grew the footprint by 1 GiB where the simulator showed nothing.
+        var holdback = Data()
         do {
             defer { try? out.close() }
-            while let chunk = try probe.read(upToCount: 256 * 1024), !chunk.isEmpty {
-                tail.append(chunk)
-                // The last 16 bytes of the stream are the tag, not ciphertext; everything ahead
-                // of that window is safe to decrypt now.
-                if tail.count > 16 {
-                    let body = tail.prefix(tail.count - 16)
-                    tail = tail.suffix(16)
-                    written += Int64(body.count)
-                    guard written <= maxPlaintextBytes else { throw ArchiveError.tooLarge }
-                    try out.write(contentsOf: cipher.decrypt(Data(body)))
+            while try autoreleasepool(invoking: { () throws -> Bool in
+                guard let chunk = try probe.read(upToCount: 256 * 1024), !chunk.isEmpty else { return false }
+                var block = holdback
+                block.append(chunk)
+                if block.count > 16 {
+                    let bodyCount = block.count - 16
+                    try space.before(bodyCount)
+                    try out.write(contentsOf: cipher.decrypt(block.prefix(bodyCount)))
+                    holdback = Data(block.suffix(16))
+                } else {
+                    holdback = Data(block)
                 }
-            }
-            guard tail.count == 16 else { throw ArchiveError.truncated }
-            guard cipher.finalizeDecryption(tag: tail) else { throw ArchiveError.wrongPassword }
+                return true
+            }) {}
+            guard holdback.count == 16 else { throw ArchiveError.truncated }
+            guard cipher.finalizeDecryption(tag: holdback) else { throw ArchiveError.wrongPassword }
         }
-        return try ArchiveIO.importArchive(root: root, from: staged, repairCorrupt: repairCorrupt)
+        return try ArchiveIO.importArchive(root: root, from: staged, repairCorrupt: repairCorrupt, packer: packer)
     }
 
     /// PBKDF2 encodes the password as UTF-8, as Java's PBKDF2WithHmacSHA256 does.

@@ -75,8 +75,9 @@ public final class Store: Sendable {
         return read(dir.appendingPathComponent("\(id).json"), id: id)
     }
 
+    // No size cap on a record file: the app must always read back a record it has written.
     private func read(_ file: URL, id: String) -> HandoverProtocol? {
-        guard EvidenceNames.isArchiveSafe(id), Files.isRegularFile(file), Files.size(file) <= 8 * 1024 * 1024,
+        guard EvidenceNames.isArchiveSafe(id), Files.isRegularFile(file),
               let data = try? Data(contentsOf: file), let p = try? ProtocolJSON.decode(data), p.id == id else { return nil }
         return p
     }
@@ -150,16 +151,16 @@ public final class Store: Sendable {
         }
     }
 
-    public func exportArchive(password: String, to output: URL, protocolIds: Set<String>? = nil) throws {
+    public func exportArchive(password: String, to output: URL, protocolIds: Set<String>? = nil, packer: (any JpegPacker)? = JpegXL.loaded) throws {
         Self.lock.lock()
         defer { Self.lock.unlock() }
-        try ArchiveCrypto.export(root: root, password: password, to: output, protocolIds: protocolIds)
+        try ArchiveCrypto.export(root: root, password: password, to: output, protocolIds: protocolIds, packer: packer)
     }
 
-    public func importArchive(password: String, from input: URL, repairCorrupt: Bool = false) throws -> ArchiveImportResult {
+    public func importArchive(password: String, from input: URL, repairCorrupt: Bool = false, packer: (any JpegPacker)? = JpegXL.loaded) throws -> ArchiveImportResult {
         Self.lock.lock()
         defer { Self.lock.unlock() }
-        return try ArchiveCrypto.importArchive(root: root, password: password, from: input, repairCorrupt: repairCorrupt)
+        return try ArchiveCrypto.importArchive(root: root, password: password, from: input, repairCorrupt: repairCorrupt, packer: packer)
     }
 }
 

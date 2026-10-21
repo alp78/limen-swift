@@ -46,10 +46,8 @@ struct PhotoIntakeKeys: View {
                 switch result {
                 case .captured(let url):
                     if ownerId == model.working?.id, ownerRevision == model.working?.contentRevision, !model.contentLocked { onFile(url, .camera) } else { try? FileManager.default.removeItem(at: url) }
-                case .failed(let error):
-                    if ownerId == model.working?.id {
-                        model.evidenceError = error == .tooLarge ? s.photoTooLarge : s.cameraProcessingFailed
-                    }
+                case .failed:
+                    if ownerId == model.working?.id { model.evidenceError = s.cameraProcessingFailed }
                 case .cancelled: break
                 }
             }
@@ -130,7 +128,7 @@ private struct PickerKeyStyle: ButtonStyle {
 
 /// Each capture owns one slot and one encoding task. Dismantling cancels that operation only.
 struct CameraCapture: UIViewControllerRepresentable {
-    enum Failure: Error, Sendable { case unreadable, tooLarge, processing }
+    enum Failure: Error, Sendable { case unreadable, processing }
     enum Outcome { case captured(URL), cancelled, failed(Failure) }
     let onResult: (Outcome) -> Void
 
@@ -166,11 +164,8 @@ struct CameraCapture: UIViewControllerRepresentable {
             guard let image = info[.originalImage] as? UIImage, let bitmap = image.cgImage else {
                 onResult(.failed(.unreadable)); return
             }
-            // Match PhotoDecode.bounds before encoding; the system supplies the source bitmap.
-            guard bitmap.width > 0, bitmap.height > 0, bitmap.width <= 32_768, bitmap.height <= 32_768,
-                  Int64(bitmap.width) * Int64(bitmap.height) <= 80_000_000 else {
-                onResult(.failed(.tooLarge)); return
-            }
+            // No size limit: a photograph is kept as it was taken, however large.
+            guard bitmap.width > 0, bitmap.height > 0 else { onResult(.failed(.unreadable)); return }
             // Property-list bytes cross the actor boundary instead of an unsafe Any dictionary.
             // Preserve the camera's EXIF metadata and orientation beside its original bitmap.
             let metadata: Data
@@ -214,7 +209,6 @@ struct CameraCapture: UIViewControllerRepresentable {
             try Task.checkCancellation()
             let bytes = try slot.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
             guard bytes > 0 else { throw Failure.processing }
-            guard Int64(bytes) <= EvidenceValidation.maxIntakeBytes else { throw Failure.tooLarge }
             try EvidenceValidation.validatePhoto(slot)
             try Task.checkCancellation()
             completed = true
@@ -373,10 +367,9 @@ private struct ImportedPhoto: Transferable, Sendable {
 
     static var transferRepresentation: some TransferRepresentation {
         FileRepresentation(importedContentType: .image) { received in
+            // No size limit: a picture from the library is kept whole, however large.
             let attributes = try FileManager.default.attributesOfItem(atPath: received.file.path)
-            guard let size = attributes[.size] as? NSNumber, size.int64Value > 0, size.int64Value <= 32 * 1024 * 1024 else {
-                throw CocoaError(.fileReadTooLarge)
-            }
+            guard let size = attributes[.size] as? NSNumber, size.int64Value > 0 else { throw CocoaError(.fileReadCorruptFile) }
             let suffix = received.file.pathExtension.isEmpty ? "image" : received.file.pathExtension
             let destination = AppFiles.captures.appendingPathComponent("pick-\(UUID().uuidString).\(suffix)")
             try FileManager.default.copyItem(at: received.file, to: destination)

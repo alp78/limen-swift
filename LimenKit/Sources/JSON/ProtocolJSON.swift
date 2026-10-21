@@ -4,7 +4,6 @@ import Foundation
 public enum ProtocolJSON {
     public static func encode(_ p: HandoverProtocol, encodeDefaults: Bool) -> JSON { writeProtocol(p, encodeDefaults) }
     public static func decode(_ data: Data) throws -> HandoverProtocol {
-        guard data.count <= 8 * 1024 * 1024 else { throw ProtocolJSONError.limit }
         let p = try readProtocol(JSON.parse(data))
         guard (1...2).contains(p.schema) else { throw ProtocolJSONError.unsupported("schema") }
         return p

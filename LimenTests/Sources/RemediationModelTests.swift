@@ -160,7 +160,12 @@ private actor ExportBarrier {
         let gate = ExportBarrier()
         model.previewRenderer = { record, _, _ in
             _ = await gate.render(record)
-            return PdfExport.Document(pdf: Data("test renderer bytes".utf8), html: Data("<p>Test preview</p>".utf8), pages: 1)
+            // The renderer hands back two scratch files, as the real one does.
+            let stem = FileManager.default.temporaryDirectory.appendingPathComponent("stale-preview-\(UUID().uuidString)")
+            let pdf = stem.appendingPathExtension("pdf"), html = stem.appendingPathExtension("html")
+            try Data("test renderer bytes".utf8).write(to: pdf)
+            try Data("<p>Test preview</p>".utf8).write(to: html)
+            return PdfExport.Document(pdf: pdf, html: html, pages: 1)
         }
         model.previewDocument()
         await gate.waitForStart()

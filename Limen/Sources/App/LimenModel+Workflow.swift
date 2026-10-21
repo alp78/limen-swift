@@ -167,9 +167,12 @@ extension LimenModel {
             let result: Result<(pdf: ExportedFile, html: ExportedFile), Error>
             do {
                 let document = try await renderer(p, Str(documentLang), store)
+                // The renderer already wrote both into the scratch folder; they are moved under
+                // the preview's own name rather than copied, since a record of thirty
+                // photographs is tens of megabytes.
                 let name = "preview-\(UUID().uuidString)"
-                let pdf = try Exports.write(name: "\(name).pdf", in: AppFiles.scratch) { try document.pdf.write(to: $0) }
-                let html = try Exports.write(name: "\(name).html", in: AppFiles.scratch) { try document.html.write(to: $0) }
+                let pdf = try Exports.write(name: "\(name).pdf", in: AppFiles.scratch) { try FileManager.default.moveItem(at: document.pdf, to: $0) }
+                let html = try Exports.write(name: "\(name).html", in: AppFiles.scratch) { try FileManager.default.moveItem(at: document.html, to: $0) }
                 result = .success((pdf, html))
             } catch { result = .failure(error) }
             previewBusy = false

@@ -58,6 +58,46 @@ func testImage(to url: URL, width: Int = 24, height: Int = 12, orientation: Int 
     return try Data(contentsOf: url)
 }
 
+/// A real JPEG of flat colour quadrants: decodable, and so repetitive that even Deflate shrinks
+/// it, which is what the archive tests' stand-in packer needs.
+func testJPEG(to url: URL, width: Int = 64, height: Int = 48) throws -> Data {
+    var pixels = [UInt8](repeating: 255, count: width * height * 4)
+    for y in 0..<height {
+        for x in 0..<width {
+            let offset = (y * width + x) * 4
+            let quadrant = (y >= height / 2 ? 2 : 0) + (x >= width / 2 ? 1 : 0)
+            let colors: [[UInt8]] = [[200, 60, 40], [40, 180, 70], [50, 70, 200], [220, 200, 40]]
+            for channel in 0..<3 { pixels[offset + channel] = colors[quadrant][channel] }
+        }
+    }
+    let provider = try #require(CGDataProvider(data: Data(pixels) as CFData))
+    let image = try #require(CGImage(width: width, height: height, bitsPerComponent: 8, bitsPerPixel: 32,
+        bytesPerRow: width * 4, space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipLast.rawValue),
+        provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent))
+    try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+    let destination = try #require(CGImageDestinationCreateWithURL(url as CFURL, UTType.jpeg.identifier as CFString, 1, nil))
+    CGImageDestinationAddImage(destination, image, [kCGImageDestinationLossyCompressionQuality: 0.9] as CFDictionary)
+    #expect(CGImageDestinationFinalize(destination))
+    return try Data(contentsOf: url)
+}
+
+/// Pseudo-random bytes appended to a file, a megabyte at a time: after a JPEG's end marker they
+/// leave it decodable while making it as large and as incompressible as the test needs.
+func appendNoise(to url: URL, megabytes: Int, seed: UInt64) throws {
+    let handle = try FileHandle(forWritingTo: url)
+    defer { try? handle.close() }
+    try handle.seekToEnd()
+    var state = seed | 1
+    var piece = [UInt64](repeating: 0, count: 128 * 1024)
+    for _ in 0..<megabytes {
+        for i in piece.indices {
+            state ^= state << 13; state ^= state >> 7; state ^= state << 17
+            piece[i] = state
+        }
+        try piece.withUnsafeBytes { try handle.write(contentsOf: Data($0)) }
+    }
+}
+
 func testPDF(to url: URL) throws -> Data {
     try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
     var bounds = CGRect(x: 0, y: 0, width: 595.276, height: 841.89)

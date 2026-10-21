@@ -69,9 +69,14 @@ import Testing
         #expect(try ProtocolJSON.decode(Data(stored.utf8)) == p)
     }
 
-    @Test func inputSizeAndDepthHaveBoundedFailures() {
-        #expect(throws: ProtocolJSONError.limit) { try ProtocolJSON.decode(Data(repeating: 32, count: 8 * 1024 * 1024 + 1)) }
+    /// The depth bound is not a size limit and stays; a record file has no size cap any more.
+    @Test func nestingDepthHasABoundedFailureAndSizeHasNone() throws {
         let nesting = String(repeating: "[", count: 70) + "0" + String(repeating: "]", count: 70)
         #expect(throws: ProtocolJSONError.limit) { try ProtocolJSON.decode(Data(nesting.utf8)) }
+        var p = HandoverProtocol(id: "wide", kind: .entry, createdEpochMs: 1)
+        p.remarks = String(repeating: "x", count: 9 * 1024 * 1024)
+        let bytes = Data(Store.fileText(p).utf8)
+        #expect(bytes.count > 8 * 1024 * 1024)
+        #expect(try ProtocolJSON.decode(bytes) == p)
     }
 }

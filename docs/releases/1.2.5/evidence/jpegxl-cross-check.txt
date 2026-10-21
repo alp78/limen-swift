@@ -1,0 +1,10 @@
+cjxl/djxl v0.12.0 (Homebrew jpeg-xl) against the app's libjxl v0.12.0 on the iPhone 17 Pro / iOS 26.5 simulator, 21 October 2026
+photo.jxl written by: cjxl photo.jpg photo.jxl --lossless_jpeg=1 -e 7 --num_threads=1
+app unpack(photo.jxl) == photo.jpg: asserted by JpegXLTests.aJpegXlFromTheReferenceEncoderUnpacksToItsJpeg
+djxl ours.jxl (written by the app's pack) -> ours-back.jpg:
+1400 x 931, 59.209 MP/s, 18.714 MB/s, 12 threads.
+bba03546a1ee17d8d5d190fd1cf491d747fa7d1e999f8ae14e12c68d807e1021  jxlfix/photo.jpg
+bba03546a1ee17d8d5d190fd1cf491d747fa7d1e999f8ae14e12c68d807e1021  jxlfix/out/ours-back.jpg
+352584 jxlfix/out/ours.jxl
+411974 jxlfix/photo.jpg
+352584 jxlfix/photo.jxl

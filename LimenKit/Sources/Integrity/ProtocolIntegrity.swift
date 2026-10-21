@@ -63,9 +63,13 @@ public enum ProtocolIntegrity {
         }
         defer { try? handle.close() }
         var digest = SHA256()
-        while let chunk = try handle.read(upToCount: 64 * 1024), !chunk.isEmpty {
+        // A pool per chunk: the reads are autoreleased, and a record's photographs are hashed in
+        // one synchronous call before every export and after every restore.
+        while try autoreleasepool(invoking: { () throws -> Bool in
+            guard let chunk = try handle.read(upToCount: 64 * 1024), !chunk.isEmpty else { return false }
             digest.update(data: chunk)
-        }
+            return true
+        }) {}
         return hex(digest.finalize())
     }
 

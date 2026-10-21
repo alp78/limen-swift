@@ -1,0 +1,34 @@
+Test Suite 'ParityJourneyTest' started at 2026-10-21 15:53:01.714.
+Test Case '-[LimenUITests.ParityJourneyTest testAgencyStandaloneExitThenAmendment]' passed (111.278 seconds).
+Test Case '-[LimenUITests.ParityJourneyTest testEmptyFormToDrawnSignaturesAndOpenedDocument]' passed (73.356 seconds).
+Test Case '-[LimenUITests.ParityJourneyTest testInvalidDateSurvivesRelaunchAndHasExplicitRevert]' passed (15.738 seconds).
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/ParityJourneyTest.swift:223: error: -[LimenUITests.ParityJourneyTest testPrivateLandlordEntryThenSeededExit] : Failed to synthesize event: Timed out while synthesizing event.
+Test Case '-[LimenUITests.ParityJourneyTest testPrivateLandlordEntryThenSeededExit]' failed (1911.201 seconds).
+Test Suite 'ParityJourneyTest' failed at 2026-10-21 16:28:13.290.
+Executed 4 tests, with 1 failure (0 unexpected) in 2111.573 (2111.576) seconds
+Test Suite 'PhotoViewerJourneyTests' started at 2026-10-21 16:28:13.291.
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/PhotoViewerJourneyTests.swift:13: -[LimenUITests.PhotoViewerJourneyTests testDraftPhotoOpensZoomsResetsAndClosesWithoutDeletion] : Test skipped - Requires the explicit synthetic audit-container fixture
+Test Case '-[LimenUITests.PhotoViewerJourneyTests testDraftPhotoOpensZoomsResetsAndClosesWithoutDeletion]' skipped (0.532 seconds).
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/PhotoViewerJourneyTests.swift:13: -[LimenUITests.PhotoViewerJourneyTests testExitBaselinePhotoUsesReadOnlyEntryEvidence] : Test skipped - Requires the explicit synthetic audit-container fixture
+Test Case '-[LimenUITests.PhotoViewerJourneyTests testExitBaselinePhotoUsesReadOnlyEntryEvidence]' skipped (0.113 seconds).
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/PhotoViewerJourneyTests.swift:13: -[LimenUITests.PhotoViewerJourneyTests testFinalizedPhotoIsViewableWithoutEditingOrDeletion] : Test skipped - Requires the explicit synthetic audit-container fixture
+Test Case '-[LimenUITests.PhotoViewerJourneyTests testFinalizedPhotoIsViewableWithoutEditingOrDeletion]' skipped (0.058 seconds).
+Test Suite 'PhotoViewerJourneyTests' passed at 2026-10-21 16:28:13.996.
+Executed 3 tests, with 3 tests skipped and 0 failures (0 unexpected) in 0.703 (0.706) seconds
+Test Suite 'RuntimeBoundaryTests' started at 2026-10-21 16:28:13.997.
+Test Case '-[LimenUITests.RuntimeBoundaryTests testSimulatorCameraRefusalPreservesDraft]' passed (22.725 seconds).
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/RuntimeBoundaryTests.swift:179: error: -[LimenUITests.RuntimeBoundaryTests testSupportingDocumentPickerCancellationPreservesDraft] : Failed to get matching snapshots: Timed out while evaluating UI query.
+Test Case '-[LimenUITests.RuntimeBoundaryTests testSupportingDocumentPickerCancellationPreservesDraft]' failed (3798.070 seconds).
+Test Case '-[LimenUITests.RuntimeBoundaryTests testUnsuccessfulAuthenticationDoesNotPersistALibraryGate]' passed (20.299 seconds).
+Test Suite 'RuntimeBoundaryTests' failed at 2026-10-21 17:32:15.093.
+Executed 3 tests, with 1 failure (0 unexpected) in 3841.094 (3841.096) seconds
+Test Suite 'SimplificationShotsTest' started at 2026-10-21 17:32:15.094.
+Test Case '-[LimenUITests.SimplificationShotsTest testFrenchScreensOfTheSimplifiedForms]' passed (1591.670 seconds).
+Test Suite 'SimplificationShotsTest' passed at 2026-10-21 17:58:46.764.
+Test Suite 'SmokeTest' started at 2026-10-21 17:58:46.765.
+Test Case '-[LimenUITests.SmokeTest testTheLandingTheFormAndThePrivacyPage]' passed (957.847 seconds).
+Test Case '-[LimenUITests.SmokeTest testTheSeededDraftWalksEveryStep]' passed (522.310 seconds).
+Test Suite 'SmokeTest' passed at 2026-10-21 18:23:26.924.
+Executed 2 tests, with 0 failures (0 unexpected) in 1480.157 (1480.159) seconds
+Executed 13 tests, with 3 tests skipped and 2 failures (0 unexpected) in 9025.197 (9025.211) seconds
+Executed 13 tests, with 3 tests skipped and 2 failures (0 unexpected) in 9025.197 (9025.212) seconds

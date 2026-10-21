@@ -27,15 +27,12 @@ public enum RecordContent {
         })
         section(s.meters, d.readings.map { "\($0.label) · \(s.identifier): \($0.identifier)\n\(s.reading): \($0.value) \($0.unit)\n\(SwissDate.display($0.date)) \($0.time)\n\($0.note)" })
         section(s.accessDevices, d.accessDevices.map { "\($0.label) · \($0.identifier)\n\(s.expected): \($0.expected) · \(s.transferred): \($0.transferred)\n\($0.note)" })
-        section(s.attachments, d.attachments.map { "\(s.documentKind($0.kind)) · \($0.title)\n\($0.externalReference)\n\($0.file)\n\($0.mime) · SHA-256: \($0.sha256) · \($0.bytes) B\n\(s.importedOn): \(stamp($0.importedEpochMs, fallback: s.toVerify))" })
-        section(s.photos, p.allPhotoEvidence().map { evidence in
-            let source = evidence.source == .camera ? s.photo : evidence.source == .gallery ? s.gallery : s.toVerify
-            // Intake is not reported capture. EXIF is unverified metadata, never trusted time.
-            var lines = ["\(evidence.file) · \(source)", "SHA-256: \(evidence.sha256)"]
-            if evidence.importedEpochMs > 0 { lines.append("\(s.importedOn): \(stamp(evidence.importedEpochMs, fallback: s.toVerify))") }
-            if evidence.capturedEpochMs > 0 { lines.append("\(s.capturedOn): \(stamp(evidence.capturedEpochMs, fallback: s.toVerify))") }
-            return lines.joined(separator: "\n")
-        })
+        // Three lines per document, as Android prints them: no hash, which tells the people at a
+        // handover nothing, and no MIME type or import time, which the evidence check reads from
+        // the record itself.
+        section(s.attachments, d.attachments.map { "\(s.documentKind($0.kind)) · \($0.title)\n\($0.externalReference)\n\($0.file) · \($0.bytes) B" })
+        // No list of photographs here: each one carries its file name and capture time in the
+        // annex, in its frame, beside the picture it describes.
         section(s.followUps, d.followUps.map { "\($0.description)\n\(s.discoveredOn): \(SwissDate.display($0.discoveredDate))\n\(s.notifiedOn): \(SwissDate.display($0.notifiedDate)) · \($0.recipient) · \($0.method)\n\(s.fixDeadline): \(SwissDate.display($0.deadline)) · \($0.done ? s.done : s.toVerify)" })
         section(s.faceValue, d.estimates.entries.map { id, e in
             let number = p.defects.firstIndex { $0.id == id }.map { String($0 + 1) } ?? id
@@ -55,11 +52,6 @@ public enum RecordContent {
         }
         section(s.legalOverlayTitle, legal)
         return sections
-    }
-
-    private static func stamp(_ epoch: Int64, fallback: String) -> String {
-        guard epoch > 0 else { return fallback }
-        return ISO8601DateFormatter().string(from: Date(timeIntervalSince1970: Double(epoch) / 1000))
     }
 }
 

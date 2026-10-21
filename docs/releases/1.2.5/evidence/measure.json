@@ -1,0 +1,17 @@
+{
+  "backupJpegBytes" : 95376912,
+  "backupJpegSeconds" : 13.32844575,
+  "backupRepackedBytes" : 77855037,
+  "backupRepackedSeconds" : 21.426448582999999,
+  "configuration" : "Debug",
+  "exportSeconds" : 3.824129208,
+  "footprintPeakBytes" : 283200152,
+  "htmlBytes" : 10061745,
+  "os" : "Version 26.5 (Build 23F77)",
+  "pages" : 31,
+  "pdfBytes" : 8060672,
+  "photos" : 30,
+  "restoreRepackedSeconds" : 15.490732625,
+  "sourceBytes" : 95354065,
+  "where" : "simulator"
+}

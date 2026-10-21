@@ -1,0 +1,14 @@
+xcodebuild -destination 'id=00008150-001074183A7B401C' -configuration Release build, 18:36 on 21 October 2026:
+error: Timed out waiting for all destinations matching the provided destination specifier to become available
+error:Alexis’s iPhone needs to be unlocked to enable development services Please unlock the device. 
+xcodebuild: error: Timed out waiting for all destinations matching the provided destination specifier to become available
+
+devicectl device info details:
+• Device State: connected
+• Transport Type: localNetwork
+• Marketing Name: iPhone 17
+• OS Version: 26.6.2
+• Developer Mode Status: Enabled (1)
+
+devicectl device info apps (dev.peringer.limen), repeated at 18:3x, 18:4x, 18:5x and 19:0x:
+ERROR: The developer disk image could not be mounted on this device. (com.apple.dt.CoreDeviceError error 12040 (0x2F08))

@@ -1,0 +1,5 @@
+python 3.14.7 zipfile.testzip: OK
+  protocols/a.json             method=8 size=2700 csize=33 extra=01001000
+  photos/a/x.jpg               method=0 size=2500 csize=2500 extra=01001000
+  limen-archive.txt            method=8 size=24 csize=26 extra=01000800
+No errors detected in compressed data of /private/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/simp2/zip64/swift-zip64.zip.

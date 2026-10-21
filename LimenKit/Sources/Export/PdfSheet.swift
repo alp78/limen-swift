@@ -4,9 +4,12 @@ import UIKit
 
 extension PdfExport {
     struct RenderPass {
-        let data: Data
+        /// The PDF's bytes when the sheet drew into memory, which only the counting pass and the
+        /// glyph test do; a sheet drawing into a file leaves this nil.
+        let data: Data?
         let pages: Int
-        let html: String
+        /// The page each annex section started on, in order, for the contents list.
+        let sectionStarts: [Int]
     }
 
     // MARK: The sheet: cursor, page breaks, footer
@@ -15,26 +18,43 @@ extension PdfExport {
     struct Ink {
         let font: UIFont
         let colour: UIColor
+        var kern: CGFloat = 0
         var size: CGFloat { font.pointSize }
 
         func width(_ text: String) -> CGFloat {
-            (text as NSString).size(withAttributes: [.font: font]).width
+            (text as NSString).size(withAttributes: attributes).width
         }
 
-        var attributes: [NSAttributedString.Key: Any] { [.font: font, .foregroundColor: colour] }
+        var attributes: [NSAttributedString.Key: Any] {
+            var attributes: [NSAttributedString.Key: Any] = [.font: font, .foregroundColor: colour]
+            if kern != 0 { attributes[.kern] = kern }
+            return attributes
+        }
+    }
+
+    /// Where a sheet's pages go: into a file beside its HTML and the spool of plate JPEGs, or into
+    /// memory for the counting pass, which draws no photograph and writes no HTML.
+    enum Output {
+        case files(pdf: URL, html: URL, spool: URL)
+        case memory
     }
 
     final class Sheet {
         let s: Str
         let reference: String
         let total: Int
+        /// The pages the annex sections started on in the counting pass, printed by the drawing pass.
+        let contents: [Int]
         private let data = NSMutableData()
         private var consumer: CGDataConsumer?
         private var pdf: CGContext?
         var y: CGFloat = 0
         var pageNo = 0
         private var pageOpen = false
-        var html: [String] = []
+        let html: HtmlSink?
+        let spool: URL?
+        var plateCount = 0
+        var sectionStarts: [Int] = []
         var suppressHTML = false
         var renderingFailed = false
 
@@ -46,20 +66,46 @@ extension PdfExport {
         let value: Ink
         let body: Ink
         let small: Ink
+        // The photo annex: a room's title over a heavy rule, then framed cards with a bold legend,
+        // at the Android sheet's sizes.
+        let roomTitle: Ink
+        let strong: Ink
+        let legendLabel: Ink
+        let badgeText: Ink
         let ruleColour = UIColor(red: 200 / 255, green: 200 / 255, blue: 200 / 255, alpha: 1)
+        let heavyRuleColour = UIColor(red: 21 / 255, green: 32 / 255, blue: 45 / 255, alpha: 1)
+        let frameColour = UIColor(red: 185 / 255, green: 185 / 255, blue: 185 / 255, alpha: 1)
+        let hairlineColour = UIColor(red: 215 / 255, green: 215 / 255, blue: 215 / 255, alpha: 1)
 
-        init(s: Str, reference: String, total: Int) throws {
+        init(s: Str, reference: String, total: Int, output: Output = .memory, contents: [Int] = []) throws {
             self.s = s
             self.reference = reference
             self.total = total
+            self.contents = contents
             titleInk = Ink(font: .monospacedSystemFont(ofSize: 40, weight: .bold), colour: black)
             section = Ink(font: .systemFont(ofSize: 26, weight: .bold), colour: black)
             label = Ink(font: .systemFont(ofSize: 23), colour: grey)
             value = Ink(font: .monospacedSystemFont(ofSize: 26, weight: .regular), colour: black)
             body = Ink(font: .systemFont(ofSize: 26), colour: black)
             small = Ink(font: .systemFont(ofSize: 22), colour: grey)
-            guard let consumer = CGDataConsumer(data: data), let pdf = CGContext(consumer: consumer, mediaBox: nil, nil) else { throw ExportError.rendering }
-            self.consumer = consumer
+            roomTitle = Ink(font: .systemFont(ofSize: 36, weight: .bold), colour: black, kern: 0.04 * 36)
+            strong = Ink(font: .systemFont(ofSize: 27, weight: .bold), colour: black)
+            legendLabel = Ink(font: .systemFont(ofSize: 20), colour: grey)
+            badgeText = Ink(font: .systemFont(ofSize: 23, weight: .bold), colour: .white)
+            switch output {
+            case .files(let pdfURL, let htmlURL, let spoolURL):
+                try FileManager.default.createDirectory(at: spoolURL, withIntermediateDirectories: true)
+                guard let consumer = CGDataConsumer(url: pdfURL as CFURL) else { throw ExportError.rendering }
+                self.consumer = consumer
+                html = try HtmlSink(url: htmlURL, language: s.lang, title: reference)
+                spool = spoolURL
+            case .memory:
+                guard let consumer = CGDataConsumer(data: data) else { throw ExportError.rendering }
+                self.consumer = consumer
+                html = nil
+                spool = nil
+            }
+            guard let consumer, let pdf = CGContext(consumer: consumer, mediaBox: nil, nil) else { throw ExportError.rendering }
             self.pdf = pdf
         }
 
@@ -97,8 +143,9 @@ extension PdfExport {
         func close() throws -> RenderPass {
             finish()
             pdf?.closePDF()
+            try html?.finish()
             guard !renderingFailed, pdf != nil else { throw ExportError.rendering }
-            return RenderPass(data: data as Data, pages: pageNo, html: HtmlDocument.wrap(html.joined(separator: "\n"), language: s.lang, title: reference))
+            return RenderPass(data: html == nil ? data as Data : nil, pages: pageNo, sectionStarts: sectionStarts)
         }
 
         /// Guarantees `need` vertical units, breaking the page when they are not there.
@@ -110,7 +157,7 @@ extension PdfExport {
 
         /// Draws with the baseline at `baseline`, the way Canvas.drawText places its text.
         func text(_ string: String, _ x: CGFloat, _ baseline: CGFloat, _ ink: Ink) {
-            if !suppressHTML { html.append("<p>\(HtmlDocument.escape(string))</p>") }
+            if !suppressHTML { html?.text(string) }
             guard let pdf else { renderingFailed = true; return }
             UIGraphicsPushContext(pdf)
             // NSString's UIKit drawing expects the top-down context established by newPage.
@@ -128,10 +175,45 @@ extension PdfExport {
             pdf.strokePath()
         }
 
+        /// A stroked rectangle, square or rounded: the annex card's frame and the hairline round
+        /// its photograph.
+        func stroke(_ rect: CGRect, radius: CGFloat, _ colour: UIColor, _ width: CGFloat) {
+            guard let pdf else { return }
+            pdf.setStrokeColor(colour.cgColor)
+            pdf.setLineWidth(width)
+            pdf.addPath(CGPath(roundedRect: rect, cornerWidth: radius, cornerHeight: radius, transform: nil))
+            pdf.strokePath()
+        }
+
+        func fill(_ rect: CGRect, radius: CGFloat, _ colour: UIColor) {
+            guard let pdf else { return }
+            pdf.setFillColor(colour.cgColor)
+            pdf.addPath(CGPath(roundedRect: rect, cornerWidth: radius, cornerHeight: radius, transform: nil))
+            pdf.fillPath()
+        }
+
+        /// A signature or the badge, drawn from its bitmap: the HTML copy takes a PNG of it.
         func image(_ image: CGImage, in rect: CGRect, alt: String = "") {
             if !suppressHTML, !alt.isEmpty, let png = UIImage(cgImage: image).pngData() {
-                html.append("<figure><img alt=\"\(HtmlDocument.escape(alt))\" src=\"data:image/png;base64,\(png.base64EncodedString())\"><figcaption>\(HtmlDocument.escape(alt))</figcaption></figure>")
+                html?.image(png: png, alt: alt)
             }
+            draw(image, in: rect)
+        }
+
+        /// An annex plate: the JPEG file itself. A `CGImage` made from a JPEG data provider goes
+        /// into the PDF as its original DCT stream, so the page carries the very bytes the HTML
+        /// copy embeds, and nothing is re-encoded.
+        func plate(_ jpeg: URL, in rect: CGRect, card: AnnexContent.Card) {
+            guard let provider = CGDataProvider(url: jpeg as CFURL),
+                  let image = CGImage(jpegDataProviderSource: provider, decode: nil, shouldInterpolate: true, intent: .defaultIntent) else {
+                renderingFailed = true
+                return
+            }
+            do { try html?.plate(jpeg, card) } catch { renderingFailed = true }
+            draw(image, in: rect)
+        }
+
+        private func draw(_ image: CGImage, in rect: CGRect) {
             guard let pdf else { return }
             pdf.saveGState()
             pdf.translateBy(x: rect.minX, y: rect.maxY)
@@ -142,7 +224,7 @@ extension PdfExport {
         }
 
         func sectionTitle(_ title: String) {
-            html.append("<h2>\(HtmlDocument.escape(title))</h2>")
+            html?.heading(title)
             let wasSuppressed = suppressHTML
             suppressHTML = true
             defer { suppressHTML = wasSuppressed }
@@ -155,7 +237,7 @@ extension PdfExport {
         }
 
         func labeledRow(_ pairs: [(String, String)]) {
-            html.append("<dl>" + pairs.map { "<dt>\(HtmlDocument.escape($0.0))</dt><dd>\(HtmlDocument.escape($0.1))</dd>" }.joined() + "</dl>")
+            html?.fields(pairs)
             let wasSuppressed = suppressHTML
             suppressHTML = true
             defer { suppressHTML = wasSuppressed }
@@ -191,7 +273,7 @@ extension PdfExport {
         }
 
         func wrapped(_ string: String, _ ink: Ink, x: CGFloat = margin, width: CGFloat = pageWidth - 2 * margin) {
-            if !suppressHTML { html.append("<p>\(HtmlDocument.escape(string))</p>") }
+            if !suppressHTML { html?.text(string) }
             let wasSuppressed = suppressHTML
             suppressHTML = true
             defer { suppressHTML = wasSuppressed }
