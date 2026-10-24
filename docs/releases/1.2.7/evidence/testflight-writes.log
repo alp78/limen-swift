@@ -1,0 +1,40 @@
+find build 9: 200
+build a7ac2d18-299d-4a9d-ac1c-af6fe0a16542 {'version': '9', 'uploadedDate': '2026-10-23T17:26:04-07:00', 'expired': False, 'processingState': 'VALID', 'usesNonExemptEncryption': None}
+export compliance: 200
+read back compliance: 200 {'usesNonExemptEncryption': False}
+read What to Test: 200
+What to Test en-US: 200
+What to Test fr-FR: 200
+What to Test de-DE: 200
+What to Test it: 200
+read back en-US: same
+read back fr-FR: same
+read back de-DE: same
+read back it: same
+attach to Owner: 204
+attach to Agencies: 204
+find build 9: 200
+build a7ac2d18-299d-4a9d-ac1c-af6fe0a16542 {'version': '9', 'uploadedDate': '2026-10-23T17:26:04-07:00', 'expired': False, 'processingState': 'VALID', 'usesNonExemptEncryption': False}
+export compliance: already answered
+read back compliance: 200 {'usesNonExemptEncryption': False}
+read What to Test: 200
+What to Test en-US: already written
+What to Test fr-FR: already written
+What to Test de-DE: already written
+What to Test it: already written
+read back en-US: same
+read back fr-FR: same
+read back de-DE: same
+read back it: same
+attach to Owner: already attached
+attach to Agencies: already attached
+read back groups: ['Agencies', 'Owner']
+rename App Store version to 1.2.7: 200
+attach to App Store version: 204
+read back version: 200 {'versionString': '1.2.7', 'appStoreState': 'PREPARE_FOR_SUBMISSION'} build ['9']
+submit for Beta App Review: 201 {'betaReviewState': 'WAITING_FOR_REVIEW', 'submittedDate': None}
+read back Beta App Review: 200 {'betaReviewState': 'WAITING_FOR_REVIEW'}
+expire build 8: 200
+read back build 8: 200 {'version': '8', 'expired': True}
+build 8 Beta App Review after expiry: 200 {'betaReviewState': 'APPROVED'}
+done
