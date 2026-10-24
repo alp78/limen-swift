@@ -61,7 +61,8 @@ extension PdfExport.Sheet {
             blocks.append(PdfExport.Fields([(s.role(party.role), party.name)], columns: 1))
             if !party.representedBy.isBlank { blocks.append(PdfExport.Text("\(s.representedBy): \(party.representedBy)", .small)) }
             if !party.agency.isBlank { blocks.append(PdfExport.Text("\(s.actorAgency): \(party.agency)", .small)) }
-            if !party.authority.isBlank { blocks.append(PdfExport.Text("\(s.authority): \(party.authority)", .small)) }
+            // The authority field is offered only beside a representative, and clearing the name leaves it behind.
+            if !party.representedBy.isBlank, !party.authority.isBlank { blocks.append(PdfExport.Text("\(s.authority): \(party.authority)", .small)) }
             if !party.phone.isBlank { blocks.append(PdfExport.Text(party.phone, .small)) }
             if !party.email.isBlank { blocks.append(PdfExport.Text(party.email, .small)) }
             if !party.address.isBlank { blocks.append(PdfExport.Text("\(s.newAddress): \(party.address)", .small)) }
@@ -79,7 +80,8 @@ extension PdfExport.Sheet {
             contact.append(by.fullName)
         }
         if !by.phone.isBlank { contact.append(by.phone) }
-        let lines = [by.addressLine, by.placeLine].filter { !$0.isBlank }
+        // The country is named in the document's language, not the handset's, or one record exports as Allemagne and Deutschland.
+        let lines = [by.addressLine, by.placeLine(locale: s.lang.locale)].filter { !$0.isBlank }
         if !lines.isEmpty { contact.append(lines.joined(separator: ", ")) }
         if !contact.isEmpty {
             blocks.append(PdfExport.Gap(PdfTokens.labelGap))

@@ -87,23 +87,31 @@ struct RecordDetailPanels: View {
                     }.padding(.top, 8)
                 }
             }
-            .id("transfer")
-            // One field per rubric, named by the rubric; the panel carries the one word.
-            Panel(label: s.reason) {
-                DisclosureGroup(s.reason) {
-                    VStack(alignment: .leading, spacing: 8) {
-                        ForEach(DossierCard.allCases, id: \.self) { card in
-                            Text(s.dossierCard(card)).font(LimenType.labelSmall).foregroundStyle(colors.ink)
-                            ScopeNote(p: p, key: card.rawValue)
-                        }
-                    }.padding(.top, 8)
+            .reportFrame("transfer")
+            .scrollMarker("transfer")
+            // One field per rubric that can print, named by the rubric; the panel carries the one
+            // word. A reason prints only while its component is on the record, and the Keys reason
+            // only while the Keys card is off it, so the fields follow the same rule: a reason typed
+            // for a component that is not there would never reach the paper.
+            let cards = p.dossierCards()
+            let reasonCards = DossierCard.allCases.filter { $0 != .notes && cards.contains($0) != ($0 == .keys) }
+            if !reasonCards.isEmpty {
+                Panel(label: s.reason) {
+                    DisclosureGroup(s.reason) {
+                        VStack(alignment: .leading, spacing: 8) {
+                            ForEach(reasonCards, id: \.self) { card in
+                                Text(s.dossierCard(card)).font(LimenType.labelSmall).foregroundStyle(colors.ink)
+                                ScopeNote(p: p, key: card.rawValue)
+                            }
+                        }.padding(.top, 8)
+                    }
                 }
+                .id("scope")
             }
-            .id("scope")
             DetailedMetersPanel(p: p).id("readings")
             AccessDevicesPanel(p: p)
-            SupportingDocumentsPanel(p: p).id("documents")
-            FollowUpsPanel(p: p).id("follow-up")
+            SupportingDocumentsPanel(p: p).reportFrame("documents").scrollMarker("documents")
+            FollowUpsPanel(p: p).reportFrame("follow-up").scrollMarker("follow-up")
             // No participant notice panel here any more. The privacy text lives under Data,
             // backup and privacy; details.participantNoticeShown stays in the record, unread.
         }
@@ -156,8 +164,8 @@ private struct MeterDetail: View {
             DateField(label: s.handoverDate, stored: reading.date, fieldKey: "meter.\(reading.id).date") { value in update { $0.date = value } }
             TimeField(label: s.handoverTime, stored: reading.time, fieldKey: "meter.\(reading.id).time") { value in update { $0.time = value } }
             Field(label: s.remarks, value: reading.note, singleLine: false) { value in update { $0.note = value } }
-            EvidencePhotos(photos: reading.photos, add: { url, source in model.attachMeterPhoto(reading.id, source: url, photoSource: source) }, remove: { name in model.removeMeterPhoto(reading.id, name: name) })
-            if !locked { SmallKey(label: s.delete) { model.edit { var next = $0; next.details.readings.removeAll { $0.id == reading.id }; return next } } }
+            EvidencePhotos(photos: reading.photos, owner: reading.id, kind: .meter, add: { url, source in model.attachMeterPhoto(reading.id, source: url, photoSource: source) }, remove: { name in model.removeMeterPhoto(reading.id, name: name) })
+            if !locked { SmallKey(label: s.delete) { model.removeReading(reading.id) } }
         }
     }
 
@@ -187,7 +195,7 @@ private struct AccessDevicesPanel: View {
                             Text(s.transferred)
                             Stepper(count: device.transferred) { value in update(device) { $0.transferred = value } }.disabled(locked)
                             Field(label: s.remarks, value: device.note, singleLine: false) { value in update(device) { $0.note = value } }
-                            if !locked { SmallKey(label: s.delete) { model.edit { var next = $0; next.details.accessDevices.removeAll { $0.id == device.id }; return next } } }
+                            if !locked { SmallKey(label: s.delete) { model.removeAccessDevice(device.id) } }
                         }
                     }
                     if !locked { IconKey(glyph: .add, label: "\(s.add) · \(s.accessDevices)") { model.edit { var next = $0; next.details.accessDevices.append(AccessDevice(id: UUID().uuidString)); return next } } }
@@ -227,7 +235,7 @@ private struct SupportingDocumentsPanel: View {
                                 if let url = model.documentURL(document) { opened = ExportedFile(url: url, displayName: document.title, bytes: document.bytes) }
                             }
                         }
-                        if !locked { SmallKey(label: s.delete) { model.edit { var next = $0; next.details.attachments.removeAll { $0.id == document.id }; return next } } }
+                        if !locked { SmallKey(label: s.delete) { model.removeAttachment(document.id) } }
                     }
                     if !locked {
                         Field(label: s.documentTitle, value: title) { title = $0 }
@@ -275,7 +283,7 @@ private struct FollowUpsPanel: View {
                             Field(label: s.deliveryDetail, value: followUp.method) { value in update(followUp) { $0.method = value } }
                             DateField(label: s.fixDeadline, stored: followUp.deadline, fieldKey: "followup.\(followUp.id).deadline") { value in update(followUp) { $0.deadline = value } }
                             Toggle(label: s.done, on: followUp.done, enabled: !locked) { update(followUp) { $0.done.toggle() } }
-                            if !locked { SmallKey(label: s.delete) { model.edit { var next = $0; next.details.followUps.removeAll { $0.id == followUp.id }; return next } } }
+                            if !locked { SmallKey(label: s.delete) { model.removeFollowUp(followUp.id) } }
                         }
                     }
                     if !locked { IconKey(glyph: .add, label: "\(s.add) · \(s.followUps)") { model.edit { var next = $0; next.details.followUps.append(FollowUp(id: UUID().uuidString)); return next } } }
@@ -294,12 +302,14 @@ private struct FollowUpsPanel: View {
 struct EvidencePhotos: View {
     @Environment(\.recordLocked) private var locked
     let photos: [PhotoEvidence]
+    let owner: String
+    let kind: LimenModel.PhotoOwner
     let add: (URL, PhotoSource) -> Void
     let remove: (String) -> Void
 
     var body: some View {
         VStack(spacing: 8) {
-            if !locked { PhotoIntakeKeys(onFile: add) }
+            if !locked { PhotoIntakeKeys(owner: owner, kind: kind, onFile: add) }
             ScrollView(.horizontal) {
                 HStack { ForEach(photos, id: \.file) { evidence in PhotoThumb(name: evidence.file, evidence: evidence) { remove(evidence.file) } } }
             }
@@ -331,9 +341,24 @@ struct CompletionIssueKey: View {
     let p: HandoverProtocol
     let issue: FinalizationIssue
 
+    /// What the issue names: the rooms, items or parties concerned, or the values the dossier
+    /// check rejected, so a person is not sent to three sections that are fine while the cause
+    /// sits in a rent, a wear estimate or a follow-up.
+    private var details: String {
+        switch issue {
+        case .rooms: return p.rooms.filter { !$0.inspected && (p.details.scopeNotes[$0.id] ?? "").isBlank }.map { $0.name.ifBlank(s.room($0.kind)) }.joined(separator: ", ")
+        case .objects: return p.objects.filter { !$0.inspected && (p.details.scopeNotes[$0.id] ?? "").isBlank }.map { $0.displayName(s) }.joined(separator: ", ")
+        case .parties: return p.parties.filter { $0.name.isBlank || !$0.representedBy.isBlank && $0.authority.isBlank }.map { "\(s.role($0.role)) \($0.name)" }.joined(separator: ", ")
+        case .dossier: return CompletionRules.dossierCauses(p, s).joined(separator: ", ")
+        case .handoverTime: return CompletionRules.timeCauses(p, s).joined(separator: ", ")
+        default: return ""
+        }
+    }
+
     var body: some View {
+        let details = details
         Button(action: open) {
-            Text(s.finalizationIssue(issue))
+            Text(s.finalizationIssue(issue) + (details.isBlank ? "" : " · \(details)"))
                 .font(LimenType.bodyMedium)
                 .foregroundStyle(colors.ink)
                 .multilineTextAlignment(.leading)
@@ -355,7 +380,7 @@ struct CompletionIssueKey: View {
         case .parties: openDossier("parties")
         case .keys: openDossier(p.carries(.keys) ? "card-Keys" : "scope")
         case .dossier:
-            if let defect = p.defects.first(where: { RecordInputValidation.invalidOptionalDate($0.fixDeadline) || p.details.estimates[$0.id]?.isValid == false }) {
+            if let defect = p.defects.first(where: { CompletionRules.invalidDate($0.fixDeadline) || p.details.estimates[$0.id].map(CompletionRules.estimateFaulty) == true }) {
                 model.editDefect(defect.id)
             } else { openDossier(CompletionRules.incompleteDossierTarget(p)) }
         default: openDossier("object")
@@ -379,9 +404,12 @@ struct ExportHistoryPanel: View {
         if !p.exportHistory.isEmpty {
             Panel(label: s.exported) {
                 VStack(alignment: .leading, spacing: 12) {
-                    ForEach(Array(p.exportHistory.enumerated()), id: \.offset) { _, copy in
+                    // Newest first, and the name is the address and the day alone, so what tells
+                    // the copies apart is said beside it.
+                    ForEach(Array(p.exportHistory.reversed().enumerated()), id: \.offset) { _, copy in
                         Text(copy.name).font(LimenType.bodyMedium)
-                        Text("\(copy.language) · \(copy.deliveryRevision) · \(Date(timeIntervalSince1970: Double(copy.epochMs) / 1000).formatted(date: .numeric, time: .shortened))").font(LimenType.bodySmall)
+                        Text([copy.language.uppercased(), deliveryMoment(copy.epochMs), copy.deliveryRevision != p.deliveryRevision ? s.copyBeforeDeliveryChange : nil]
+                            .compactMap { $0 }.joined(separator: " · ")).font(LimenType.bodySmall)
                         WeightedRow(weights: [1, 1]) {
                             SmallKey(label: s.open) { if let file = retained(copy) { preview = file } }
                             SmallKey(label: s.share) { if let file = retained(copy) { share = file } }
@@ -399,6 +427,14 @@ struct ExportHistoryPanel: View {
         guard let file = model.exported else { model.show(s.openFileFailed); return nil }
         return file
     }
+}
+
+/// A delivery's or a copy's moment, written the one way whatever the handset's locale.
+func deliveryMoment(_ epochMs: Int64) -> String {
+    let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "en_US_POSIX")
+    formatter.dateFormat = "yyyy-MM-dd HH:mm"
+    return formatter.string(from: Date(timeIntervalSince1970: TimeInterval(epochMs) / 1000))
 }
 
 private struct LocalDocumentView: View {

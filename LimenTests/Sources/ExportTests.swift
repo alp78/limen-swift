@@ -417,7 +417,9 @@ import UniformTypeIdentifiers
         // The sections by room, the legends with their where, number, title and meta, and the
         // room's panel pointing at the page its section opens on.
         #expect(html.contains(">\(s.room(.room))</h2>"))
-        #expect(html.contains("<li class=\"chip\">\(s.pdfDefectAnnex): \(s.pdfPage) "))
+        // The HTML has no pages, so its chip names the annex without the page the PDF's chip gives.
+        #expect(html.contains("<li class=\"chip\">\(s.pdfDefectAnnex)</li>"))
+        #expect(!html.contains("\(s.pdfDefectAnnex): \(s.pdfPage) "))
         #expect(html.contains("<small>\(s.room(.room))</small><br><strong>1. Scratch 14 cm long on the lower north-facing window frame</strong>"))
         #expect(html.contains("<strong>\(s.overviewPhotos)</strong>"))
         #expect(pdfText.contains(s.pdfDefectAnnex) && pdfText.contains("\(s.photos): 4".uppercased()))
@@ -438,6 +440,32 @@ import UniformTypeIdentifiers
 
     /// Android's device sample: an exit in Aarau with one inspected kitchen, one charged finding
     /// with a cost note, the keys card and one canton check, which the Pixel prints on two pages.
+    /// Android's device test for the name, here against a public folder of this test's own: two
+    /// records at one address on one day, the second numbered because the first's copy is in the
+    /// public folder, since each record retains its own folder and only the public one holds the
+    /// name.
+    @Test func theDocumentIsNamedAfterTheAddressAndTheHandoverDayAndNumberedOnARepeat() throws {
+        let root = try scratch()
+        let store = Store(root: root.appendingPathComponent("store"))
+        let folder = root.appendingPathComponent("public")
+        func export(_ id: String) throws -> ExportCopy {
+            var p = try androidSample(store: store)
+            p.id = id
+            p.address = "Rue de l’Église 5"
+            p.evidenceFingerprint = try ProtocolIntegrity.fingerprint(p, photoDir: store.photoDir(p.id), signatureDir: store.signatureDir(p.id))
+            try store.save(p)
+            return try PdfExport.exportRetained(p, Str(.fr), store: store, publicFolder: folder)
+        }
+        let first = try export("name-1")
+        #expect(first.name == "Rue-de-l-Eglise-5-2026-10-13.pdf")
+        #expect(first.companionUri.hasSuffix("/Rue-de-l-Eglise-5-2026-10-13.html"))
+        let second = try export("name-2")
+        #expect(second.name == "Rue-de-l-Eglise-5-2026-10-13-2.pdf")
+        #expect(second.companionUri.hasSuffix("/Rue-de-l-Eglise-5-2026-10-13-2.html"))
+        #expect(Set(try FileManager.default.contentsOfDirectory(atPath: folder.path)) ==
+                ["Rue-de-l-Eglise-5-2026-10-13.pdf", "Rue-de-l-Eglise-5-2026-10-13.html", "Rue-de-l-Eglise-5-2026-10-13-2.pdf", "Rue-de-l-Eglise-5-2026-10-13-2.html"])
+    }
+
     private func androidSample(store: Store) throws -> HandoverProtocol {
         var p = HandoverProtocol(id: "remediation-sample", kind: .exit, createdEpochMs: 1)
         p.sessionRole = .landlord
@@ -567,7 +595,7 @@ import UniformTypeIdentifiers
         #expect(html.contains("<section class=\"panel warning\""))
         #expect(html.contains("<span class=\"pill warning\">\(s.defectCount(3))</span>"))
         #expect(html.contains("<li class=\"chip active\">\(s.chargedToTenant)</li>"))
-        #expect(html.contains("<li class=\"chip\">\(s.pdfDefectAnnex): \(s.pdfPage) "))
+        #expect(html.contains("<li class=\"chip\">\(s.pdfDefectAnnex)</li>"))
         let pdfText = try #require(PDFDocument(url: rendered.pdf)?.string)
         #expect(pdfText.contains("Room 6") && pdfText.contains(s.contents.uppercased()))
         try keep(rendered, as: "six-rooms-fr")

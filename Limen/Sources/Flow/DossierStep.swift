@@ -18,8 +18,6 @@ struct DossierStep: View {
     @State private var removing: DossierCard?
     @State private var confirmRemove = false
     @State private var active = 0
-    @State private var headerHeight: CGFloat = 0
-    @State private var viewport: CGFloat = 0
 
     private struct Section: Identifiable {
         let id: String
@@ -29,70 +27,69 @@ struct DossierStep: View {
 
     var body: some View {
         let cards = p.dossierCards()
+        // The ticks ask the same predicates as the finalization gate, so a ticked chip cannot sit
+        // beside a blocked FINALIZE with nothing on screen naming what is missing.
         let sections = [
-            Section(id: "object", label: s.objectLabel, complete: objectSectionComplete(p)),
-            Section(id: "parties", label: s.parties, complete: partiesSectionComplete(p)),
-        ] + cards.map { Section(id: "card-\($0.rawValue)", label: s.dossierCard($0), complete: dossierSectionComplete(p, $0)) }
+            Section(id: "object", label: s.objectLabel, complete: CompletionRules.objectRecorded(p)),
+            Section(id: "parties", label: s.parties, complete: CompletionRules.partiesRecorded(p)),
+        ] + cards.map { Section(id: "card-\($0.rawValue)", label: s.dossierCard($0), complete: CompletionRules.dossierCardRecorded(p, $0)) } + [
+            Section(id: "transfer", label: s.actualTransfer, complete: CompletionRules.transferRecorded(p)),
+            Section(id: "documents", label: s.attachments, complete: CompletionRules.attachmentsRecorded(p)),
+            Section(id: "follow-up", label: s.followUps, complete: CompletionRules.followUpsRecorded(p)),
+        ]
         let absent = DossierCard.allCases.filter { !cards.contains($0) }
         let sectionIds = sections.map(\.id)
         ScrollViewReader { reader in
+            // The rail is the list's top inset instead of a header pinned inside it, and the
+            // list is a plain stack. With one section the pinned header never left the top
+            // anyway, and the lazy stack behind it froze the phone: as the detail panels began to
+            // enter the viewport, its item phases and the pinned header re-resolved each other in
+            // one layout pass without end and the main thread never idled again (in 1.2.2 to
+            // 1.2.6, found on 2026-10-24). A dozen panels need no laziness. An inset rather than
+            // a sibling above, so the list stays the first scroll view the UI tests find. At the
+            // accessibility sizes the rail scrolls with the content, as it did, so it does not
+            // keep a third of the screen for itself.
             ScrollView {
-                LazyVStack(spacing: 10, pinnedViews: typeSize.isAccessibilitySize ? [] : .sectionHeaders) {
-                    SwiftUI.Section {
-                        VStack(spacing: 10) {
-                            ObjectCard(p: p)
-                            LegalOverlayPanel(p: p)
-                            HandoverDeadline(p: p)
-                        }
-                        .reportFrame("object")
-                        .scrollMarker("object")
-                        PartiesCard(p: p).reportFrame("parties").scrollMarker("parties")
-                        ForEach(cards, id: \.self) { card in
-                            Group {
-                                switch card {
-                                case .contract: ContractCard(p: p) { ask(card) }
-                                case .deposit: DepositCard(p: p) { ask(card) }
-                                case .meters: MetersCard(p: p) { ask(card) }
-                                case .keys: KeysCard(p: p) { ask(card) }
-                                case .notes: NotesCard(p: p) { ask(card) }
-                                }
-                            }
-                            .reportFrame("card-\(card.rawValue)")
-                            .scrollMarker("card-\(card.rawValue)")
-                        }
-                        if !absent.isEmpty, !locked {
-                            Panel(label: s.addComponent) {
-                                FlowRow(spacing: 6) {
-                                    ForEach(absent, id: \.self) { card in
-                                        Chip(label: "+ \(s.dossierCard(card))", dim: false) { model.addDossierCard(card) }
-                                    }
-                                }
-                            }
-                        }
-                        RecordDetailPanels(p: p)
-                        // No key at the foot: the record opens from the hub's third door.
-                        Spacer().frame(height: 12)
-                    } header: {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 6) {
-                                ForEach(Array(sections.enumerated()), id: \.element.id) { index, section in
-                                    Chip(label: "\(section.complete ? "✓" : "○") \(section.label)", active: index == active, selectionState: index == active) {
-                                        // Anchored below the pinned rail, not at the top: at .top
-                                        // the section arrived under the rail. Android scrolls to
-                                        // the item minus HEADER_OVERLAP_PX for the same reason.
-                                        let anchor = UnitPoint(x: 0, y: viewport > 0 ? min((headerHeight + 6) / viewport, 0.5) : 0)
-                                        withAnimation { reader.scrollTo(section.id, anchor: anchor) }
-                                    }
-                                }
-                            }
-                            .padding(.vertical, 6)
-                        }
-                        .background(colors.plate)
-                        .background(GeometryReader { geometry in
-                            Color.clear.onChange(of: geometry.size.height, initial: true) { _, height in headerHeight = height }
-                        })
+                VStack(spacing: 10) {
+                    if typeSize.isAccessibilitySize { rail(sections, reader) }
+                    VStack(spacing: 10) {
+                        ObjectCard(p: p)
+                        LegalOverlayPanel(p: p)
+                        HandoverDeadline(p: p)
                     }
+                    .reportFrame("object")
+                    .scrollMarker("object")
+                    PartiesCard(p: p).reportFrame("parties").scrollMarker("parties")
+                    ForEach(cards, id: \.self) { card in
+                        Group {
+                            switch card {
+                            case .contract: ContractCard(p: p) { ask(card) }
+                            case .deposit: DepositCard(p: p) { ask(card) }
+                            case .meters: MetersCard(p: p) { ask(card) }
+                            case .keys: KeysCard(p: p) { ask(card) }
+                            case .notes: NotesCard(p: p) { ask(card) }
+                            }
+                        }
+                        .reportFrame("card-\(card.rawValue)")
+                        .scrollMarker("card-\(card.rawValue)")
+                    }
+                    if !absent.isEmpty, !locked {
+                        Panel(label: s.addComponent) {
+                            FlowRow(spacing: 6) {
+                                ForEach(absent, id: \.self) { card in
+                                    Chip(label: "+ \(s.dossierCard(card))", dim: false) { model.addDossierCard(card) }
+                                }
+                            }
+                        }
+                    }
+                    RecordDetailPanels(p: p)
+                    // No key at the foot: the record opens from the hub's third door.
+                    Spacer().frame(height: 12)
                 }
+                .padding(.top, typeSize.isAccessibilitySize ? 0 : 10)
+            }
+            .safeAreaInset(edge: .top, spacing: 0) {
+                if !typeSize.isAccessibilitySize { rail(sections, reader) }
             }
             .coordinateSpace(name: "dossier")
             // Android's activeSection is firstVisibleItemIndex - 1: the first section with any
@@ -103,9 +100,6 @@ struct DossierStep: View {
                 let now = sectionIds.firstIndex { (frames[$0]?.maxY ?? -1) > 0 } ?? 0
                 if now != active { active = now }
             }
-            .background(GeometryReader { geometry in
-                Color.clear.onChange(of: geometry.size.height, initial: true) { _, height in viewport = height }
-            })
             .scrollDismissesKeyboard(.interactively)
             .onChange(of: model.dossierTarget, initial: true) { _, target in
                 guard let target else { return }
@@ -121,36 +115,26 @@ struct DossierStep: View {
         }
     }
 
+    /// The section chips, each ticked by the gate's own predicate, the one on screen filled.
+    private func rail(_ sections: [Section], _ reader: ScrollViewProxy) -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 6) {
+                ForEach(Array(sections.enumerated()), id: \.element.id) { index, section in
+                    Chip(label: "\(section.complete ? "✓" : "○") \(section.label)", active: index == active, selectionState: index == active) {
+                        // The rail no longer overlaps the list, so the section comes to the top
+                        // itself; Android subtracts its header's overlap for the same effect.
+                        withAnimation { reader.scrollTo(section.id, anchor: .top) }
+                    }
+                }
+            }
+            .padding(.vertical, 6)
+        }
+        .background(colors.plate)
+    }
+
     private func ask(_ card: DossierCard) {
         removing = card
         confirmRemove = true
-    }
-}
-
-private func objectSectionComplete(_ p: HandoverProtocol) -> Bool {
-    !p.address.isBlank && !p.place.isBlank && p.objectCanton != nil && !p.handoverDate.isBlank && !p.handoverTime.isBlank &&
-        (p.resolvedLegalOverlay()?.isComplete(p.legalOverlay) == true)
-}
-
-private func partiesSectionComplete(_ p: HandoverProtocol) -> Bool {
-    [Role.tenant, .landlord].allSatisfy { role in !(p.parties.first { $0.role == role }?.name.isBlank ?? true) }
-}
-
-private func dossierSectionComplete(_ p: HandoverProtocol, _ card: DossierCard) -> Bool {
-    switch card {
-    case .contract: return p.contract != Contract()
-    case .deposit:
-        switch p.deposit.kind {
-        case .none: return true
-        case .unknown: return !(p.details.scopeNotes["Deposit"] ?? "").isBlank
-        case .bankAccount: return [p.deposit.amountChf, p.deposit.bank, p.deposit.account].allSatisfy { !$0.isBlank }
-        case .insurance: return [p.deposit.amountChf, p.deposit.provider, p.deposit.policyNo].allSatisfy { !$0.isBlank }
-        }
-    case .meters: return !p.meters.isBlank
-    // The same rule the finalization gate applies, so a ticked chip cannot sit beside a blocked
-    // FINALIZE with nothing on screen naming what is missing.
-    case .keys: return CompletionRules.keyOutcomeRecorded(p)
-    case .notes: return !p.remarks.isBlank || !p.chargesStatementBy.isBlank
     }
 }
 
@@ -384,13 +368,7 @@ private struct PartyBlock: View {
                 Text(s.role(party.role).uppercased()).font(LimenType.labelSmall).foregroundStyle(colors.inkDim).frame(maxWidth: .infinity, alignment: .leading)
                 let removable = p.parties.filter { $0.role == party.role }.count > 1 || [Role.witness, .expert, .nextTenant].contains(party.role)
                 if removable, !locked {
-                    IconKey(glyph: .delete, label: s.delete, destructive: true) {
-                        model.edit { current in
-                            var next = current
-                            next.parties = current.parties.enumerated().filter { $0.offset != index }.map(\.element)
-                            return next
-                        }
-                    }
+                    IconKey(glyph: .delete, label: s.delete, destructive: true) { model.removeParty(at: index) }
                 }
             }
             Field(label: s.role(party.role), value: party.name, onChange: update { $0.name = $1 })
@@ -427,8 +405,8 @@ private struct ContractCard: View {
             VStack(alignment: .leading, spacing: 8) {
                 CardHeader(onRemove: onRemove)
                 WeightedRow(weights: [1, 1]) {
-                    Field(label: s.monthlyRent, value: p.contract.monthlyRentChf, keyboard: .decimalPad) { v in model.edit { var x = $0; x.contract.monthlyRentChf = v; return x } }
-                    Field(label: s.serviceCharges, value: p.contract.serviceChargesChf, keyboard: .decimalPad) { v in model.edit { var x = $0; x.contract.serviceChargesChf = v; return x } }
+                    Field(label: s.monthlyRent, value: p.contract.monthlyRentChf, keyboard: .decimalPad, isError: CompletionRules.invalidAmount(p.contract.monthlyRentChf)) { v in model.edit { var x = $0; x.contract.monthlyRentChf = v; return x } }
+                    Field(label: s.serviceCharges, value: p.contract.serviceChargesChf, keyboard: .decimalPad, isError: CompletionRules.invalidAmount(p.contract.serviceChargesChf)) { v in model.edit { var x = $0; x.contract.serviceChargesChf = v; return x } }
                 }
                 DateField(label: s.leaseConcludedOn, stored: p.contract.conclusionDate, fieldKey: "contract.conclusionDate") { v in
                     model.edit { record in
@@ -480,13 +458,13 @@ private struct DepositCard: View {
                                 }
                                 WeightedRow(weights: [1.3, 1]) {
                                     Field(label: s.depositPolicy, value: p.deposit.policyNo) { v in model.edit { var x = $0; x.deposit.policyNo = v; return x } }
-                                    Field(label: s.depositAmount, value: p.deposit.amountChf, keyboard: .decimalPad) { v in model.edit { var x = $0; x.deposit.amountChf = v; return x } }
+                                    Field(label: s.depositAmount, value: p.deposit.amountChf, keyboard: .decimalPad, isError: CompletionRules.invalidAmount(p.deposit.amountChf)) { v in model.edit { var x = $0; x.deposit.amountChf = v; return x } }
                                 }
                             } else {
                                 Field(label: s.depositBankName, value: p.deposit.bank) { v in model.edit { var x = $0; x.deposit.bank = v; return x } }
                                 WeightedRow(weights: [1.3, 1]) {
                                     Field(label: s.depositAccount, value: p.deposit.account) { v in model.edit { var x = $0; x.deposit.account = v; return x } }
-                                    Field(label: s.depositAmount, value: p.deposit.amountChf, keyboard: .decimalPad) { v in model.edit { var x = $0; x.deposit.amountChf = v; return x } }
+                                    Field(label: s.depositAmount, value: p.deposit.amountChf, keyboard: .decimalPad, isError: CompletionRules.invalidAmount(p.deposit.amountChf)) { v in model.edit { var x = $0; x.deposit.amountChf = v; return x } }
                                 }
                             }
                         }
@@ -584,13 +562,7 @@ private struct KeysCard: View {
                                     }
                                 }
                                 Spacer().frame(width: 6)
-                                IconKey(glyph: .delete, label: s.delete, destructive: true) {
-                                    model.edit { current in
-                                        var next = current
-                                        next.keys = current.keys.enumerated().filter { $0.offset != i }.map(\.element)
-                                        return next
-                                    }
-                                }
+                                IconKey(glyph: .delete, label: s.delete, destructive: true) { model.removeKeyKind(at: i) }
                             }
                         }
                     }
@@ -646,12 +618,15 @@ private struct NotesCard: View {
 private struct CautionProviderPicker: View {
     @Environment(\.limen) private var colors
     @Environment(\.str) private var s
+    @Environment(\.recordLocked) private var locked
     let storedName: String
     let onSelect: (CautionProvider) -> Void
 
     var body: some View {
         let selected = CautionProvider.fromStoredName(storedName)
         let shape = RoundedRectangle(cornerRadius: 6, style: .continuous)
+        // A finalized record offers no menu: the one control on the card that could still change
+        // the insurer's name.
         Menu {
             ForEach(CautionProvider.allCases, id: \.self) { provider in
                 Button {
@@ -681,6 +656,7 @@ private struct CautionProviderPicker: View {
             .background(colors.input, in: shape)
             .overlay(shape.strokeBorder(colors.plateEdge, lineWidth: 1))
         }
+        .disabled(locked)
         .accessibilityLabel(s.depositProvider)
         .accessibilityValue(s.cautionProvider(selected))
     }
@@ -764,7 +740,7 @@ private struct SectionFrames: PreferenceKey {
     }
 }
 
-private extension View {
+extension View {
     /// The rail's scroll target, a point rather than the card itself: `scrollTo` places the
     /// anchor fraction of whatever carries the id, so on a section taller than the viewport the
     /// fraction of the whole card landed well past its top. A zero-height marker at the card's

@@ -42,6 +42,9 @@ public enum ExportIssue: String, CaseIterable, Hashable, Sendable {
 
 public enum UndoKind: String, CaseIterable, Hashable, Sendable {
     case defect, photo, object, keyCounts
+    // The dossier's entries, offered back since Android 1.2.7: each holds text typed by hand and
+    // its delete key sits among the photograph keys.
+    case reading, accessDevice, document, followUp, estimate, party, keyKind
 }
 
 /// What an info mark explains: a lead sentence, then bullets, never a wall of text. The house rule

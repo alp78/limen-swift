@@ -1,0 +1,31 @@
+# Release build, install and launch on the iPhone 17 / iOS 26.6.2 (00008150-001074183A7B401C), 24 October 2026 01:38, make device
+=== make device 01:38:40
+set -o pipefail && xcodebuild -workspace Limen.xcworkspace -scheme Limen \
+		-destination 'id=D5A6144A-6100-5A25-90E7-898D11325105' -configuration Release \
+[32;1mBuild Succeeded[0m
+xcrun devicectl device install app --device D5A6144A-6100-5A25-90E7-898D11325105 ./DD/Build/Products/Release-iphoneos/Limen.app
+App installed:
+• bundleID: dev.peringer.limen
+• installationURL: file:///private/var/containers/Bundle/Application/52CD23EA-F0C2-413F-B957-A06FA757F29A/Limen.app/
+• launchServicesIdentifier: unknown
+• databaseUUID: 5FF4C820-790C-4AC4-A06B-E98797706C58
+• databaseSequenceNumber: 3832
+• options: 
+xcrun devicectl device process launch --device D5A6144A-6100-5A25-90E7-898D11325105 dev.peringer.limen
+Launched application with dev.peringer.limen bundle identifier.
+device exit 0
+
+## Second install, 24 October 2026 02:11, the fixed build (make device)
+=== make device 02:11:36
+[32;1mBuild Succeeded[0m
+xcrun devicectl device install app --device D5A6144A-6100-5A25-90E7-898D11325105 ./DD/Build/Products/Release-iphoneos/Limen.app
+App installed:
+• bundleID: dev.peringer.limen
+• installationURL: file:///private/var/containers/Bundle/Application/81781F74-5C4C-445C-942A-4D2990ED52E5/Limen.app/
+• launchServicesIdentifier: unknown
+• databaseUUID: 5FF4C820-790C-4AC4-A06B-E98797706C58
+• databaseSequenceNumber: 3880
+• options: 
+xcrun devicectl device process launch --device D5A6144A-6100-5A25-90E7-898D11325105 dev.peringer.limen
+Launched application with dev.peringer.limen bundle identifier.
+device exit 0

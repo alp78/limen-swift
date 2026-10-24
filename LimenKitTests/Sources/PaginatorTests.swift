@@ -55,6 +55,30 @@ import Testing
         ])
     }
 
+    @Test func aKeptGroupTallerThanAPageFillsEachPageInsteadOfLeavingOneRowOnEach() {
+        let list = Array(repeating: Slot(30, keepWithNext: true), count: 6) + [Slot(10)]
+        let segments = Paginator.segments(list, available: 100, full: 100)
+        #expect(segments == [Segment(0, 3, newPageBefore: false, continued: false), Segment(3, 7, newPageBefore: true, continued: true)])
+    }
+
+    @Test func aKeptGroupTallerThanAFreshPageOpensOnAFreshPageAndThenFillsThem() {
+        let list = Array(repeating: Slot(30, keepWithNext: true), count: 6) + [Slot(10)]
+        let segments = Paginator.segments(list, available: 50, full: 100)
+        #expect(segments == [Segment(0, 3, newPageBefore: true, continued: false), Segment(3, 7, newPageBefore: true, continued: true)])
+    }
+
+    @Test func anOpeningIsTheSmallestSpaceWhereThePanelStartsOnTheCurrentPage() {
+        let list = [Slot(38, keepWithNext: true), Slot(67, keepWithNext: true), Slot(44, keepWithNext: true), Slot(13), Slot(33)]
+        let need = Paginator.opening(list, full: 1000)
+        #expect(need == 162)
+        #expect(Paginator.segments(list, available: need, full: 1000).first?.newPageBefore == false)
+        #expect(Paginator.segments(list, available: need - 1, full: 1000).first?.newPageBefore == true)
+    }
+
+    @Test func anOpeningForARowTallerThanAPageIsAtLeastAPage() {
+        #expect(Paginator.opening([Slot(900)], full: 500) >= 500)
+    }
+
     @Test func aPanelTallerThanTwoPagesGivesThreeSegmentsTheLaterOnesContinued() {
         let segments = Paginator.segments(rows(200, 200, 200, 200, 200), available: 500, full: 500)
         #expect(segments == [

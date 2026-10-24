@@ -1,29 +1,81 @@
 import Foundation
 import LimenKit
+import PhotosUI
+import SwiftUI
 import UniformTypeIdentifiers
 
 extension LimenModel {
     enum PhotoOwner: Sendable { case defect, object, room, meter }
 
+    /// The gallery half of an intake: the picked item is loaded here, not in the picker's view,
+    /// whose task ended the moment the editor closed and took the picked photograph with it. It
+    /// counts as busy like the stages after it, so finalizing cannot slip in while a large or
+    /// cloud-backed pick is still arriving, and `owner` is held in `photosInFlight` like the
+    /// attach that follows. `onFile` runs on the main actor straight after both drop, so the
+    /// attach that follows raises them again unseen.
+    @discardableResult
+    func loadPicked(_ item: PhotosPickerItem, owner: String, kind: PhotoOwner, onFile: @escaping (URL) -> Void) -> Task<Void, Never>? {
+        guard !contentLocked, let p = working else { return nil }
+        evidenceBusy += 1
+        if kind == .defect { photosInFlight.append(owner) }
+        return Task {
+            let result: Result<URL?, Error>
+            do { result = .success(try await item.loadTransferable(type: ImportedPhoto.self)?.url) } catch { result = .failure(error) }
+            evidenceBusy -= 1
+            if kind == .defect, let i = photosInFlight.firstIndex(of: owner) { photosInFlight.remove(at: i) }
+            // Handed on only while the record is still the one the pick was made on: the attach
+            // that follows reads the open record when it runs, and by now the person may have left
+            // it for another, which would take the file or drop it without a word.
+            switch result {
+            case .success(let url?) where working?.id == p.id && !contentLocked:
+                onFile(url)
+            case .success(let url):
+                if let url { try? FileManager.default.removeItem(at: url) }
+                if working?.id == p.id, contentLocked { evidenceError = str.evidenceAfterFinalized }
+            case .failure:
+                photoFailed(recordId: p.id, defectId: kind == .defect ? owner : "")
+            }
+        }
+    }
+
+    /// A photograph that did not arrive. Said on the record it was for; once the person has moved
+    /// on it is a passing notice, because `evidenceError` belongs to whichever record is open and
+    /// would print on that one. A finding opened for the photograph and closed since is left
+    /// empty by the failure, so it goes where `closeDefect` would have sent it.
+    func photoFailed(recordId: String, defectId: String = "") {
+        guard working?.id == recordId else {
+            show(str.photoNotAdded)
+            return
+        }
+        evidenceError = str.photoNotAdded
+        if !defectId.isEmpty, editingDefectId != defectId { discardEmptyShell(defectId) }
+    }
+
     @discardableResult
     func intakePhoto(ownerId: String, source: URL, photoSource: PhotoSource, kind: PhotoOwner) -> Task<Void, Never>? {
         guard !contentLocked, let p = working else { return nil }
         let dir = store.photoDir(p.id)
+        evidenceBusy += 1
+        if kind == .defect { photosInFlight.append(ownerId) }
         return Task {
             let result = await Task.detached {
                 Result { try Self.copyPhoto(into: dir, ownerId: ownerId, existing: 0, source: source, photoSource: photoSource) }
             }.value
+            evidenceBusy -= 1
+            if kind == .defect, let i = photosInFlight.firstIndex(of: ownerId) { photosInFlight.remove(at: i) }
             // Only the operation's own private capture is cleaned up, never another picker's.
             if source.deletingLastPathComponent().standardizedFileURL == AppFiles.captures.standardizedFileURL {
                 try? FileManager.default.removeItem(at: source)
             }
             switch result {
-            case .failure(let error):
-                if working?.id == p.id { evidenceError = error.localizedDescription }
+            case .failure:
+                photoFailed(recordId: p.id, defectId: kind == .defect ? ownerId : "")
             case .success(let evidence):
                 guard let current = working, current.id == p.id, !contentLocked,
                       ownerExists(ownerId, kind: kind, in: current) else {
                     try? FileManager.default.removeItem(at: dir.appendingPathComponent(evidence.file))
+                    // The record was finalized before the file was stored: said, not swallowed.
+                    if working?.id == p.id, contentLocked { evidenceError = str.evidenceAfterFinalized }
                     return
                 }
                 edit { record in
@@ -86,7 +138,9 @@ extension LimenModel {
     func importDocument(source: URL, kind: DocumentKind, title: String = "") -> Task<Void, Never>? {
         guard let p = working, !contentLocked else { return nil }
         let directory = store.photoDir(p.id)
+        evidenceBusy += 1
         return Task {
+            defer { evidenceBusy -= 1 }
             let result = await Task.detached {
                 Result {
                     let secured = source.startAccessingSecurityScopedResource()
@@ -112,6 +166,7 @@ extension LimenModel {
             case .success(let document):
                 guard working?.id == p.id, !contentLocked else {
                     try? FileManager.default.removeItem(at: directory.appendingPathComponent(document.file))
+                    if working?.id == p.id, contentLocked { evidenceError = str.evidenceAfterFinalized }
                     return
                 }
                 edit { record in
@@ -119,8 +174,8 @@ extension LimenModel {
                     next.details.attachments.append(document)
                     return next
                 }
-            case .failure(let error):
-                if working?.id == p.id { evidenceError = error.localizedDescription }
+            case .failure:
+                if working?.id == p.id { evidenceError = str.documentNotAdded }
             }
         }
     }

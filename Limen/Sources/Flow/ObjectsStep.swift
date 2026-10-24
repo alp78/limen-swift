@@ -119,7 +119,7 @@ private struct ObjectRow: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 if !locked {
-                    PhotoIntakeKeys(compact: true) { file, source in model.attachObjectPhoto(entry.id, source: file, photoSource: source) }
+                    PhotoIntakeKeys(compact: true, owner: entry.id, kind: .object) { file, source in model.attachObjectPhoto(entry.id, source: file, photoSource: source) }
                     IconKey(glyph: .add, label: s.addDefect, fillColor: flagged ? colors.warning : nil, outlineColor: flagged ? colors.warningOutline : nil, tint: flagged ? colors.warningOutline : nil) {
                         model.openObjectDefect(entry.id)
                     }

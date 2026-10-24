@@ -60,20 +60,9 @@ struct FlowScreen: View {
                 .readable()
                 .animation(reduceMotion ? nil : .easeInOut(duration: 0.18), value: model.flowStep)
                 .onChange(of: model.flowStep) { _, now in previousStep = now }
-                if let notice = model.undoNotice {
-                    HStack(spacing: 8) {
-                        Text(s.removedForUndo(notice.kind)).font(LimenType.bodyMedium).foregroundStyle(colors.ink).frame(maxWidth: .infinity, alignment: .leading)
-                        SmallKey(label: s.undo, tick: .confirm) { model.undo(notice.token) }
-                    }
-                    .padding(.leading, 16)
-                    .padding(.trailing, 6)
-                    .padding(.vertical, 6)
-                    .background(colors.plateRaised, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 10)
-                    .readable()
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-                }
+                // One bar at a time: the editor's cover shows its own, and a second one under it
+                // would be announced twice by a screen reader.
+                if model.editingDefectId == nil { UndoBar() }
                 if let notice = model.notice {
                     NoticeBar(text: notice).transition(.move(edge: .bottom).combined(with: .opacity))
                 }
@@ -86,13 +75,65 @@ struct FlowScreen: View {
             .environment(\.recordLocked, locked)
             .fullScreenCover(isPresented: Binding(get: { model.editingDefectId != nil }, set: { if !$0 { model.closeDefect() } })) {
                 if let current = model.working, let id = model.editingDefectId {
-                    DefectEditor(p: current, defectId: id).environment(\.recordLocked, current.isFinalized())
+                    // A cover is a window of its own and the editor fills it with an opaque plate,
+                    // so anything composed in the flow beneath is hidden. The photograph removed
+                    // here would otherwise have its UNDO, and a failing save its RETRY, out of sight.
+                    ZStack(alignment: .bottom) {
+                        DefectEditor(p: current, defectId: id).environment(\.recordLocked, current.isFinalized())
+                        VStack(spacing: 0) {
+                            if let error = model.saveError {
+                                NoticeActionBar(text: error, textColor: colors.dangerOutline, action: s.retry, tick: .key) { model.persistWorking() }
+                            }
+                            UndoBar()
+                        }
+                    }
+                    .animation(.easeInOut(duration: 0.16), value: model.undoNotice)
                 }
             }
             .sheet(isPresented: Binding(get: { model.showDepositCompare }, set: { model.setDepositCompare($0) })) {
                 DepositCompareOverlay()
             }
         }
+    }
+}
+
+/// A removal is offered back for a few seconds, wherever on the flow it was made.
+struct UndoBar: View {
+    @Environment(LimenModel.self) private var model
+    @Environment(\.limen) private var colors
+    @Environment(\.str) private var s
+
+    var body: some View {
+        if let notice = model.undoNotice {
+            NoticeActionBar(text: s.removedForUndo(notice.kind), textColor: colors.ink, action: s.undo, tick: .confirm) { model.undo(notice.token) }
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+        }
+    }
+}
+
+/// A line low on the screen with the one key that answers it: the undo of a removal, the retry
+/// of a save that failed.
+struct NoticeActionBar: View {
+    @Environment(\.limen) private var colors
+    let text: String
+    let textColor: Color
+    let action: String
+    let tick: Tick
+    let onPress: () -> Void
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Text(text).font(LimenType.bodyMedium).foregroundStyle(textColor).frame(maxWidth: .infinity, alignment: .leading)
+            SmallKey(label: action, tick: tick, onPress: onPress)
+        }
+        .padding(.leading, 16)
+        .padding(.trailing, 6)
+        .padding(.vertical, 6)
+        .background(colors.plateRaised, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .padding(.horizontal, 20)
+        .padding(.vertical, 10)
+        .readable()
+        .accessibilityElement(children: .contain)
     }
 }
 
@@ -199,7 +240,12 @@ struct HubStep: View {
 
     var body: some View {
         let defects = p.defects.count
-        let objectIssues = issues.filter { [.address, .place, .canton, .handoverDate, .handoverTime, .legalOverlay].contains($0) }
+        // The time issue also stands for a transfer or meter-reading time; only the handover time
+        // itself belongs to the object, so the warning does not send anyone to a field that is fine.
+        let objectIssues = issues.filter {
+            [.address, .place, .canton, .handoverDate, .handoverTime, .legalOverlay].contains($0) &&
+                ($0 != .handoverTime || p.handoverTime.isBlank || CompletionRules.invalidTime(p.handoverTime))
+        }
         ScrollView {
             VStack(spacing: 10) {
                 if !objectIssues.isEmpty, !p.isFinalized() {

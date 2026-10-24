@@ -56,8 +56,11 @@ extension PdfExport.Sheet {
         var i = 0
         var underTitle = true
         while i < cards.count {
-            if !cards[i].fits {
-                if !underTitle { newPage() }
+            // A card that fits a page but not the room under the section's title runs on there too,
+            // since a page of its own would leave the title alone above an empty one.
+            if !cards[i].fits || (underTitle && y + cards[i].height > PdfTokens.bottom) {
+                // The page opened after the last batch is still empty and takes the card as it is.
+                if !underTitle, y > PdfTokens.headerBottom { newPage() }
                 drawRunOn(cards[i], photoDir, measuring: measuring)
                 underTitle = false
                 i += 1
@@ -93,11 +96,12 @@ extension PdfExport.Sheet {
         let baseline: CGFloat
     }
 
-    /// A card's legend laid out at a width: its lines, the finding's badge if any, and its height.
+    /// A card's legend laid out at a width: its lines, the finding's badge if any beside line `titleTop`, and its height.
     private struct Legend {
         let lines: [LegendLine]
         let badge: CGRect?
         let number: String?
+        let titleTop: Int
         let height: CGFloat
     }
 
@@ -135,17 +139,21 @@ extension PdfExport.Sheet {
         let main = y
         y = split ? 0 : y + 10
         for line in card.meta { add(line, paints.small, x: 0, lineWidth: metaWidth, flushRight: split) }
-        return Legend(lines: lines, badge: badge, number: number, height: max(main, y) - 8)
+        return Legend(lines: lines, badge: badge, number: number, titleTop: titleTop, height: max(main, y) - 8)
+    }
+
+    /// Draws `legend`'s badge, if it has one, as if the legend had its top left corner at `left`, `top`.
+    private func drawBadge(_ legend: Legend, left: CGFloat, top: CGFloat) {
+        guard let badge = legend.badge else { return }
+        let box = badge.offsetBy(dx: left, dy: top)
+        fillRound(box, radius: PdfTokens.badgeRadius, paints.navyFill)
+        let number = legend.number ?? ""
+        text(number, box.midX - paints.badge.width(number) / 2, box.minY + paints.badge.baseline(Self.badge), paints.badge)
     }
 
     /// Draws `legend` with its top left corner at `left`, `top`.
     private func drawLegend(_ legend: Legend, left: CGFloat, top: CGFloat) {
-        if let badge = legend.badge {
-            let box = badge.offsetBy(dx: left, dy: top)
-            fillRound(box, radius: PdfTokens.badgeRadius, paints.navyFill)
-            let number = legend.number ?? ""
-            text(number, box.midX - paints.badge.width(number) / 2, box.minY + paints.badge.baseline(Self.badge), paints.badge)
-        }
+        drawBadge(legend, left: left, top: top)
         for line in legend.lines { text(line.text, left + line.x, top + line.baseline, line.face) }
     }
 
@@ -192,7 +200,8 @@ extension PdfExport.Sheet {
         }
     }
 
-    /// A card whose legend is longer than a page: the framed photograph, then the legend running on.
+    /// A card laid out as the photograph framed, then the legend running on: for a legend longer
+    /// than a page, and for a card that fits a page but not the room under its section title.
     private func drawRunOn(_ layout: CardLayout, _ photoDir: URL, measuring: Bool) {
         let fit = layout.fit
         ensure(2 * PdfTokens.framePad + fit.boxHeight)
@@ -203,8 +212,10 @@ extension PdfExport.Sheet {
         plate(layout.card, photoDir.appendingPathComponent(layout.card.file), fit, photo, measuring: measuring)
         y = photo.maxY + PdfTokens.framePad + 16
         let flowing = legend(layout.card, width: 600)
-        for line in flowing.lines {
+        for (n, line) in flowing.lines.enumerated() {
             ensure(line.face.size + 10)
+            // The badge stands by the title's first line, on whichever page the flow has reached.
+            if n == flowing.titleTop { drawBadge(flowing, left: PdfTokens.margin + PdfTokens.framePad, top: y + line.face.size - line.baseline) }
             text(line.text, PdfTokens.margin + PdfTokens.framePad + line.x, y + line.face.size, line.face)
             y += line.face.size + 8
         }

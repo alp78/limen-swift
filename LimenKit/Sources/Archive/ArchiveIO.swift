@@ -22,6 +22,22 @@ public enum ArchiveError: Error, Equatable {
     case packedPhotographUnreadable(String)
 }
 
+/// An export that refused to write, instead of reporting a backup that leaves a record out or
+/// holds one a restore would reject. `reason` is what the screen tells the person, and `record`
+/// names the record when one is to blame.
+public struct ArchiveRefused: Error, Equatable, Sendable {
+    public enum Reason: String, Sendable {
+        case unreadableRecord, damagedEvidence
+    }
+    public let reason: Reason
+    public let record: String
+
+    public init(_ reason: Reason, record: String = "") {
+        self.reason = reason
+        self.record = record
+    }
+}
+
 /// Sweep only files from an earlier run. Another live operation may be using the same cache.
 enum ArchiveStaging {
     private static let processStart = Date()
@@ -31,6 +47,14 @@ enum ArchiveStaging {
             guard url.lastPathComponent.hasPrefix(prefix),
                   let date = (try? url.resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate,
                   date < cutoff else { continue }
+            try? FileManager.default.removeItem(at: url)
+        }
+    }
+
+    /// Everything under `prefix`, whatever its age: for the sweep the store runs once at start,
+    /// before any restore or amendment of this process can have staged anything.
+    static func sweepAll(_ root: URL, prefix: String) {
+        for url in (try? FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil)) ?? [] where url.lastPathComponent.hasPrefix(prefix) {
             try? FileManager.default.removeItem(at: url)
         }
     }
@@ -50,15 +74,16 @@ enum ArchiveIO {
     /// `jpegxl/<record>/<file>` holds photograph `photos/<record>/<file>` repacked by a `JpegPacker`.
     static let packed = "jpegxl"
     private static let jpegStart: [UInt8] = [0xFF, 0xD8, 0xFF]
-    private static let stagePrefix = ".archive-import-"
+    static let stagePrefix = ".archive-import-"
 
     /// Each JPEG photograph goes in repacked by `packer` when that comes out smaller and unpacks to
-    /// the very same bytes; anything else goes in as it is.
+    /// the very same bytes; anything else goes in as it is. A record that cannot be read, or whose
+    /// evidence the restore would reject, refuses the backup in words rather than in silence.
     static func export(root: URL, to output: URL, protocolIds: Set<String>? = nil, packer: (any JpegPacker)? = JpegXL.loaded) throws {
         let store = Store(root: root)
         let catalogue = store.catalogue()
-        if let failure = catalogue.unreadable.first(where: { (protocolIds?.contains($0.id) ?? true) }) {
-            throw ArchiveError.unreadableRecord(failure.id)
+        if catalogue.unreadable.contains(where: { (protocolIds?.contains($0.id) ?? true) }) {
+            throw ArchiveRefused(.unreadableRecord)
         }
         if let protocolIds, !protocolIds.isSubset(of: Set(catalogue.records.map(\.id))) {
             throw ArchiveError.unreadableRecord(protocolIds.subtracting(catalogue.records.map(\.id)).sorted().joined(separator: ", "))
@@ -74,9 +99,10 @@ enum ArchiveIO {
         for p in catalogue.records.filter({ (protocolIds?.contains($0.id) ?? true) }) {
             let photos = root.appendingPathComponent("photos/\(p.id)")
             let ink = root.appendingPathComponent("signatures/\(p.id)")
-            try EvidenceValidation.requireReadable(p, photoDir: photos, signatureDir: ink)
-            guard !p.isFinalized() || ProtocolIntegrity.matches(p, photoDir: photos, signatureDir: ink) else {
-                throw ArchiveError.unreadableRecord(p.id)
+            // The test a restore applies, so a backup is refused while the original can still be
+            // looked at, not found unrestorable on the new phone.
+            guard validEvidence(p, photos: photos, ink: ink) else {
+                throw ArchiveRefused(.damagedEvidence, record: p.address.ifBlank(p.id))
             }
             try put("protocols/\(p.id).json", root.appendingPathComponent("protocols/\(p.id).json"))
             for name in (p.allPhotoFiles() + p.details.attachments.map(\.file)).filter({ !$0.isBlank }).distinct() {
@@ -185,7 +211,12 @@ enum ArchiveIO {
                   validExports(p, directory: stage.appendingPathComponent(exportRelative)) else { rejected += 1; continue }
             let paths = ["protocols/\(p.id).json", photoRelative, inkRelative, exportRelative]
             var moved: [(URL, URL)] = []
-            if FileManager.default.fileExists(atPath: target.path) {
+            let replacing = FileManager.default.fileExists(atPath: target.path)
+            // Evidence folders with no record file are what a restore killed during its install
+            // leaves, since the JSON is written last. No record owns them and every retry was
+            // refused for them, so they are moved into recovery with the rest, never deleted.
+            let orphaned = !replacing && paths.dropFirst().contains(where: { FileManager.default.fileExists(atPath: root.appendingPathComponent($0).path) })
+            if replacing {
                 let old = Store(root: root).load(p.id)
                 let healthy = old.map {
                     validEvidence($0, photos: root.appendingPathComponent(photoRelative), ink: root.appendingPathComponent(inkRelative)) &&
@@ -196,6 +227,8 @@ enum ArchiveIO {
                     if !healthy { repairable += 1 }
                     continue
                 }
+            }
+            if replacing || orphaned {
                 let quarantine = root.appendingPathComponent("recovery/\(p.id)/archive-\(UUID().uuidString)")
                 do {
                     for path in paths {
@@ -211,24 +244,22 @@ enum ArchiveIO {
                     for (original, retained) in moved.reversed() { try FileManager.default.moveItem(at: retained, to: original) }
                     rejected += 1; continue
                 }
-            } else if paths.dropFirst().contains(where: { FileManager.default.fileExists(atPath: root.appendingPathComponent($0).path) }) {
-                rejected += 1; continue
             }
             do {
                 // Install only referenced evidence. Unrelated archive entries never become private
                 // evidence merely because they happened to share the record's directory.
                 for name in (p.allPhotoFiles() + p.details.attachments.map(\.file)).filter({ !$0.isBlank }).distinct() {
-                    try atomicCopy(stage.appendingPathComponent("\(photoRelative)/\(name)"), to: root.appendingPathComponent("\(photoRelative)/\(name)"))
+                    try moveIn(stage.appendingPathComponent("\(photoRelative)/\(name)"), to: root.appendingPathComponent("\(photoRelative)/\(name)"))
                 }
                 for name in p.signatures.map(\.file).filter({ !$0.isBlank }).distinct() {
-                    try atomicCopy(stage.appendingPathComponent("\(inkRelative)/\(name)"), to: root.appendingPathComponent("\(inkRelative)/\(name)"))
+                    try moveIn(stage.appendingPathComponent("\(inkRelative)/\(name)"), to: root.appendingPathComponent("\(inkRelative)/\(name)"))
                 }
                 for name in exportNames(p, directory: stage.appendingPathComponent(exportRelative)) {
-                    try atomicCopy(stage.appendingPathComponent("\(exportRelative)/\(name)"), to: root.appendingPathComponent("\(exportRelative)/\(name)"))
+                    try moveIn(stage.appendingPathComponent("\(exportRelative)/\(name)"), to: root.appendingPathComponent("\(exportRelative)/\(name)"))
                 }
                 try atomicCopy(source, to: target)
                 imported += 1
-                if !moved.isEmpty { repaired += 1 }
+                if replacing { repaired += 1 }
             } catch {
                 for path in paths { try? FileManager.default.removeItem(at: root.appendingPathComponent(path)) }
                 for (original, retained) in moved.reversed() {
@@ -273,5 +304,14 @@ enum ArchiveIO {
         defer { try? FileManager.default.removeItem(at: tmp) }
         try FileManager.default.copyItem(at: source, to: tmp)
         try Files.replace(target, with: tmp)
+    }
+
+    /// Moved out of the stage, not copied. The stage sits in the same root, so this is a rename:
+    /// copying wrote every photograph a second time and ran out of room at an install that
+    /// FreeSpace never checks, which then counted valid records as rejected.
+    private static func moveIn(_ source: URL, to target: URL) throws {
+        try FileManager.default.createDirectory(at: target.deletingLastPathComponent(), withIntermediateDirectories: true)
+        guard !FileManager.default.fileExists(atPath: target.path) else { throw ArchiveError.destinationExists }
+        try FileManager.default.moveItem(at: source, to: target)
     }
 }

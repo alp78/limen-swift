@@ -58,6 +58,16 @@ import Testing
         #expect(!CountryDirectory.addressRegions.contains("001"))
     }
 
+    @Test func sortsCountriesByTheirNameInTheChosenLanguageNotByIsoCode() {
+        let before = CountryDirectory.nameOrder(locale: Locale(identifier: "en"))
+        #expect(["AE", "AT", "CH", "DE"].sorted(by: before) == ["AT", "DE", "CH", "AE"])
+    }
+
+    @Test func sortsAnAccentedInitialWithItsLetterNotAfterZ() {
+        let before = CountryDirectory.nameOrder(locale: Locale(identifier: "fr"))
+        #expect(["CH", "AE", "AT", "DE"].sorted(by: before) == ["DE", "AT", "AE", "CH"])
+    }
+
     @Test func acceptsACompleteForeignAddress() {
         var identity = SessionIdentity()
         identity.firstName = "Ada"
@@ -169,6 +179,64 @@ import Testing
         #expect(Lang.default(preferred: ["ja"]) == .en)
         #expect(Lang.from("De") == .de)
         #expect(Lang.allCases.first == .fr)
+    }
+
+    /// Five distinct sentences per kind and distinct kinds per language: a sentence left in
+    /// English under another language, or two kinds sharing one, would collapse into one here.
+    @Test func everyRemovalOfferedBackNamesWhatWasRemovedInEveryLanguage() {
+        for kind in UndoKind.allCases {
+            let sentences = Lang.allCases.map { Str($0).removedForUndo(kind) }
+            #expect(sentences.allSatisfy { !$0.isBlank && !$0.contains("\u{2014}") && !$0.contains("ß") }, "undo \(kind)")
+            #expect(Set(sentences).count == Lang.allCases.count, "undo \(kind)")
+        }
+        for lang in Lang.allCases {
+            let s = Str(lang)
+            #expect(Set(UndoKind.allCases.map { s.removedForUndo($0) }).count == UndoKind.allCases.count, "\(lang) undo")
+        }
+    }
+
+    @Test func everyBackupRecoveryAndPreviewMessageIsWrittenOutInEveryLanguage() {
+        let damaged = ArchiveRefused(.damagedEvidence, record: "Rue du Simplon 12")
+        let unreadable = ArchiveRefused(.unreadableRecord)
+        func messages(_ s: Str) -> [String] {
+            [s.recoverFailed, s.previewFailed, s.archiveFailure(damaged, true), s.archiveFailure(damaged, false), s.archiveFailure(unreadable, true)]
+        }
+        let perLanguage = Lang.allCases.map { messages(Str($0)) }
+        for i in messages(Str(.en)).indices {
+            let sentences = perLanguage.map { $0[i] }
+            #expect(sentences.allSatisfy { !$0.isBlank && !$0.contains("\u{2014}") && !$0.contains("ß") }, "message \(i)")
+            #expect(Set(sentences).count == Lang.allCases.count, "message \(i)")
+        }
+        // The way to keep the other records safe is named for a full backup and left out of a single record's.
+        for lang in Lang.allCases {
+            let s = Str(lang)
+            let whole = s.archiveFailure(damaged, true)
+            let single = s.archiveFailure(damaged, false)
+            #expect(whole.hasPrefix(single) && whole.count > single.count, "\(lang) remedy")
+        }
+        #expect(Str(.en).archiveFailure(nil, true) == Str(.en).archiveFailed)
+    }
+
+    @Test func everyIntakeMessageIsWrittenOutInEveryLanguage() {
+        func messages(_ s: Str) -> [String] {
+            [s.photoNotAdded, s.documentNotAdded, s.evidenceAfterFinalized, s.signatureNotSaved, s.signatureWaitsForEvidence, s.documentOpenFailed]
+        }
+        let perLanguage = Lang.allCases.map { messages(Str($0)) }
+        for i in messages(Str(.en)).indices {
+            let sentences = perLanguage.map { $0[i] }
+            #expect(sentences.allSatisfy { !$0.isBlank && !$0.contains("\u{2014}") && !$0.contains("ß") }, "intake message \(i)")
+            #expect(Set(sentences).count == Lang.allCases.count, "intake message \(i)")
+        }
+    }
+
+    @Test func everySessionListAndExportLineIsWrittenOutInEveryLanguage() {
+        func lines(_ s: Str) -> [String] { [s.amendedEntryNote, s.keptInApp, s.copyBeforeDeliveryChange] }
+        let perLanguage = Lang.allCases.map { lines(Str($0)) }
+        for i in lines(Str(.en)).indices {
+            let sentences = perLanguage.map { $0[i] }
+            #expect(sentences.allSatisfy { !$0.isBlank && !$0.contains("\u{2014}") && !$0.contains("ß") }, "session line \(i)")
+            #expect(Set(sentences).count == Lang.allCases.count, "session line \(i)")
+        }
     }
 
     @Test func nothingShipsWithAnEmDash() {

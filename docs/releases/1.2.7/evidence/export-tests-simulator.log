@@ -1,0 +1,15 @@
+# ExportTests, iPhone 17 Pro / iOS 26.5 simulator, 23 October 2026 (xcodebuild test, AllTests scheme, -only-testing:LimenTests/ExportTests), after the numbered-export case was added
+◇ Suite ExportTests started.
+✔ Test pdfGlyphPixelsAppearAboveTheirBaselineAndLongTokensStayInsideTheColumn() passed after 0.007 seconds.
+✔ Test theProfessionalRecordExportsAsAReadablePdfInEveryLanguage() passed after 0.873 seconds.
+✔ Test completePreviewAndRetainedOutputsCarryEveryParticipantAndEscapedEvidence() passed after 0.935 seconds.
+✔ Test aDraftIsRefusedAndTamperedEvidenceIsRefused() passed after 0.018 seconds.
+✔ Test draftPreviewNamesEveryMissingOutcomeWithoutClaimingFinalizationOrDepositRelease() passed after 0.498 seconds.
+✔ Test annexPlatesAreOneJpegEachAtTheirPlateSizeSharedWithTheHtmlAndCarryNoHash() passed after 2.389 seconds.
+✔ Test theDocumentIsNamedAfterTheAddressAndTheHandoverDayAndNumberedOnARepeat() passed after 0.103 seconds.
+✔ Test theRecordIsDrawnInTheAppsPaletteAndFamilyOnEveryPage() passed after 0.047 seconds.
+✔ Test aRecordOfSixRoomsWithPhotographsExportsWithItsContentsOnThePagesItNames() passed after 3.102 seconds.
+✔ Test allThreeActorsCompleteEntryAndExitWithTwoSignaturesAndPdf() passed after 0.726 seconds.
+✔ Test theModelWalksASessionFromTheFormToTheDocument() passed after 0.025 seconds.
+✔ Suite ExportTests passed after 8.731 seconds.
+✔ Test run with 11 tests in 1 suite passed after 8.731 seconds.

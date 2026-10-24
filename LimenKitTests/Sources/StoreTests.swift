@@ -190,6 +190,97 @@ import Testing
         try store.save(p)
         #expect(store.load(p.id) == p)
     }
+    @Test func aRecoveryThatCannotBeWrittenLeavesTheUnreadableRecordListedForAnotherTry() throws {
+        let root = try temporaryRoot(); let store = Store(root: root)
+        try writeText("{ not json", to: root.appendingPathComponent("protocols/p1.json"))
+        // A last-good copy that names another record stands in for a write that cannot be made:
+        // the store refuses it, and the unreadable file is neither deleted nor replaced.
+        try writeText(Store.fileText(Self.fullProtocol("not an id")), to: root.appendingPathComponent("recovery/p1/last-good.json"))
+        #expect(try store.recover("p1") == false)
+        #expect(readText(root.appendingPathComponent("protocols/p1.json")) == "{ not json")
+        #expect(store.catalogue().unreadable.map(\.id) == ["p1"])
+    }
+
+    @Test func sweepingTheStoreRemovesWhatARestoreOrAnAmendmentKilledPartWayLeftBehind() throws {
+        let root = try temporaryRoot()
+        try writeText("staged", to: root.appendingPathComponent(".archive-import-123/photos/p1/wall.jpg"))
+        try writeText("decrypted", to: root.appendingPathComponent("archive-decrypt-456.zip"))
+        try writeText("half copied", to: root.appendingPathComponent("photos/.amend-x/wall.jpg"))
+        try writeText("kept", to: root.appendingPathComponent("photos/p1/wall.jpg"))
+        Store(root: root).sweepStale()
+        #expect(!FileManager.default.fileExists(atPath: root.appendingPathComponent(".archive-import-123").path))
+        #expect(!FileManager.default.fileExists(atPath: root.appendingPathComponent("archive-decrypt-456.zip").path))
+        #expect(!FileManager.default.fileExists(atPath: root.appendingPathComponent("photos/.amend-x").path))
+        #expect(readText(root.appendingPathComponent("photos/p1/wall.jpg")) == "kept")
+    }
+
+    @Test func aSecondSweepOnTheSameRootLeavesARunningRestoresStageAlone() throws {
+        let root = try temporaryRoot()
+        Store(root: root).sweepStale()
+        try makeDir(root.appendingPathComponent(".archive-import-789"))
+        Store(root: root).sweepStale()
+        #expect(FileManager.default.fileExists(atPath: root.appendingPathComponent(".archive-import-789").path))
+    }
+
+    @Test func openingTheStoreDeletesNothingUntilItIsSwept() throws {
+        let root = try temporaryRoot()
+        try makeDir(root.appendingPathComponent(".archive-import-123"))
+        _ = Store(root: root)
+        #expect(FileManager.default.fileExists(atPath: root.appendingPathComponent(".archive-import-123").path))
+    }
+
+    private func parentWithAnOrphan(_ store: Store) throws -> HandoverProtocol {
+        var parent = HandoverProtocol(id: "p1", kind: .entry, createdEpochMs: 1)
+        parent.defects = [Defect(id: "d1", photos: ["wall.jpg"])]
+        parent.details.roomPhotos["r1"] = [PhotoEvidence("overview.jpg")]
+        parent.details.readings = [MeterReading(id: "m1", photos: [PhotoEvidence("meter.jpg")])]
+        parent.details.attachments = [SupportingDocument(id: "a1", file: "lease.pdf")]
+        for name in ["wall.jpg", "overview.jpg", "meter.jpg", "lease.pdf", "removed.jpg"] {
+            try writeText("bytes of \(name)", to: store.photoDir("p1").appendingPathComponent(name))
+        }
+        return parent
+    }
+
+    @Test func anAmendmentCarriesOnlyTheFilesItsDraftRefersTo() throws {
+        let root = try temporaryRoot(); let store = Store(root: root)
+        let parent = try parentWithAnOrphan(store)
+        var draft = parent
+        draft.id = "p2"
+        draft.amendedFromId = "p1"
+        try store.saveAmendment(parent: parent, draft: draft)
+        #expect(Set(try FileManager.default.contentsOfDirectory(atPath: store.photoDir("p2").path)) == ["wall.jpg", "overview.jpg", "meter.jpg", "lease.pdf"])
+        #expect(store.load("p2")?.id == "p2")
+        #expect(!FileManager.default.fileExists(atPath: root.appendingPathComponent("photos/.amend-p2").path))
+        // Removed evidence stays with the record it was removed from.
+        #expect(Files.isRegularFile(store.photoDir("p1").appendingPathComponent("removed.jpg")))
+    }
+
+    @Test func anAmendmentWhoseCopyFailsLeavesNeitherFolderNorRecord() throws {
+        let root = try temporaryRoot(); let store = Store(root: root)
+        let parent = try parentWithAnOrphan(store)
+        // A file already in the draft's stage makes the copy refuse, as a full disk would part way.
+        try writeText("in the way", to: root.appendingPathComponent("photos/.amend-p2/meter.jpg"))
+        var draft = parent
+        draft.id = "p2"
+        draft.amendedFromId = "p1"
+        #expect(throws: (any Error).self) { try store.saveAmendment(parent: parent, draft: draft) }
+        #expect(!FileManager.default.fileExists(atPath: root.appendingPathComponent("photos/.amend-p2").path))
+        #expect(!FileManager.default.fileExists(atPath: root.appendingPathComponent("photos/p2").path))
+        #expect(store.load("p2") == nil)
+        #expect(Files.isRegularFile(store.photoDir("p1").appendingPathComponent("meter.jpg")))
+    }
+
+    @Test func aReferencedNameThatLeavesTheFolderIsNotCopiedIntoAnAmendment() throws {
+        let root = try temporaryRoot(); let store = Store(root: root)
+        try writeText("not evidence", to: root.appendingPathComponent("photos/secret.txt"))
+        var parent = HandoverProtocol(id: "p1", kind: .entry, createdEpochMs: 1)
+        parent.defects = [Defect(id: "d1", photos: ["../secret.txt"])]
+        var draft = parent
+        draft.id = "p2"
+        try store.saveAmendment(parent: parent, draft: draft)
+        #expect(try FileManager.default.contentsOfDirectory(atPath: store.photoDir("p2").path).isEmpty)
+    }
+
     @Test func higherSequencesCannotChangeFinalizedFactsButCanRecordDistribution() throws {
         let store = Store(root: try temporaryRoot())
         var p = HandoverProtocol(id: "final", kind: .entry, createdEpochMs: 1)

@@ -52,6 +52,13 @@ public enum CountryDirectory {
         return name.isBlank ? regionCode : name
     }
 
+    /// Region codes in the alphabetical order of their names in `locale`. The locale's collation
+    /// places Ägypten, Émirats and Österreich with the A, E and O, where a plain string comparison
+    /// puts every accented initial after Z, and where sorting the flagged label gave the ISO order.
+    public static func nameOrder(locale: Locale) -> (String, String) -> Bool {
+        { a, b in name(a, locale: locale).compare(name(b, locale: locale), locale: locale) == .orderedAscending }
+    }
+
     public static func flag(_ regionCode: String) -> String {
         let region = regionCode.uppercased()
         guard region.count == 2, region.allSatisfy({ ("A"..."Z").contains($0) }) else { return "🌐" }

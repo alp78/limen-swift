@@ -7,9 +7,10 @@ import Foundation
 extension PdfExport.Sheet {
     func rooms(_ p: HandoverProtocol) {
         if p.rooms.isEmpty { return }
-        heading(s.stepInspection)
         let sections = AnnexContent.sections(p, s)
-        for room in p.rooms { panel(roomPanel(p, room, sections.first { $0.key == room.id })) }
+        let panels = p.rooms.map { room in roomPanel(p, room, sections.first { $0.key == room.id }) }
+        heading(s.stepInspection, first: panels.first)
+        for panel in panels { self.panel(panel) }
     }
 
     private func roomPanel(_ p: HandoverProtocol, _ room: Room, _ section: AnnexContent.Section?) -> PdfExport.Panel {
@@ -25,8 +26,9 @@ extension PdfExport.Sheet {
         var blocks: [any PdfExport.Block] = []
         // The room's readout first, as the hub door carries its own: how many photographs the
         // annex holds for it and on which page. A closing row would be stranded by a page break.
+        // The HTML has no pages, so its chip names the annex without the page the PDF's chip gives.
         if let section {
-            blocks.append(PdfExport.Chips([PdfExport.Chip("\(s.photos): \(section.cards.count)"), PdfExport.Chip(annexPointer(section))], keepWithNext: true))
+            blocks.append(PdfExport.Chips([PdfExport.Chip("\(s.photos): \(section.cards.count)"), PdfExport.Chip(annexPointer(section), html: s.pdfDefectAnnex)], keepWithNext: true))
         }
         if room.hasLegacyGrid { blocks.append(PdfExport.ItemGrid(legacyGrid(p, room))) }
         // A room explicitly confirmed as inspected says so even with no finding. Legacy seeded

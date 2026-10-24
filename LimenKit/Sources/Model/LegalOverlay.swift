@@ -172,8 +172,11 @@ extension HandoverProtocol {
     }
 
     /// Only inputs that affect a check remove its answer; retained notes explain the prior review.
+    /// The street and the place are not among them: no requirement resolves from their text, the
+    /// canton is chosen apart from them, and a keystroke in either used to empty every answer
+    /// with no undo.
     public func invalidatedLegalRequirements(next: HandoverProtocol) -> Set<LegalRequirement> {
-        if address != next.address || place != next.place || objectCanton != next.objectCanton { return Set(LegalRequirement.allCases) }
+        if objectCanton != next.objectCanton { return Set(LegalRequirement.allCases) }
         var changed = Set<LegalRequirement>()
         if handoverDate != next.handoverDate || contract.startDate != next.contract.startDate || contract.endDate != next.contract.endDate {
             changed.formUnion([.leaseAndLocalTiming, .depositProof, .tenantLiabilityInsurance, .landlordLiabilityInsurance, .vaudExitReadiness])

@@ -16,18 +16,15 @@ extension PdfExport.Sheet {
         case .landlord: chips.append(PdfExport.Chip("\(s.fixByLabel): \(s.role(.landlord))"))
         case .open: break
         }
-        if !d.fixDeadline.isBlank { chips.append(PdfExport.Chip("\(s.fixDeadline) \(SwissDate.display(d.fixDeadline))")) }
+        if !d.fixDeadline.isBlank { chips.append(PdfExport.Chip("\(s.repairDeadline): \(SwissDate.display(d.fixDeadline))")) }
         if !d.photos.isEmpty { chips.append(PdfExport.Chip("\(s.photos): \(d.photos.count)")) }
         if d.tenantResponse != .notStated { chips.append(PdfExport.Chip("\(s.tenantResponseLabel): \(s.tenantResponse(d.tenantResponse))")) }
         var notes: [String] = []
         if !d.costNote.isBlank { notes.append("\(s.costNote): \(d.costNote)") }
         if !d.reservation.isBlank { notes.append("\(s.reservationLabel): \(d.reservation)") }
         if !d.tenantComment.isBlank { notes.append("\(s.tenantComment): \(d.tenantComment)") }
-        let positions = d.participantPositions.entries.map { id, position -> String in
-            let name = p.parties.first { $0.participantKey() == id }?.name ?? id
-            return "\(name): \(s.tenantResponse(position.response))\n\(position.comment)"
-        }
-        return PdfExport.Finding(number: numbered.number, where: wherePieces.joined(separator: ", "), text: d.text, chips: chips, notes: notes, positions: positions)
+        return PdfExport.Finding(number: numbered.number, where: wherePieces.joined(separator: ", "), text: d.text, chips: chips, notes: notes,
+                                 positions: PdfExport.participantPositionLines(p, d, s))
     }
 
     /// Findings with no panel to sit in: a finding whose room is gone, or one on an object the
@@ -37,5 +34,18 @@ extension PdfExport.Sheet {
         let strays = Outline.strays(p)
         if strays.isEmpty { return }
         panel(PdfExport.Panel(s.defects, strays.map { findingBlock(p, $0) }))
+    }
+}
+
+extension PdfExport {
+    /// Per-tenant positions are edited only while several tenants share the record, and a removed
+    /// tenant's entry stays in the map, so a position prints for a tenant still on the record or
+    /// not at all.
+    static func participantPositionLines(_ p: HandoverProtocol, _ d: Defect, _ s: Str) -> [String] {
+        let tenants = p.parties.filter { $0.role == .tenant }
+        if tenants.count < 2 { return [] }
+        return d.participantPositions.entries.compactMap { id, position in
+            tenants.first { $0.participantKey() == id }.map { "\($0.name): \(s.tenantResponse(position.response))\n\(position.comment)" }
+        }
     }
 }

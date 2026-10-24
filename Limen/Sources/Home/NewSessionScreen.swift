@@ -38,6 +38,10 @@ struct NewSessionScreen: View {
     @State private var lookupFailed = false
     @State private var focusedAddressFields: Set<String> = []
     @State private var loaded = false
+    // By the name in the form's language, not the label: the flag leads the label, so sorting it
+    // gave the ISO code order. Sorted once per language, since a country's name is looked up.
+    @State private var phoneCountries: [PhoneCountry] = []
+    @State private var addressCountries: [AddressCountry] = []
 
     private var inlineStart: Bool { typeSize.isAccessibilitySize || verticalSize == .compact }
 
@@ -110,10 +114,10 @@ struct NewSessionScreen: View {
                             if !usesSwissAddress {
                                 CountryDropDown(
                                     label: s.addressCountry,
-                                    selectedLabel: CountryDirectory.addressCountries.first { $0.regionCode == addressCountryCode }?.label() ?? s.selectCountry,
-                                    options: CountryDirectory.addressCountries,
+                                    selectedLabel: addressCountries.first { $0.regionCode == addressCountryCode }?.label(locale: s.lang.locale) ?? s.selectCountry,
+                                    options: addressCountries,
                                     optionKey: { $0.regionCode },
-                                    optionLabel: { $0.label() },
+                                    optionLabel: { $0.label(locale: s.lang.locale) },
                                     emptyLabel: s.countryNoMatches
                                 ) { addressCountryCode = $0.regionCode }
                                 Text(s.foreignAddressHint).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
@@ -152,10 +156,10 @@ struct NewSessionScreen: View {
                             }
                             CountryDropDown(
                                 label: s.phoneCountry,
-                                selectedLabel: (InternationalPhone.countries.first { $0.regionCode == phoneRegionCode } ?? InternationalPhone.countries.first { $0.regionCode == "CH" })?.label() ?? "CH",
-                                options: InternationalPhone.countries,
+                                selectedLabel: (phoneCountries.first { $0.regionCode == phoneRegionCode } ?? phoneCountries.first { $0.regionCode == "CH" })?.label(locale: s.lang.locale) ?? "CH",
+                                options: phoneCountries,
                                 optionKey: { $0.regionCode },
-                                optionLabel: { $0.label() },
+                                optionLabel: { $0.label(locale: s.lang.locale) },
                                 emptyLabel: s.countryNoMatches
                             ) { selected in
                                 phoneRegionCode = selected.regionCode
@@ -210,6 +214,11 @@ struct NewSessionScreen: View {
             kind = entryToSeed != nil ? .exit : .entry
         }
         .onChange(of: identity) { _, value in if loaded { model.saveReusableIdentity(value) } }
+        .onChange(of: s.lang, initial: true) { _, lang in
+            let before = CountryDirectory.nameOrder(locale: lang.locale)
+            phoneCountries = InternationalPhone.countries.sorted { before($0.regionCode, $1.regionCode) }
+            addressCountries = CountryDirectory.addressCountries.sorted { before($0.regionCode, $1.regionCode) }
+        }
         // No switch in front of it: the lookup runs whenever the phone is online, and the fields
         // stay free to type when it is offline or nothing matches. 1.2.0's opt-in and disclosure
         // were taken out on the owner's review of the Android forms.
@@ -232,16 +241,24 @@ struct NewSessionScreen: View {
 
     /// Draft keeps the record in the library and returns to it; Validate opens it. Both are
     /// disabled until the name is in, and neither repeats the title or names the session kind.
+    /// Both leave the form behind, so the way back out of the handover is the list and a seeded
+    /// exit does not stay seeded to offer a second exit from the same entry.
     @ViewBuilder private func actionRow(enabled: Bool) -> some View {
         let draft = ActionKey(glyph: .save, label: s.draft, active: false, enabled: enabled) {
-            start()
-            model.closeFlow()
-            model.entryToSeedId = nil
-            model.requestHomePage(.sessions)
+            if start() {
+                model.closeFlow()
+                model.entryToSeedId = nil
+                model.requestHomePage(.sessions)
+            }
         }
         .accessibilityIdentifier("save-draft")
-        let validate = ActionKey(glyph: .confirm, label: s.validate, active: true, enabled: enabled, onPress: start)
-            .accessibilityIdentifier("start-session")
+        let validate = ActionKey(glyph: .confirm, label: s.validate, active: true, enabled: enabled) {
+            if start() {
+                model.entryToSeedId = nil
+                model.homePage = .sessions
+            }
+        }
+        .accessibilityIdentifier("start-session")
         // Two halves of a 375-point row hold "Bestätigen" only up to the largest standard size.
         if typeSize.isAccessibilitySize {
             VStack(spacing: 8) {
@@ -256,12 +273,15 @@ struct NewSessionScreen: View {
         }
     }
 
-    private func start() {
+    /// True once the record exists. A record that could not be written leaves the form where it
+    /// is, with the failure it shows, instead of moving on as though a draft had been kept.
+    private func start() -> Bool {
         if let entryToSeed {
             model.seedExitFrom(entryToSeed, sessionRole: actor.role, identity: identity)
         } else {
             model.startNewSession(role: actor.role, identity: identity, kind: sessionKind)
         }
+        return model.working != nil
     }
 
     private func changeAddress(_ change: () -> Void) {

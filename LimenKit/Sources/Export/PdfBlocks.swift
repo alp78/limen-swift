@@ -184,13 +184,16 @@ extension PdfExport {
         func html(_ h: HtmlSink) { h.fields(pairs) }
     }
 
+    /// `html` is what the accessible copy says when the page's wording means nothing there, such as a page number.
     struct Chip {
         let text: String
         let active: Bool
+        let html: String
 
-        init(_ text: String, active: Bool = false) {
+        init(_ text: String, active: Bool = false, html: String? = nil) {
             self.text = text
             self.active = active
+            self.html = html ?? text
         }
     }
 
@@ -227,7 +230,7 @@ extension PdfExport {
                     lines.append([])
                     x = 0
                 }
-                lines[lines.count - 1].append(Placed(chip: Chip(text, active: chip.active), x: x, width: w))
+                lines[lines.count - 1].append(Placed(chip: Chip(text, active: chip.active, html: chip.html), x: x, width: w))
                 x += w + PdfTokens.chipGap
             }
             return lines.map { line in
@@ -249,7 +252,7 @@ extension PdfExport {
             sheet.text(chip.text, x + pad, top + face.baseline(height), face)
         }
 
-        func html(_ h: HtmlSink) { h.chips(chips.map { ($0.text, $0.active) }) }
+        func html(_ h: HtmlSink) { h.chips(chips.map { ($0.html, $0.active) }) }
     }
 
     /// One numbered finding: the number in a navy badge beside where it was found, then its
@@ -289,7 +292,7 @@ extension PdfExport {
         func html(_ h: HtmlSink) {
             h.finding(number, `where`) {
                 h.text(text.ifBlank("–"))
-                if !chips.isEmpty { h.chips(chips.map { ($0.text, $0.active) }) }
+                if !chips.isEmpty { h.chips(chips.map { ($0.html, $0.active) }) }
                 for note in notes { h.text(note) }
                 for position in positions { h.text(position) }
             }

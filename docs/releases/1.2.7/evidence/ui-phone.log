@@ -1,0 +1,81 @@
+# ReviewFixesShotsTest on the iPhone 17 / iOS 26.6.2, 24 October 2026 01:46 (xcodebuild test-without-building). The runner opened the dossier, swiped eight times towards the readings panel, and the app stopped answering: the same freeze as the simulator's, on the device.
+Test Case '-[LimenUITests.ReviewFixesShotsTest testTheHubNamesTheBadTimeAndARemovedReadingIsOfferedBack]' started.
+t =     5.86s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+t =     7.47s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+t =     9.36s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+t =    11.28s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+t =    12.95s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+t =    16.10s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+t =    18.04s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+t =    19.99s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds 
+t =    81.36s         App event loop idle notification not received, will attempt to continue.
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/ReviewFixesShotsTest.swift:90: error: -[LimenUITests.ReviewFixesShotsTest testTheHubNamesTheBadTimeAndARemovedReadingIsOfferedBack] : Failed to get matching snapshots: XCTPerformOnMainRunLoop work timed out after 60.0s
+Test Case '-[LimenUITests.ReviewFixesShotsTest testTheHubNamesTheBadTimeAndARemovedReadingIsOfferedBack]' failed (413.069 seconds).
+
+## Second run, 24 October 2026 02:12, after the dossier fix (rail as the list's top inset, plain stack): the journey passes on the phone, four frames under shots/iphone17-ios26.6.2/
+t =     4.11s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =     6.35s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =     6.46s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =     8.55s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =     9.01s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    11.23s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    11.71s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    13.94s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    14.40s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    16.63s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    17.09s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    19.36s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    19.77s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    22.01s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    22.44s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    24.67s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    25.12s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    27.37s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    27.82s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    31.49s Tap "Meter readings (0)" Button
+t =    31.62s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    32.74s Tap "plus" Button
+t =    32.89s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    34.34s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    34.49s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    36.89s Tap "Time" TextField
+t =    37.18s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    37.53s Type '2599' into "Time" TextField
+t =    38.13s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    38.92s Tap "BACK" Button
+t =    39.10s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    41.89s Tap "Show all (5)" Button
+t =    41.99s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    43.91s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    44.02s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    46.29s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    48.51s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    48.62s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    52.18s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    52.29s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    55.90s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    56.01s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    58.11s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    58.58s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    60.82s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    61.28s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    63.53s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    63.96s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    67.70s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    67.81s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    69.90s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    70.36s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    72.55s Tap "Meter readings (1)" Button
+t =    72.68s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    74.13s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    74.29s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    78.16s Tap "DELETE" Button
+t =    78.61s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    80.24s Tap "UNDO" Button
+t =    80.41s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    81.87s Tap "BACK" Button
+t =    82.05s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    83.55s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+t =    85.40s Press ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.75] for 0.1 seconds, then drag to ScrollView at {{20.0, 129.0}, {362.0, 703.0}}[0.50, 0.25] with velocity of 500.00 pixels per
+t =    85.51s         Find: Descendants matching predicate identifier == "NotificationShortLookView" OR elementType == 7
+Test Case '-[LimenUITests.ReviewFixesShotsTest testTheHubNamesTheBadTimeAndARemovedReadingIsOfferedBack]' passed (87.570 seconds).

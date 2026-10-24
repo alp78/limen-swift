@@ -140,6 +140,11 @@ private struct SessionsScreen: View {
 
     private var groupKeys: [String] { filtered.map(groupKey).distinct() }
 
+    /// The originals a finalized amendment replaced. A draft amendment replaces nothing yet.
+    private var amended: Set<String> {
+        Set(model.protocols.filter { $0.isFinalized() && !$0.amendedFromId.isBlank }.map(\.amendedFromId))
+    }
+
     private func groupKey(_ record: HandoverProtocol) -> String {
         [record.address.ifBlank(s.noAddress), record.place, record.objectDetail].filter { !$0.isBlank }.joined(separator: " · ")
     }
@@ -157,14 +162,16 @@ private struct SessionsScreen: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(record.id).font(LimenType.bodySmall).textSelection(.enabled)
                                 if record.hasRecovery { SmallKey(label: s.recover) { model.recoverRecord(record.id) } }
+                                if model.recoverFailedId == record.id { Text(s.recoverFailed).font(LimenType.bodySmall).foregroundStyle(colors.dangerOutline) }
                             }
                         }
                     }
                     if filtered.isEmpty { Text(s.sessionsEmpty).font(LimenType.bodyLarge).foregroundStyle(colors.inkDim) }
+                    let amended = amended
                     ForEach(groupKeys, id: \.self) { group in
                         VStack(alignment: .leading, spacing: 8) {
                             Text(group).font(LimenType.labelLarge).foregroundStyle(colors.inkDim).accessibilityAddTraits(.isHeader)
-                            ForEach(filtered.filter { groupKey($0) == group }, id: \.id) { record in ProtocolCard(p: record, onSeedExit: onSeedExit) }
+                            ForEach(filtered.filter { groupKey($0) == group }, id: \.id) { record in ProtocolCard(p: record, amended: amended.contains(record.id), onSeedExit: onSeedExit) }
                         }
                     }
                 }
@@ -185,6 +192,8 @@ private struct ProtocolCard: View {
     @Environment(\.limen) private var colors
     @Environment(\.str) private var s
     let p: HandoverProtocol
+    /// Whether a finalized amendment replaced this record.
+    let amended: Bool
     let onSeedExit: (HandoverProtocol) -> Void
     @State private var armed = false
 
@@ -223,12 +232,16 @@ private struct ProtocolCard: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            if p.kind == .entry, p.isFinalized(), amended {
+                Text(s.amendedEntryNote).font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
+            }
             HStack(spacing: 6) {
                 if p.kind == .entry {
                     // A draft offers its own finalization; a finalized entry offers the exit seeded
-                    // from it. A disabled chip explaining why it was disabled was not a control.
+                    // from it, unless an amendment replaced it: the exit would compare against the
+                    // uncorrected record. A disabled chip explaining why was not a control.
                     if p.isFinalized() {
-                        Chip(label: s.exitFromThis, dim: false) { onSeedExit(p) }
+                        if !amended { Chip(label: s.exitFromThis, dim: false) { onSeedExit(p) } }
                     } else {
                         Chip(label: s.finalizeEntryFirst, dim: false) {
                             model.openProtocol(p.id)

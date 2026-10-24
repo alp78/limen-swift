@@ -35,7 +35,7 @@ struct DefectEditor: View {
                         Panel(label: s.photos) {
                             VStack(alignment: .leading, spacing: 8) {
                                 if !locked {
-                                    PhotoIntakeKeys { file, source in model.attachPhoto(defectId, source: file, photoSource: source) }
+                                    PhotoIntakeKeys(owner: defectId, kind: .defect) { file, source in model.attachPhoto(defectId, source: file, photoSource: source) }
                                 }
                                 if !d.photos.isEmpty {
                                     ScrollView(.horizontal, showsIndicators: false) {
@@ -132,10 +132,13 @@ struct WearAssessment: View {
     let defectId: String
     @Environment(\.limen) private var colors
     @Environment(\.str) private var s
-    @State private var picked: LifeKey?
+    @Environment(\.recordLocked) private var locked
     @State private var showTable = false
 
     private var estimate: ReplacementEstimate { p.details.estimates[defectId] ?? ReplacementEstimate() }
+    /// The row is stored by its enum name, as Android stores it, so the paper names it in the
+    /// document's language; a lifespan typed by hand leaves it blank, which reads as Own value.
+    private var picked: LifeKey? { LifeKey(rawValue: estimate.basis) }
     private var lifespan: String { estimate.lifeYears }
     private var age: String { estimate.ageYears }
     private var cost: String { estimate.replacementChf }
@@ -151,6 +154,10 @@ struct WearAssessment: View {
         let ageV = swissNumber(age)
         let costV = swissNumber(cost)
         VStack(spacing: 10) {
+            // Offered back through the undo bar, as the other entries of the dossier are.
+            if !locked, p.details.estimates[defectId] != nil {
+                SmallKey(label: s.delete) { model.removeEstimate(defectId) }
+            }
             Panel(label: s.faceValue, info: s.tipZeitwert()) {
                 VStack(alignment: .leading, spacing: 8) {
                     let shape = RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -175,8 +182,7 @@ struct WearAssessment: View {
                                     ForEach(Lifespans.table, id: \.key) { row in
                                         Button {
                                             Haptics.play(.key)
-                                            picked = row.key
-                                            update { $0.lifeYears = String(Int(row.years)); $0.basis = s.life(row.key) }
+                                            update { $0.lifeYears = String(Int(row.years)); $0.basis = row.key.rawValue }
                                             showTable = false
                                         } label: {
                                             HStack {
@@ -195,13 +201,11 @@ struct WearAssessment: View {
                     }
                     HStack(alignment: .top, spacing: 8) {
                         Field(label: s.lifespanYears, value: lifespan, keyboard: .decimalPad) { v in
-                            update { $0.lifeYears = String(v.prefix(5)) }
-                            picked = nil
+                            update { $0.lifeYears = String(v.prefix(5)); $0.basis = "" }
                         }
                         Field(label: s.ageYears, value: age, keyboard: .decimalPad) { value in update { $0.ageYears = String(value.prefix(5)) } }
                     }
                     Text(s.estimateNotice).font(LimenType.bodySmall).foregroundStyle(colors.ink)
-                    Field(label: s.legalBasis, value: estimate.basis, singleLine: false) { value in update { $0.basis = value } }
                     Field(label: s.sourceLabel, value: estimate.source) { value in update { $0.source = value } }
                     DateField(label: s.handoverDate, stored: estimate.date, fieldKey: "estimate.\(defectId).date") { value in update { $0.date = value } }
                     Field(label: s.repairCost, value: cost, keyboard: .decimalPad, isError: !cost.isBlank && swissNumber(cost) == nil) { value in update { $0.replacementChf = String(value.prefix(12)) } }

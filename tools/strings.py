@@ -23,7 +23,7 @@ ANDROID = Path(os.environ.get("LIMEN_ANDROID", HERE / ".." / ".." / "ANDROID" / 
 SOURCE = ANDROID / "app" / "src" / "main" / "java" / "dev" / "peringer" / "limen" / "ui" / "Strings.kt"
 OUT = HERE / "LimenKit" / "Sources" / "Strings" / "Str.swift"
 
-TYPE_NAMES = {"Int": "Int", "String": "String"}
+TYPE_NAMES = {"Int": "Int", "String": "String", "Boolean": "Bool"}
 
 
 def swift_case(name: str) -> str:
@@ -115,7 +115,8 @@ class Parser:
                     expr = self.text[self.pos + 2:end]
                     self.pos = end + 1
                     nested = Parser(expr, self.renamed)
-                    translated = nested.expression()
+                    # One operand: an interpolation that computes is still a generator gap.
+                    translated = nested.operand()
                     nested.skip_ws()
                     if nested.pos != len(expr):
                         raise SystemExit(f"unsupported interpolation: {expr!r}")
@@ -153,6 +154,18 @@ class Parser:
                 raise SystemExit(f"bad argument list at {self.pos}: {self.text[self.pos:self.pos + 40]!r}")
 
     def expression(self) -> str:
+        # Since 1.2.7 a sentence can be a string joined by `+` to a conditional tail (the remedy a
+        # refused backup names only for a whole library): each piece is an operand on its own, and
+        # a conditional operand is parenthesised, as Swift's `+` binds tighter than `?:`.
+        pieces = [self.operand()]
+        while self.peek("+"):
+            self.pos += 1
+            pieces.append(self.operand())
+        if len(pieces) == 1:
+            return pieces[0]
+        return " + ".join(f"({piece})" if " ? " in piece else piece for piece in pieces)
+
+    def operand(self) -> str:
         self.skip_ws()
         if self.peek('"'):
             return self.string()
@@ -199,27 +212,42 @@ class Parser:
         self.expect("(")
         subject = self.identifier()
         self.skip_ws()
-        if not self.peek("=="):
-            raise SystemExit(f"if without == at {self.pos}: {self.text[self.pos:self.pos + 40]!r}")
-        self.pos += 2
-        self.skip_ws()
-        literal = re.match(r"\d+", self.text[self.pos:])
-        if literal:
-            self.pos += literal.end()
-            case = literal.group(0)
+        if self.peek(")"):
+            # `if (wholeLibrary) a else b`: a Boolean parameter read as it is, since 1.2.7.
+            condition = subject
         else:
-            case = self.reference(self.dotted())
+            if not self.peek("=="):
+                raise SystemExit(f"if without == at {self.pos}: {self.text[self.pos:self.pos + 40]!r}")
+            self.pos += 2
+            self.skip_ws()
+            literal = re.match(r"\d+", self.text[self.pos:])
+            if literal:
+                self.pos += literal.end()
+                case = literal.group(0)
+            elif self.peek("null"):
+                # `if (refused == null) a else b`: an optional parameter absent, since 1.2.7.
+                self.pos += 4
+                case = "nil"
+            else:
+                case = self.reference(self.dotted())
+            condition = f"{subject} == {case}"
         self.expect(")")
         then = self.expression()
         self.skip_ws()
         self.expect("else")
         otherwise = self.expression()
-        return f"{subject} == {case} ? {then} : {otherwise}"
+        if otherwise.startswith("switch"):
+            # The else branch is a whole `when`: statements, since a switch is no expression here,
+            # and an optional subject is unwrapped for the switch that reads it.
+            if condition.endswith(" == nil"):
+                return f"guard let {subject} else {{ return {then} }}\n        {otherwise}"
+            return f"if {condition} {{ return {then} }}\n        {otherwise}"
+        return f"{condition} ? {then} : {otherwise}"
 
     def when(self) -> str:
         self.expect("when")
         self.expect("(")
-        subject = self.identifier()
+        subject = self.dotted()
         self.expect(")")
         self.expect("{")
         branches: list[tuple[str, str]] = []
@@ -378,7 +406,7 @@ def main() -> None:
         else:
             rtype = "Tip" if value.startswith("Tip(") else "String"
             params = ", ".join(f"_ {p}: {TYPE_NAMES.get(t, t)}" for p, t in d["params"])
-            if value.startswith("switch"):
+            if value.startswith(("switch", "if ", "guard ")):
                 lines.append(f"    {access} func {d['name']}({params}) -> {rtype} {{")
                 lines.append("        " + value)
                 lines.append("    }")

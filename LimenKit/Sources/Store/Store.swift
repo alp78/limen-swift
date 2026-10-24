@@ -27,6 +27,24 @@ public final class Store: Sendable {
     // Store instances are also created by archives. One process-wide owner prevents two instances
     // from both accepting the same predecessor before either has replaced it.
     private static let lock = NSRecursiveLock()
+    /// The roots `sweepStale` has run for, read and written under `lock`.
+    nonisolated(unsafe) private static var swept = Set<String>()
+    /// The folder an amendment's photographs are copied into before it has a record: swept at
+    /// start, since a draft's own folder would sit in no list for good.
+    static let amendStage = ".amend-"
+
+    /// What a process killed part way leaves in `root`: the stage and the decrypted copy of a
+    /// restore, which only the next restore ever removed, and the half-copied folder of an
+    /// amendment. Gigabytes of it, so the caller runs this off the main thread. Once per root
+    /// and process: a restore that is running must never find its stage deleted by a second sweep.
+    public func sweepStale() {
+        Self.lock.lock()
+        let first = Self.swept.insert(root.path).inserted
+        Self.lock.unlock()
+        guard first else { return }
+        ArchiveCrypto.sweep(root)
+        ArchiveStaging.sweepAll(root.appendingPathComponent("photos"), prefix: Self.amendStage)
+    }
 
     public init(root: URL) {
         self.root = root
@@ -148,6 +166,36 @@ public final class Store: Sendable {
         try? FileManager.default.removeItem(at: dir.appendingPathComponent("\(id).json"))
         for folder in ["photos", "signatures", "recovery", "exports"] {
             try? FileManager.default.removeItem(at: root.appendingPathComponent(folder).appendingPathComponent(id))
+        }
+    }
+
+    /// Saves the draft of an amendment with the photographs and documents it refers to, copied
+    /// from `parent`'s folder. What was removed from the parent since stays there for recovery and
+    /// is not carried forward. The draft's folder is not a record until its JSON exists, so no
+    /// list shows it and no `delete` would ever be asked for it: a failure removes it again here.
+    public func saveAmendment(parent: HandoverProtocol, draft: HandoverProtocol) throws {
+        Self.lock.lock()
+        defer { Self.lock.unlock() }
+        guard EvidenceNames.isArchiveSafe(draft.id) else { throw SaveError.unsafeIdentifier }
+        let photos = root.appendingPathComponent("photos")
+        // Copied under a name no record has, then renamed into place: a process killed part way
+        // leaves a folder that `sweepStale` knows to remove, where the draft's own folder would
+        // sit in no list for good.
+        let stage = photos.appendingPathComponent("\(Self.amendStage)\(draft.id)")
+        do {
+            let from = photoDir(parent.id)
+            try FileManager.default.createDirectory(at: stage, withIntermediateDirectories: true)
+            for name in (parent.allPhotoFiles() + parent.details.attachments.map(\.file)).filter(EvidenceNames.isSafe).distinct() {
+                let source = from.appendingPathComponent(name)
+                guard Files.isRegularFile(source) else { continue }
+                try FileManager.default.copyItem(at: source, to: stage.appendingPathComponent(name))
+            }
+            try FileManager.default.moveItem(at: stage, to: photos.appendingPathComponent(draft.id))
+            try save(draft)
+        } catch {
+            try? FileManager.default.removeItem(at: stage)
+            delete(draft.id)
+            throw error
         }
     }
 

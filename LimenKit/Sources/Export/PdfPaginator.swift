@@ -34,8 +34,9 @@ enum Paginator {
     /// `available` is the row space left on the current page and `full` the row space of a fresh
     /// page, both with the panel's own chrome already taken off. A panel that would open with
     /// fewer than `minFirstRows` rows moves whole to a fresh page instead of leaving a header
-    /// over one line; trailing kept rows move with their successor; a single row taller than a
-    /// page is placed anyway, since only a photograph can be and the annex has already sized those.
+    /// over one line; trailing kept rows move with their successor unless that group is taller
+    /// than a page; a single row taller than a page is placed anyway, since only a photograph can
+    /// be and the annex has already sized those.
     static func segments(_ rows: [Slot], available: CGFloat, full: CGFloat, minFirstRows: Int = 2) -> [Segment] {
         if rows.isEmpty { return [Segment(0, 0, newPageBefore: available < 0, continued: false)] }
         var out: [Segment] = []
@@ -54,8 +55,12 @@ enum Paginator {
                 break
             }
             // Rows that hold on to their successor leave with it, before the opening is judged, so
-            // a panel never opens with the one row a kept group left behind.
-            while to - 1 > from, rows[to - 1].keepWithNext { to -= 1 }
+            // a panel never opens with the one row a kept group left behind. A kept group taller
+            // than a fresh page is not held together by moving it, since no page can: it fills the
+            // page and runs on, where backing off would give each of its rows a page of its own.
+            let filled = to
+            while to > from, rows[to - 1].keepWithNext { to -= 1 }
+            if to < filled, held(rows, from: to) > full { to = filled }
             let tooFew = out.isEmpty && to - from < min(minFirstRows, rows.count)
             if to == from || tooFew, !fresh, space < full {
                 fresh = true
@@ -69,5 +74,31 @@ enum Paginator {
             space = full
         }
         return out
+    }
+
+    /// The row space the panel needs on the current page for `segments` to open it there instead
+    /// of moving it whole to a fresh page; `full` or more when less than a page would not do. A
+    /// heading asks it before it is drawn, so that it never ends a page with its panel on the
+    /// next. It reads the answer off `segments`, so the two cannot disagree.
+    static func opening(_ rows: [Slot], full: CGFloat) -> CGFloat {
+        var space: CGFloat = 0
+        var n = 0
+        while n < rows.count, space < full, segments(rows, available: space, full: full).first?.newPageBefore == true {
+            space += rows[n].height
+            n += 1
+        }
+        return space
+    }
+
+    /// The height of the group of kept rows that starts at `start`, with the row that closes it.
+    private static func held(_ rows: [Slot], from start: Int) -> CGFloat {
+        var height: CGFloat = 0
+        var at = start
+        while at < rows.count {
+            height += rows[at].height
+            if !rows[at].keepWithNext { break }
+            at += 1
+        }
+        return height
     }
 }

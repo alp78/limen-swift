@@ -86,7 +86,7 @@ struct DataPrivacyScreen: View {
                             if model.archiveBusy {
                                 Text(s.working).font(LimenType.bodySmall).foregroundStyle(colors.inkDim)
                             } else if model.archiveFailed {
-                                Text(s.archiveFailed).font(LimenType.bodySmall).foregroundStyle(colors.dangerOutline)
+                                Text(s.archiveFailure(model.archiveRefused, model.archiveRecordId == nil)).font(LimenType.bodySmall).foregroundStyle(colors.dangerOutline)
                             } else if let exported = model.archiveExported {
                                 Text(model.archiveProtected ? s.archiveSaved(exported.displayName) : s.archiveSavedOpen(exported.displayName))
                                     .font(LimenType.bodySmall)

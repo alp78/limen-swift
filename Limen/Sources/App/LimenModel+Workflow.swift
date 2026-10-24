@@ -20,10 +20,10 @@ extension LimenModel {
 
     func recoverRecord(_ id: String) {
         guard working?.id != id else { return }
-        do {
-            _ = try store.recover(id)
-            refreshLibrary()
-        } catch { evidenceError = error.localizedDescription }
+        recoverFailedId = nil
+        let recovered = (try? store.recover(id)) ?? false
+        if !recovered { recoverFailedId = id }
+        refreshLibrary()
     }
 
     func setLibraryProtectionEnabled(_ enabled: Bool) {
@@ -52,7 +52,15 @@ extension LimenModel {
         let context = LAContext()
         var availabilityError: NSError?
         guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &availabilityError) else {
-            evidenceError = availabilityError?.localizedDescription ?? str.openFileFailed
+            // Nothing to ask: the gate stands in front of the switch that turns it off, so on a
+            // phone whose passcode was removed afterwards it could only ever refuse, and the saved
+            // records would stay shut until a passcode was set again. Enabling still needs one.
+            if enabling {
+                evidenceError = availabilityError?.localizedDescription ?? str.openFileFailed
+            } else {
+                libraryUnlocked = true
+                if let destination { homePage = destination }
+            }
             return
         }
         libraryAuthenticationBusy = true
@@ -94,14 +102,19 @@ extension LimenModel {
             cancelMaterialEdit()
             return
         }
+        // The editor waiting behind this confirmation opens once the finding it is for exists.
+        let opening = pendingOpenDefect
         cancelMaterialEdit()
         applyContentEdit(next, from: current)
+        pendingOpenDefect = opening
+        openPendingDefect()
     }
 
     func cancelMaterialEdit() {
         pendingEdit = nil
         pendingEditNames = []
         pendingEditRevision = nil
+        pendingOpenDefect = nil
     }
 
     func addParticipant(role: Role) {
@@ -115,7 +128,8 @@ extension LimenModel {
     }
 
     func removeParticipant(id: String) {
-        edit { p in
+        if contentLocked { return }
+        reversibleEdit(.party) { p in
             var next = p
             next.parties.removeAll { $0.participantKey() == id }
             next.signatures.removeAll { $0.participantId == id }
@@ -186,7 +200,14 @@ extension LimenModel {
                 documentPreviewHTML = files.html
                 previewRecordId = p.id
                 previewRevision = p.contentRevision
-            case .failure(let error): previewError = error.localizedDescription
+            case .failure(let error):
+                // Only evidence that cannot be rendered is a file to restore; a preview that failed
+                // for any other reason says nothing about the photographs.
+                if let unreadable = error as? EvidenceValidation.UnrenderableEvidence {
+                    previewError = "\(str.finalizationIssue(.evidence)): \(unreadable.files.joined(separator: ", "))"
+                } else {
+                    previewError = str.previewFailed
+                }
             }
         }
     }

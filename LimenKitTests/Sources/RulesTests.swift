@@ -253,6 +253,23 @@ import Testing
         #expect(exit.requirements == [.leaseAndLocalTiming, .vaudExitReadiness])
     }
 
+    @Test func typingInTheAddressOrPlaceInvalidatesNoLegalCheck() {
+        let before = record(.vd)
+        var next = before
+        next.address = "Rue de Bourg 1"
+        #expect(before.invalidatedLegalRequirements(next: next).isEmpty)
+        next = before
+        next.place = "1003 Lausanne"
+        #expect(before.invalidatedLegalRequirements(next: next).isEmpty)
+    }
+
+    @Test func movingTheCantonInvalidatesEveryLegalCheck() {
+        let before = record(.vd)
+        var next = before
+        next.objectCanton = .ge
+        #expect(before.invalidatedLegalRequirements(next: next) == Set(LegalRequirement.allCases))
+    }
+
     @Test func missingAndExceptionalOutcomesStayRecordableButNeedAnExplanation() throws {
         let overlay = try #require(record(.ag, kind: .exit).resolvedLegalOverlay())
         #expect(!overlay.isComplete(LegalOverlayRecord()))
@@ -522,5 +539,158 @@ import Testing
         sideless.sessionRole = nil
         #expect(CompletionRules.requiredRecordRoles(sideless, fallbackRole: nil) == [.tenant, .landlord])
         #expect(try issues(sideless).isEmpty)
+    }
+
+    /// Every section the dossier chips cover, answered and accepted by the gate.
+    private func everySectionAnswered() -> HandoverProtocol {
+        var p = complete(.entry, .tenant)
+        p.dossier = DossierCard.allCases
+        p.dossierChosen = true
+        p.contract.monthlyRentChf = "1850"
+        p.contract.conclusionDate = "2026-08-01"
+        p.deposit.kind = .bankAccount
+        p.deposit.amountChf = "3700"
+        p.deposit.bank = "BCV"
+        p.deposit.account = "CH93 0076 2011 6238 5295 7"
+        p.remarks = "Keys handed over at the door"
+        p.legalOverlay = p.legalOverlay.withStatus(.depositProof, .confirmed)
+        p.details.actualTransferDate = "2026-08-18"
+        p.details.actualTransferTime = "10:30"
+        // Meters here are readings only, and the legacy six dials stay empty: the card's only way in.
+        p.details.readings = [MeterReading(id: "m1", label: "Electricity", identifier: "E-1", value: "4821", unit: "kWh", date: "2026-08-18", time: "10:05")]
+        p.details.attachments = [SupportingDocument(id: "a1", title: "Lease", externalReference: "Folder 3")]
+        p.details.followUps = [FollowUp(id: "f1", description: "Stain returns after cleaning")]
+        return p
+    }
+
+    private func chips(_ p: HandoverProtocol) -> [String: Bool] {
+        var ticks = [
+            "object": CompletionRules.objectRecorded(p),
+            "parties": CompletionRules.partiesRecorded(p),
+            "transfer": CompletionRules.transferRecorded(p),
+            "attachments": CompletionRules.attachmentsRecorded(p),
+            "followUps": CompletionRules.followUpsRecorded(p),
+        ]
+        for card in DossierCard.allCases { ticks[card.rawValue] = CompletionRules.dossierCardRecorded(p, card) }
+        return ticks
+    }
+
+    @Test func everySectionChipTicksOnARecordTheGateAccepts() throws {
+        let full = everySectionAnswered()
+        #expect(try issues(full).isEmpty)
+        #expect(chips(full).values.allSatisfy { $0 }, "\(chips(full))")
+    }
+
+    @Test func aChipDoesNotTickWhereTheGateRejectsItsSection() throws {
+        let full = everySectionAnswered()
+        var broken: [(String, HandoverProtocol)] = []
+        var p = full
+        var witness = Party(.witness)
+        witness.id = "w1"
+        p.parties.append(witness)
+        broken.append(("parties", p))
+        p = full
+        p.parties = [Party(.tenant, name: "Tenant", representedBy: "Agent"), full.parties[1]]
+        broken.append(("parties", p))
+        p = full
+        p.handoverTime = "14:3"
+        broken.append(("object", p))
+        p = full
+        p.lastProtocolDate = "31/02/2026"
+        broken.append(("object", p))
+        p = full
+        p.contract.monthlyRentChf = "abc"
+        broken.append(("Contract", p))
+        p = full
+        p.deposit.amountChf = "3k"
+        broken.append(("Deposit", p))
+        p = full
+        p.details.readings[0].time = "25:99"
+        broken.append(("Meters", p))
+        p = full
+        p.chargesStatementBy = "31/02/2026"
+        broken.append(("Notes", p))
+        p = full
+        p.details.actualTransferTime = "25:99"
+        broken.append(("transfer", p))
+        p = full
+        p.details.attachments = [SupportingDocument(id: "a2")]
+        broken.append(("attachments", p))
+        p = full
+        p.details.followUps = [FollowUp(id: "f2")]
+        broken.append(("followUps", p))
+        for (section, record) in broken {
+            #expect(chips(record)[section] == false, "\(section)")
+            #expect(try !issues(record).isEmpty, "\(section)")
+        }
+    }
+
+    @Test func aContractAnsweredOnlyByItsReasonTicksAndPasses() throws {
+        let full = everySectionAnswered()
+        var reasonOnly = full
+        reasonOnly.contract = Contract()
+        reasonOnly.details.scopeNotes["Contract"] = "Lease not available at the handover"
+        // Without a conclusion date the initial-rent rule cannot be resolved, and this port's
+        // overlay then asks the confirmed check for a note, which is the audit's rule, not 1.2.7's.
+        reasonOnly.legalOverlay.notes[.initialRentForm] = "Form seen at the agency"
+        #expect(CompletionRules.dossierCardRecorded(reasonOnly, .contract))
+        #expect(try issues(reasonOnly).isEmpty)
+        var empty = full
+        empty.contract = Contract()
+        #expect(!CompletionRules.dossierCardRecorded(empty, .contract))
+    }
+
+    @Test func aDepositAmountLeftBehindByTheKindPillDoesNotBlockFinalization() throws {
+        // The amount field exists only for a bank account and an insurance, so text kept after the
+        // pill moved to None is a value nobody can reach to correct.
+        var none = everySectionAnswered()
+        none.deposit = Deposit()
+        none.deposit.kind = .none
+        none.deposit.amountChf = "two months"
+        #expect(try issues(none).isEmpty)
+        #expect(CompletionRules.depositAmountShown(none) == "")
+        var bank = none
+        bank.deposit.kind = .bankAccount
+        bank.deposit.bank = "BCV"
+        bank.deposit.account = "CH93 0076 2011 6238 5295 7"
+        #expect(try issues(bank).contains(.dossier))
+        #expect(CompletionRules.incompleteDossierTarget(bank) == "card-Deposit")
+    }
+
+    @Test func theDossierMessageNamesOnlyWhatTheGateRejected() {
+        let s = Str(.en)
+        let full = everySectionAnswered()
+        #expect(CompletionRules.dossierCauses(full, s).isEmpty)
+        var p = full
+        p.contract.monthlyRentChf = "1.200,50"
+        #expect(CompletionRules.dossierCauses(p, s) == [s.monthlyRent])
+        p = full
+        p.deposit.amountChf = "3k"
+        #expect(CompletionRules.dossierCauses(p, s) == [s.depositAmount])
+        p = full
+        p.lastProtocolDate = "12/0"
+        #expect(CompletionRules.dossierCauses(p, s) == [s.lastProtocol])
+        p = full
+        p.contract = Contract()
+        #expect(CompletionRules.dossierCauses(p, s) == [s.contract])
+        p = full
+        p.details.readings = [MeterReading(id: "m2")]
+        #expect(CompletionRules.dossierCauses(p, s) == [s.meters])
+        // A wear estimate with its cost left blank is the case the editor itself does not flag.
+        var worn = full
+        worn.defects = [Defect(id: "d1", roomId: "r1", text: "Scratched floor", chargedToTenant: true)]
+        worn.details.estimates["d1"] = ReplacementEstimate(ageYears: "3", lifeYears: "8")
+        #expect(CompletionRules.dossierCauses(worn, s) == ["\(s.faceValue): Scratched floor"])
+    }
+
+    @Test func aTimeThatIsNotValidIsNamedBesideTheHandoverTimeMessage() throws {
+        let s = Str(.en)
+        let full = everySectionAnswered()
+        #expect(CompletionRules.timeCauses(full, s).isEmpty)
+        var bad = full
+        bad.details.actualTransferTime = "25:99"
+        bad.details.readings[0].time = "9"
+        #expect(try issues(bad).contains(.handoverTime))
+        #expect(CompletionRules.timeCauses(bad, s) == [s.actualTransfer, "\(s.meters): Electricity"])
     }
 }

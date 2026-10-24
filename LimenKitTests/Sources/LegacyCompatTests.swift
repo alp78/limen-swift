@@ -13,6 +13,7 @@ import Testing
 /// same hex. It is the proof that a record signed on either phone verifies on the other.
 @Suite struct LegacyCompatTests {
     private static let goldenFingerprint = "9BCDDF82B00F72B599EF5188085D846CC69820F8DEFC7AE7CC35860246C28275"
+    private static let goldenFinalizedFingerprint = "2853CCC553B79B76EAFF7B416E4D5F2C4222297682606D9615F38EEBFB9D50B7"
 
     private func v2Record() -> HandoverProtocol {
         var p = HandoverProtocol(id: "old", kind: .entry, createdEpochMs: 1)
@@ -44,6 +45,81 @@ import Testing
         meters.electricity1 = "48214.7"
         p.meters = meters
         p.signatures = [Signature(.tenant, plane: .record, file: "tenant-record.png")]
+        return p
+    }
+
+    /// What every record finalized since 1.2.0 carries on top of that: the starter's identity, the
+    /// controller block and the details, with the legal snapshot that finalization always freezes
+    /// into them, and the canton, the legal overlay and a tenant's position on a finding, which
+    /// every such record also carries. All of them are `never`-encoded at their defaults, so a
+    /// fixture that leaves them out never invokes their writers, and a field added to any of them
+    /// without the mark would move the fingerprint of every such record while the pin on
+    /// `everyNestedType` stayed green.
+    ///
+    /// `reviewRevision`, `participantNoticeShown`, `addressCountry`, `usesSwissAddress` and
+    /// `phoneRegion` are left at their declared defaults on purpose: the pin only notices a changed
+    /// literal default when the fixture takes it. The strings carry accents, quotes, a newline and
+    /// a surrogate pair, because every real French, German or Italian record does.
+    private func finalizedRecord() -> HandoverProtocol {
+        var p = everyNestedType()
+        p.objectCanton = .vd
+        p.romandFrameworkInLease = true
+        var overlay = LegalOverlayRecord()
+        overlay.checks[.initialRentForm] = .confirmed
+        overlay.checks[.vaudExitReadiness] = .missingOrDisputed
+        overlay.note = "Formule officielle remise avec le bail"
+        overlay.ruleSetId = "ch-tenancy-2026.2"
+        overlay.notes[.vaudExitReadiness] = "Convocation en attente, voir \\ le dossier"
+        p.legalOverlay = overlay
+        var defect = Defect(id: "d1", roomId: "r1", text: "Stain")
+        defect.participantPositions["tenant-1"] = TenantPosition(response: .disputes, comment: "Existait à l’entrée")
+        p.defects = [defect]
+        var identity = SessionIdentity()
+        identity.firstName = "Hélène"
+        identity.lastName = "Müller-Rochat"
+        identity.company = "Régie du Léman SA"
+        identity.street = "Rue du Simplon"
+        identity.flatNumber = "12 b"
+        identity.postalCode = "1006"
+        identity.city = "Lausanne"
+        identity.phone = "+41 21 555 01 23"
+        p.sessionIdentity = identity
+        var controller = ControllerIdentity()
+        controller.organisation = "Régie du Léman SA"
+        controller.contactName = "Hélène Müller-Rochat"
+        controller.street = "Rue du Simplon 12 b"
+        controller.postalCode = "1006"
+        controller.city = "Lausanne"
+        controller.email = "helene@regie.example"
+        controller.phone = "+41 21 555 01 23"
+        p.controllerIdentity = controller
+        var details = RecordDetails()
+        details.municipality = "Lausanne"
+        details.district = "Lausanne"
+        details.habitableRooms = "3.5"
+        details.actualTransferDate = "2026-10-01"
+        details.actualTransferTime = "14:30"
+        details.notificationDays = "30"
+        details.notificationClause = "Art. 12 du bail"
+        details.scopeNotes["r1"] = "Armoire fermée à clé,\nnon inspectée"
+        var overview = PhotoEvidence("kitchen-overview.jpg", sha256: "ab12cd34", capturedEpochMs: 1_760_000_000_000, source: .camera)
+        overview.importedEpochMs = 1_760_000_100_000
+        details.roomPhotos["r1"] = [overview]
+        details.readings = [MeterReading(id: "m1", label: "Électricité", identifier: "CH-1234", value: "48214.7", unit: "kWh", date: "2026-10-01", time: "14:40",
+                                         note: "Compteur au sous-sol 🔑", photos: [PhotoEvidence("meter-electricity.jpg", source: .gallery)])]
+        details.accessDevices = [AccessDevice(id: "a1", label: "Badge", identifier: "B-77", expected: 2, transferred: 2, note: "Remis en main propre")]
+        details.attachments = [SupportingDocument(id: "doc1", kind: .lease, title: "Bail à loyer", file: "lease.pdf", sha256: "ef56ab78", bytes: 2048,
+                                                  importedEpochMs: 1_760_000_200_000, externalReference: "Réf. 2026\\17")]
+        details.followUps = [FollowUp(id: "f1", description: "Remplacer le joint", discoveredDate: "2026-10-01", notifiedDate: "2026-10-02",
+                                      recipient: "Régie", method: "Courriel", deadline: "2026-11-01", done: true)]
+        details.estimates["d1"] = ReplacementEstimate(replacementChf: "1200", ageYears: "6", lifeYears: "15", basis: "Table de durée de vie", date: "2026-10-01")
+        details.reservations["tenant-1"] = "Je conteste l’état du \"sol\""
+        // The literal, not the app's constant: that moves with every legal catalogue release, and
+        // a pin that fails for it teaches the habit of pasting a new value.
+        details.legalSnapshot = LegalSnapshot(ruleSetId: "ch-tenancy-2026.2", profile: "VD", initialRentFormRule: "Formule officielle exigée",
+                                              requirements: [.initialRentForm, .vaudExitReadiness], sources: ["https://www.vd.ch/exemple"])
+        details.understoodLanguage = "fr"
+        p.details = details
         return p
     }
 
@@ -117,6 +193,35 @@ import Testing
         try writeText("fixed ink bytes", to: ink.appendingPathComponent("tenant-record.png"))
         let fingerprint = try ProtocolIntegrity.fingerprint(everyNestedType(), photoDir: photos, signatureDir: ink)
         #expect(fingerprint == Self.goldenFingerprint)
+    }
+
+    @Test func theFinalizedFixtureReachesTheWritersOfTheTypesThatFinalizationFills() {
+        // The guard on the pin below: a fixture that drops one of these goes vacuous without failing.
+        let json = canonical(finalizedRecord())
+        for key in ["\"sessionIdentity\"", "\"addressCountry\"", "\"phoneRegion\"", "\"company\"",
+                    "\"controllerIdentity\"", "\"organisation\"",
+                    "\"details\"", "\"reviewRevision\"", "\"participantNoticeShown\"", "\"roomPhotos\"",
+                    "\"importedEpochMs\"", "\"readings\"", "\"accessDevices\"", "\"attachments\"",
+                    "\"followUps\"", "\"estimates\"", "\"legalSnapshot\"", "\"checkedOn\"",
+                    "\"objectCanton\"", "\"romandFrameworkInLease\"", "\"legalOverlay\"", "\"notes\"", "\"participantPositions\""] {
+            #expect(json.contains(key), "the finalized fixture must instantiate \(key)")
+        }
+        // A backslash is escaped in the canonical form, and the strings of a real record carry one.
+        #expect(json.contains("\\\\"))
+    }
+
+    /// The same pin for a record as 1.2.0 and later finalize it, the Android suite's own hex. The
+    /// pin above covers a record whose three `never`-encoded blocks sit at their defaults, so it
+    /// cannot see them; this one can.
+    @Test func theCanonicalFingerprintOfAFixedFinalizedRecordHasNotMoved() throws {
+        let root = try temporaryRoot()
+        let photos = try makeDir(root.appendingPathComponent("photos"))
+        let ink = try makeDir(root.appendingPathComponent("ink"))
+        try writeText("fixed ink bytes", to: ink.appendingPathComponent("tenant-record.png"))
+        for name in ["kitchen-overview.jpg", "meter-electricity.jpg", "lease.pdf"] {
+            try writeText("fixed bytes of \(name)", to: photos.appendingPathComponent(name))
+        }
+        #expect(try ProtocolIntegrity.fingerprint(finalizedRecord(), photoDir: photos, signatureDir: ink) == Self.goldenFinalizedFingerprint)
     }
 
     @Test func objectPhotosAreEvidenceToo() throws {

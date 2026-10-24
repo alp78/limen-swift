@@ -127,9 +127,24 @@ import Testing
         next = record
         next.details.habitableRooms = "3"
         #expect(record.invalidatedLegalRequirements(next: next) == [.initialRentForm])
+        // Since Android 1.2.7 the street is no longer a reason: no requirement resolves from it.
         next = record
         next.address = "Different property"
+        #expect(record.invalidatedLegalRequirements(next: next).isEmpty)
+        next = record
+        next.objectCanton = .ge
         #expect(record.invalidatedLegalRequirements(next: next) == Set(LegalRequirement.allCases))
+    }
+
+    @Test func aHalfTypedPreviousProtocolDateCannotPassTheGate() throws {
+        // The field keeps unfinished text verbatim and the cover prints it, so it is gated like every other date.
+        var record = draft()
+        record.lastProtocolDate = "31/02/2026"
+        #expect(try issues(record).contains(.dossier))
+        record.lastProtocolDate = "12/0"
+        #expect(CompletionRules.incompleteDossierTarget(record) == "object")
+        record.lastProtocolDate = "2026-09-01"
+        #expect(try !issues(record).contains(.dossier))
     }
 
     @Test func everyParticipantNeedsTheirOwnOutcomeReservationAndDelivery() throws {

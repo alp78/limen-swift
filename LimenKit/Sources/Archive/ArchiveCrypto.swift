@@ -14,6 +14,16 @@ enum ArchiveCrypto {
     private static let ivBytes = 12
     private static let keyBytes = 32
     private static let iterations: UInt32 = 210_000
+    private static let zipStart: [UInt8] = [0x50, 0x4B, 0x03, 0x04]
+    static let decryptPrefix = "archive-decrypt-"
+
+    /// What a restore killed part way leaves in `root`: the decrypted copy of an encrypted backup
+    /// and the unpacked stage. Each is a whole extra copy of the evidence that nothing else reads,
+    /// so it sits in private storage until something removes it.
+    static func sweep(_ root: URL) {
+        ArchiveStaging.sweepAll(root, prefix: decryptPrefix)
+        ArchiveStaging.sweepAll(root, prefix: ArchiveIO.stagePrefix)
+    }
 
     static func export(root: URL, password: String, to output: URL, protocolIds: Set<String>? = nil, packer: (any JpegPacker)? = JpegXL.loaded) throws {
         var completed = false
@@ -87,8 +97,8 @@ enum ArchiveCrypto {
         // The staged file is every record in the archive in the clear, and the defer below cannot
         // run if the process is killed part way. Anything an earlier run left behind goes first,
         // rather than sitting in Application Support until the app is deleted.
-        ArchiveStaging.sweep(root, prefix: "archive-decrypt-")
-        let staged = root.appendingPathComponent("archive-decrypt-\(UUID().uuidString).zip")
+        ArchiveStaging.sweep(root, prefix: decryptPrefix)
+        let staged = root.appendingPathComponent("\(decryptPrefix)\(UUID().uuidString).zip")
         defer { try? FileManager.default.removeItem(at: staged) }
         FileManager.default.createFile(atPath: staged.path, contents: nil)
         let out = try FileHandle(forWritingTo: staged)
@@ -99,6 +109,11 @@ enum ArchiveCrypto {
         // whole storage alive and appends into it, so the restore held every chunk it had read:
         // a 1 GiB backup grew the footprint by 1 GiB where the simulator showed nothing.
         var holdback = Data()
+        // A wrong password decrypts to noise, but the tag that says so is the last thing in the
+        // file. Every archive ArchiveIO.importArchive accepts opens with a zip local header, since
+        // it needs the manifest entry, so noise there is refused after the first chunk instead of
+        // after the whole backup has been written to disk.
+        var opening = Data()
         do {
             defer { try? out.close() }
             while try autoreleasepool(invoking: { () throws -> Bool in
@@ -108,7 +123,12 @@ enum ArchiveCrypto {
                 if block.count > 16 {
                     let bodyCount = block.count - 16
                     try space.before(bodyCount)
-                    try out.write(contentsOf: cipher.decrypt(block.prefix(bodyCount)))
+                    let plain = try cipher.decrypt(block.prefix(bodyCount))
+                    if opening.count < zipStart.count {
+                        opening.append(plain.prefix(zipStart.count - opening.count))
+                        if opening.count == zipStart.count, [UInt8](opening) != zipStart { throw ArchiveError.wrongPassword }
+                    }
+                    try out.write(contentsOf: plain)
                     holdback = Data(block.suffix(16))
                 } else {
                     holdback = Data(block)

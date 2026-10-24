@@ -175,7 +175,7 @@ private struct RoomDetail: View {
                 Toggle(label: s.roomInspected, on: room.inspected, enabled: !locked) { model.setRoomInspected(room.id, !room.inspected) }
                 if !room.inspected { ScopeNote(p: p, key: room.id) }
                 Panel(label: s.overviewPhotos) {
-                    EvidencePhotos(photos: p.details.roomPhotos[room.id] ?? [], add: { url, source in model.attachRoomPhoto(room.id, source: url, photoSource: source) }, remove: { name in model.removeRoomPhoto(room.id, name: name) })
+                    EvidencePhotos(photos: p.details.roomPhotos[room.id] ?? [], owner: room.id, kind: .room, add: { url, source in model.attachRoomPhoto(room.id, source: url, photoSource: source) }, remove: { name in model.removeRoomPhoto(room.id, name: name) })
                 }
                 if let baseline = model.entryBaseline, entryRoom != nil {
                     BaselineRoomPanel(p: baseline, roomId: room.id)

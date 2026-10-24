@@ -1,0 +1,82 @@
+# UI runs, iPhone 17 Pro / iOS 26.5 simulator, 23 and 24 October 2026 (xcodebuild test, AllTests scheme). The two smokes pass; the new journey and the document picker test stop in the dossier-end layout loop described in HANDOFF.md, which the committed 1.2.2 and 1.2.6 trees reproduce.
+
+## Run of 23 October 23:34 (smokes, journey, Romansh largest walk, document picker)
+Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+Executed 2 tests, with 0 failures (0 unexpected) in 73.685 (73.688) seconds
+Executed 5 tests, with 3 failures (0 unexpected) in 519.448 (519.457) seconds
+Executed 5 tests, with 3 failures (0 unexpected) in 519.448 (519.458) seconds
+Test Case '-[LimenUITests.LanguageWalkTest testRomanshLargestAccessibility]' failed (175.531 seconds).
+Test Case '-[LimenUITests.ReviewFixesShotsTest testTheHubNamesTheBadTimeAndARemovedReadingIsOfferedBack]' failed (8.524 seconds).
+Test Case '-[LimenUITests.RuntimeBoundaryTests testSupportingDocumentPickerCancellationPreservesDraft]' failed (261.708 seconds).
+Test Case '-[LimenUITests.SmokeTest testTheLandingTheFormAndThePrivacyPage]' passed (33.549 seconds).
+Test Case '-[LimenUITests.SmokeTest testTheSeededDraftWalksEveryStep]' passed (40.135 seconds).
+
+## Run of 24 October 00:05 (journey and document picker after the helper fixes, the hang signature)
+t =    75.33s         App event loop idle notification not received, will attempt to continue.
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/ReviewFixesShotsTest.swift:90: error: -[LimenUITests.ReviewFixesShotsTest testTheHubNamesTheBadTimeAndARemovedReadingIsOfferedBack] : Failed to get matching snapshots: Timed out while evaluating UI query.
+Test Case '-[LimenUITests.ReviewFixesShotsTest testTheHubNamesTheBadTimeAndARemovedReadingIsOfferedBack]' failed (197.416 seconds).
+t =    78.80s         App event loop idle notification not received, will attempt to continue.
+/Users/aperi/DEV/SWIFT/limen/LimenUITests/Sources/RuntimeBoundaryTests.swift:179: error: -[LimenUITests.RuntimeBoundaryTests testSupportingDocumentPickerCancellationPreservesDraft] : Failed to get matching snapshots: Timed out while evaluating UI query.
+Test Case '-[LimenUITests.RuntimeBoundaryTests testSupportingDocumentPickerCancellationPreservesDraft]' failed (260.927 seconds).
+
+## Thread sample of the app during the hang (main thread, top of the hot path)
+ 2903 Thread_284764 DispatchQueue_1: com.apple.main-thread (serial)
+ + 2903 start (in dyld) + 6992 
+ + 2903 start_sim (in dyld_sim) + 20 
+ + 2903 __debug_main_executable_dylib_entry_point (in Limen.debug.dylib) + 12 LimenApp.swift:0
+ + 2903 static LimenApp.$main() (in Limen.debug.dylib) + 40 /<compiler-generated>:0
+ + 2903 static App.main() (in SwiftUI) + 148 
+ + 2903 runApp<A>(_:) (in SwiftUI) + 180 
+ + 2903 closure #1 in KitRendererCommon(_:) (in SwiftUI) + 164 
+ + 2903 UIApplicationMain (in UIKitCore) + 120 
+ + 2903 -[UIApplication _run] (in UIKitCore) + 776 
+ + 2903 GSEventRunModal (in GraphicsServices) + 116 
+ + 2903 _CFRunLoopRunSpecificWithOptions (in CoreFoundation) + 496 
+ + 2903 __CFRunLoopRun (in CoreFoundation) + 760 
+ + 2903 __CFRunLoopDoSources0 (in CoreFoundation) + 220 
+ + 2903 __CFRunLoopDoSource0 (in CoreFoundation) + 168 
+ + 2903 __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__ (in CoreFoundation) + 24 
+ + 2903 UC::DriverCore::continueProcessing() (in UpdateCycle) + 80 
+ + 2903 schedulerStepScheduledMainSectionContinue (in UIKitCore) + 56 
+ + 2903 _UIUpdateSequenceRunNext (in UIKitCore) + 120 
+ + 2903 __setupUpdateSequence_block_invoke_2 (in UIKitCore) + 372 
+ + 2903 _UIApplicationFlushCATransaction (in UIKitCore) + 48 
+ + 2903 CA::Transaction::flush_as_runloop_observer(bool) (in QuartzCore) + 68 
+ + 2903 CA::Transaction::commit() (in QuartzCore) + 632 
+ + 2903 CA::Context::commit_transaction(CA::Transaction*, double, double*) (in QuartzCore) + 560 
+ + 2903 CA::Layer::layout_and_display_if_needed(CA::Transaction*) (in QuartzCore) + 156 
+ + 2903 CA::Layer::update_if_needed_(CA::Transaction*, CA::LayerUpdateReason) (in QuartzCore) + 600 
+ + 2903 CA::Layer::perform_update_(CA::Layer*, CALayer*, unsigned int, CA::LayerUpdateReason, CA::Transaction*) (in QuartzCore) + 456 
+ + 2900 -[UIView(CALayerDelegate) layoutSublayersOfLayer:] (in UIKitCore) + 2648 
+ + ! 2900 ??? (in UIKitCore) load address 0x185289000 + 0x3c511c 
+ + ! 2900 ??? (in UIKitCore) load address 0x185289000 + 0x3c4d74 
+ + ! 2898 @objc _UIHostingView.layoutSubviews() (in SwiftUI) + 32 
+ + ! : 2898 _UIHostingView.layoutSubviews() (in SwiftUI) + 80 
+ + ! : 2898 ??? (in UIKitCore) load address 0x185289000 + 0x14c250 
+ + ! : 2898 ViewGraphRootValueUpdater.render(interval:updateDisplayList:targetTimestamp:) (in SwiftUICore) + 460 
+ + ! : 1232 closure #1 in ViewGraphRootValueUpdater.render(interval:updateDisplayList:targetTimestamp:) (in SwiftUICore) + 712 
+ + ! : | 1058 ViewGraph.updateOutputs(at:) (in SwiftUICore) + 156 
+ + ! : | + 902 specialized GraphHost.runTransaction(_:do:id:) (in SwiftUICore) + 324 
+ + ! : | + ! 831 AG::Subgraph::update(unsigned int) (in AttributeGraph) + 952 
+ + ! : | + ! : 680 AG::Graph::UpdateStack::update() (in AttributeGraph) + 488 
+ + ! : | + ! : | 202 specialized implicit closure #1 in closure #1 in closure #1 in Attribute.init<A>(_:) (in SwiftUICore) + 20 
+ + ! : | + ! : | + 98 specialized LazySubviewPlacements.updateValue() (in SwiftUICore) + 2508 
+ + ! : | + ! : | + ! 90 specialized LazySubviewPlacements.placeSubviews(placementContext:in:nearestVisibleRect:containingVisibleRect:) (in SwiftUICore) + 484 
+ + ! : | + ! : | + ! : 90 _LazyLayoutViewCache.withMutableCacheState<A, B>(type:_:) (in SwiftUICore) + 248 
+ + ! : | + ! : | + ! : 90 <deduplicated_symbol> (in SwiftUICore) + 72 
+ + ! : | + ! : | + ! : 90 partial apply for closure #1 in _LazyLayoutViewCache.withMutableCacheState<A, B>(type:_:) (in SwiftUICore) + 24 
+ + ! : | + ! : | + ! : 90 partial apply for specialized closure #1 in LazySubviewPlacements.placeSubviews(placementContext:in:nearestVisibleRect:containingVisibleRect:) (
+ + ! : | + ! : | + ! : 88 specialized closure #1 in LazySubviewPlacements.placeSubviews(placementContext:in:nearestVisibleRect:containingVisibleRect:) (in SwiftUICore) + 
+ + ! : | + ! : | + ! : | 42 specialized LazyStack<>.place(subviews:context:cache:in:) (in SwiftUICore) + 888 
+ + ! : | + ! : | + ! : | + 28 specialized LazyStack<>.resolveIndexAndPosition(subviews:context:cache:placer:properties:) (in SwiftUICore) + 3432 
+
+## Run of 24 October 00:38 (the Romansh largest-size walk after the helper fix)
+Test Case '-[LimenUITests.LanguageWalkTest testRomanshLargestAccessibility]' passed (255.443 seconds).
+
+## Run of 24 October 02:10 on the restructured dossier (rail as the list's top inset, plain stack): the journey, the document picker test, both smokes and the Romansh largest-size walk
+Test Case '-[LimenUITests.LanguageWalkTest testRomanshLargestAccessibility]' passed (292.662 seconds).
+Test Case '-[LimenUITests.ReviewFixesShotsTest testTheHubNamesTheBadTimeAndARemovedReadingIsOfferedBack]' passed (72.361 seconds).
+Test Case '-[LimenUITests.RuntimeBoundaryTests testSupportingDocumentPickerCancellationPreservesDraft]' passed (57.339 seconds).
+Test Case '-[LimenUITests.SmokeTest testTheLandingTheFormAndThePrivacyPage]' passed (34.045 seconds).
+Test Case '-[LimenUITests.SmokeTest testTheSeededDraftWalksEveryStep]' passed (41.385 seconds).

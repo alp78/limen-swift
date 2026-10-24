@@ -29,6 +29,7 @@ struct ReviewStep: View {
                 legalOverlay
                 inspection
                 dossier
+                extras
                 Panel(label: "\(s.defects) (\(p.defects.count))", info: s.tipCharged(), warning: !p.defects.isEmpty) {
                     if p.defects.isEmpty {
                         Text(s.nothingYet).font(LimenType.bodyMedium).foregroundStyle(colors.inkDim)
@@ -134,6 +135,26 @@ struct ReviewStep: View {
         }
     }
 
+    /// What the printed record carries after the dossier: meter readings, reasons, access devices,
+    /// the actual transfer, attachments and follow-ups. Read from the builder the PDF, its HTML
+    /// copy and the preview share, because a list kept here fell behind it each time a rubric was
+    /// added, and both parties signed a screen that showed less than the paper. The understood
+    /// language is the editable field under the preview.
+    private var extras: some View {
+        ForEach(RecordContent.extraContent(record: p, strings: s).filter { $0.title != s.understoodLanguage }, id: \.title) { section in
+            Panel(label: section.title) {
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(Array(section.paragraphs.enumerated()), id: \.offset) { _, line in
+                        Text(line.split(separator: "\n").map(String.init).filter { !$0.isBlank }.joined(separator: "\n"))
+                            .font(LimenType.bodyMedium)
+                            .foregroundStyle(colors.ink)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
+            }
+        }
+    }
+
     private var keysLine: String {
         let keyCounts = p.keys.filter { $0.count >= 1 }.map { key in
             "\(key.kind == .other && !key.label.isBlank ? key.label : s.keyKind(key.kind)): \(key.count)"
@@ -159,13 +180,16 @@ struct ReviewStep: View {
                 }
                 if p.carries(.deposit) {
                     let d = p.deposit
-                    let institute: String = d.kind == .bankAccount ? d.bank : (d.kind == .insurance ? d.provider : "")
+                    // Switching the kind pill leaves the other kind's fields in the record. The
+                    // printed deposit shows only the chosen kind's, so this line must too.
+                    let amount = CompletionRules.depositAmountShown(p)
+                    let institute: String = d.kind == .bankAccount ? d.bank : (d.kind == .insurance ? d.provider : (d.kind == .unknown ? s.toVerify : ""))
                     ReviewLine(label: s.deposit, value: [
                         s.depositKind(d.kind),
-                        d.amountChf.isBlank ? nil : "CHF \(d.amountChf)",
+                        amount.isBlank ? nil : "CHF \(amount)",
                         institute.isBlank ? nil : institute,
-                        d.policyNo.isBlank ? nil : d.policyNo,
-                        d.account.isBlank ? nil : d.account,
+                        d.kind == .insurance && !d.policyNo.isBlank ? d.policyNo : nil,
+                        d.kind == .bankAccount && !d.account.isBlank ? d.account : nil,
                     ].compactMap { $0 }.joined(separator: " · "))
                 }
                 if p.carries(.meters) {
@@ -265,10 +289,23 @@ struct SignStep: View {
         .scrollDismissesKeyboard(.interactively)
         .onChange(of: p, initial: true) { _, now in issues = model.completionIssues(now) }
         .fullScreenCover(item: $padTarget) { target in
-            SignPadOverlay(title: "\(s.signRecordTitle) · \(target.party.signerName())", meaning: s.tipRecord().lead, onKeep: { png in
-                model.keepSignature(participantId: target.id, plane: .record, png: png)
-                padTarget = nil
-            }, onCancel: { padTarget = nil })
+            ZStack(alignment: .bottom) {
+                SignPadOverlay(title: "\(s.signRecordTitle) · \(target.party.signerName())", meaning: s.tipRecord().lead, onKeep: { png in
+                    // The pad stays open with its ink while evidence is being stored: keepSignature
+                    // refuses then, and closing the pad on that refusal threw the drawn signature away.
+                    if model.evidenceBusy > 0 {
+                        model.show(s.signatureWaitsForEvidence)
+                    } else {
+                        model.keepSignature(participantId: target.id, plane: .record, png: png)
+                        padTarget = nil
+                    }
+                }, onCancel: { padTarget = nil })
+                // The cover is a window of its own, so the notice is composed in it or not seen.
+                if let notice = model.notice {
+                    NoticeBar(text: notice).transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+            }
+            .animation(.easeInOut(duration: 0.16), value: model.notice)
             .environment(\.limen, colors)
             .environment(\.str, s)
         }
@@ -386,7 +423,10 @@ struct ExportStep: View {
                             Panel(label: s.exported, info: s.tipShareNow()) {
                                 VStack(alignment: .leading, spacing: 8) {
                                     Text(file.displayName).font(LimenType.titleMedium).foregroundStyle(colors.ink)
-                                    Text("\(s.exportedTo) Limen · \(max(file.bytes / 1024, 1)) KB").font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
+                                    // Documents/Limen only for the copy this export just wrote there. A
+                                    // record opened again, restored on another phone or picked from the
+                                    // history shows the app's own retained copy.
+                                    Text("\(model.exportedJustNow ? "\(s.exportedTo) Limen" : s.keptInApp) · \(max(file.bytes / 1024, 1)) KB").font(LimenType.labelSmall).foregroundStyle(colors.inkDim)
                                     HStack(spacing: 8) {
                                         // Documents is in Files, so the PDF can be gone by the time
                                         // these are pressed. Android's runCatching around the intent
@@ -412,6 +452,7 @@ struct ExportStep: View {
                         }
                     }
                     if p.isExported() { CopyDeliveryPanel(p: p) }
+                    RecordBackupPanel(p: p)
                     // The deposit's next step, on screen as well as in the PDF.
                     if p.kind == .exit, [.bankAccount, .insurance].contains(p.deposit.kind) {
                         Panel(label: s.releaseTitle) {
@@ -479,12 +520,57 @@ private struct CopyDeliveryPanel: View {
         }
         .onChange(of: p.id) { _, _ in details = [:] }
     }
+}
 
-    private func deliveryMoment(_ epochMs: Int64) -> String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
-        return formatter.string(from: Date(timeIntervalSince1970: TimeInterval(epochMs) / 1000))
+/// A backup of this record alone, from where the record is. The backup state is shared by every
+/// screen, so only this record's own outcome is reported here, and in the backup's own words,
+/// not the sentence for a record that failed to save.
+private struct RecordBackupPanel: View {
+    @Environment(LimenModel.self) private var model
+    @Environment(\.limen) private var colors
+    @Environment(\.str) private var s
+    let p: HandoverProtocol
+    @State private var asking = false
+    @State private var password = ""
+    @State private var confirmation = ""
+
+    var body: some View {
+        Panel(label: s.backupTitle) {
+            VStack(alignment: .leading, spacing: 8) {
+                SmallKey(label: s.createBackup, enabled: !model.archiveBusy, stretch: true) {
+                    password = ""
+                    confirmation = ""
+                    asking = true
+                }
+                if model.archiveRecordId == p.id {
+                    if model.archiveBusy {
+                        Text(s.working).font(LimenType.bodySmall).foregroundStyle(colors.inkDim)
+                    } else if model.archiveFailed {
+                        Text(s.archiveFailure(model.archiveRefused, false)).font(LimenType.bodySmall).foregroundStyle(colors.dangerOutline)
+                    } else if let exported = model.archiveExported {
+                        Text(model.archiveProtected ? s.archiveSaved(exported.displayName) : s.archiveSavedOpen(exported.displayName))
+                            .font(LimenType.bodySmall)
+                            .foregroundStyle(model.archiveProtected ? colors.seal : colors.warningOutline)
+                    }
+                }
+            }
+        }
+        .alert(s.protectBackup, isPresented: $asking) {
+            SecureField(s.backupPassword, text: $password)
+            SecureField(s.confirmBackupPassword, text: $confirmation)
+            Button(s.createBackup) {
+                model.exportArchive(password: password, recordId: p.id)
+                password = ""
+                confirmation = ""
+            }
+            .disabled(password.isEmpty || password != confirmation)
+            Button(s.cancel, role: .cancel) {
+                password = ""
+                confirmation = ""
+            }
+        } message: {
+            Text(s.backupPasswordBody)
+        }
     }
 }
 

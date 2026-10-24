@@ -170,13 +170,11 @@ extension LimenModel {
                 next.keyTransfer = .notRecorded
                 next.keyTransferNote = ""
             case .notes:
-                // oneSided goes with it: it is edited on this card, it derives this card back at
-                // dossierCards, and a record with no notes cannot state why it is one-sided.
+                // The one-sided status stays: it is edited on the Sign step and printed with the
+                // signatures, so it has nothing to do with this card, and clearing it turned a
+                // record the other party never attended into a bilateral one.
                 next.remarks = ""
                 next.chargesStatementBy = ""
-                next.oneSided = false
-                next.unilateralReason = nil
-                next.unilateralNote = ""
             }
             return next
         }
@@ -204,8 +202,7 @@ extension LimenModel {
             next.defects.append(Defect(id: id, roomId: roomId, item: item, itemLabel: itemLabel.trimmingCharacters(in: .whitespacesAndNewlines)))
             return next
         }
-        defectShell = base.map { (id, $0) }
-        editingDefectId = id
+        openWhenAdded(id, base: base)
     }
 
     /// A finding about a supplied object rather than a surface of the flat.
@@ -218,8 +215,28 @@ extension LimenModel {
             next.defects.append(Defect(id: id, objectId: objectId))
             return next
         }
-        defectShell = base.map { (id, $0) }
-        editingDefectId = id
+        openWhenAdded(id, base: base)
+    }
+
+    /// Opens the editor on the shell just added. On a record with current signatures the add waits
+    /// behind the confirmation, so the editor waits with it: opening at once left an empty editor
+    /// over a finding that answering No never created.
+    private func openWhenAdded(_ id: String, base: HandoverProtocol?) {
+        if working?.defects.contains(where: { $0.id == id }) == true {
+            defectShell = base.map { (id, $0) }
+            editingDefectId = id
+        } else if pendingEdit?.defects.contains(where: { $0.id == id }) == true {
+            pendingOpenDefect = (id, base)
+        }
+    }
+
+    /// The editor a confirmed material edit was holding back, now that its finding exists.
+    func openPendingDefect() {
+        guard let pending = pendingOpenDefect else { return }
+        pendingOpenDefect = nil
+        guard working?.defects.contains(where: { $0.id == pending.id }) == true else { return }
+        defectShell = pending.base.map { (pending.id, $0) }
+        editingDefectId = pending.id
     }
 
     /// Opens a finding. On a finalized record the editor is the reader; nothing it shows moves.
@@ -240,13 +257,22 @@ extension LimenModel {
     /// When nothing else moved in between, the record is put back exactly as it stood before the
     /// shell was written: `isCurrent` reads contentRevision, so a pair of edits that cancel used
     /// to turn both parties' signatures stale on a record whose content never moved.
+    ///
+    /// A shell whose first photograph is still being stored stays: it only looks empty because the
+    /// photograph is not recorded until the copy ends, and discarding it then left that file
+    /// unreferenced with nothing said.
     func closeDefect() {
         guard let id = editingDefectId else { return }
         editingDefectId = nil
+        discardEmptyShell(id)
+    }
+
+    /// What `closeDefect` does with the finding it closes; the shell stays known while its photograph is on its way.
+    func discardEmptyShell(_ id: String) {
         let base = defectShell.flatMap { $0.0 == id ? $0.1 : nil }
-        defectShell = nil
+        if defectShell?.0 == id, !photosInFlight.contains(id) { defectShell = nil }
         guard let p = working, !p.isFinalized(), !finalizing else { return }
-        guard let d = p.defects.first(where: { $0.id == id }), d.isUntouched else { return }
+        guard let d = p.defects.first(where: { $0.id == id }), d.isUntouched, !photosInFlight.contains(id) else { return }
         var without = p
         without.defects = p.defects.filter { $0.id != id }
         var unchanged = false
@@ -285,4 +311,76 @@ extension LimenModel {
         // Scoped exports select only referenced files; deleting the record removes them all.
     }
 
+    // MARK: Entries of the dossier
+
+    // Each is offered back through the undo bar, as a finding is: it holds text typed by hand
+    // and its delete key sits among the photograph keys. The files stay in the record's folder,
+    // so undoing needs nothing but the reference.
+
+    func removeReading(_ id: String) {
+        if contentLocked { return }
+        let gone = working?.details.readings.first { $0.id == id }
+        reversibleEdit(.reading, evidenceNames: gone?.photos.map(\.file) ?? []) { p in
+            var next = p
+            next.details.readings.removeAll { $0.id == id }
+            return next
+        }
+    }
+
+    func removeAccessDevice(_ id: String) {
+        if contentLocked { return }
+        reversibleEdit(.accessDevice) { p in
+            var next = p
+            next.details.accessDevices.removeAll { $0.id == id }
+            return next
+        }
+    }
+
+    func removeAttachment(_ id: String) {
+        if contentLocked { return }
+        let gone = working?.details.attachments.first { $0.id == id }
+        reversibleEdit(.document, evidenceNames: [gone?.file].compactMap { $0 }.filter { !$0.isBlank }) { p in
+            var next = p
+            next.details.attachments.removeAll { $0.id == id }
+            return next
+        }
+    }
+
+    func removeFollowUp(_ id: String) {
+        if contentLocked { return }
+        reversibleEdit(.followUp) { p in
+            var next = p
+            next.details.followUps.removeAll { $0.id == id }
+            return next
+        }
+    }
+
+    func removeEstimate(_ defectId: String) {
+        if contentLocked { return }
+        reversibleEdit(.estimate) { p in
+            var next = p
+            next.details.estimates[defectId] = nil
+            return next
+        }
+    }
+
+    func removeParty(at index: Int) {
+        if contentLocked { return }
+        reversibleEdit(.party) { p in
+            guard p.parties.indices.contains(index) else { return p }
+            var next = p
+            next.parties.remove(at: index)
+            return next
+        }
+    }
+
+    func removeKeyKind(at index: Int) {
+        if contentLocked { return }
+        reversibleEdit(.keyKind) { p in
+            guard p.keys.indices.contains(index) else { return p }
+            var next = p
+            next.keys.remove(at: index)
+            return next
+        }
+    }
 }

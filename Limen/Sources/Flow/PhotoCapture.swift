@@ -17,12 +17,16 @@ struct PhotoIntakeKeys: View {
     @Environment(LimenModel.self) private var model
     @Environment(\.str) private var s
     var compact = false
+    /// The defect, object, room or reading the photograph is for, so a pick that arrives after
+    /// the editor closed is still stored, and a finding is not discarded while its first
+    /// photograph is on its way.
+    let owner: String
+    let kind: LimenModel.PhotoOwner
     let onFile: (URL, PhotoSource) -> Void
     @State private var showCamera = false
     @State private var picked: PhotosPickerItem?
     @State private var ownerId = ""
     @State private var ownerRevision: Int64 = -1
-    @State private var intake: Task<Void, Never>?
     @State private var cameraRequest: Task<Void, Never>?
     @State private var cameraDenied = false
 
@@ -62,22 +66,11 @@ struct PhotoIntakeKeys: View {
         .onChange(of: picked) { _, item in
             guard let item else { return }
             picked = nil
-            let owner = model.working?.id
-            let revision = model.working?.contentRevision
-            intake?.cancel()
-            intake = Task {
-                do {
-                    guard let picked = try await item.loadTransferable(type: ImportedPhoto.self) else { return }
-                    guard !Task.isCancelled, owner == model.working?.id, revision == model.working?.contentRevision, !model.contentLocked else {
-                        try? FileManager.default.removeItem(at: picked.url)
-                        return
-                    }
-                    onFile(picked.url, .gallery)
-                } catch { model.evidenceError = error.localizedDescription }
-
-            }
+            // Loaded by the model, not by a task of this view: that task ended the moment the
+            // editor closed and took the picked photograph with it.
+            model.loadPicked(item, owner: owner, kind: kind) { url in onFile(url, .gallery) }
         }
-        .onDisappear { intake?.cancel(); cameraRequest?.cancel() }
+        .onDisappear { cameraRequest?.cancel() }
     }
 
     private func openCamera() {
@@ -255,8 +248,10 @@ struct PhotoThumb: View {
             .accessibilityLabel("\(s.open) · \(name)")
             }
             .buttonStyle(.plain)
-            // Deletion has its own target below the image, leaving every pixel available for opening.
-            if !locked, image != nil {
+            // Deletion has its own target below the image, leaving every pixel available for
+            // opening. A photograph that never decodes stays the empty square, and the key is
+            // then the only way to take it off the record and clear the evidence issue it raises.
+            if !locked {
                 KeySurface(radius: 8, fillColor: colors.danger, outlineColor: colors.dangerOutline, tick: .reject, accessibilityLabel: s.delete, onPress: onRemove) {
                     Image(systemName: ButtonGlyph.delete.symbol).font(.system(size: 18)).foregroundStyle(colors.dangerOutline).frame(width: 44, height: 44)
                 }
@@ -362,7 +357,7 @@ private final class PhotoScrollView: UIScrollView {
     }
 }
 
-private struct ImportedPhoto: Transferable, Sendable {
+struct ImportedPhoto: Transferable, Sendable {
     let url: URL
 
     static var transferRepresentation: some TransferRepresentation {

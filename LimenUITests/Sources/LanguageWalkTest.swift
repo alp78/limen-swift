@@ -210,11 +210,15 @@ final class LanguageWalkTest: XCTestCase {
     private func reveal(_ app: XCUIApplication, _ target: XCUIElement) {
         for _ in 0..<30 {
             let scroller = app.scrollViews.firstMatch
-            let viewport = scroller.exists && target.identifier != "start-session" ? scroller.frame : app.frame
-            let top = viewport.minY + (target.elementType == .textField ? min(55, viewport.height * 0.2) : 8)
-            let bottom = viewport.maxY - 24
+            var viewport = scroller.exists ? scroller.frame : app.frame
             var distance = viewport.height * 0.35
+            // Nothing is asked of the element before it exists: the canton grid and the dossier
+            // are lazy, and at the largest type sizes a key far down them has no element at all
+            // until the list has been scrolled to it.
             if target.exists {
+                if target.identifier == "start-session" { viewport = app.frame }
+                let top = viewport.minY + (target.elementType == .textField ? min(55, viewport.height * 0.2) : 8)
+                let bottom = viewport.maxY - 24
                 let frame = target.frame
                 if target.isHittable && frame.midY >= top && frame.midY <= bottom { return }
                 // A fixed swipe overshoots a nearby key in compact landscape and alternates

@@ -223,12 +223,17 @@ extension PdfExport {
             return width
         }
 
+        /// What a panel's frame, title and pill take of a page before any row does.
+        private let chrome = 2 * PdfTokens.panelPad + PdfTokens.pillHeight + PdfTokens.labelGap
+
         /// A section heading over a navy rule, the hub door's title: for a group of panels.
-        func heading(_ title: String, level: Int = 0, pill: Pill? = nil, key: String? = nil) {
-            ensure(PdfTokens.headingNeed)
+        /// `first` is the panel that follows, so the heading moves to a fresh page when that panel
+        /// would not open under it and the heading would stay behind alone.
+        func heading(_ title: String, level: Int = 0, pill: Pill? = nil, key: String? = nil, first: Panel? = nil) {
+            let line = paints.line(of: .title)
+            ensure(headingNeed(line, first))
             let anchor = mark(title, level: level, key: key)
             html?.heading(title, anchor: anchor)
-            let line = paints.line(of: .title)
             var max = PdfTokens.width - 2 * PdfTokens.margin
             if let pill { max -= self.pill(pill, right: PdfTokens.width - PdfTokens.margin, top: y + (line - PdfTokens.pillHeight) / 2) + 20 }
             text(TextMeasure.ellipsize(title, paints.title, max), PdfTokens.margin, y + paints.title.baseline(line), paints.title)
@@ -237,12 +242,22 @@ extension PdfExport {
             y += 24
         }
 
+        /// What a heading reserves: room for `first` to open under it, which is the heading, the
+        /// panel's chrome and the rows it cannot open without. `headingNeed` when there is no
+        /// panel to ask, and when the panel could not open under a heading even on a fresh page,
+        /// since moving the heading would then strand it at the top of that page instead.
+        private func headingNeed(_ line: CGFloat, _ first: Panel?) -> CGFloat {
+            guard let first else { return PdfTokens.headingNeed }
+            let rows = first.blocks.flatMap { $0.rows(paints, width: inner) }
+            let need = line + 10 + 24 + chrome + Paginator.opening(rows.map { Paginator.Slot($0.height, keepWithNext: $0.keepWithNext) }, full: PdfTokens.bottom - PdfTokens.headerBottom - chrome)
+            return need > PdfTokens.bottom - PdfTokens.headerBottom ? PdfTokens.headingNeed : Swift.max(need, PdfTokens.headingNeed)
+        }
+
         /// Draws `panel`, whole when it fits the space left, otherwise in closed segments, each a
         /// complete panel with the title repeated and a "continued" pill, so no page ends on an
         /// open shape. The HTML is written once, before the first segment.
         func panel(_ panel: Panel) {
             let rows = panel.blocks.flatMap { $0.rows(paints, width: inner) }
-            let chrome = 2 * PdfTokens.panelPad + PdfTokens.pillHeight + PdfTokens.labelGap
             let available = pageOpen ? PdfTokens.bottom - y - chrome : -1
             let full = PdfTokens.bottom - PdfTokens.headerBottom - chrome
             let segments = Paginator.segments(rows.map { Paginator.Slot($0.height, keepWithNext: $0.keepWithNext) }, available: available, full: full)

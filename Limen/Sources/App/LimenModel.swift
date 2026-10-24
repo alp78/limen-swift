@@ -93,12 +93,38 @@ final class LimenModel {
     var archiveProtected = true
     var archiveImported: ArchiveImportResult?
     var archiveFailed = false
+    /// Why the last backup was refused, when it was refused and did not merely fail; nil otherwise.
+    var archiveRefused: ArchiveRefused?
+    /// The record the last backup was made for, nil for the whole library or a restore. This state
+    /// is shared by every screen, so a record's own screen shows the outcome only when it is its own.
+    var archiveRecordId: String?
+    /// The unreadable record whose last recovery failed, so the list says so instead of looking like a dead key.
+    var recoverFailedId: String?
 
     // MARK: The flow
 
     /// The protocol being walked, or nil when the case is showing. Saved on every edit.
     var saveError: String?
+    /// The whole sentence the operator reads, not a detail to hang under the Evidence issue. It
+    /// was printed after "Restore every referenced photo and signature file", which is right for
+    /// a list of unreadable files and read as nonsense after a failed attach or a signature that
+    /// could not be written.
     var evidenceError: String?
+    /// Photographs and documents still being stored, from the picker's copy to the hash. A
+    /// signature waits for them: it edits the record when it finishes, and the ink would be stale
+    /// before it dried.
+    var evidenceBusy = 0
+    /// Defects whose photograph is still arriving, once per photograph. `closeDefect` reads it so a
+    /// finding opened for its first photograph is not discarded as empty while that photograph is
+    /// on its way.
+    var photosInFlight: [String] = []
+    /// A finding added on a record with current signatures waits behind the confirmation, and the
+    /// editor waits with it: opening at once left an empty editor over a finding that answering
+    /// No never created.
+    var pendingOpenDefect: (id: String, base: HandoverProtocol?)?
+    /// Whether `exported` is the copy this export just wrote to Documents/Limen. A record opened
+    /// again, restored on another phone or picked from the history shows the app's own retained copy.
+    var exportedJustNow = false
     var pendingEdit: HandoverProtocol?
     var pendingEditRevision: Int64?
     var pendingEditNames: [String] = []
@@ -175,6 +201,14 @@ final class LimenModel {
         // and a preference 1.2.0 (5) may have written is simply left unread, as Android leaves its own.
         libraryProtectionEnabled = prefs.bool(forKey: "libraryProtectionEnabled")
         if let bytes = prefs.data(forKey: "reusableIdentity"), let p = try? ProtocolJSON.decode(bytes) { reusableIdentity = p.sessionIdentity }
+        // Held busy until it returns, so a restore tapped meanwhile cannot start a stage that the
+        // sweep then deletes. Off the main thread: after a killed restore it unlinks gigabytes.
+        archiveBusy = true
+        let store = store
+        Task {
+            await Task.detached { store.sweepStale() }.value
+            archiveBusy = false
+        }
         refreshLibrary()
         // Reopens whatever record was on screen when the process last ended.
         if let openId = prefs.string(forKey: keyOpen), !openId.isBlank {
@@ -242,7 +276,7 @@ final class LimenModel {
 
     // MARK: Archive
 
-    func exportArchive(password: String) {
+    func exportArchive(password: String, recordId: String? = nil) {
         if archiveBusy { return }
         guard flush() else { return }
         archiveProtected = !password.isEmpty
@@ -250,8 +284,10 @@ final class LimenModel {
         archiveExported = nil
         archiveImported = nil
         archiveFailed = false
+        archiveRefused = nil
+        archiveRecordId = recordId
         let store = store
-        let selected = archiveSelection.isEmpty ? nil : archiveSelection
+        let selected = recordId.map { [$0] } ?? (archiveSelection.isEmpty ? nil : archiveSelection)
         let name = "Limen-backup-\(Exports.stamp()).limen"
         Task {
             let result: Result<ExportedFile, Error> = await Task.detached {
@@ -260,7 +296,9 @@ final class LimenModel {
             archiveBusy = false
             switch result {
             case .success(let file): archiveExported = file
-            case .failure: archiveFailed = true
+            case .failure(let error):
+                archiveFailed = true
+                archiveRefused = error as? ArchiveRefused
             }
         }
     }
@@ -272,6 +310,8 @@ final class LimenModel {
         archiveExported = nil
         archiveImported = nil
         archiveFailed = false
+        archiveRefused = nil
+        archiveRecordId = nil
         let store = store
         Task {
             let result: Result<ArchiveImportResult, Error> = await Task.detached {
@@ -310,7 +350,19 @@ final class LimenModel {
         exportIssue = nil
         pdfLang = nil
         defectShell = nil
+        pendingOpenDefect = nil
         flowTrail = []
+        // Status lines that describe an action on the record being left. They were printed on the
+        // next record's screens: a failed photograph, a failed amendment, or a backup file name
+        // that read as the new record having been backed up.
+        evidenceError = nil
+        amendmentError = false
+        if !archiveBusy, archiveRecordId != p?.id {
+            archiveExported = nil
+            archiveFailed = false
+            archiveRefused = nil
+            archiveRecordId = nil
+        }
         working = p
         if let p { restoreExport(p) }
         entryBaseline = nil
@@ -373,6 +425,8 @@ final class LimenModel {
             return
         }
         applyContentEdit(edited, from: before)
+        // A removal supersedes an earlier intake failure, as every edit does on Android.
+        evidenceError = nil
         guard let after = working else { return }
         let token = UInt64.random(in: 1...UInt64.max)
         let dir = store.photoDir(before.id)
@@ -393,6 +447,9 @@ final class LimenModel {
     }
 
     func undo(_ token: UInt64) {
+        // Not while the record freezes: finalizing works from the record as it stood, so restoring
+        // an earlier one now would show an item the finalized record does not hold.
+        if contentLocked { return }
         guard let pending = pendingUndo, pending.token == token else { return }
         if let current = working, current.id == pending.before.id, current.contentRevision == pending.afterRevision {
             var restored = pending.before
@@ -619,9 +676,10 @@ final class LimenModel {
             if next.id.isBlank { next.id = UUID().uuidString }
             return next
         }
+        // The clause is the entry's: only an entry edits it, and it printed under the exit's key
+        // transfer with nothing on screen to show or remove it.
         p.details = RecordDetails(municipality: entry.details.municipality, district: entry.details.district,
-                                  habitableRooms: entry.details.habitableRooms, notificationDays: entry.details.notificationDays,
-                                  notificationClause: entry.details.notificationClause,
+                                  habitableRooms: entry.details.habitableRooms,
                                   accessDevices: entry.details.accessDevices.map { device in
                                       var next = device
                                       next.expected = device.transferred
@@ -635,6 +693,15 @@ final class LimenModel {
         saveReusableIdentity(resolvedIdentity)
         p.rooms = entry.rooms.map(Self.freshRoom)
         p.roomSetupComplete = true
+        // The kinds stay as the rows to count; the numbers and the copies declaration are what
+        // was handed over at entry, and an exit that opened with them let a forgotten stepper put
+        // an uncounted figure into the signed record.
+        p.keys = entry.keys.map { key in
+            var next = key
+            next.count = 0
+            return next
+        }
+        p.selfMadeKeys = false
         p.objects = entry.objects.map(Self.freshObject)
         p.defects = []
         p.remarks = ""
@@ -649,6 +716,7 @@ final class LimenModel {
         p.signatures = []
         p.seedId = entry.id
         p.amendedFromId = ""
+        p.amendedFromFingerprint = ""
         p.contentRevision = 0
         p.finalizedEpochMs = 0
         p.evidenceFingerprint = ""
@@ -736,6 +804,8 @@ final class LimenModel {
         finalizationIssues = issues
         finalizationError = false
         if !issues.isEmpty { return }
+        // The bar offers a removal that this record, about to freeze, can no longer take back.
+        commitUndo()
         finalizing = true
         saveTask?.cancel()
         saveTask = nil
@@ -763,13 +833,21 @@ final class LimenModel {
                 setActiveProtocol(frozen)
                 finalizationIssues = []
                 flowStep = .export
-            case .failure:
-                finalizationError = true
+            case .failure(let error):
+                // A file that cannot be read is named under the issue it belongs to; anything else
+                // is the general failure line.
+                if let unreadable = error as? EvidenceValidation.UnrenderableEvidence {
+                    evidenceError = "\(str.finalizationIssue(.evidence)): \(unreadable.files.joined(separator: ", "))"
+                    finalizationIssues = [.evidence]
+                } else {
+                    finalizationError = true
+                }
             }
         }
     }
 
-    /// Starts a new draft and copies the original photos; the finalized record stays intact.
+    /// Starts a new draft and copies the photographs and documents it refers to; the finalized
+    /// record stays intact. A failed copy leaves nothing behind.
     func createAmendment() {
         guard let p = working, p.isFinalized(), !amendmentInProgress else { return }
         // The one protocol switch that had no flush before it: a debounced write still in the
@@ -799,12 +877,7 @@ final class LimenModel {
                     draft.exportHistory = []
                     draft.details.legalSnapshot = nil
                     draft.details.reviewRevision = -1
-                    let sourceDir = store.photoDir(p.id)
-                    let targetDir = store.photoDir(draft.id)
-                    for source in (try? FileManager.default.contentsOfDirectory(at: sourceDir, includingPropertiesForKeys: nil)) ?? [] {
-                        try FileManager.default.copyItem(at: source, to: targetDir.appendingPathComponent(source.lastPathComponent))
-                    }
-                    try store.save(draft)
+                    try store.saveAmendment(parent: p, draft: draft)
                     return draft
                 }
             }.value

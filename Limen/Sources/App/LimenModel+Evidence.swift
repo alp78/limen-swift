@@ -77,9 +77,14 @@ extension LimenModel {
         keepSignature(participantId: party.participantKey(), plane: plane, png: png)
     }
 
+    /// Not while evidence is being stored: it edits the record when it finishes, and the ink
+    /// would be stale before it dried. The sign step checks `evidenceBusy` before it closes the
+    /// pad, so a refusal here no longer throws the drawn ink away.
     func keepSignature(participantId: String, plane: Plane, png: Data) {
-        guard !contentLocked, let p = working,
+        guard !contentLocked, evidenceBusy == 0, let p = working,
               let party = p.parties.first(where: { $0.participantKey() == participantId }) else { return }
+        // This attempt supersedes an earlier failure, as an edit does for every other intake path.
+        evidenceError = nil
         let target = store.signatureDir(p.id).appendingPathComponent("ink-\(UUID().uuidString).png")
         do {
             try png.write(to: target, options: .atomic)
@@ -95,7 +100,7 @@ extension LimenModel {
             }
         } catch {
             try? FileManager.default.removeItem(at: target)
-            evidenceError = error.localizedDescription
+            evidenceError = str.signatureNotSaved
         }
     }
 
@@ -191,7 +196,11 @@ extension LimenModel {
                 if working?.id == snapshot.id { working = latest }
                 do {
                     try store.save(latest)
-                    if working?.id == snapshot.id { restoreExport(latest); saveError = nil }
+                    if working?.id == snapshot.id {
+                        restoreExport(latest)
+                        exportedJustNow = true
+                        saveError = nil
+                    }
                 } catch {
                     if working?.id == snapshot.id { saveError = str.saveFailed + " (\(error.localizedDescription))" }
                 }
@@ -199,7 +208,11 @@ extension LimenModel {
             case .failure(let error):
                 if working?.id == snapshot.id {
                     exportIssue = .failed
-                    evidenceError = error.localizedDescription
+                    // Only evidence that cannot be rendered is a file to restore; any other failure
+                    // says nothing about the photographs.
+                    if let unreadable = error as? EvidenceValidation.UnrenderableEvidence {
+                        evidenceError = "\(str.finalizationIssue(.evidence)): \(unreadable.files.joined(separator: ", "))"
+                    }
                 }
             }
         }
@@ -225,6 +238,7 @@ extension LimenModel {
     func restoreExport(_ record: HandoverProtocol) {
         exported = nil
         accessibleExport = nil
+        exportedJustNow = false
         for copy in record.exportHistory.reversed() {
             let pdf = store.root.appendingPathComponent("exports").appendingPathComponent(record.id).appendingPathComponent(copy.name)
             guard EvidenceNames.isSafe(copy.name), FileManager.default.fileExists(atPath: pdf.path),

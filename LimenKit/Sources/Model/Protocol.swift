@@ -225,9 +225,12 @@ public struct SessionIdentity: Hashable, Sendable {
 
     public var fullName: String { [firstName, lastName].filter { !$0.isBlank }.joined(separator: " ") }
     public var addressLine: String { [street, flatNumber].filter { !$0.isBlank }.joined(separator: " ") }
-    public var placeLine: String {
+    public var placeLine: String { placeLine(locale: .current) }
+
+    /// The country is named in `locale`, so a document can use its own language rather than the handset's.
+    public func placeLine(locale: Locale) -> String {
         var parts = [postalCode, city]
-        if !usesSwissAddress { parts.append(CountryDirectory.name(addressCountry)) }
+        if !usesSwissAddress { parts.append(CountryDirectory.name(addressCountry, locale: locale)) }
         return parts.filter { !$0.isBlank }.joined(separator: " ")
     }
 }

@@ -1,0 +1,48 @@
+# Unit suites, iPhone 17 Pro / iOS 26.5 simulator, 23 October 2026 (xcodebuild test, AllTests scheme, LimenKitTests and LimenTests)
+Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+Executed 4 tests, with 0 failures (0 unexpected) in 0.011 (0.013) seconds
+Test Suite 'All tests' passed at 2026-10-23 23:31:22.339.
+Test Suite 'All tests' passed at 2026-10-23 23:31:59.141.
+Test Suite 'All tests' started at 2026-10-23 23:31:22.339.
+Test Suite 'All tests' started at 2026-10-23 23:31:59.127.
+Test Suite 'BundleTests' passed at 2026-10-23 23:31:59.140.
+Test Suite 'BundleTests' started at 2026-10-23 23:31:59.128.
+Test Suite 'LimenTests.xctest' passed at 2026-10-23 23:31:59.140.
+Test Suite 'LimenTests.xctest' started at 2026-10-23 23:31:59.128.
+​✔ Suite MeasurementTests passed after 0.001 seconds.
+✔ Suite AnnexContentTests passed after 0.002 seconds.
+✔ Suite AnnexPlateTests passed after 3.592 seconds.
+✔ Suite AppIconTests passed after 0.103 seconds.
+✔ Suite ArchiveParityTests passed after 0.197 seconds.
+✔ Suite ArchiveSizeAndPackingTests passed after 20.583 seconds.
+✔ Suite ArchiveTests passed after 1.670 seconds.
+✔ Suite CautionProviderTests passed after 0.001 seconds.
+✔ Suite ClocksTests passed after 0.001 seconds.
+✔ Suite CompletionRulesTests passed after 0.016 seconds.
+✔ Suite CrossPlatformTests passed after 0.748 seconds.
+✔ Suite DocumentNameTests passed after 0.004 seconds.
+✔ Suite EvidenceTests passed after 7.080 seconds.
+✔ Suite ExportLifecycleTests passed after 0.022 seconds.
+✔ Suite ExportTests passed after 8.572 seconds.
+✔ Suite InternationalIdentityTests passed after 0.015 seconds.
+✔ Suite JpegXLTests passed after 0.745 seconds.
+✔ Suite LegacyCompatTests passed after 0.013 seconds.
+✔ Suite LegalOverlayTests passed after 0.005 seconds.
+✔ Suite LegalProfileTests passed after 0.001 seconds.
+✔ Suite OutlineTests passed after 0.001 seconds.
+✔ Suite PaginatorTests passed after 0.003 seconds.
+✔ Suite ParityRulesTests passed after 0.012 seconds.
+✔ Suite PdfTokensTests passed after 0.001 seconds.
+✔ Suite PhotoIntakeOwnershipTests passed after 0.024 seconds.
+✔ Suite ProtocolIntegrityTests passed after 0.012 seconds.
+✔ Suite RecordContentTests passed after 0.003 seconds.
+✔ Suite RemediationModelTests passed after 0.130 seconds.
+✔ Suite ReportTests passed after 0.001 seconds.
+✔ Suite SchemaTests passed after 0.560 seconds.
+✔ Suite StoreTests passed after 0.096 seconds.
+✔ Suite StringsTests passed after 0.004 seconds.
+✔ Suite SwissDateTests passed after 0.002 seconds.
+✔ Suite TemplatesTests passed after 0.001 seconds.
+✔ Suite ZeitwertTests passed after 0.003 seconds.
+✔ Test run with 236 tests in 29 suites passed after 35.385 seconds.
+✔ Test run with 36 tests in 6 suites passed after 8.854 seconds.

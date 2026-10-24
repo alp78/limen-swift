@@ -58,7 +58,7 @@ import Testing
         p.defects = [Defect(id: "d2", photos: ["missing.jpg"])]
         try source.save(p)
         let archive = root.appendingPathComponent("backup.limen")
-        #expect(throws: EvidenceValidation.UnrenderableEvidence.self) { try source.exportArchive(password: password, to: archive) }
+        #expect(throws: ArchiveRefused(.damagedEvidence, record: "p2")) { try source.exportArchive(password: password, to: archive) }
         let zip = try Zip.Writer(to: archive)
         try zip.put(ArchiveIO.manifest, bytes: Data(ArchiveIO.marker.utf8))
         try zip.put("protocols/p2.json", bytes: Data(Store.fileText(p).utf8))
@@ -116,6 +116,78 @@ import Testing
         let restored = Store(root: root.appendingPathComponent("restored"))
         #expect(throws: ArchiveError.wrongPassword) { try restored.importArchive(password: "wrong password", from: archive) }
         #expect(restored.list().isEmpty)
+    }
+
+    /// The tag that refuses a wrong password is the last thing in the file, so the opening bytes
+    /// have to speak for it: a wrong password is refused at the first chunk, and nothing of the
+    /// decrypted copy survives.
+    @Test func aWrongPasswordOnALargeBackupIsRefusedAndLeavesNoDecryptedCopy() throws {
+        let root = try temporaryRoot()
+        let source = Store(root: root.appendingPathComponent("source"))
+        var p = record("big", .entry, 5)
+        p.defects = [Defect(id: "d1", photos: ["wall.jpg"])]
+        try source.save(p)
+        _ = try testImage(to: source.photoDir("big").appendingPathComponent("wall.jpg"), width: 1024, height: 768, noise: true)
+        let archive = root.appendingPathComponent("backup.limen")
+        try source.exportArchive(password: password, to: archive)
+        #expect(Files.size(archive) > 2 * 1024 * 1024)
+        let restoredRoot = root.appendingPathComponent("restored")
+        let restored = Store(root: restoredRoot)
+        #expect(throws: ArchiveError.wrongPassword) { try restored.importArchive(password: "wrong password", from: archive) }
+        #expect(restored.list().isEmpty)
+        #expect(try FileManager.default.contentsOfDirectory(atPath: restoredRoot.path).allSatisfy { !$0.hasPrefix("archive-decrypt-") })
+    }
+
+    @Test func aRestoreKilledDuringItsInstallDoesNotBlockTheNextRestoreOfThatRecord() throws {
+        let root = try temporaryRoot()
+        let source = Store(root: root.appendingPathComponent("source"))
+        var p = record("p6", .entry, 10)
+        p.defects = [Defect(id: "d1", photos: ["wall.jpg"])]
+        try source.save(p)
+        let original = try testImage(to: source.photoDir("p6").appendingPathComponent("wall.jpg"))
+        let archive = root.appendingPathComponent("backup.limen")
+        try source.exportArchive(password: "", to: archive)
+
+        // What the killed restore left: evidence folders written, the record file, which goes last, not.
+        let restoredRoot = root.appendingPathComponent("restored")
+        try writeText("half written", to: restoredRoot.appendingPathComponent("photos/p6/wall.jpg"))
+        try writeText("old export", to: restoredRoot.appendingPathComponent("exports/p6/old.pdf"))
+        let restored = Store(root: restoredRoot)
+
+        #expect(try restored.importArchive(password: "", from: archive) == ArchiveImportResult(imported: 1, skippedExisting: 0, rejected: 0))
+        #expect(try Data(contentsOf: restored.photoDir("p6").appendingPathComponent("wall.jpg")) == original)
+        #expect(!FileManager.default.fileExists(atPath: restoredRoot.appendingPathComponent("exports/p6").path))
+        // Moved aside, not deleted: nothing here is known to be worthless.
+        var kept = Set<String>()
+        if let walk = FileManager.default.enumerator(at: restoredRoot.appendingPathComponent("recovery"), includingPropertiesForKeys: [.isRegularFileKey]) {
+            for case let file as URL in walk where Files.isRegularFile(file) { kept.insert(readText(file)) }
+        }
+        #expect(kept == ["half written", "old export"])
+    }
+
+    @Test func aBackupIsRefusedWhileAPhotographNoLongerMatchesItsRecordedHash() throws {
+        let root = try temporaryRoot()
+        let sourceRoot = root.appendingPathComponent("source")
+        let source = Store(root: sourceRoot)
+        let file = source.photoDir("photos").appendingPathComponent("wall.jpg")
+        var jpeg = try testJPEG(to: file)
+        var p = record("photos", .entry, 3)
+        p.defects = [Defect(id: "d1", photos: ["wall.jpg"], photoEvidence: [PhotoEvidence("wall.jpg", sha256: try ProtocolIntegrity.fileHash(file))])]
+        try source.save(p)
+        jpeg[10] = 1
+        try jpeg.write(to: file)
+        #expect(throws: ArchiveRefused(.damagedEvidence, record: "photos")) { try ArchiveIO.export(root: sourceRoot, to: root.appendingPathComponent("out.zip"), packer: nil) }
+    }
+
+    @Test func anUnreadableRecordRefusesAFullBackupButNotTheBackupOfAnotherRecord() throws {
+        let root = try temporaryRoot()
+        let sourceRoot = root.appendingPathComponent("source")
+        let store = Store(root: sourceRoot)
+        try store.save(record("good", .entry, 11))
+        try writeText("{ not json", to: sourceRoot.appendingPathComponent("protocols/bad.json"))
+        #expect(throws: ArchiveRefused(.unreadableRecord)) { try store.exportArchive(password: "", to: root.appendingPathComponent("all.zip")) }
+        try store.exportArchive(password: "", to: root.appendingPathComponent("good.zip"), protocolIds: ["good"])
+        #expect(Files.size(root.appendingPathComponent("good.zip")) > 0)
     }
 
     @Test func legacyPlainZipRemainsImportable() throws {

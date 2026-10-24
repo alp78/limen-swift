@@ -193,11 +193,142 @@ private actor ExportBarrier {
         let exit = try #require(model.working)
         #expect(exit.seedId == entry.id)
         #expect(exit.details.accessDevices == [AccessDevice(id: "fob", label: "Garage fob", identifier: "F-42", expected: 2)])
-        #expect(exit.details.notificationClause == "Contract clause 12")
-        #expect(exit.details.notificationDays == "10")
+        // The clause is the entry's since Android 1.2.7: only an entry edits it, and it printed
+        // under the exit's key transfer with nothing on screen to show or remove it.
+        #expect(exit.details.notificationClause.isEmpty)
+        #expect(exit.details.notificationDays.isEmpty)
         #expect(exit.details.actualTransferDate.isEmpty)
         #expect(exit.details.followUps.isEmpty)
         #expect(exit.signatures.isEmpty)
         #expect(exit.details.reviewRevision == -1)
+    }
+
+    @Test func aSeededExitStartsWithItsKeyCountsAndCopiesDeclarationEmpty() throws {
+        let model = try model()
+        var entry = finalized("entry-keys")
+        entry.kind = .entry
+        entry.keys = [KeyCount(.apartment, count: 3), KeyCount(.mailbox, count: 1)]
+        entry.selfMadeKeys = true
+        entry.amendedFromFingerprint = "parent"
+        var identity = SessionIdentity()
+        identity.firstName = "Next"
+        model.seedExitFrom(entry, sessionRole: .landlord, identity: identity)
+        let exit = try #require(model.working)
+        // The kinds stay as the rows to count; the numbers are what was handed over at entry.
+        #expect(exit.keys.map(\.kind) == [.apartment, .mailbox])
+        // Physical counts are numbers, not collections.
+        // swiftlint:disable:next empty_count
+        #expect(exit.keys.allSatisfy { $0.count == 0 })
+        #expect(!exit.selfMadeKeys)
+        #expect(exit.amendedFromFingerprint.isEmpty)
+    }
+
+    @Test func removingAReadingOrADocumentOffersItBackAndUndoRestoresIt() throws {
+        let model = try model()
+        var p = HandoverProtocol(id: "entries", kind: .entry, createdEpochMs: 1)
+        p.details.readings = [MeterReading(id: "m1", label: "Electricity", identifier: "Meter-42", value: "150.4", unit: "kWh", date: "2026-10-13", time: "12:00")]
+        p.details.attachments = [SupportingDocument(id: "a1", kind: .lease, title: "Lease supplied at inspection")]
+        model.setActiveProtocol(p)
+        model.removeReading("m1")
+        #expect(model.undoNotice?.kind == .reading)
+        #expect(model.working?.details.readings.isEmpty == true)
+        model.undo(try #require(model.undoNotice?.token))
+        #expect(model.working?.details.readings.first?.identifier == "Meter-42")
+        model.removeAttachment("a1")
+        #expect(model.undoNotice?.kind == .document)
+        model.undo(try #require(model.undoNotice?.token))
+        #expect(model.working?.details.attachments.first?.id == "a1")
+    }
+
+    @Test func removingAPartyAKeyKindOrAnEstimateOffersItBack() throws {
+        let model = try model()
+        var p = HandoverProtocol(id: "entries-2", kind: .exit, createdEpochMs: 1)
+        p.parties = [Party(.tenant, name: "A"), Party(.landlord, name: "B"), Party(.witness, name: "W")]
+        p.keys = [KeyCount(.apartment, count: 2), KeyCount(.cellar, count: 1)]
+        p.defects = [Defect(id: "d1", text: "Scratch")]
+        p.details.estimates["d1"] = ReplacementEstimate(replacementChf: "100", ageYears: "1", lifeYears: "8")
+        model.setActiveProtocol(p)
+        model.removeParty(at: 2)
+        #expect(model.undoNotice?.kind == .party)
+        #expect(model.working?.parties.count == 2)
+        model.undo(try #require(model.undoNotice?.token))
+        #expect(model.working?.parties.count == 3)
+        model.removeKeyKind(at: 1)
+        #expect(model.undoNotice?.kind == .keyKind)
+        #expect(model.working?.keys.map(\.kind) == [.apartment])
+        model.removeEstimate("d1")
+        #expect(model.undoNotice?.kind == .estimate)
+        #expect(model.working?.details.estimates["d1"] == nil)
+    }
+
+    @Test func aPhotographRemovedInsideTheOpenFindingEditorOffersItBack() throws {
+        let model = try model()
+        var p = HandoverProtocol(id: "editor", kind: .entry, createdEpochMs: 1)
+        p.rooms = [Room(id: "r1", kind: .kitchen)]
+        p.defects = [Defect(id: "d1", roomId: "r1", text: "Scratch beside the door", photos: ["wall.jpg"])]
+        model.setActiveProtocol(p)
+        model.editDefect("d1")
+        model.removePhoto("d1", name: "wall.jpg")
+        #expect(model.undoNotice?.kind == .photo)
+        #expect(model.editingDefectId == "d1")
+        model.undo(try #require(model.undoNotice?.token))
+        #expect(model.working?.defects.first?.photos == ["wall.jpg"])
+    }
+
+    @Test func removingTheNotesCardLeavesTheOneSidedStatusAlone() throws {
+        let model = try model()
+        var p = HandoverProtocol(id: "notes", kind: .exit, createdEpochMs: 1)
+        p.dossier = [.keys, .notes]
+        p.dossierChosen = true
+        p.remarks = "Other party absent"
+        p.oneSided = true
+        p.unilateralReason = .otherPartyAbsent
+        model.setActiveProtocol(p)
+        model.removeDossierCard(.notes)
+        let after = try #require(model.working)
+        #expect(after.remarks.isEmpty)
+        #expect(after.oneSided)
+        #expect(after.unilateralReason == .otherPartyAbsent)
+    }
+
+    @Test func aFindingAddedBehindTheSignedEditConfirmationOpensOnlyOnceItExists() throws {
+        let model = try model()
+        var p = HandoverProtocol(id: "signed", kind: .entry, createdEpochMs: 1)
+        p.rooms = [Room(id: "r1", kind: .kitchen)]
+        p.parties = [Party(.tenant, name: "A"), Party(.landlord, name: "B")]
+        p.signatures = [Signature(.tenant, name: "A", plane: .record, file: "ink.png", contentRevision: 0)]
+        model.setActiveProtocol(p)
+        model.openDefect("r1", item: .floor)
+        // The add waits behind the confirmation, and the editor with it.
+        #expect(model.pendingEdit != nil)
+        #expect(model.editingDefectId == nil)
+        model.cancelMaterialEdit()
+        #expect(model.editingDefectId == nil)
+        #expect(model.working?.defects.isEmpty == true)
+        model.openDefect("r1", item: .walls)
+        model.confirmMaterialEdit()
+        #expect(model.editingDefectId != nil)
+        #expect(model.working?.defects.count == 1)
+    }
+
+    @Test func aBackupRefusedForOneRecordNamesItAndIsReportedToThatRecordAlone() async throws {
+        let model = try model()
+        var damaged = HandoverProtocol(id: "damaged", kind: .entry, createdEpochMs: 1)
+        damaged.address = "Rue du Simplon 12"
+        damaged.defects = [Defect(id: "d1", photos: ["missing.jpg"])]
+        try model.store.save(damaged)
+        model.setActiveProtocol(damaged)
+        // The store's sweep at start holds the archive busy for a moment, and a backup asked for
+        // meanwhile is refused as any other would be while one runs; the key is disabled then.
+        while model.archiveBusy { try await Task.sleep(for: .milliseconds(20)) }
+        model.exportArchive(password: "pw", recordId: "damaged")
+        while model.archiveBusy { try await Task.sleep(for: .milliseconds(20)) }
+        #expect(model.archiveFailed)
+        #expect(model.archiveRefused == ArchiveRefused(.damagedEvidence, record: "Rue du Simplon 12"))
+        #expect(model.archiveRecordId == "damaged")
+        // Leaving the record for another takes the outcome with it.
+        model.setActiveProtocol(HandoverProtocol(id: "other", kind: .entry, createdEpochMs: 2))
+        #expect(!model.archiveFailed)
+        #expect(model.archiveRefused == nil)
     }
 }

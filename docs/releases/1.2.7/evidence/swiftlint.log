@@ -1,0 +1,3 @@
+# swiftlint lint --quiet, 24 October 2026 00:45, after the UI test helper fixes: no output, 0 violations
+
+swiftlint lint --quiet
