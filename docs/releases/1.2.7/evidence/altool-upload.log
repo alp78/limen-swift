@@ -1,0 +1,9 @@
+Running altool at path '/Applications/Xcode.app/Contents/SharedFrameworks/ContentDelivery.framework/Resources/altool'...
+
+2026-10-24 02:24:58.864  INFO: [ContentDelivery.Uploader.A9B01D1C0] 
+==========================================
+UPLOAD SUCCEEDED with no errors
+Delivery UUID: a7ac2d18-299d-4a9d-ac1c-af6fe0a16542
+Transferred 10545994 bytes in 3.763 seconds (2.8MB/s, 22.419Mbps)
+==========================================
+No errors uploading archive at 'DD-release/export-1.2.7-9/Limen.ipa'.

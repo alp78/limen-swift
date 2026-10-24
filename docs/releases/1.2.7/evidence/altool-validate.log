@@ -1,0 +1,7 @@
+Running altool at path '/Applications/Xcode.app/Contents/SharedFrameworks/ContentDelivery.framework/Resources/altool'...
+
+2026-10-24 02:23:43.432  INFO: [ContentDelivery.Uploader.B2101D1C0] 
+==========================================
+VERIFY SUCCEEDED with no errors
+==========================================
+No errors validating archive at 'DD-release/export-1.2.7-9/Limen.ipa'.

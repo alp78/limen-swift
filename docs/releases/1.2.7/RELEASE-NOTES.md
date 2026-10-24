@@ -1,6 +1,6 @@
 # Release notes for Limen Traditionis 1.2.7 (9)
 
-Prepared 23 October 2026, not uploaded. One note per language, in the iPhone's own words for what Android's `docs/listing/release-notes.md` says under versionCode 12; they name no other product and no tester. The rotation sentence of the Android note has no counterpart here, since SwiftUI keeps the pad's ink through a rotation, so its place is taken by the signature that waits for a photograph still being stored. Each block is well under App Store Connect's 4,000-character limit for "What's New" and TestFlight's "What to Test". App Store Connect has no Romansh locale; the Romansh text is kept for the in-app and TestFlight notes should a place for it appear.
+Prepared 23 October 2026; build 9 was uploaded on 24 October 2026 from commit `934219f` (delivery `a7ac2d18-299d-4a9d-ac1c-af6fe0a16542`). One note per language, in the iPhone's own words for what Android's `docs/listing/release-notes.md` says under versionCode 12; they name no other product and no tester. The rotation sentence of the Android note has no counterpart here, since SwiftUI keeps the pad's ink through a rotation, so its place is taken by the signature that waits for a photograph still being stored. Each block is well under App Store Connect's 4,000-character limit for "What's New" and TestFlight's "What to Test". App Store Connect has no Romansh locale; the Romansh text is kept for the in-app and TestFlight notes should a place for it appear.
 
 Native Romansh review remains pending, as it does for the Android listing.
 

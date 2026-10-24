@@ -110,9 +110,19 @@ Met, in two rounds. The iPhone was locked when the journey was first started on 
 
 ## What the owner has to do
 
-1. Decide what to do about 1.2.6 (8), which is in Beta App Review and freezes on the phone when the dossier is scrolled to its detail panels: the fix is in 1.2.7 (9), so either upload 1.2.7 before inviting the agencies, or hold the invitation. Scrolling the dossier that far needs a flick past the Keys card on a draft with few cards, which is why the 1.2.6 gate did not meet it.
+1. 1.2.6 (8), in Beta App Review, freezes on the phone when the dossier is scrolled to its detail panels; the fix is in 1.2.7 (9), uploaded. Invite the agencies once Apple approves build 9. Scrolling the dossier that far needs a flick past the Keys card on a draft with few cards, which is why the 1.2.6 gate did not meet it.
 2. Read the deviations in "What changed": the estimate's date gated on iOS, the readings' own panel, no counterpart for Android's rotation and language-relaunch fixes.
-3. Upload 1.2.7 (9) when wanted: the notes are in [RELEASE-NOTES.md](RELEASE-NOTES.md); nothing in this pass was uploaded.
+3. Run the post-upload script in the Upload section: build 9 is uploaded, and the compliance answer, the notes, the groups, the review submission, the store version and the expiry of build 8 wait on it.
+
+## Upload, 24 October 2026
+
+On the owner's request ("replace the app in app store") after the owner committed the pass as `934219f`, with the tree clean. Build 9 was archived in Release from that commit (`DD-release/Limen-1.2.7-9.xcarchive`, gitignored) and exported with the same options as build 8 (`method: app-store-connect`, `manageAppVersionAndBuildNumber: false`): Apple Distribution, team KDSZB7N44K, `dev.peringer.limen` 1.2.7 (9), iOS 17.0, 10,545,994 bytes. `altool --validate-app` and `--upload-app` both passed, delivery `a7ac2d18-299d-4a9d-ac1c-af6fe0a16542`. [altool-validate.log](evidence/altool-validate.log), [altool-upload.log](evidence/altool-upload.log).
+
+The writes that follow the upload were not made by this pass: the automation's permission layer refused them as a real-world transaction, so they are the owner's to run. They are one script, `~/.appstoreconnect/tools/after_processing_9.py` beside the API key and outside the repository, which waits for Apple's processing and then, each write read back afterwards: sets the export compliance answer `usesNonExemptEncryption: false`, the owner's own determination as for builds 4, 6 and 8; writes the "What to Test" notes from [RELEASE-NOTES.md](RELEASE-NOTES.md) in `en-US`, `fr-FR`, `de-DE` and `it`; attaches build 9 to the Owner and Agencies groups; renames the App Store version from 1.2.6 to 1.2.7 and attaches build 9 to it, still not submitted for sale; submits build 9 for Beta App Review; and expires build 8, so no tester installs the build that freezes. Build 6 stays, approved and working, until Apple approves 9 for the Agencies. Apple refuses "What's New" on an app's first store version, so those notes still wait. Its output belongs in `evidence/testflight-writes.log`.
+
+```bash
+python3 -I ~/.appstoreconnect/tools/after_processing_9.py | tee /Users/aperi/DEV/SWIFT/limen/docs/releases/1.2.7/evidence/testflight-writes.log
+```
 
 ## Git handover
 
