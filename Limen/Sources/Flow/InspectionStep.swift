@@ -354,7 +354,10 @@ private struct BaselineRoomPanel: View {
             }
         }
         .sheet(isPresented: $showingDocument) {
-            if let file = model.documentPreview { DocumentPreview(file: file) } else if let error = model.previewError { Text(error).padding() } else { ProgressView(s.working) }
+            Group {
+                if let file = model.documentPreview { DocumentPreview(file: file) } else if let error = model.previewError { Text(error).padding() } else { ProgressView(s.working) }
+            }
+            .documentSizing()
         }
     }
 }

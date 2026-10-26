@@ -1,0 +1,89 @@
+iphone69 en-US APP_IPHONE_67 206f8a36-0235-497e-b35d-5c4af7a70279: cleared
+  en-01-home.png: reserved, sent, committed
+  en-02-rooms.png: reserved, sent, committed
+  en-03-defect-editor.png: reserved, sent, committed
+  en-04-canton-overlay.png: reserved, sent, committed
+  en-05-review.png: reserved, sent, committed
+  en-06-signature.png: reserved, sent, committed
+  en-07-record-cover.png: reserved, sent, committed
+  en-08-photo-annex.png: reserved, sent, committed
+  read back: ['en-01-home.png', 'en-02-rooms.png', 'en-03-defect-editor.png', 'en-04-canton-overlay.png', 'en-05-review.png', 'en-06-signature.png', 'en-07-record-cover.png', 'en-08-photo-annex.png']
+iphone69 fr-FR APP_IPHONE_67 04790e41-5a80-456d-9610-3e534ad8aeca: cleared
+  fr-01-home.png: reserved, sent, committed
+  fr-02-rooms.png: reserved, sent, committed
+  fr-03-defect-editor.png: reserved, sent, committed
+  fr-04-canton-overlay.png: reserved, sent, committed
+  fr-05-review.png: reserved, sent, committed
+  fr-06-signature.png: reserved, sent, committed
+  fr-07-record-cover.png: reserved, sent, committed
+  fr-08-photo-annex.png: reserved, sent, committed
+  read back: ['fr-01-home.png', 'fr-02-rooms.png', 'fr-03-defect-editor.png', 'fr-04-canton-overlay.png', 'fr-05-review.png', 'fr-06-signature.png', 'fr-07-record-cover.png', 'fr-08-photo-annex.png']
+iphone69 de-DE APP_IPHONE_67 364be955-e58d-4748-8772-f1401b3620d1: cleared
+  de-01-home.png: reserved, sent, committed
+  de-02-rooms.png: reserved, sent, committed
+  de-03-defect-editor.png: reserved, sent, committed
+  de-04-canton-overlay.png: reserved, sent, committed
+  de-05-review.png: reserved, sent, committed
+  de-06-signature.png: reserved, sent, committed
+  de-07-record-cover.png: reserved, sent, committed
+  de-08-photo-annex.png: reserved, sent, committed
+  read back: ['de-01-home.png', 'de-02-rooms.png', 'de-03-defect-editor.png', 'de-04-canton-overlay.png', 'de-05-review.png', 'de-06-signature.png', 'de-07-record-cover.png', 'de-08-photo-annex.png']
+iphone69 it APP_IPHONE_67 1f021060-079c-4e47-a82c-1883cbf3a714: cleared
+  it-01-home.png: reserved, sent, committed
+  it-02-rooms.png: reserved, sent, committed
+  it-03-defect-editor.png: reserved, sent, committed
+  it-04-canton-overlay.png: reserved, sent, committed
+  it-05-review.png: reserved, sent, committed
+  it-06-signature.png: reserved, sent, committed
+  it-07-record-cover.png: reserved, sent, committed
+  it-08-photo-annex.png: reserved, sent, committed
+  read back: ['it-01-home.png', 'it-02-rooms.png', 'it-03-defect-editor.png', 'it-04-canton-overlay.png', 'it-05-review.png', 'it-06-signature.png', 'it-07-record-cover.png', 'it-08-photo-annex.png']
+ipad13 en-US APP_IPAD_PRO_3GEN_129 3f10f5e6-63e6-4240-bbb4-ef48c90cd12e: cleared
+  en-01-home.png: reserved, sent, committed
+  en-02-rooms.png: reserved, sent, committed
+  en-03-defect-editor.png: reserved, sent, committed
+  en-04-canton-overlay.png: reserved, sent, committed
+  en-05-review.png: reserved, sent, committed
+  en-06-signature.png: reserved, sent, committed
+  en-07-record-cover.png: reserved, sent, committed
+  en-08-photo-annex.png: reserved, sent, committed
+  read back: ['en-01-home.png', 'en-02-rooms.png', 'en-03-defect-editor.png', 'en-04-canton-overlay.png', 'en-05-review.png', 'en-06-signature.png', 'en-07-record-cover.png', 'en-08-photo-annex.png']
+ipad13 fr-FR APP_IPAD_PRO_3GEN_129 b811e02a-1445-4c1a-882e-84637afd1868: cleared
+  fr-01-home.png: reserved, sent, committed
+  fr-02-rooms.png: reserved, sent, committed
+  fr-03-defect-editor.png: reserved, sent, committed
+  fr-04-canton-overlay.png: reserved, sent, committed
+  fr-05-review.png: reserved, sent, committed
+  fr-06-signature.png: reserved, sent, committed
+  fr-07-record-cover.png: reserved, sent, committed
+  fr-08-photo-annex.png: reserved, sent, committed
+  read back: ['fr-01-home.png', 'fr-02-rooms.png', 'fr-03-defect-editor.png', 'fr-04-canton-overlay.png', 'fr-05-review.png', 'fr-06-signature.png', 'fr-07-record-cover.png', 'fr-08-photo-annex.png']
+ipad13 de-DE APP_IPAD_PRO_3GEN_129 d3c0e6ba-441e-4c56-8497-ac987e10cdad: cleared
+  de-01-home.png: reserved, sent, committed
+  de-02-rooms.png: reserved, sent, committed
+  de-03-defect-editor.png: reserved, sent, committed
+  de-04-canton-overlay.png: reserved, sent, committed
+  de-05-review.png: reserved, sent, committed
+  de-06-signature.png: reserved, sent, committed
+  de-07-record-cover.png: reserved, sent, committed
+  de-08-photo-annex.png: reserved, sent, committed
+  read back: ['de-01-home.png', 'de-02-rooms.png', 'de-03-defect-editor.png', 'de-04-canton-overlay.png', 'de-05-review.png', 'de-06-signature.png', 'de-07-record-cover.png', 'de-08-photo-annex.png']
+ipad13 it APP_IPAD_PRO_3GEN_129 3c548ad0-9ced-43f3-b091-2a4820b6de6e: cleared
+  it-01-home.png: reserved, sent, committed
+  it-02-rooms.png: reserved, sent, committed
+  it-03-defect-editor.png: reserved, sent, committed
+  it-04-canton-overlay.png: reserved, sent, committed
+  it-05-review.png: reserved, sent, committed
+  it-06-signature.png: reserved, sent, committed
+  it-07-record-cover.png: reserved, sent, committed
+  it-08-photo-annex.png: reserved, sent, committed
+  read back: ['it-01-home.png', 'it-02-rooms.png', 'it-03-defect-editor.png', 'it-04-canton-overlay.png', 'it-05-review.png', 'it-06-signature.png', 'it-07-record-cover.png', 'it-08-photo-annex.png']
+description fr-FR: 200
+description it: 200
+description de-DE: 200
+description en-US: 200
+description en-US: read back ends with the credit line
+description fr-FR: read back ends with the credit line
+description de-DE: read back ends with the credit line
+description it: read back ends with the credit line
+done

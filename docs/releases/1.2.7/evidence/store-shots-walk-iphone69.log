@@ -1,0 +1,13 @@
+=== iphone69 24A076E8-EB1A-4556-9761-03079E56AA42 02:47:34
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInEnglish]' passed (98.650 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInFrench]' passed (99.259 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInGerman]' passed (98.193 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInItalian]' passed (99.185 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInRomansh]' passed (98.520 seconds).
+** TEST SUCCEEDED **
+xcodebuild exit 0
+40 screenshots named in DD/shots
+40 shots at 1320 x 2868 under _scratch/store-shots/iphone69
+check exit 0
+5 rows, 8 columns: /private/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/contact-iphone69.png
+=== done 02:56:06

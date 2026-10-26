@@ -1,0 +1,11 @@
+make test (AllTests), iPhone 17 Pro simulator iOS 26.5, 2026-10-26 03:07 to 04:20
+result: Failed | total 327 | passed 313 | failed 6 | skipped 8
+failed: LimenUITests testEnglishDefault() - Contrast failed
+failed: LimenUITests testFrenchLarge() - Contrast failed
+failed: LimenUITests testFrenchLargeVisibleAddress() - Contrast failed
+failed: LimenUITests testGermanLargestAccessibility() - Contrast failed
+failed: LimenUITests testItalianLargestAccessibility() - Contrast failed
+failed: LimenUITests testRomanshLargestAccessibility() - Contrast failed
+LimenKitTests {'Passed': 234, 'Skipped': 2}
+LimenTests {'Passed': 41, 'Skipped': 1}
+LimenUITests {'Failed': 6, 'Passed': 38, 'Skipped': 5}

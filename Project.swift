@@ -72,8 +72,16 @@ let project = Project(
             resources: ["LimenKit/Resources/**"],
             dependencies: [.target(name: "LimenJxl")],
             // libjxl is C++, and the static archive it comes in asks for the C++ runtime at the
-            // one place the symbols are resolved, which is this framework's own link.
-            settings: .settings(base: baseSettings.merging(["OTHER_LDFLAGS": "$(inherited) -lc++"]) { _, new in new })
+            // one place the symbols are resolved, which is this framework's own link. The three
+            // store-scene photographs are Debug fixtures: the UI test's seed reads them inside the
+            // app process, and Release leaves them out of the framework as it leaves out the scene.
+            settings: .settings(
+                base: baseSettings.merging(["OTHER_LDFLAGS": "$(inherited) -lc++"]) { _, new in new },
+                configurations: [
+                    .debug(name: "Debug"),
+                    .release(name: "Release", settings: ["EXCLUDED_SOURCE_FILE_NAMES": "store-scene-*"]),
+                ]
+            )
         ),
 
         .target(

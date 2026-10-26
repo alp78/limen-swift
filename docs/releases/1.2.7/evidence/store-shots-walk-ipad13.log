@@ -1,0 +1,13 @@
+=== ipad13 1832F00F-BAD8-43C6-8246-4E23D1763BFD 02:56:06
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInEnglish]' passed (95.787 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInFrench]' passed (97.428 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInGerman]' passed (96.824 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInItalian]' passed (96.972 seconds).
+Test Case '-[LimenUITests.StoreShotsTest testStoreShotsInRomansh]' passed (96.801 seconds).
+** TEST SUCCEEDED **
+xcodebuild exit 0
+40 screenshots named in DD/shots
+40 shots at 2064 x 2752 under _scratch/store-shots/ipad13
+check exit 0
+5 rows, 8 columns: /private/tmp/claude-501/-Users-aperi-DEV-SWIFT-limen/791c6993-1ee2-49b1-8225-3554db51e59a/scratchpad/contact-ipad13.png
+=== done 03:04:25

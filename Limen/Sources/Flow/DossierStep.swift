@@ -723,7 +723,9 @@ struct LegalOverlayPanel: View {
                     }
                     if p.objectCanton == .ti { Text(s.ticinoExpertRoute).font(LimenType.bodySmall).foregroundStyle(colors.ink) }
                     if !s.depositLocal(p.objectCanton).isBlank { Text(s.depositLocal(p.objectCanton)).font(LimenType.bodySmall).foregroundStyle(colors.ink) }
-                    Field(label: s.legalOverlayNote, value: p.legalOverlay.note, singleLine: false) { note in
+                    // The panel's own note, named as Android names it: it carried each requirement's
+                    // reason label, and two fields under one name read as one field shown twice.
+                    Field(label: "\(s.remarks) · \(s.legalOverlayTitle)", value: p.legalOverlay.note, singleLine: false) { note in
                         model.edit { var x = $0; x.legalOverlay.note = note; return x }
                     }
                 }

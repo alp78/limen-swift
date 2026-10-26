@@ -63,6 +63,7 @@ struct CompletePreviewPanel: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { ToolbarItem(placement: .confirmationAction) { Button(s.done) { showing = false } } }
             }
+            .documentSizing()
         }
     }
 }
@@ -329,6 +330,18 @@ struct DocumentPreview: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { ToolbarItem(placement: .confirmationAction) { Button(s.done) { dismiss() } } }
         }
+        .documentSizing()
+    }
+}
+
+extension View {
+    /// Android shows a document in a dialog that fills the screen on a tablet as on a phone
+    /// (`DocumentPreview.kt`, `usePlatformDefaultWidth = false`). An iPad's default sheet is a form
+    /// sheet, which showed an A4 page at little more than half its height and cut the cover off
+    /// above the record's reference; the page sizing gives the document the screen's height. A
+    /// phone's sheet already spans the screen, and iOS 17 has no presentation sizing to ask for.
+    @ViewBuilder func documentSizing() -> some View {
+        if #available(iOS 18.0, *) { presentationSizing(.page) } else { self }
     }
 }
 
